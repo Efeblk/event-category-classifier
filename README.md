@@ -83,6 +83,8 @@ The project has no measured accuracy on real user requests. The generated corpus
 
 GitHub CI runs the controlled tests. The tests make no paid calls.
 
+The current local run passes 37 tests. The browser check returns the expected labels for six sample requests.
+
 The course wording for a benchmark is ambiguous. This project includes an internal majority baseline. Confirm whether the teacher also requires an external published benchmark.
 
 Method references: [scikit-learn text features](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction) and [grouped evaluation](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-iterators-for-grouped-data).
