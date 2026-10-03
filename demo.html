@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event category classifier · COE025</title>
+  <style>
+    :root{font-family:system-ui,sans-serif;color:#182c35;background:#f2f5f2;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0}main{max-width:1040px;margin:auto;padding:60px 28px}
+    .eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:#36695c;text-transform:uppercase}
+    h1{font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.04em;margin:18px 0}
+    .lead{max-width:650px;font-size:18px;line-height:1.6;color:#4f656b}.layout{display:grid;grid-template-columns:1.7fr 1fr;gap:36px;margin-top:36px}
+    .panel{background:white;border:1px solid #d6dfdb;border-radius:14px;padding:28px}h2{margin:0 0 18px;font-size:21px}
+    label{display:block;font-size:14px;font-weight:600;margin-bottom:12px}textarea{width:100%;min-height:190px;resize:vertical;border:1px solid #b6c7c1;border-radius:8px;padding:16px;font:16px/1.6 system-ui;color:inherit}
+    textarea:focus,button:focus-visible{outline:3px solid #69aa94;outline-offset:3px}button{cursor:pointer;font:600 15px system-ui}
+    .primary{color:white;background:#155946;border:0;border-radius:8px;padding:13px 22px;margin-top:18px}.primary:disabled{opacity:.6;cursor:wait}
+    .samples{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.sample{background:#f2f5f2;color:#274d43;border:1px solid #d6dfdb;border-radius:6px;padding:7px 10px;font-size:12px}
+    .result{border-top:1px solid #d6dfdb;margin-top:24px;padding-top:20px}.label{font-size:30px;font-weight:650;color:#155946;margin:0 0 8px}
+    .muted{color:#607277;font-size:13px;line-height:1.65}ol{padding-left:22px}li{margin:14px 0;font-size:14px;line-height:1.6}
+    .notice{font-size:13px;line-height:1.7;margin-top:32px;color:#607277}footer{margin-top:36px;border-top:1px solid #d6dfdb;padding-top:18px;color:#607277;font-size:12px}
+    @media(max-width:740px){main{padding:30px 20px}.layout{grid-template-columns:1fr;gap:20px}.panel{padding:22px}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">COE025 · Project 1 · Text classification</div>
+  <h1>What kind of event is this?</h1>
+  <p class="lead">A small part of event discovery. This model reads a Turkish event title and description. It predicts concert, theatre, or stand-up.</p>
+  <div class="layout">
+    <section class="panel" aria-labelledby="input-title">
+      <h2 id="input-title">Try an event description</h2>
+      <form id="form">
+        <label for="description">Event title and description</label>
+        <textarea id="description" maxlength="5000" required placeholder="Etkinliğin başlığını ve açıklamasını yazın…"></textarea>
+        <div class="samples" aria-label="Sample descriptions">
+          <button class="sample" type="button" data-sample="Bu akşam caz orkestrası sahnede. Canlı müzik konserinde piyano ve saksafon dinleyeceğiz.">Concert example</button>
+          <button class="sample" type="button" data-sample="İki perdelik tiyatro oyununda oyuncular aile ilişkilerini sahneye taşıyor. Yönetmen yeni bir dramatik yorum sunuyor.">Theatre example</button>
+          <button class="sample" type="button" data-sample="Komedyen tek kişilik stand-up gösterisinde günlük yaşamdan komik hikâyeler anlatıyor. Kahkaha dolu bir akşam.">Stand-up example</button>
+        </div>
+        <button class="primary" id="submit" type="submit">Classify event</button>
+      </form>
+      <div class="result" id="result" role="status" aria-live="polite" hidden></div>
+    </section>
+    <aside class="panel">
+      <h2>How the model works</h2>
+      <ol>
+        <li>Normalize Turkish text.</li>
+        <li>Convert text to TF-IDF features. The experiment tests words and word pairs. TF-IDF measures how useful each term is in the dataset.</li>
+        <li>Use the model with the best validation result.</li>
+      </ol>
+      <p class="muted">The experiment compares Naive Bayes, Logistic Regression, and a linear Support Vector Machine. A majority-class baseline gives a simple reference.</p>
+      <p class="muted">The test data stays separate during model selection. Repeated event families stay in one data partition.</p>
+    </aside>
+  </div>
+  <p class="notice">This model always selects one of three categories. It cannot reject unrelated text. It does not search events, check tickets, or measure event quality. The sample descriptions are new demonstration text. They are not test results.</p>
+  <footer>Local course demonstration. Predictions use the trained model on this computer. No paid AI API.</footer>
+</main>
+<script>
+  const input=document.getElementById('description');
+  const result=document.getElementById('result');
+  const submit=document.getElementById('submit');
+  const names={concert:'Concert',theatre:'Theatre',stand_up:'Stand-up'};
+  document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
+  document.getElementById('form').addEventListener('submit',async event=>{
+    event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Classifying…';
+    try{
+      const response=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:input.value})});
+      const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Prediction failed.');
+      result.replaceChildren();const label=document.createElement('p');label.className='label';label.textContent=names[payload.label]||payload.label;result.append(label);
+      const detail=document.createElement('p');detail.className='muted';detail.textContent='Model: '+payload.model;result.append(detail);
+      if(payload.probabilities){const note=document.createElement('p');note.className='muted';note.textContent='Model probabilities: '+Object.entries(payload.probabilities).map(([key,value])=>`${names[key]} ${(value*100).toFixed(1)}%`).join(' · ')+'. These values are not calibrated confidence.';result.append(note)}
+    }catch(error){result.textContent=error.message}finally{submit.disabled=false}
+  });
+</script>
+</body>
+</html>
