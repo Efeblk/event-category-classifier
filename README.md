@@ -21,6 +21,8 @@ python -m venv .venv
 
 Open [http://127.0.0.1:8011](http://127.0.0.1:8011).
 
+The demo page shows saved results for all six models. It marks the model selected by validation macro F1. The table reads raw-model metrics from `reports/metrics.json`. These metrics exclude the manual input rules.
+
 Use `.venv/bin/python` on Linux or macOS.
 
 A fresh clone can generate the public sample corpus. The process needs no parent project, provider text, database, or paid API.
@@ -84,6 +86,8 @@ The project has no measured accuracy on real user requests. The generated corpus
 GitHub CI runs the controlled tests. The tests make no paid calls.
 
 The current local run passes 37 tests. The browser check returns the expected labels for six sample requests.
+
+The comparison table matches all six saved results. Desktop, narrow-screen, and retry checks pass.
 
 The course wording for a benchmark is ambiguous. This project includes an internal majority baseline. Confirm whether the teacher also requires an external published benchmark.
 

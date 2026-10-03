@@ -6,7 +6,7 @@
   <title>Event request classifier · COE025</title>
   <style>
     :root{font-family:system-ui,sans-serif;color:#182c35;background:#f2f5f2;font-synthesis:none}
-    *{box-sizing:border-box}body{margin:0}main{max-width:1040px;margin:auto;padding:60px 28px}
+    *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}main{max-width:1040px;margin:auto;padding:60px 28px}
     .eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:#36695c;text-transform:uppercase}
     h1{font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.04em;margin:18px 0}
     .lead{max-width:650px;font-size:18px;line-height:1.6;color:#4f656b}.layout{display:grid;grid-template-columns:1.7fr 1fr;gap:36px;margin-top:36px}
@@ -18,7 +18,15 @@
     .result{border-top:1px solid #d6dfdb;margin-top:24px;padding-top:20px}.label{font-size:30px;font-weight:650;color:#155946;margin:0 0 8px}
     .muted{color:#607277;font-size:13px;line-height:1.65}ol{padding-left:22px}li{margin:14px 0;font-size:14px;line-height:1.6}
     .notice{font-size:13px;line-height:1.7;margin-top:32px;color:#607277}footer{margin-top:36px;border-top:1px solid #d6dfdb;padding-top:18px;color:#607277;font-size:12px}
+    .comparison{margin-top:36px}.comparison-head{display:flex;align-items:start;justify-content:space-between;gap:24px}.comparison-head p{max-width:690px;margin:0}
+    .comparison-status{margin:22px 0 0}.retry{color:#155946;background:white;border:1px solid #88a89e;border-radius:7px;padding:8px 13px;margin-top:12px}
+    .table-wrap{max-width:100%;overflow-x:auto;margin-top:22px;border:1px solid #d6dfdb;border-radius:9px}.model-table{width:100%;min-width:760px;border-collapse:collapse;font-size:14px}
+    .model-table th,.model-table td{text-align:left;padding:14px 16px;border-bottom:1px solid #e2e9e6;vertical-align:top}.model-table th{background:#f2f5f2;color:#35534b;font-size:12px;letter-spacing:.03em}
+    .model-table tbody tr:last-child td{border-bottom:0}.model-table tbody tr.selected{background:#edf7f2}.model-name{font-weight:650;color:#183f34}.feature{color:#607277;line-height:1.45;min-width:220px}
+    .badge{display:inline-block;margin-left:8px;padding:3px 7px;border-radius:999px;background:#155946;color:white;font-size:11px;white-space:nowrap}.number{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .comparison-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:18px}.comparison-notes p{margin:0}
     @media(max-width:740px){main{padding:30px 20px}.layout{grid-template-columns:1fr;gap:20px}.panel{padding:22px}}
+    @media(max-width:600px){.comparison-head{display:block}.comparison-notes{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -55,6 +63,17 @@
       <p class="muted">Prototype data: generated requests. The results do not establish accuracy on real users. Translations and paraphrases stay in the same data partition.</p>
     </aside>
   </div>
+  <section class="panel comparison" aria-labelledby="comparison-title">
+    <div class="comparison-head">
+      <div>
+        <h2 id="comparison-title">Model comparison</h2>
+        <p class="muted">The selected model has the highest validation macro F1. Test results show later evaluation. They did not select the model.</p>
+      </div>
+    </div>
+    <div class="comparison-status muted" id="comparison-status" role="status" aria-live="polite">Loading model results...</div>
+    <div class="table-wrap" id="comparison-table-wrap" hidden></div>
+    <div class="comparison-notes" id="comparison-notes" hidden></div>
+  </section>
   <p class="notice">This prototype classifies one request. It does not find events or apply date, location, or budget filters. The unclear category also covers unrelated requests. An ambiguous prediction can still be wrong.</p>
   <footer>Local course demonstration. Predictions use the trained model on this computer. No paid AI API.</footer>
 </main>
@@ -64,6 +83,57 @@
   const submit=document.getElementById('submit');
   const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Please specify one activity'};
   const reasons={multiple_categories:'Your request names more than one activity. Choose concert, theatre, or stand-up.',only_exclusions:'Your request says what to exclude. Add the activity you want.',music_player_command:'This demo classifies requests to attend events. A music-player command does not specify an event.',unsupported_activity:'This activity is outside concert, theatre, and stand-up.',unknown_terms:'The request has no terms in the trained vocabulary. Add an activity.'};
+  const modelDetails={
+    dummy_most_frequent:{name:'Majority baseline',feature:'Always predicts the most common training category.'},
+    multinomial_nb:{name:'Multinomial Naive Bayes',feature:'Uses weighted single words and adjacent word pairs.'},
+    logistic_regression_unigram:{name:'Logistic Regression: words',feature:'Uses weighted single words.'},
+    logistic_regression_bigram:{name:'Logistic Regression: word pairs',feature:'Uses weighted single words and adjacent word pairs.'},
+    logistic_regression_char:{name:'Logistic Regression: characters',feature:'Uses groups of 3 to 5 characters.'},
+    linear_svc:{name:'Linear SVM',feature:'Uses weighted single words and adjacent word pairs.'}
+  };
+  const comparisonStatus=document.getElementById('comparison-status');
+  const comparisonTableWrap=document.getElementById('comparison-table-wrap');
+  const comparisonNotes=document.getElementById('comparison-notes');
+  const addCell=(row,tag,text,className)=>{const cell=document.createElement(tag);cell.textContent=text;if(className)cell.className=className;row.append(cell);return cell};
+  const validScore=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=1;
+  function showComparisonError(message){
+    comparisonStatus.replaceChildren();comparisonStatus.textContent=message;
+    const retry=document.createElement('button');retry.type='button';retry.className='retry';retry.textContent='Retry';retry.addEventListener('click',loadComparison);comparisonStatus.append(document.createElement('br'),retry);
+    comparisonTableWrap.hidden=true;comparisonNotes.hidden=true;
+  }
+  function renderComparison(payload){
+    if(!payload||typeof payload!=='object'||!payload.models||typeof payload.models!=='object'||Array.isArray(payload.models))throw new Error('Model results have an invalid format.');
+    if(payload.task!=='user_request_classification'||payload.evaluation_scope!=='raw_model')throw new Error('Model results do not match this request classifier.');
+    if(payload.selection?.metric!=='validation_macro_f1')throw new Error('Model selection details are invalid.');
+    const rows=Object.entries(payload.models).map(([key,value])=>({key,value,detail:modelDetails[key]}));
+    if(rows.length===0)throw new Error('No model results are available.');
+    if(rows.length!==Object.keys(modelDetails).length||rows.some(row=>!row.detail||!row.value||!validScore(row.value.validation?.macro_f1)||!validScore(row.value.test?.accuracy)||!validScore(row.value.test?.macro_f1)))throw new Error('Model results are incomplete or invalid.');
+    const selected=payload.selection?.selected_model;
+    if(typeof selected!=='string'||!rows.some(row=>row.key===selected))throw new Error('The selected model is missing from the results.');
+    rows.sort((a,b)=>b.value.validation.macro_f1-a.value.validation.macro_f1);
+    const table=document.createElement('table');table.className='model-table';
+    const caption=document.createElement('caption');caption.textContent='Models sorted by validation macro F1, from highest to lowest.';caption.className='muted';caption.style.cssText='text-align:left;padding:0 0 10px';table.append(caption);
+    const head=document.createElement('thead');const headerRow=document.createElement('tr');
+    ['Model','Features','Validation macro F1','Test accuracy','Test macro F1'].forEach(text=>{const cell=addCell(headerRow,'th',text);cell.scope='col'});head.append(headerRow);table.append(head);
+    const body=document.createElement('tbody');
+    rows.forEach(row=>{const tr=document.createElement('tr');const isSelected=row.key===selected;if(isSelected)tr.className='selected';
+      const nameCell=addCell(tr,'td',row.detail.name,'model-name');if(isSelected){const badge=document.createElement('span');badge.className='badge';badge.textContent='Selected';nameCell.append(badge)}
+      addCell(tr,'td',row.detail.feature,'feature');addCell(tr,'td',row.value.validation.macro_f1.toFixed(3),'number');addCell(tr,'td',(row.value.test.accuracy*100).toFixed(1)+'%','number');addCell(tr,'td',row.value.test.macro_f1.toFixed(3),'number');body.append(tr);
+    });
+    table.append(body);comparisonTableWrap.replaceChildren(table);comparisonTableWrap.hidden=false;
+    const split=payload.split;const datasetRows=payload.dataset?.rows;
+    if(!Number.isInteger(datasetRows)||!Number.isInteger(split?.train?.rows)||!Number.isInteger(split?.validation?.rows)||!Number.isInteger(split?.test?.rows))throw new Error('Dataset details are incomplete or invalid.');
+    const splitNote=document.createElement('p');splitNote.className='muted';splitNote.textContent='Dataset: '+datasetRows+' rows. Split: '+split.train.rows+' train, '+split.validation.rows+' validation, and '+split.test.rows+' test.';
+    const f1Note=document.createElement('p');f1Note.className='muted';f1Note.textContent='Macro F1 gives each category equal weight. A value near 1 is better.';
+    const limitNote=document.createElement('p');limitNote.className='muted';limitNote.textContent='Limitation: these requests are generated bootstrap data. The results do not prove accuracy for real users.';
+    const scopeNote=document.createElement('p');scopeNote.className='muted';scopeNote.textContent='Scope: these scores measure raw models. Manual input rules used by the form are excluded.';
+    comparisonNotes.replaceChildren(splitNote,f1Note,limitNote,scopeNote);comparisonNotes.hidden=false;comparisonStatus.textContent='Results loaded.';
+  }
+  async function loadComparison(){
+    comparisonStatus.textContent='Loading model results...';comparisonTableWrap.hidden=true;comparisonNotes.hidden=true;
+    try{const response=await fetch('/api/results');if(!response.ok)throw new Error('Could not load model results.');const payload=await response.json();renderComparison(payload)}
+    catch(error){showComparisonError(error instanceof Error?error.message:'Could not load model results.')}
+  }
   document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
   document.getElementById('form').addEventListener('submit',async event=>{
     event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Classifying…';
@@ -76,6 +146,7 @@
       if(payload.decision_source==='input_guard'){const note=document.createElement('p');note.className='muted';note.textContent='An explicit input rule returned this result.';result.append(note)}
     }catch(error){result.textContent=error.message}finally{submit.disabled=false}
   });
+  loadComparison();
 </script>
 </body>
 </html>
