@@ -27,6 +27,8 @@
     .comparison-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:18px}.comparison-notes p{margin:0}
     .method-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.method-card{border:1px solid #d6dfdb;border-radius:9px;padding:20px}.method-card h3{font-size:16px;margin:0 0 14px}.method-card .label{font-size:24px}.method-card p:last-child{margin-bottom:0}
     .jev-option{display:flex;align-items:center;gap:8px;margin:16px 0 0}.jev-option input{width:17px;height:17px}.method-benchmark{margin-top:24px}
+    .score-chart{padding:20px}.chart-row{display:grid;grid-template-columns:260px 1fr 46px;align-items:center;gap:16px;margin:16px 0;font-size:13px}.chart-track{background:#e8efeb;border-radius:5px;height:18px;overflow:hidden}.chart-bar{height:100%;background:#36866c;border-radius:5px}.chart-name{line-height:1.5}.comparison-notes{display:block}
+    @media(max-width:600px){.chart-row{grid-template-columns:1fr 46px;gap:8px}.chart-name{grid-column:1/-1}.score-chart{padding:14px}}
     @media(max-width:740px){main{padding:30px 20px}.layout{grid-template-columns:1fr;gap:20px}.panel{padding:22px}}
     @media(max-width:600px){.comparison-head{display:block}.comparison-notes,.method-cards{grid-template-columns:1fr}}
   </style>
@@ -35,7 +37,7 @@
 <main>
   <div class="eyebrow">COE025 · Project 1 · Text classification</div>
   <h1>What would you like to do?</h1>
-  <p class="lead">Tell us in Turkish or English. This small prototype classifies your request as concert, theatre, stand-up, or unclear.</p>
+  <p class="lead">One request. Three methods. Try Turkish or English.</p>
   <div class="layout">
     <section class="panel" aria-labelledby="input-title">
       <h2 id="input-title">Describe your plan</h2>
@@ -58,35 +60,31 @@
       </form>
     </section>
     <aside class="panel">
-      <h2>A small part of event discovery</h2>
-      <ol>
-        <li>Give each method the same original request.</li>
-        <li>Compare the category selected by rules, Logistic Regression, and Jev.</li>
-        <li>Check disagreements against a human label.</li>
-      </ol>
-      <p class="muted">The parser is a small rule-based category recognizer. Logistic Regression uses learned character features. Its comparison result has no extra negation or category rules. Jev answers the same four-label question through an optional API call.</p>
-      <p class="muted">Prototype data: generated requests. The results do not establish accuracy on real users. Translations and paraphrases stay in the same data partition.</p>
+      <h2>Three approaches</h2>
+      <p><strong>Parser</strong><br><span class="muted">Written rules</span></p>
+      <p><strong>Logistic Regression</strong><br><span class="muted">Learned patterns</span></p>
+      <p><strong>Jev</strong><br><span class="muted">Pretrained model / optional API</span></p>
     </aside>
   </div>
   <section class="panel comparison" id="result" role="status" aria-live="polite" hidden></section>
   <section class="panel comparison" aria-labelledby="method-title">
     <h2 id="method-title">Same requests, three approaches</h2>
-    <p class="muted">Saved results use the same labeled cases for all three methods. A missing or failed Jev run has no accuracy score.</p>
+    <p class="muted">Same labeled cases for each method.</p>
     <div id="method-results" class="method-benchmark muted" role="status" aria-live="polite">Loading the comparison experiment...</div>
   </section>
   <section class="panel comparison" aria-labelledby="comparison-title">
     <div class="comparison-head">
       <div>
         <h2 id="comparison-title">Training experiment</h2>
-        <p class="muted">This table uses the generated corpus partitions. It uses a different dataset from the regression comparison above. Validation macro F1 selected the model. Test results did not select it.</p>
+        <p class="muted">Validation macro F1 / higher is better</p>
       </div>
     </div>
     <div class="comparison-status muted" id="comparison-status" role="status" aria-live="polite">Loading model results...</div>
     <div class="table-wrap" id="comparison-table-wrap" hidden></div>
     <div class="comparison-notes" id="comparison-notes" hidden></div>
   </section>
-  <p class="notice">This prototype classifies one request. It does not find events or apply date, location, or budget filters. The unclear category also covers unrelated requests. An ambiguous prediction can still be wrong.</p>
-  <footer>Local course demonstration. Rules and Logistic Regression run on this computer. Jev runs only when you select the external API option.</footer>
+  <p class="notice">Synthetic course data. Scores do not measure real-user accuracy. Classification only.</p>
+  <footer>COE025 / Local course demo</footer>
 </main>
 <script>
   const input=document.getElementById('description');
@@ -94,7 +92,7 @@
   const submit=document.getElementById('submit');
   const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Unclear / Belirsiz'};
   const methodNames={parser:'Rule-based parser',logistic_regression:'Logistic Regression',jev:'Jev'};
-  const methodDescriptions={parser:'Explicit category terms and a few exclusion rules.',logistic_regression:'Learned text patterns. No extra language rules.',jev:'A pretrained judgment model. Same four category definitions.'};
+  const methodDescriptions={parser:'Written rules.',logistic_regression:'Learned patterns.',jev:'Pretrained model.'};
   const modelDetails={
     dummy_most_frequent:{name:'Majority baseline',feature:'Always predicts the most common training category.'},
     multinomial_nb:{name:'Multinomial Naive Bayes',feature:'Uses weighted single words and adjacent word pairs.'},
@@ -123,23 +121,22 @@
     const selected=payload.selection?.selected_model;
     if(typeof selected!=='string'||!rows.some(row=>row.key===selected))throw new Error('The selected model is missing from the results.');
     rows.sort((a,b)=>b.value.validation.macro_f1-a.value.validation.macro_f1);
-    const table=document.createElement('table');table.className='model-table';
-    const caption=document.createElement('caption');caption.textContent='Models sorted by validation macro F1, from highest to lowest.';caption.className='muted';caption.style.cssText='text-align:left;padding:0 0 10px';table.append(caption);
-    const head=document.createElement('thead');const headerRow=document.createElement('tr');
-    ['Model','Features','Validation macro F1','Test accuracy','Test macro F1'].forEach(text=>{const cell=addCell(headerRow,'th',text);cell.scope='col'});head.append(headerRow);table.append(head);
-    const body=document.createElement('tbody');
-    rows.forEach(row=>{const tr=document.createElement('tr');const isSelected=row.key===selected;if(isSelected)tr.className='selected';
-      const nameCell=addCell(tr,'td',row.detail.name,'model-name');if(isSelected){const badge=document.createElement('span');badge.className='badge';badge.textContent='Selected';nameCell.append(badge)}
-      addCell(tr,'td',row.detail.feature,'feature');addCell(tr,'td',row.value.validation.macro_f1.toFixed(3),'number');addCell(tr,'td',(row.value.test.accuracy*100).toFixed(1)+'%','number');addCell(tr,'td',row.value.test.macro_f1.toFixed(3),'number');body.append(tr);
+    const chart=document.createElement('div');chart.className='score-chart';chart.setAttribute('aria-label','Validation macro F1 by model');
+    rows.forEach(row=>{
+      const item=document.createElement('div');item.className='chart-row';
+      const name=document.createElement('div');name.className='chart-name';name.textContent=row.detail.name;
+      if(row.key===selected){const badge=document.createElement('span');badge.className='badge';badge.textContent='Selected';name.append(badge)}
+      const track=document.createElement('div');track.className='chart-track';
+      const bar=document.createElement('div');bar.className='chart-bar';bar.style.width=(row.value.validation.macro_f1*100)+'%';track.append(bar);
+      const score=document.createElement('span');score.className='number';score.textContent=row.value.validation.macro_f1.toFixed(3);
+      item.append(name,track,score);chart.append(item);
     });
-    table.append(body);comparisonTableWrap.replaceChildren(table);comparisonTableWrap.hidden=false;
+    comparisonTableWrap.replaceChildren(chart);comparisonTableWrap.hidden=false;
     const split=payload.split;const datasetRows=payload.dataset?.rows;
     if(!Number.isInteger(datasetRows)||!Number.isInteger(split?.train?.rows)||!Number.isInteger(split?.validation?.rows)||!Number.isInteger(split?.test?.rows))throw new Error('Dataset details are incomplete or invalid.');
-    const splitNote=document.createElement('p');splitNote.className='muted';splitNote.textContent='Dataset: '+datasetRows+' rows. Split: '+split.train.rows+' train, '+split.validation.rows+' validation, and '+split.test.rows+' test.';
-    const f1Note=document.createElement('p');f1Note.className='muted';f1Note.textContent='Macro F1 gives each category equal weight. A value near 1 is better.';
-    const limitNote=document.createElement('p');limitNote.className='muted';limitNote.textContent='Limitation: these requests are generated bootstrap data. The results do not prove accuracy for real users.';
-    const scopeNote=document.createElement('p');scopeNote.className='muted';scopeNote.textContent='Scope: these scores measure raw models. Manual input rules used by the form are excluded.';
-    comparisonNotes.replaceChildren(splitNote,f1Note,limitNote,scopeNote);comparisonNotes.hidden=false;comparisonStatus.textContent='Results loaded.';
+    const splitNote=document.createElement('p');splitNote.className='muted';splitNote.textContent=datasetRows+' synthetic requests / '+split.train.rows+' train / '+split.validation.rows+' validation / '+split.test.rows+' test. Different dataset from the comparison above.';
+    comparisonNotes.replaceChildren(splitNote);comparisonNotes.hidden=false;comparisonStatus.textContent='';
+
   }
   async function loadComparison(){
     comparisonStatus.textContent='Loading model results...';comparisonTableWrap.hidden=true;comparisonNotes.hidden=true;
@@ -149,7 +146,7 @@
   async function loadJevStatus(){
     const checkbox=document.getElementById('include-jev');const status=document.getElementById('jev-status');
     try{const response=await fetch('/api/comparison-config');if(!response.ok)throw new Error();const config=await response.json();checkbox.disabled=!config.configured||config.remaining_calls<=0;if(checkbox.disabled)checkbox.checked=false;
-      status.textContent=config.configured?'Jev: '+config.model+'. Shared calls remaining: '+config.remaining_calls+'. One API attempt per selected comparison. Maximum input: 1,000 characters.':'Jev is not configured. Both local methods remain available.';
+      status.textContent=config.configured?config.remaining_calls+' API calls left / 1,000 characters max':'Jev is not configured.';
     }catch{checkbox.disabled=true;checkbox.checked=false;status.textContent='Jev settings are unavailable. Both local methods remain available.'}
   }
   async function loadMethodResults(){
@@ -160,7 +157,7 @@
       const wrap=document.createElement('div');wrap.className='table-wrap';const table=document.createElement('table');table.className='model-table';table.style.minWidth='560px';const head=document.createElement('thead');const header=document.createElement('tr');
       ['Method','Completed','Accuracy','Macro F1'].forEach(text=>{const cell=addCell(header,'th',text);cell.scope='col'});head.append(header);table.append(head);const body=document.createElement('tbody');
       Object.keys(methodNames).forEach(key=>{const score=payload.methods[key];if(!score||!Number.isInteger(score.completed)||!Number.isInteger(score.total))throw new Error('Experiment results are incomplete.');const complete=score.completed===score.total;const row=document.createElement('tr');addCell(row,'td',methodNames[key],'model-name');addCell(row,'td',score.completed+' / '+score.total,'number');addCell(row,'td',complete&&validScore(score.accuracy)?(score.accuracy*100).toFixed(1)+'%':'Not evaluated','number');addCell(row,'td',complete&&validScore(score.macro_f1)?score.macro_f1.toFixed(3):'Not evaluated','number');body.append(row)});
-      table.append(body);wrap.append(table);target.append(wrap);const note=document.createElement('p');note.className='muted';note.textContent=payload.examples+' cases. '+payload.note;target.append(note);
+      table.append(body);wrap.append(table);target.append(wrap);const note=document.createElement('p');note.className='muted';note.textContent=payload.examples+' inspected synthetic cases / Jev scores appear after a complete run.';target.append(note);
     }catch(error){target.textContent=error.message}
   }
   document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
@@ -171,8 +168,8 @@
       const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Prediction failed.');
       if(!Array.isArray(payload.results)||payload.results.length!==3||Object.keys(methodNames).some(key=>payload.results.filter(row=>row.method===key).length!==1))throw new Error('Comparison results are incomplete.');
       result.replaceChildren();const heading=document.createElement('h2');heading.textContent='Same input, three methods';result.append(heading);const quote=document.createElement('p');quote.className='muted';quote.textContent=requestText;result.append(quote);const cards=document.createElement('div');cards.className='method-cards';
-      payload.results.forEach(row=>{const card=document.createElement('article');card.className='method-card';const title=document.createElement('h3');title.textContent=methodNames[row.method];card.append(title);const label=document.createElement('p');label.className='label';if(row.status==='ok'&&!names[row.label])throw new Error('A method returned an invalid category.');label.textContent=row.status==='ok'?names[row.label]:'Not evaluated';card.append(label);const description=document.createElement('p');description.className='muted';description.textContent=row.status==='ok'?methodDescriptions[row.method]:(row.method==='jev'&&document.getElementById('include-jev').disabled?'Jev is not configured or has no calls remaining. No API call was made.':row.message||'No result is available.');card.append(description);if(Number.isFinite(row.elapsed_ms)){const timing=document.createElement('p');timing.className='muted';timing.textContent='Request time: '+row.elapsed_ms.toFixed(1)+' ms';card.append(timing)}cards.append(card)});result.append(cards);
-      const note=document.createElement('p');note.className='muted';note.textContent='LR model: '+payload.model+'. '+payload.scope;result.append(note);
+      payload.results.forEach(row=>{const card=document.createElement('article');card.className='method-card';const title=document.createElement('h3');title.textContent=methodNames[row.method];card.append(title);const label=document.createElement('p');label.className='label';if(row.status==='ok'&&!names[row.label])throw new Error('A method returned an invalid category.');label.textContent=row.status==='ok'?names[row.label]:'Not evaluated';card.append(label);const description=document.createElement('p');description.className='muted';description.textContent=row.status==='ok'?methodDescriptions[row.method]:(row.method==='jev'&&document.getElementById('include-jev').disabled?'Jev is unavailable.':row.message||'No result is available.');card.append(description);if(Number.isFinite(row.elapsed_ms)){const timing=document.createElement('p');timing.className='muted';timing.textContent='Request time: '+row.elapsed_ms.toFixed(1)+' ms';card.append(timing)}cards.append(card)});result.append(cards);
+
     }catch(error){result.textContent=error.message}finally{submit.disabled=false;loadJevStatus()}
   });
   loadComparison();
