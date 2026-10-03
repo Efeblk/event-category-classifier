@@ -7,3 +7,4 @@ data/*.json
 artifacts/
 reports/
 !data/README.md
+!data/request_challenge.json

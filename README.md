@@ -1,60 +1,79 @@
-# Turkish event category classifier
+# Turkish and English event-request classifier
 
-COE025 Project 1. This project classifies a Turkish event title and description as `concert`, `theatre`, or `stand_up`. It uses one small part of the Bi' Plan idea. It runs independently from Bi' Plan.
+This COE025 Project 1 classifies one user request. It returns `concert`, `theatre`, `stand_up`, or `unclear`.
 
-The project compares Naive Bayes, Logistic Regression, and a linear Support Vector Machine (SVM). It also compares word features with word-pair features. A majority-class baseline always predicts the most common training label.
+The input can use Turkish or English. The classifier handles one query at a time. It does not search events. It does not extract dates, budgets, or locations. It does not keep chat memory.
 
-## Run on Windows
+`unclear` covers vague requests, mixed preferences, unsupported activities, and requests with no positive category. Explicit music-player commands, movie requests, and pure category exclusions also return `unclear`. The small rule set cannot interpret every form of negation.
 
-Use Python 3.13. Run these commands from this repository.
+## Reproduce the prototype
+
+Use Python 3.13. Run these commands from this repository on Windows.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
-# Read an existing, approved local snapshot. This command does not change it.
-.\.venv\Scripts\python.exe prepare_data.py 'C:\path\to\events.json'
-.\.venv\Scripts\python.exe train.py
+.\.venv\Scripts\python.exe prepare_requests.py
+.\.venv\Scripts\python.exe train.py --allow-small-prototype
+.\.venv\Scripts\python.exe evaluate_requests.py
 .\.venv\Scripts\python.exe app.py
 ```
 
-Open [http://127.0.0.1:8011](http://127.0.0.1:8011). The model predicts one event category. It does not search a live catalog.
+Open [http://127.0.0.1:8011](http://127.0.0.1:8011).
 
-The prepared dataset and trained model already exist in the original local checkout. A Git clone contains the code, tests, and aggregate results. It does not contain provider text or the trained model. Read [the dataset guide](data/README.md) before importing data. The importer needs at least 1,000 distinct examples and all three labels.
+Use `.venv/bin/python` on Linux or macOS.
 
-For Linux or macOS, use `.venv/bin/python` in place of `.\.venv\Scripts\python.exe`.
+A fresh clone can generate the public sample corpus. The process needs no parent project, provider text, database, or paid API.
 
-Run one prediction without a browser:
+Run one guarded command-line prediction:
 
 ```powershell
-.\.venv\Scripts\python.exe predict.py --text 'Canli muzik konseri ve caz orkestrası'
+.\.venv\Scripts\python.exe predict.py --text "Canlı caz dinlemek istiyorum"
 ```
 
-Load only a model that you made locally with `train.py`. A joblib model file can execute code when you load it.
+The command-line tool and browser demo use the same input guards. Load only a model that you trained locally. A joblib file can execute code when Python loads it.
 
-## Experiment
+## Data
 
-TF-IDF converts text to numeric features. It gives more weight to terms that help distinguish documents. The experiment tests individual words and word pairs. It preserves Turkish letters and handles `I` and `İ` before lowercase conversion.
+`prepare_requests.py` creates 364 AI-authored examples. The corpus contains 208 Turkish examples and 156 English examples. Each of the four labels has 91 examples.
 
-The importer removes repeated text and excludes event families with conflicting labels. It connects related records using titles, descriptions, production keys, and source pages. Each family stays in one data partition.
+The examples form 52 intent families. A family contains different phrasings of one intent. Turkish and English versions of the same intent have one `group_id`. This rule keeps related text in one data partition.
 
-The training program uses about 60% of the data for training, 20% for validation, and 20% for testing. It learns the vocabulary from training data only. It selects the model with the best validation macro F1. Macro F1 gives equal weight to each category. It evaluates the frozen models on test data after selection. It saves the selected model without a second fit.
+The corpus is a student prototype. It contains no observed real-user requests. It does not satisfy the course requirement for at least 1,000 examples. The original examples use the CC0-1.0 license. See [the dataset guide](data/README.md) and [the license](data/LICENSE).
 
-The local experiment has 1,182 unique examples in 965 families. Logistic Regression with individual words won validation selection. Its test macro F1 is **0.9168**. Its test accuracy is **91.98%**. Read [the results and error review](RESULTS.md). These scores measure agreement with collector labels. They do not prove independent human accuracy.
+## Methods and result
+
+TF-IDF converts text into numeric features. The experiment compares these methods:
+
+- majority-class dummy baseline;
+- Multinomial Naive Bayes with word unigrams and bigrams;
+- Logistic Regression with word unigrams;
+- Logistic Regression with word unigrams and bigrams;
+- Logistic Regression with character groups of length 3 to 5;
+- linear Support Vector Machine with word unigrams and bigrams.
+
+The split contains 210 training rows, 77 validation rows, and 77 test rows. Families do not cross partitions. Validation macro F1 selects the model. Macro F1 gives equal weight to each label.
+
+Validation selected character-based Logistic Regression. Its raw-model test macro F1 is **0.8195**. Its raw-model test accuracy is **83.12%**. Read [the result and limits](RESULTS.md).
+
+The raw-model report does not include input guards. A separate 40-case AI-authored regression set produced 80% accuracy for the demo with guards, 62.5% for the model with its vocabulary guard, and 57.5% for the keyword baseline. We inspected these cases while we fixed guard defects. They are regression cases. They are not a blind benchmark.
+
+The project has no measured accuracy on real user requests. The generated corpus and regression cases cannot establish real-user performance or course compliance.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `prepare_data.py` | Read a snapshot, remove duplicates, assign groups, and write an audit |
-| `classifier.py` | Normalize text and define the compared models |
-| `train.py` | Split data, train models, compare results, and save the winner |
-| `predict.py` | Classify one input from the command line |
-| `app.py`, `demo.html` | Show a local browser demonstration |
-| `tests/` | Check grouping, normalization, model selection, and data separation |
-| `PROJECT.md` | Map the course requirements to this project |
-| `PRESENTATION.md` | Give a three-minute talk outline and Q&A notes |
-
-`train.py` writes metrics, an error list, a confusion matrix, and split IDs to `reports/`. It saves the model to `artifacts/model.joblib`. Git ignores these directories. [RESULTS.md](RESULTS.md) preserves the aggregate result and dataset hash.
+| `prepare_requests.py` | Generate the public prototype corpus and stable family groups |
+| `classifier.py` | Normalize text and define the candidate models |
+| `request_policy.py` | Apply explicit request-boundary guards |
+| `train.py` | Split data, compare models, and save the selected model |
+| `evaluate_requests.py` | Run the separate regression cases |
+| `predict.py` | Classify one request with the demo policy |
+| `app.py`, `demo.html` | Run the local browser demo |
+| `tests/` | Check data, models, splitting, and request guards |
+| `archive/event-descriptions/` | Preserve the earlier event-description experiment |
+| `archive/request-prototype-v1/` | Preserve the first request-model run |
 
 ## Checks
 
@@ -62,10 +81,8 @@ The local experiment has 1,182 unique examples in 965 families. Logistic Regress
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-Tests use small controlled data. They make no external API calls. The real-data check runs only when the local CSV exists. GitHub CI runs the controlled checks.
+GitHub CI runs the controlled tests. The tests make no paid calls.
 
-The code has no paid API, database, collector, or deployment requirement. Model probabilities are not calibrated confidence. The model always predicts one of the three labels, including for unrelated text.
-
-The course asks for benchmark comparison. This project includes an internal baseline. Confirm whether the teacher also requires a published external benchmark. Confirm data reuse permission before submission or data sharing. The checked provider terms do not give this project an open data license. See [the source terms](data/README.md#source-terms).
+The course wording for a benchmark is ambiguous. This project includes an internal majority baseline. Confirm whether the teacher also requires an external published benchmark.
 
 Method references: [scikit-learn text features](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction) and [grouped evaluation](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-iterators-for-grouped-data).

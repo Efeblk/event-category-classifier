@@ -1,31 +1,37 @@
 # Dataset
 
-Keep `events.csv` and `events.audit.json` here. Git ignores both files.
+Run `prepare_requests.py` to create `requests.csv`. The script makes no network or paid API calls.
 
-The local dataset uses a frozen Bi’ Plan catalog. The text fields contain Turkish event titles and descriptions. The labels come from existing collector categories: `Konser`, `Tiyatro`, and `Stand-up`.
+The public prototype contains 364 original synthetic requests. It has 208 Turkish examples and 156 English examples. Each label has 91 examples. The labels are `concert`, `theatre`, `stand_up`, and `unclear`.
 
-Run `prepare_data.py` with an existing JSON snapshot. The importer reads the file. It does not run a collector or change the source file.
+The corpus contains 52 intent families. Each family has a stable `class-NN` group ID. Turkish and English phrasings of the same intent use the same group ID. Training keeps each family in one partition.
 
-The importer removes repeated text. It connects records with the same normalized title, exact text, long description, production key, or source page. It assigns one group ID to each connected family. The training program keeps each family in one partition. The importer excludes families with conflicting labels.
-
-Provider labels can contain errors. Some event families can have different titles and descriptions. The grouping rules cannot detect all such cases. Review a label sample before submission. Do not treat this dataset as an independent human benchmark.
-
-No explicit reuse license for provider text came with the snapshot. This repository does not grant a license for that text. Keep the corpus and models local until you confirm a suitable license or permission. The course also asks students to check the data license. A public repository can contain the code and aggregate results. It must not silently include the provider corpus.
-
-To use another approved dataset, supply a CSV with these columns:
+The source value is `generated-bootstrap`. The `title` and `source_url` fields are empty. The CSV columns are:
 
 ```text
 id,text,label,group_id,title,source,source_url
 ```
 
-Use the labels `concert`, `theatre`, and `stand_up`. Use at least 1,000 distinct examples. Use the same `group_id` for related or repeated events. Preserve the data source and license in this file.
+The row ID is the SHA-256 hash of normalized text. The generator rejects normalized duplicates and label conflicts.
 
-## Source terms
+## Provenance and license
 
-Checked on 2026-10-03. These checks establish no open corpus license or permission for this project.
+An AI assistant authored the prototype examples for this repository. They are not observed real-user requests. They contain no copied ticket-provider text.
 
-- [Biletinial policies](https://biletinial.com/tr-tr/sayfa/sozlesme-ve-politikalar), intellectual property section: the terms restrict content reuse and refer to written permission.
-- [Bubilet terms](https://www.bubilet.com.tr/sayfa/kullanim-kosullari), content sections: the terms restrict use and distribution beyond stated personal uses.
-- [Biletix terms](https://www.biletix.com/conditions/TURKIYE/en), clauses 1-4: the terms protect provider content and restrict copying and distribution.
+The original examples use the [CC0-1.0 license](LICENSE). This license statement covers the authored dataset examples. It does not change the license of application code or archived third-party material.
 
-Keep the existing corpus local. Confirm permission for course use and sharing. Use another suitable licensed dataset if permission is unavailable. Do not infer a data license from the fact that the source pages are public.
+The current corpus does not satisfy the course requirement for at least 1,000 examples. Do not describe it as user-collected data. Do not claim measured real-user accuracy.
+
+The original provider-description experiment is in `archive/event-descriptions/`. The first request-model run is in `archive/request-prototype-v1/`. The active training process does not use the old provider corpus.
+
+## Challenge cases
+
+`request_challenge.json` contains 40 additional AI-authored cases. It includes Turkish and English requests for all four labels. It covers exclusions, mixed intent, price-only text, music playback, movies, spelling errors, and polite language.
+
+An AI assistant inspected these cases while it fixed guard defects. Therefore, the file is a regression set. It is not a blind benchmark or a real-user evaluation set.
+
+## Move toward 1,000 examples
+
+Confirm the accepted data method with the teacher. If human-authored synthetic requests are acceptable, five team members can each write 200 requests under one label guide.
+
+Record the author code, consent, source, license, language, label, and paraphrase family. Review mixed, vague, unsupported, and negated cases with a second person. Keep translations and paraphrases in one family. Reserve a human-reviewed evaluation set before model and guard changes.

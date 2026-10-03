@@ -45,6 +45,16 @@ class ReadCsvTests(unittest.TestCase):
 
         self.assertEqual(loaded, rows)
 
+    def test_read_csv_allows_an_explicit_small_prototype(self):
+        rows = make_rows(count=40)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "requests.csv"
+            write_csv(path, rows)
+
+            loaded = training.read_csv(path, min_rows=40)
+
+        self.assertEqual(loaded, rows)
+
     def test_read_csv_rejects_repeated_normalized_text(self):
         rows = make_rows(count=1_002)
         rows[1]["text"] = f"  {rows[0]['text']}  "
@@ -124,10 +134,11 @@ class TrainingFlowTests(unittest.TestCase):
                         "source_url": "",
                     }
                 )
+        class_count = len(training.LABELS)
         parts = {
-            "train": [0, 1, 2],
-            "validation": [3, 4, 5],
-            "test": [6, 7, 8],
+            "train": list(range(0, class_count)),
+            "validation": list(range(class_count, 2 * class_count)),
+            "test": list(range(2 * class_count, 3 * class_count)),
         }
         good = FakeModel(predict_correctly=True)
         bad = FakeModel(predict_correctly=False)
@@ -138,7 +149,7 @@ class TrainingFlowTests(unittest.TestCase):
             source.write_text("fixture", encoding="utf-8")
             destination = Path(directory) / "model.joblib"
             with (
-                mock.patch.object(training, "read_csv", return_value=rows),
+                mock.patch.object(training, "read_csv", return_value=rows) as read_csv,
                 mock.patch.object(training, "split_data", return_value=parts),
                 mock.patch.object(training, "make_models", return_value=models),
                 mock.patch.object(training, "_write_reports") as write_reports,
@@ -151,10 +162,19 @@ class TrainingFlowTests(unittest.TestCase):
         self.assertFalse(metadata["selection"]["final_refit"])
         self.assertEqual(len(good.fit_calls), 1)
         self.assertEqual(len(bad.fit_calls), 1)
-        self.assertEqual(good.fit_calls[0][0], [row["text"] for row in rows[:3]])
+        self.assertEqual(
+            good.fit_calls[0][0], [row["text"] for row in rows[:class_count]]
+        )
+        read_csv.assert_called_once_with(source, min_rows=training.MIN_ROWS)
         artifact = dump.call_args.args[0]
         self.assertIs(artifact["model"], good)
         self.assertEqual(artifact["model_name"], "good")
+        self.assertEqual(artifact["task"], "user_request_classification")
+        self.assertEqual(artifact["dataset_domain"], "user_requests")
+        self.assertEqual(artifact["provenance"], "generated_bootstrap")
+        self.assertFalse(artifact["course_dataset_ready"])
+        self.assertEqual(metadata["evaluation_scope"], "raw_model")
+        self.assertFalse(metadata["course_dataset_ready"])
         write_reports.assert_called_once()
 
 

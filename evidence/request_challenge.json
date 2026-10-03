@@ -1,0 +1,1276 @@
+{
+  "task": "user_request_classification",
+  "examples": 40,
+  "provenance": "AI-authored synthetic challenge examples. These are not observed real-user requests and do not occur in prepare_requests.py.",
+  "real_user_accuracy_established": false,
+  "challenge_sha256": "ed079cddb380b7678027efd0bbd4e28d9d628cf3dc299ff2ccfba723970aeaa9",
+  "dataset_sha256": "ad21d7eaa6673f27f95c69f54b54cfec2924fceadec1bf9c4ab267c96d5b836a",
+  "model": "logistic_regression_char",
+  "models": {
+    "model_with_vocabulary_guard": {
+      "accuracy": 0.625,
+      "macro_f1": 0.6165232891575604,
+      "per_class": {
+        "concert": {
+          "precision": 0.5384615384615384,
+          "recall": 0.7,
+          "f1-score": 0.6086956521739131,
+          "support": 10.0
+        },
+        "theatre": {
+          "precision": 0.8571428571428571,
+          "recall": 0.6,
+          "f1-score": 0.7058823529411765,
+          "support": 10.0
+        },
+        "stand_up": {
+          "precision": 0.75,
+          "recall": 0.9,
+          "f1-score": 0.8181818181818182,
+          "support": 10.0
+        },
+        "unclear": {
+          "precision": 0.375,
+          "recall": 0.3,
+          "f1-score": 0.3333333333333333,
+          "support": 10.0
+        },
+        "accuracy": 0.625,
+        "macro avg": {
+          "precision": 0.6301510989010989,
+          "recall": 0.6249999999999999,
+          "f1-score": 0.6165232891575604,
+          "support": 40.0
+        },
+        "weighted avg": {
+          "precision": 0.6301510989010989,
+          "recall": 0.625,
+          "f1-score": 0.6165232891575603,
+          "support": 40.0
+        }
+      },
+      "records": [
+        {
+          "text": "Bu gece sahnede blues \u00e7alan birilerini dinleyelim",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.376981,
+            "stand_up": 0.220286,
+            "theatre": 0.169839,
+            "unclear": 0.232894
+          }
+        },
+        {
+          "text": "Bana bir metal grubu konseri bulabilir misiniz?",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.468108,
+            "stand_up": 0.103204,
+            "theatre": 0.148356,
+            "unclear": 0.280332
+          }
+        },
+        {
+          "text": "Oyun istemem, canl\u0131 bir orkestra dinlemek isterim",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.335168,
+            "stand_up": 0.151545,
+            "theatre": 0.283127,
+            "unclear": 0.23016
+          }
+        },
+        {
+          "text": "bu aksam bi konser bulsan",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.578695,
+            "stand_up": 0.093118,
+            "theatre": 0.081196,
+            "unclear": 0.24699
+          }
+        },
+        {
+          "text": "Sahnede \u015fark\u0131 s\u00f6yleyen bir sanat\u00e7\u0131 g\u00f6rmek istiyoruz",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.370934,
+            "stand_up": 0.2314,
+            "theatre": 0.221535,
+            "unclear": 0.176131
+          }
+        },
+        {
+          "text": "Could you please find a live soul music show?",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.463068,
+            "stand_up": 0.133203,
+            "theatre": 0.184559,
+            "unclear": 0.21917
+          }
+        },
+        {
+          "text": "I would rather hear a band than watch a comedy act",
+          "actual": "concert",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.204505,
+            "stand_up": 0.359064,
+            "theatre": 0.211978,
+            "unclear": 0.224452
+          }
+        },
+        {
+          "text": "Any punk gigs happening soon?",
+          "actual": "concert",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.197236,
+            "stand_up": 0.158031,
+            "theatre": 0.169204,
+            "unclear": 0.475529
+          }
+        },
+        {
+          "text": "find a consert with a singer pls",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.540842,
+            "stand_up": 0.15221,
+            "theatre": 0.150018,
+            "unclear": 0.15693
+          }
+        },
+        {
+          "text": "We want to listen to a string quartet in person",
+          "actual": "concert",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.250929,
+            "stand_up": 0.195744,
+            "theatre": 0.236595,
+            "unclear": 0.316731
+          }
+        },
+        {
+          "text": "\u0130ki perdelik bir sahne eseri izlemek isterim",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.272157,
+            "stand_up": 0.23072,
+            "theatre": 0.333589,
+            "unclear": 0.163534
+          }
+        },
+        {
+          "text": "L\u00fctfen bu hafta oynanan bir trajedi \u00f6nerin",
+          "actual": "theatre",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.204939,
+            "stand_up": 0.167217,
+            "theatre": 0.201173,
+            "unclear": 0.426671
+          }
+        },
+        {
+          "text": "Konser olmas\u0131n, oyuncular\u0131n sahneledi\u011fi bir eser olsun",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.30992,
+            "stand_up": 0.088423,
+            "theatre": 0.330034,
+            "unclear": 0.271623
+          }
+        },
+        {
+          "text": "cocuklarla gidecek bi tiyatro bul",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.124042,
+            "stand_up": 0.110786,
+            "theatre": 0.589485,
+            "unclear": 0.175687
+          }
+        },
+        {
+          "text": "Bir \u00c7ehov eserinin sahne yorumuna gitmek istiyorum",
+          "actual": "theatre",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.2972,
+            "stand_up": 0.242638,
+            "theatre": 0.282412,
+            "unclear": 0.17775
+          }
+        },
+        {
+          "text": "Please recommend a play with a full cast",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.207358,
+            "stand_up": 0.17535,
+            "theatre": 0.382523,
+            "unclear": 0.234769
+          }
+        },
+        {
+          "text": "I want an adaptation performed by actors, not a concert",
+          "actual": "theatre",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.503619,
+            "stand_up": 0.173615,
+            "theatre": 0.183942,
+            "unclear": 0.138825
+          }
+        },
+        {
+          "text": "Are there any stage dramas on Saturday?",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.150672,
+            "stand_up": 0.143393,
+            "theatre": 0.470949,
+            "unclear": 0.234986
+          }
+        },
+        {
+          "text": "find me a good thetre ply",
+          "actual": "theatre",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.191886,
+            "stand_up": 0.138398,
+            "theatre": 0.293053,
+            "unclear": 0.376663
+          }
+        },
+        {
+          "text": "We would like to see a play based on a biography",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.191068,
+            "stand_up": 0.094225,
+            "theatre": 0.382425,
+            "unclear": 0.332282
+          }
+        },
+        {
+          "text": "Bizi g\u00fcld\u00fcrecek bir stand-up sanat\u00e7\u0131s\u0131 \u00f6nerir misiniz?",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.144471,
+            "stand_up": 0.606731,
+            "theatre": 0.114931,
+            "unclear": 0.133866
+          }
+        },
+        {
+          "text": "M\u00fczik olmas\u0131n, mikrofon ba\u015f\u0131nda \u015faka yapan biri olsun",
+          "actual": "stand_up",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.238427,
+            "stand_up": 0.163809,
+            "theatre": 0.166119,
+            "unclear": 0.431646
+          }
+        },
+        {
+          "text": "Yeni standap\u00e7\u0131lar\u0131n gecesine gitmek istiyorum",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.217127,
+            "stand_up": 0.470181,
+            "theatre": 0.161278,
+            "unclear": 0.151414
+          }
+        },
+        {
+          "text": "Tek komedyenin anlatt\u0131\u011f\u0131 canl\u0131 bir \u015fov bul",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.173236,
+            "stand_up": 0.522613,
+            "theatre": 0.146774,
+            "unclear": 0.157376
+          }
+        },
+        {
+          "text": "Sahnede k\u0131sa setler yapan komedyenleri izleyelim",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.140719,
+            "stand_up": 0.555152,
+            "theatre": 0.12938,
+            "unclear": 0.174749
+          }
+        },
+        {
+          "text": "Could you recommend a stand-up comic for tonight?",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.069437,
+            "stand_up": 0.786,
+            "theatre": 0.055922,
+            "unclear": 0.088641
+          }
+        },
+        {
+          "text": "Skip the play and find us a live comedian",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.194322,
+            "stand_up": 0.361008,
+            "theatre": 0.216982,
+            "unclear": 0.227688
+          }
+        },
+        {
+          "text": "I want tickets to a comedy open mic",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.156827,
+            "stand_up": 0.415403,
+            "theatre": 0.194949,
+            "unclear": 0.232821
+          }
+        },
+        {
+          "text": "any gud standup comics performing",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.140186,
+            "stand_up": 0.663126,
+            "theatre": 0.080292,
+            "unclear": 0.116397
+          }
+        },
+        {
+          "text": "Show me a comedian doing a one-hour set",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.119846,
+            "stand_up": 0.542692,
+            "theatre": 0.089941,
+            "unclear": 0.24752
+          }
+        },
+        {
+          "text": "M\u00fczik a\u00e7ar m\u0131s\u0131n?",
+          "actual": "unclear",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.516973,
+            "stand_up": 0.114301,
+            "theatre": 0.136476,
+            "unclear": 0.23225
+          }
+        },
+        {
+          "text": "Vizyondaki komedi filmlerinden birine gidelim",
+          "actual": "unclear",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.219173,
+            "stand_up": 0.388244,
+            "theatre": 0.141627,
+            "unclear": 0.250956
+          }
+        },
+        {
+          "text": "Konser de tiyatro da istemiyorum",
+          "actual": "unclear",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.322558,
+            "stand_up": 0.134836,
+            "theatre": 0.293589,
+            "unclear": 0.249016
+          }
+        },
+        {
+          "text": "\u0130ki ki\u015fiyiz ve toplam b\u00fct\u00e7emiz 700 lira",
+          "actual": "unclear",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.137483,
+            "stand_up": 0.105137,
+            "theatre": 0.141954,
+            "unclear": 0.615426
+          }
+        },
+        {
+          "text": "Canl\u0131 m\u00fczik veya bir oyun, hangisi iyiyse",
+          "actual": "unclear",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.461535,
+            "stand_up": 0.098661,
+            "theatre": 0.207335,
+            "unclear": 0.232468
+          }
+        },
+        {
+          "text": "Play my favorite album",
+          "actual": "unclear",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.178107,
+            "stand_up": 0.113267,
+            "theatre": 0.445047,
+            "unclear": 0.26358
+          }
+        },
+        {
+          "text": "Please find a subtitled movie screening",
+          "actual": "unclear",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.235552,
+            "stand_up": 0.160574,
+            "theatre": 0.272361,
+            "unclear": 0.331514
+          }
+        },
+        {
+          "text": "I do not want theatre or stand-up",
+          "actual": "unclear",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.075479,
+            "stand_up": 0.543001,
+            "theatre": 0.239047,
+            "unclear": 0.142473
+          }
+        },
+        {
+          "text": "Somewhere cheap near the metro tomorrow",
+          "actual": "unclear",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.121558,
+            "stand_up": 0.111344,
+            "theatre": 0.21452,
+            "unclear": 0.552579
+          }
+        },
+        {
+          "text": "A concert sounds good, but a play would work too",
+          "actual": "unclear",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.350524,
+            "stand_up": 0.093763,
+            "theatre": 0.22564,
+            "unclear": 0.330073
+          }
+        }
+      ]
+    },
+    "demo_with_input_guards": {
+      "accuracy": 0.8,
+      "macro_f1": 0.8025928792569659,
+      "per_class": {
+        "concert": {
+          "precision": 0.7777777777777778,
+          "recall": 0.7,
+          "f1-score": 0.7368421052631579,
+          "support": 10.0
+        },
+        "theatre": {
+          "precision": 1.0,
+          "recall": 0.7,
+          "f1-score": 0.8235294117647058,
+          "support": 10.0
+        },
+        "stand_up": {
+          "precision": 0.9,
+          "recall": 0.9,
+          "f1-score": 0.9,
+          "support": 10.0
+        },
+        "unclear": {
+          "precision": 0.6428571428571429,
+          "recall": 0.9,
+          "f1-score": 0.75,
+          "support": 10.0
+        },
+        "accuracy": 0.8,
+        "macro avg": {
+          "precision": 0.8301587301587301,
+          "recall": 0.7999999999999999,
+          "f1-score": 0.8025928792569659,
+          "support": 40.0
+        },
+        "weighted avg": {
+          "precision": 0.8301587301587302,
+          "recall": 0.8,
+          "f1-score": 0.8025928792569659,
+          "support": 40.0
+        }
+      },
+      "records": [
+        {
+          "text": "Bu gece sahnede blues \u00e7alan birilerini dinleyelim",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.376981,
+            "stand_up": 0.220286,
+            "theatre": 0.169839,
+            "unclear": 0.232894
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Bana bir metal grubu konseri bulabilir misiniz?",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.468108,
+            "stand_up": 0.103204,
+            "theatre": 0.148356,
+            "unclear": 0.280332
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Oyun istemem, canl\u0131 bir orkestra dinlemek isterim",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.335168,
+            "stand_up": 0.151545,
+            "theatre": 0.283127,
+            "unclear": 0.23016
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "bu aksam bi konser bulsan",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.578695,
+            "stand_up": 0.093118,
+            "theatre": 0.081196,
+            "unclear": 0.24699
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Sahnede \u015fark\u0131 s\u00f6yleyen bir sanat\u00e7\u0131 g\u00f6rmek istiyoruz",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.370934,
+            "stand_up": 0.2314,
+            "theatre": 0.221535,
+            "unclear": 0.176131
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Could you please find a live soul music show?",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.463068,
+            "stand_up": 0.133203,
+            "theatre": 0.184559,
+            "unclear": 0.21917
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "I would rather hear a band than watch a comedy act",
+          "actual": "concert",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.204505,
+            "stand_up": 0.359064,
+            "theatre": 0.211978,
+            "unclear": 0.224452
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Any punk gigs happening soon?",
+          "actual": "concert",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.197236,
+            "stand_up": 0.158031,
+            "theatre": 0.169204,
+            "unclear": 0.475529
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "find a consert with a singer pls",
+          "actual": "concert",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.540842,
+            "stand_up": 0.15221,
+            "theatre": 0.150018,
+            "unclear": 0.15693
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "We want to listen to a string quartet in person",
+          "actual": "concert",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.250929,
+            "stand_up": 0.195744,
+            "theatre": 0.236595,
+            "unclear": 0.316731
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "\u0130ki perdelik bir sahne eseri izlemek isterim",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.272157,
+            "stand_up": 0.23072,
+            "theatre": 0.333589,
+            "unclear": 0.163534
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "L\u00fctfen bu hafta oynanan bir trajedi \u00f6nerin",
+          "actual": "theatre",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.204939,
+            "stand_up": 0.167217,
+            "theatre": 0.201173,
+            "unclear": 0.426671
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Konser olmas\u0131n, oyuncular\u0131n sahneledi\u011fi bir eser olsun",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.159305,
+            "stand_up": 0.100141,
+            "theatre": 0.460522,
+            "unclear": 0.280032
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "cocuklarla gidecek bi tiyatro bul",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.124042,
+            "stand_up": 0.110786,
+            "theatre": 0.589485,
+            "unclear": 0.175687
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Bir \u00c7ehov eserinin sahne yorumuna gitmek istiyorum",
+          "actual": "theatre",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.2972,
+            "stand_up": 0.242638,
+            "theatre": 0.282412,
+            "unclear": 0.17775
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Please recommend a play with a full cast",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.207358,
+            "stand_up": 0.17535,
+            "theatre": 0.382523,
+            "unclear": 0.234769
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "I want an adaptation performed by actors, not a concert",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.277191,
+            "stand_up": 0.24572,
+            "theatre": 0.296148,
+            "unclear": 0.180941
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Are there any stage dramas on Saturday?",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.150672,
+            "stand_up": 0.143393,
+            "theatre": 0.470949,
+            "unclear": 0.234986
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "find me a good thetre ply",
+          "actual": "theatre",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.191886,
+            "stand_up": 0.138398,
+            "theatre": 0.293053,
+            "unclear": 0.376663
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "We would like to see a play based on a biography",
+          "actual": "theatre",
+          "label": "theatre",
+          "model_probabilities": {
+            "concert": 0.191068,
+            "stand_up": 0.094225,
+            "theatre": 0.382425,
+            "unclear": 0.332282
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Bizi g\u00fcld\u00fcrecek bir stand-up sanat\u00e7\u0131s\u0131 \u00f6nerir misiniz?",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.144471,
+            "stand_up": 0.606731,
+            "theatre": 0.114931,
+            "unclear": 0.133866
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "M\u00fczik olmas\u0131n, mikrofon ba\u015f\u0131nda \u015faka yapan biri olsun",
+          "actual": "stand_up",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.238427,
+            "stand_up": 0.163809,
+            "theatre": 0.166119,
+            "unclear": 0.431646
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Yeni standap\u00e7\u0131lar\u0131n gecesine gitmek istiyorum",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.217127,
+            "stand_up": 0.470181,
+            "theatre": 0.161278,
+            "unclear": 0.151414
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Tek komedyenin anlatt\u0131\u011f\u0131 canl\u0131 bir \u015fov bul",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.173236,
+            "stand_up": 0.522613,
+            "theatre": 0.146774,
+            "unclear": 0.157376
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Sahnede k\u0131sa setler yapan komedyenleri izleyelim",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.140719,
+            "stand_up": 0.555152,
+            "theatre": 0.12938,
+            "unclear": 0.174749
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Could you recommend a stand-up comic for tonight?",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.069437,
+            "stand_up": 0.786,
+            "theatre": 0.055922,
+            "unclear": 0.088641
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Skip the play and find us a live comedian",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.233578,
+            "stand_up": 0.479617,
+            "theatre": 0.107279,
+            "unclear": 0.179526
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "I want tickets to a comedy open mic",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.156827,
+            "stand_up": 0.415403,
+            "theatre": 0.194949,
+            "unclear": 0.232821
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "any gud standup comics performing",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.140186,
+            "stand_up": 0.663126,
+            "theatre": 0.080292,
+            "unclear": 0.116397
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Show me a comedian doing a one-hour set",
+          "actual": "stand_up",
+          "label": "stand_up",
+          "model_probabilities": {
+            "concert": 0.119846,
+            "stand_up": 0.542692,
+            "theatre": 0.089941,
+            "unclear": 0.24752
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "M\u00fczik a\u00e7ar m\u0131s\u0131n?",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "music_player_command",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "Vizyondaki komedi filmlerinden birine gidelim",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "unsupported_activity",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "Konser de tiyatro da istemiyorum",
+          "actual": "unclear",
+          "label": "concert",
+          "model_probabilities": {
+            "concert": 0.459917,
+            "stand_up": 0.155743,
+            "theatre": 0.120687,
+            "unclear": 0.263653
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "\u0130ki ki\u015fiyiz ve toplam b\u00fct\u00e7emiz 700 lira",
+          "actual": "unclear",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.137483,
+            "stand_up": 0.105137,
+            "theatre": 0.141954,
+            "unclear": 0.615426
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "Canl\u0131 m\u00fczik veya bir oyun, hangisi iyiyse",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "multiple_categories",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "Play my favorite album",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "music_player_command",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "Please find a subtitled movie screening",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "unsupported_activity",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "I do not want theatre or stand-up",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "only_exclusions",
+          "decision_source": "input_guard"
+        },
+        {
+          "text": "Somewhere cheap near the metro tomorrow",
+          "actual": "unclear",
+          "label": "unclear",
+          "model_probabilities": {
+            "concert": 0.121558,
+            "stand_up": 0.111344,
+            "theatre": 0.21452,
+            "unclear": 0.552579
+          },
+          "model": "logistic_regression_char",
+          "decision_source": "model"
+        },
+        {
+          "text": "A concert sounds good, but a play would work too",
+          "actual": "unclear",
+          "label": "unclear",
+          "model": "logistic_regression_char",
+          "reason": "multiple_categories",
+          "decision_source": "input_guard"
+        }
+      ]
+    },
+    "keyword_baseline": {
+      "accuracy": 0.575,
+      "macro_f1": 0.584453781512605,
+      "per_class": {
+        "concert": {
+          "precision": 0.75,
+          "recall": 0.3,
+          "f1-score": 0.42857142857142855,
+          "support": 10.0
+        },
+        "theatre": {
+          "precision": 1.0,
+          "recall": 0.4,
+          "f1-score": 0.5714285714285714,
+          "support": 10.0
+        },
+        "stand_up": {
+          "precision": 1.0,
+          "recall": 0.7,
+          "f1-score": 0.8235294117647058,
+          "support": 10.0
+        },
+        "unclear": {
+          "precision": 0.36,
+          "recall": 0.9,
+          "f1-score": 0.5142857142857142,
+          "support": 10.0
+        },
+        "accuracy": 0.575,
+        "macro avg": {
+          "precision": 0.7775,
+          "recall": 0.575,
+          "f1-score": 0.584453781512605,
+          "support": 40.0
+        },
+        "weighted avg": {
+          "precision": 0.7775000000000001,
+          "recall": 0.575,
+          "f1-score": 0.584453781512605,
+          "support": 40.0
+        }
+      },
+      "records": [
+        {
+          "text": "Bu gece sahnede blues \u00e7alan birilerini dinleyelim",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "Bana bir metal grubu konseri bulabilir misiniz?",
+          "actual": "concert",
+          "label": "concert"
+        },
+        {
+          "text": "Oyun istemem, canl\u0131 bir orkestra dinlemek isterim",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "bu aksam bi konser bulsan",
+          "actual": "concert",
+          "label": "concert"
+        },
+        {
+          "text": "Sahnede \u015fark\u0131 s\u00f6yleyen bir sanat\u00e7\u0131 g\u00f6rmek istiyoruz",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "Could you please find a live soul music show?",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "I would rather hear a band than watch a comedy act",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "Any punk gigs happening soon?",
+          "actual": "concert",
+          "label": "concert"
+        },
+        {
+          "text": "find a consert with a singer pls",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "We want to listen to a string quartet in person",
+          "actual": "concert",
+          "label": "unclear"
+        },
+        {
+          "text": "\u0130ki perdelik bir sahne eseri izlemek isterim",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "L\u00fctfen bu hafta oynanan bir trajedi \u00f6nerin",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "Konser olmas\u0131n, oyuncular\u0131n sahneledi\u011fi bir eser olsun",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "cocuklarla gidecek bi tiyatro bul",
+          "actual": "theatre",
+          "label": "theatre"
+        },
+        {
+          "text": "Bir \u00c7ehov eserinin sahne yorumuna gitmek istiyorum",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "Please recommend a play with a full cast",
+          "actual": "theatre",
+          "label": "theatre"
+        },
+        {
+          "text": "I want an adaptation performed by actors, not a concert",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "Are there any stage dramas on Saturday?",
+          "actual": "theatre",
+          "label": "theatre"
+        },
+        {
+          "text": "find me a good thetre ply",
+          "actual": "theatre",
+          "label": "unclear"
+        },
+        {
+          "text": "We would like to see a play based on a biography",
+          "actual": "theatre",
+          "label": "theatre"
+        },
+        {
+          "text": "Bizi g\u00fcld\u00fcrecek bir stand-up sanat\u00e7\u0131s\u0131 \u00f6nerir misiniz?",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "M\u00fczik olmas\u0131n, mikrofon ba\u015f\u0131nda \u015faka yapan biri olsun",
+          "actual": "stand_up",
+          "label": "unclear"
+        },
+        {
+          "text": "Yeni standap\u00e7\u0131lar\u0131n gecesine gitmek istiyorum",
+          "actual": "stand_up",
+          "label": "unclear"
+        },
+        {
+          "text": "Tek komedyenin anlatt\u0131\u011f\u0131 canl\u0131 bir \u015fov bul",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "Sahnede k\u0131sa setler yapan komedyenleri izleyelim",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "Could you recommend a stand-up comic for tonight?",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "Skip the play and find us a live comedian",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "I want tickets to a comedy open mic",
+          "actual": "stand_up",
+          "label": "unclear"
+        },
+        {
+          "text": "any gud standup comics performing",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "Show me a comedian doing a one-hour set",
+          "actual": "stand_up",
+          "label": "stand_up"
+        },
+        {
+          "text": "M\u00fczik a\u00e7ar m\u0131s\u0131n?",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Vizyondaki komedi filmlerinden birine gidelim",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Konser de tiyatro da istemiyorum",
+          "actual": "unclear",
+          "label": "concert"
+        },
+        {
+          "text": "\u0130ki ki\u015fiyiz ve toplam b\u00fct\u00e7emiz 700 lira",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Canl\u0131 m\u00fczik veya bir oyun, hangisi iyiyse",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Play my favorite album",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Please find a subtitled movie screening",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "I do not want theatre or stand-up",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "Somewhere cheap near the metro tomorrow",
+          "actual": "unclear",
+          "label": "unclear"
+        },
+        {
+          "text": "A concert sounds good, but a play would work too",
+          "actual": "unclear",
+          "label": "unclear"
+        }
+      ]
+    }
+  },
+  "code_sha256": {
+    "classifier.py": "b865c62a84a0dc0598552196bc07d3930d131f3efaabb2d1f2d2a2f5618aad2c",
+    "request_policy.py": "a88d8f1e850d98a77bfce5eb995e1b4b4721c0b6bea2482fea09d167feb69bd8",
+    "evaluate_requests.py": "646392fb013a05de631c6d7feb7687ecea48153a2b4e3dced08b84c764678bf9"
+  }
+}

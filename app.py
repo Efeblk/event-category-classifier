@@ -6,21 +6,13 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import joblib
+from request_policy import classify_input
 
 ROOT = Path(__file__).resolve().parent
 
 
-def predict_event(artifact, text):
-    if not isinstance(text, str) or not text.strip() or len(text) > 5000:
-        raise ValueError("Enter an event title or description with 1 to 5,000 characters.")
-    model = artifact["model"]
-    result = {"label": str(model.predict([text])[0]), "model": artifact["model_name"]}
-    if hasattr(model, "predict_proba"):
-        result["probabilities"] = {
-            str(label): round(float(score), 4)
-            for label, score in zip(model.classes_, model.predict_proba([text])[0])
-        }
-    return result
+def predict_request(artifact, text):
+    return classify_input(artifact, text)
 
 
 def make_handler(artifact, metrics):
@@ -52,12 +44,12 @@ def make_handler(artifact, metrics):
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
-                self.respond(200, predict_event(artifact, payload.get("text")))
+                self.respond(200, predict_request(artifact, payload.get("text")))
             except (ValueError, UnicodeDecodeError) as error:
                 self.respond(400, {"error": str(error)})
 
         def log_message(self, format, *args):
-            # Do not log the submitted event description.
+            # Do not log the submitted request.
             pass
 
     return Handler
@@ -70,8 +62,10 @@ def main():
     args = parser.parse_args()
     # Load only artifacts made locally by train.py. Joblib files can execute code.
     if not args.model.exists():
-        parser.error("Train the models first: python train.py")
+        parser.error("Train first: python train.py --allow-small-prototype")
     artifact = joblib.load(args.model)
+    if artifact.get("task") != "user_request_classification":
+        parser.error("This model uses event descriptions. Train a user-request model first.")
     metrics_path = ROOT / "reports/metrics.json"
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
     server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics))

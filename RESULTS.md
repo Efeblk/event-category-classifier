@@ -1,63 +1,58 @@
-# Frozen experiment result
+# User-request prototype results
 
-This result comes from the local run on 2026-10-03. The run used Python 3.13.3 and scikit-learn 1.9.1. The seed is 42. It made no paid API calls.
+This experiment classifies one Turkish or English request. It does not classify provider event descriptions. The old 91.98% accuracy does not apply to this task. Earlier experiments remain in [archive/](archive/README.md).
 
 ## Dataset
 
-The importer read 4,076 session records. It produced 1,182 distinct text examples in 965 event families. Labels come from existing collector categories. They are not independent human labels.
+The corpus contains 364 AI-authored examples in 52 intent families. It contains 208 Turkish examples and 156 English examples. Each of the four labels has 91 examples. These texts are generated examples, not observed user requests. Translations and paraphrases of one intent stay in the same group.
 
-| Category | Examples |
-|---|---:|
-| concert | 499 |
-| stand_up | 232 |
-| theatre | 451 |
+The course requires at least 1,000 examples. The current corpus does not satisfy that requirement. A separate human evaluation is also needed before a real-user accuracy claim.
 
-The importer excluded 248 records in conflicting families, 2,223 repeated session records, and 423 short-text records. The groups use conservative exact matching. Some unrecognized event aliases can remain.
-
-| Partition | Text examples | Event families |
+| Partition | Examples | Families |
 |---|---:|---:|
-| train | 709 | 581 |
-| validation | 236 | 192 |
-| test | 237 | 192 |
+| train | 210 | 30 |
+| validation | 77 | 11 |
+| test | 77 | 11 |
 
-Each family appears in one partition. The vocabulary comes from training data only. Validation macro F1 selected the model before test evaluation. The saved model keeps its original training fit.
+## Raw model comparison
 
-## Model comparison
+The vocabulary comes from training data only. Validation macro F1 selects the model. The saved model keeps its training fit. Each model uses the same group partitions and seed 42. These scores use the generated corpus. They exclude the demo input rules.
 
-| Method | Validation macro F1 | Test macro F1 | Test accuracy |
+| Model | Validation macro F1 | Test macro F1 | Test accuracy |
 |---|---:|---:|---:|
-| Majority-class baseline | 0.1984 | 0.1978 | 42.19% |
-| Naive Bayes, words and word pairs | 0.8756 | 0.9060 | 91.14% |
-| Logistic Regression, words (selected) | 0.9045 | 0.9168 | 91.98% |
-| Logistic Regression, words and word pairs | 0.9032 | 0.9163 | 91.98% |
-| Linear SVM, words and word pairs | 0.8918 | 0.9242 | 92.41% |
+| dummy_most_frequent | 0.1071 | 0.0769 | 18.18% |
+| multinomial_nb | 0.6386 | 0.6227 | 63.64% |
+| logistic_regression_unigram | 0.6747 | 0.6965 | 70.13% |
+| logistic_regression_bigram | 0.6771 | 0.6812 | 68.83% |
+| logistic_regression_char | 0.8185 | 0.8195 | 83.12% |
+| linear_svc | 0.7199 | 0.6772 | 68.83% |
 
-Logistic Regression with individual words won validation selection. SVM has a slightly higher test score. We did not use the test score to change the selected model. Word pairs did not improve Logistic Regression on this split.
+The selected model is `logistic_regression_char`. Character features cover short letter sequences within words. They can share evidence across spelling variants and word endings. Their selection used validation results. The first word-feature prototype remains preserved. This is an iterative experiment, not a claim that all development choices were independent of previously inspected results.
 
-Macro F1 gives equal weight to the categories. These scores measure agreement with collector labels in one fixed split. They do not prove performance on user requests, future provider text, or independently reviewed labels.
+![Raw model confusion matrix](evidence/confusion_matrix.png)
 
-## Selected model by category
+## Separate regression examples
 
-| Category | Precision | Recall | F1 | Test examples |
-|---|---:|---:|---:|---:|
-| concert | 0.9785 | 0.9100 | 0.9430 | 100 |
-| theatre | 0.8673 | 0.9444 | 0.9043 | 90 |
-| stand_up | 0.9130 | 0.8936 | 0.9032 | 47 |
+The separate file contains 40 AI-authored examples. It contains no exact normalized training text. We inspected it while fixing input rules. It is now a regression set. It is not a blind external benchmark.
 
-![Test confusion matrix](evidence/confusion_matrix.png)
+| Decision method | Correct regression examples | Accuracy |
+|---|---:|---:|
+| model_with_vocabulary_guard | 25/40 | 62.5% |
+| demo_with_input_guards | 32/40 | 80.0% |
+| keyword_baseline | 23/40 | 57.5% |
+
+The input rules check explicit exclusions, multiple positive activity categories, music-player commands, and unsupported movie requests. The learned model handles the remaining input. Rules cannot cover every negation or meaning. No score threshold claims calibrated confidence.
 
 ## Error review
 
-The selected model made 19 errors in 237 test examples. The review found two main patterns. Many examples contain only a short title. Comedy and mixed performance descriptions overlap with the theatre category. At least one example has a theatre label while its text describes stand-up. That suggests a source-label error. We did not change labels after seeing test results.
+The first prototype confused some unseen wording with the unclear category. Character features reduced that problem on the fixed corpus split. The final regression set still contains wrong predictions. Errors include indirect activity descriptions, new vocabulary, and difficult category boundaries. Do not treat these synthetic results as accuracy on real users.
 
-The next label review must create a new dataset version. Review both correct and incorrect predictions. Keep this frozen result as the record of the first experiment.
+All six visible demo samples returned their expected categories in the T3 browser. The checks cover Turkish and English requests and ambiguous requests. These are demonstration checks, not a benchmark.
 
-## Evidence and limits
+## Evidence
 
-[Aggregate metrics](evidence/metrics.json) preserve dataset and code hashes, split counts, class metrics, package versions, and local timing. `reports/split.json` preserves the local split IDs. `reports/errors.csv` preserves the local error IDs. Git excludes the corpus, model, and local reports.
+[Raw model metrics](evidence/metrics.json) preserve the dataset hash, package versions, family counts, per-class scores, and code hashes. [Regression results](evidence/request_challenge.json) preserve every generated case, prediction, and rule reason. The trained model and generated CSV stay local. `prepare_requests.py` rebuilds the corpus from the checked-in examples.
 
-Dataset SHA-256: `82fa2017983059b0e84ea656095876a0e43c556feada27b8fd20c7e3caf602c5`.
+Dataset SHA-256: `ad21d7eaa6673f27f95c69f54b54cfec2924fceadec1bf9c4ab267c96d5b836a`.
 
-Snapshot SHA-256: `d1451d486c09e95eeb623f600f0bc6acdb9798df2c9562501e95fb3c2d006a12`.
-
-The baseline is an internal reference. Confirm whether the course also requires an external benchmark. Data reuse permission remains unconfirmed. The repository does not include provider text. The three authored demo samples produced their expected categories. An empty demo input returned HTTP 400. These sample checks are demonstration checks, not a test-set metric.
+The remaining course gates are the accepted 1,000-example dataset, benchmark interpretation, team names, final slides, and rehearsal.

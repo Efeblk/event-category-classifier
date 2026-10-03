@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Event category classifier · COE025</title>
+  <title>Event request classifier · COE025</title>
   <style>
     :root{font-family:system-ui,sans-serif;color:#182c35;background:#f2f5f2;font-synthesis:none}
     *{box-sizing:border-box}body{margin:0}main{max-width:1040px;margin:auto;padding:60px 28px}
@@ -24,42 +24,46 @@
 <body>
 <main>
   <div class="eyebrow">COE025 · Project 1 · Text classification</div>
-  <h1>What kind of event is this?</h1>
-  <p class="lead">A small part of event discovery. This model reads a Turkish event title and description. It predicts concert, theatre, or stand-up.</p>
+  <h1>What would you like to do?</h1>
+  <p class="lead">Tell us in Turkish or English. This small prototype classifies your request as concert, theatre, stand-up, or unclear.</p>
   <div class="layout">
     <section class="panel" aria-labelledby="input-title">
-      <h2 id="input-title">Try an event description</h2>
+      <h2 id="input-title">Describe your plan</h2>
       <form id="form">
-        <label for="description">Event title and description</label>
-        <textarea id="description" maxlength="5000" required placeholder="Etkinliğin başlığını ve açıklamasını yazın…"></textarea>
-        <div class="samples" aria-label="Sample descriptions">
-          <button class="sample" type="button" data-sample="Bu akşam caz orkestrası sahnede. Canlı müzik konserinde piyano ve saksafon dinleyeceğiz.">Concert example</button>
-          <button class="sample" type="button" data-sample="İki perdelik tiyatro oyununda oyuncular aile ilişkilerini sahneye taşıyor. Yönetmen yeni bir dramatik yorum sunuyor.">Theatre example</button>
-          <button class="sample" type="button" data-sample="Komedyen tek kişilik stand-up gösterisinde günlük yaşamdan komik hikâyeler anlatıyor. Kahkaha dolu bir akşam.">Stand-up example</button>
+        <label for="description">Your request / İsteğin</label>
+        <textarea id="description" maxlength="5000" required placeholder="Canlı caz dinlemek istiyorum. / I want live jazz."></textarea>
+        <div class="samples" aria-label="Sample requests">
+          <button class="sample" type="button" data-sample="Canlı caz dinlemek istiyorum.">TR: Live jazz</button>
+          <button class="sample" type="button" data-sample="Bu hafta bir tiyatro oyunu izlemek istiyorum.">TR: Theatre</button>
+          <button class="sample" type="button" data-sample="I want to see a stand-up comedian tonight.">EN: Stand-up</button>
+          <button class="sample" type="button" data-sample="I would like tickets to a live concert.">EN: Concert</button>
+          <button class="sample" type="button" data-sample="Konser veya tiyatro olabilir.">TR: Two options</button>
+          <button class="sample" type="button" data-sample="Something fun tonight.">EN: Unclear</button>
         </div>
-        <button class="primary" id="submit" type="submit">Classify event</button>
+        <button class="primary" id="submit" type="submit">Classify request</button>
       </form>
       <div class="result" id="result" role="status" aria-live="polite" hidden></div>
     </section>
     <aside class="panel">
-      <h2>How the model works</h2>
+      <h2>A small part of event discovery</h2>
       <ol>
-        <li>Normalize Turkish text.</li>
-        <li>Convert text to TF-IDF features. The experiment tests words and word pairs. TF-IDF measures how useful each term is in the dataset.</li>
-        <li>Use the model with the best validation result.</li>
+        <li>Read one request in Turkish or English.</li>
+        <li>Predict the activity category.</li>
+        <li>Ask for a clearer request when no single category is supported.</li>
       </ol>
-      <p class="muted">The experiment compares Naive Bayes, Logistic Regression, and a linear Support Vector Machine. A majority-class baseline gives a simple reference.</p>
-      <p class="muted">The test data stays separate during model selection. Repeated event families stay in one data partition.</p>
+      <p class="muted">The course experiment compares Naive Bayes, Logistic Regression, and a linear Support Vector Machine. Simple rules check explicit exclusions and requests for multiple categories.</p>
+      <p class="muted">Prototype data: generated requests. The results do not establish accuracy on real users. Translations and paraphrases stay in the same data partition.</p>
     </aside>
   </div>
-  <p class="notice">This model always selects one of three categories. It cannot reject unrelated text. It does not search events, check tickets, or measure event quality. The sample descriptions are new demonstration text. They are not test results.</p>
+  <p class="notice">This prototype classifies one request. It does not find events or apply date, location, or budget filters. The unclear category also covers unrelated requests. An ambiguous prediction can still be wrong.</p>
   <footer>Local course demonstration. Predictions use the trained model on this computer. No paid AI API.</footer>
 </main>
 <script>
   const input=document.getElementById('description');
   const result=document.getElementById('result');
   const submit=document.getElementById('submit');
-  const names={concert:'Concert',theatre:'Theatre',stand_up:'Stand-up'};
+  const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Please specify one activity'};
+  const reasons={multiple_categories:'Your request names more than one activity. Choose concert, theatre, or stand-up.',only_exclusions:'Your request says what to exclude. Add the activity you want.',music_player_command:'This demo classifies requests to attend events. A music-player command does not specify an event.',unsupported_activity:'This activity is outside concert, theatre, and stand-up.',unknown_terms:'The request has no terms in the trained vocabulary. Add an activity.'};
   document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
   document.getElementById('form').addEventListener('submit',async event=>{
     event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Classifying…';
@@ -68,7 +72,8 @@
       const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Prediction failed.');
       result.replaceChildren();const label=document.createElement('p');label.className='label';label.textContent=names[payload.label]||payload.label;result.append(label);
       const detail=document.createElement('p');detail.className='muted';detail.textContent='Model: '+payload.model;result.append(detail);
-      if(payload.probabilities){const note=document.createElement('p');note.className='muted';note.textContent='Model probabilities: '+Object.entries(payload.probabilities).map(([key,value])=>`${names[key]} ${(value*100).toFixed(1)}%`).join(' · ')+'. These values are not calibrated confidence.';result.append(note)}
+      const explanation=document.createElement('p');explanation.className='muted';explanation.textContent=reasons[payload.reason]||(payload.label==='unclear'?'Choose concert, theatre, or stand-up. Add a clear activity to your request.':'Request category. This prototype does not return event recommendations.');result.append(explanation);
+      if(payload.decision_source==='input_guard'){const note=document.createElement('p');note.className='muted';note.textContent='An explicit input rule returned this result.';result.append(note)}
     }catch(error){result.textContent=error.message}finally{submit.disabled=false}
   });
 </script>

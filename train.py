@@ -1,4 +1,4 @@
-"""Train and evaluate Turkish event category classifiers."""
+"""Train and evaluate Turkish and English user-request classifiers."""
 
 from __future__ import annotations
 
@@ -15,17 +15,30 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
-from classifier import make_models, normalize_text
+from classifier import (
+    ARTIFACT_TASK,
+    DATASET_DOMAIN,
+    LABELS,
+    make_models,
+    normalize_text,
+)
 
 
-LABELS = ("concert", "theatre", "stand_up")
 REQUIRED_COLUMNS = ("id", "text", "label", "group_id", "title", "source", "source_url")
 MIN_ROWS = 1_000
 MIN_CLASS_ROWS_PER_SPLIT = 5
+DATASET_PROVENANCE = "generated_bootstrap"
+LANGUAGE_SUPPORT = ("tr", "en")
+BENCHMARK_NOTE = (
+    "Metrics use held-out groups from the same generated corpus and are not an "
+    "external benchmark."
+)
 
 
-def read_csv(path: str | Path) -> list[dict[str, str]]:
+def read_csv(path: str | Path, min_rows: int = MIN_ROWS) -> list[dict[str, str]]:
     """Read and validate the prepared CSV without changing its records."""
+    if min_rows < 1:
+        raise ValueError("min_rows must be at least 1.")
     csv_path = Path(path)
     if not csv_path.is_file():
         raise ValueError(f"Data file does not exist: {csv_path}")
@@ -37,8 +50,8 @@ def read_csv(path: str | Path) -> list[dict[str, str]]:
             raise ValueError(f"Missing CSV columns: {', '.join(missing)}")
         rows = [{name: (row.get(name) or "").strip() for name in REQUIRED_COLUMNS} for row in reader]
 
-    if len(rows) < MIN_ROWS:
-        raise ValueError(f"Need at least {MIN_ROWS} rows. Found {len(rows)}.")
+    if len(rows) < min_rows:
+        raise ValueError(f"Need at least {min_rows} rows. Found {len(rows)}.")
 
     ids = [row["id"] for row in rows]
     if any(not value for value in ids):
@@ -260,7 +273,10 @@ def _write_reports(
         f"Selected model: `{selected_name}`.",
         "Selection used validation macro-F1 only.",
         "The test split remained unused until model selection was complete.",
-        "The saved model is the selected pipeline fitted on the training split only.", "",
+        "The saved model is the selected pipeline fitted on the training split only.",
+        "Metrics below are raw model metrics. They do not include request policy behavior.",
+        BENCHMARK_NOTE,
+        "",
         "| Model | Validation macro-F1 | Test macro-F1 | Test accuracy |", "|---|---:|---:|---:|",
     ]
     for name, result in evaluations.items():
@@ -272,16 +288,17 @@ def _write_reports(
 
 
 def train(
-    data_path: str | Path,
+    data_path: str | Path = "data/requests.csv",
     model_path: str | Path = "artifacts/model.joblib",
     report_dir: str | Path = "reports",
     seed: int = 42,
+    allow_small_prototype: bool = False,
 ) -> dict[str, Any]:
     """Train candidates, select on validation, and evaluate once on test."""
     import joblib
 
     source_path = Path(data_path)
-    rows = read_csv(source_path)
+    rows = read_csv(source_path, min_rows=1 if allow_small_prototype else MIN_ROWS)
     parts = split_data(rows, seed)
     text_by_part = {
         name: [rows[index]["text"] for index in indices] for name, indices in parts.items()
@@ -330,6 +347,11 @@ def train(
         "labels": sorted(LABELS),
         "dataset_sha256": dataset_sha256,
         "seed": seed,
+        "task": ARTIFACT_TASK,
+        "dataset_domain": DATASET_DOMAIN,
+        "provenance": DATASET_PROVENANCE,
+        "language_support": list(LANGUAGE_SUPPORT),
+        "course_dataset_ready": False,
     }
     joblib.dump(artifact, destination)
 
@@ -345,6 +367,14 @@ def train(
         "schema_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "seed": seed,
+        "task": ARTIFACT_TASK,
+        "dataset_domain": DATASET_DOMAIN,
+        "provenance": DATASET_PROVENANCE,
+        "language_support": list(LANGUAGE_SUPPORT),
+        "course_dataset_ready": False,
+        "allow_small_prototype": allow_small_prototype,
+        "evaluation_scope": "raw_model",
+        "benchmark_note": BENCHMARK_NOTE,
         "dataset": {
             "path": str(source_path),
             "sha256": dataset_sha256,
@@ -371,17 +401,28 @@ def train(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data", default="data/events.csv")
+    parser.add_argument("--data", default="data/requests.csv")
     parser.add_argument("--model", default="artifacts/model.joblib")
     parser.add_argument("--reports-dir", default="reports")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--allow-small-prototype",
+        action="store_true",
+        help="Allow fewer than 1000 rows for prototype training.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     try:
-        metadata = train(args.data, args.model, args.reports_dir, args.seed)
+        metadata = train(
+            args.data,
+            args.model,
+            args.reports_dir,
+            args.seed,
+            allow_small_prototype=args.allow_small_prototype,
+        )
     except ValueError as error:
         raise SystemExit(str(error)) from error
     selected = metadata["selection"]["selected_model"]

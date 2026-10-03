@@ -1,52 +1,60 @@
 # Project scope and course requirements
 
-Project name: Turkish event category classifier.
+Project name: Turkish and English event-request classifier.
+Input: one user request.
+Output: `concert`, `theatre`, `stand_up`, or `unclear`.
 
-Input: an event title and description.
+This project studies one text-classification task. It has no runtime dependency on Bi' Plan.
 
-Output: concert, theatre, or stand-up.
+## Current scope
 
-This is a topic classification problem. It can support category assignment in an event catalog. It is a separate student project. It has no runtime dependency on Bi' Plan.
+The classifier processes one query. It does not search an event catalog. It does not extract dates, budgets, or locations. It does not keep conversation state.
 
+The `unclear` label covers requests without one supported positive activity. This includes vague requests, mixed target categories, unsupported activities, and pure exclusions. Explicit rules handle some music-player commands, movie requests, mixed categories, and negation. These rules do not cover all language forms.
 ## Course requirements
 
-The supplied Week 2 deck gives the following requirements. Slide numbers include the cover slide.
+| Requirement | Current status |
+|---|---|
+| One classification problem | Complete. The task classifies one request into four labels |
+| Naive Bayes and another method | Complete. The comparison includes Naive Bayes, Logistic Regression, and linear SVM |
+| Benchmark comparison | An internal majority baseline exists. Confirm whether the teacher requires an external benchmark |
+| At least 1,000 labeled examples | Open. The generated prototype has 364 examples |
+| Dataset license | The original synthetic examples use CC0-1.0 |
+| Five students per team | Add the actual team members before submission |
+| GitHub repository | The project has a separate private remote repository. Confirm public or submission access |
+| Three-minute presentation | The outline is in `PRESENTATION.md` |
 
-| Requirement | Source | Project status |
-|---|---|---|
-| One classification problem | Slide 26 | Three event categories form one classification task |
-| Naive Bayes and another class method | Slide 26 | Naive Bayes, Logistic Regression, and linear SVM work |
-| Benchmark comparison | Slide 26 | Majority-class baseline works. Confirm whether an external benchmark is also required |
-| At least 1,000 examples with clear labels | Slide 29 | 1,182 distinct examples with explicit collector labels. Human label review remains necessary |
-| Check the dataset license | Slide 29 | Source terms checked. No open corpus license established. Data and models stay outside Git |
-| Five students per team | Slide 26 | Add the actual team members before submission |
-| GitHub repository before presentation | Slide 26 | Publish the separate code repository before the talk |
-| Three-minute presentation and two-minute Q&A in Week 4 | Slide 26 | Talk outline and Q&A notes are in `PRESENTATION.md`. Create the final slides and rehearse |
+The 364 examples do not complete the 1,000-example requirement. They do not represent observed users. Ask the teacher whether a documented synthetic study is acceptable before claiming course compliance.
+## Experiment design
 
-## Grading
+The prototype has 91 examples for each label. It has 208 Turkish and 156 English examples. The examples form 52 paraphrase families.
 
-Week 2 slide 27 assigns 40% to technological depth, 10% to originality, and 50% to presentation performance.
+The split uses 210 rows for training, 77 for validation, and 77 for testing. All related Turkish and English examples stay in one partition. The training partition alone defines the TF-IDF vocabulary.
 
-Technological depth includes correct code, method comparison, feature engineering, data splits, metrics, and error analysis. The slide does not score line count or software architecture size. This project adds useful depth through model comparison and correct evaluation.
+The experiment compares a majority dummy, Naive Bayes, three Logistic Regression feature sets, and linear SVM. The validation result selects character-based Logistic Regression. Its raw-model test macro F1 is 0.8195. Its test accuracy is 83.12%.
 
-The individual-word versus word-pair experiment tests feature engineering. A word pair is a bigram. For example, two adjacent words form one feature. The experiment keeps this change separate from the classifier comparison.
+The 40-case regression set tests the demo guards and language boundaries. We used the same cases to find and fix guard defects. Therefore, this set is not a blind evaluation set. No real-user accuracy is established.
 
-## Acceptance checks
+## Plan for 1,000 examples
 
-- Import at least 1,000 distinct labeled examples.
-- Exclude conflicting event families.
-- Keep training, validation, and test groups separate.
-- Learn text features from training data only.
-- Select the model from validation results only.
-- Report every model on the same test partition.
-- Save real metrics, per-class results, wrong predictions, and a confusion matrix.
-- Predict all three sample categories in the local demo.
-- Run the tests without paid calls or a production database.
+1. Confirm with the teacher whether human-authored synthetic requests meet the requirement.
+2. Ask five team members to author 200 requests each under one written label guide.
+3. Record consent, source, license, author code, language, label, and paraphrase-family ID.
+4. Keep translations and paraphrases of one intent in the same family.
+5. Review mixed, vague, negated, and unsupported requests with a second team member.
+6. Resolve disagreements before training. Preserve the original decisions in an audit file.
+7. Reserve a human-reviewed set before model or guard changes. Do not use it to fix defects.
+8. Report generated and observed data separately if the team later collects consented real requests.
 
-## Before submission
+This plan gives 1,000 documented examples without pretending that generated text came from real users. A teacher-approved synthetic corpus can meet the assignment only after the teacher confirms that interpretation.
 
-Confirm the data permission and the teacher's benchmark requirement. Review a sample of labels. Record any label changes as a new dataset version. Do not edit test labels merely to improve the existing score.
+## Submission checks
 
-Add the five team members. Prepare the final slides. Assign a short speaking part to each team member if the teacher expects all members to speak. Rehearse within three minutes.
-
-The data importer, text features, model comparison, error review, and demonstration form useful team work areas. Each member must understand the full evaluation process.
+- Run the full unit test suite.
+- Generate the corpus from a fresh clone.
+- Train with `--allow-small-prototype` only while the corpus stays below 1,000 rows.
+- Record the exact data hash and split IDs.
+- Show all candidate methods on the same test partition.
+- Keep raw-model metrics separate from guarded demo regression results.
+- Add the five team members and repository access details.
+- Rehearse the talk within three minutes.
