@@ -25,8 +25,10 @@
     .model-table tbody tr:last-child td{border-bottom:0}.model-table tbody tr.selected{background:#edf7f2}.model-name{font-weight:650;color:#183f34}.feature{color:#607277;line-height:1.45;min-width:220px}
     .badge{display:inline-block;margin-left:8px;padding:3px 7px;border-radius:999px;background:#155946;color:white;font-size:11px;white-space:nowrap}.number{font-variant-numeric:tabular-nums;white-space:nowrap}
     .comparison-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:18px}.comparison-notes p{margin:0}
+    .method-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.method-card{border:1px solid #d6dfdb;border-radius:9px;padding:20px}.method-card h3{font-size:16px;margin:0 0 14px}.method-card .label{font-size:24px}.method-card p:last-child{margin-bottom:0}
+    .jev-option{display:flex;align-items:center;gap:8px;margin:16px 0 0}.jev-option input{width:17px;height:17px}.method-benchmark{margin-top:24px}
     @media(max-width:740px){main{padding:30px 20px}.layout{grid-template-columns:1fr;gap:20px}.panel{padding:22px}}
-    @media(max-width:600px){.comparison-head{display:block}.comparison-notes{grid-template-columns:1fr}}
+    @media(max-width:600px){.comparison-head{display:block}.comparison-notes,.method-cards{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -47,27 +49,36 @@
           <button class="sample" type="button" data-sample="I would like tickets to a live concert.">EN: Concert</button>
           <button class="sample" type="button" data-sample="Konser veya tiyatro olabilir.">TR: Two options</button>
           <button class="sample" type="button" data-sample="Something fun tonight.">EN: Unclear</button>
+          <button class="sample" type="button" data-sample="Konser değil, tiyatro istiyorum.">TR: Exclusion</button>
+          <button class="sample" type="button" data-sample="Bu gece sahnede blues çalan birilerini dinleyelim.">TR: Indirect request</button>
         </div>
-        <button class="primary" id="submit" type="submit">Classify request</button>
+        <label class="jev-option"><input id="include-jev" type="checkbox" disabled>Include Jev (external API call)</label>
+        <p class="muted" id="jev-status">Checking Jev settings...</p>
+        <button class="primary" id="submit" type="submit">Compare methods</button>
       </form>
-      <div class="result" id="result" role="status" aria-live="polite" hidden></div>
     </section>
     <aside class="panel">
       <h2>A small part of event discovery</h2>
       <ol>
-        <li>Read one request in Turkish or English.</li>
-        <li>Predict the activity category.</li>
-        <li>Ask for a clearer request when no single category is supported.</li>
+        <li>Give each method the same original request.</li>
+        <li>Compare the category selected by rules, Logistic Regression, and Jev.</li>
+        <li>Check disagreements against a human label.</li>
       </ol>
-      <p class="muted">The course experiment compares Naive Bayes, Logistic Regression, and a linear Support Vector Machine. Simple rules check explicit exclusions and requests for multiple categories.</p>
+      <p class="muted">The parser is a small rule-based category recognizer. Logistic Regression uses learned character features. Its comparison result has no extra negation or category rules. Jev answers the same four-label question through an optional API call.</p>
       <p class="muted">Prototype data: generated requests. The results do not establish accuracy on real users. Translations and paraphrases stay in the same data partition.</p>
     </aside>
   </div>
+  <section class="panel comparison" id="result" role="status" aria-live="polite" hidden></section>
+  <section class="panel comparison" aria-labelledby="method-title">
+    <h2 id="method-title">Same requests, three approaches</h2>
+    <p class="muted">Saved results use the same labeled cases for all three methods. A missing or failed Jev run has no accuracy score.</p>
+    <div id="method-results" class="method-benchmark muted" role="status" aria-live="polite">Loading the comparison experiment...</div>
+  </section>
   <section class="panel comparison" aria-labelledby="comparison-title">
     <div class="comparison-head">
       <div>
-        <h2 id="comparison-title">Model comparison</h2>
-        <p class="muted">The selected model has the highest validation macro F1. Test results show later evaluation. They did not select the model.</p>
+        <h2 id="comparison-title">Training experiment</h2>
+        <p class="muted">This table uses the generated corpus partitions. It uses a different dataset from the regression comparison above. Validation macro F1 selected the model. Test results did not select it.</p>
       </div>
     </div>
     <div class="comparison-status muted" id="comparison-status" role="status" aria-live="polite">Loading model results...</div>
@@ -75,14 +86,15 @@
     <div class="comparison-notes" id="comparison-notes" hidden></div>
   </section>
   <p class="notice">This prototype classifies one request. It does not find events or apply date, location, or budget filters. The unclear category also covers unrelated requests. An ambiguous prediction can still be wrong.</p>
-  <footer>Local course demonstration. Predictions use the trained model on this computer. No paid AI API.</footer>
+  <footer>Local course demonstration. Rules and Logistic Regression run on this computer. Jev runs only when you select the external API option.</footer>
 </main>
 <script>
   const input=document.getElementById('description');
   const result=document.getElementById('result');
   const submit=document.getElementById('submit');
-  const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Please specify one activity'};
-  const reasons={multiple_categories:'Your request names more than one activity. Choose concert, theatre, or stand-up.',only_exclusions:'Your request says what to exclude. Add the activity you want.',music_player_command:'This demo classifies requests to attend events. A music-player command does not specify an event.',unsupported_activity:'This activity is outside concert, theatre, and stand-up.',unknown_terms:'The request has no terms in the trained vocabulary. Add an activity.'};
+  const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Unclear / Belirsiz'};
+  const methodNames={parser:'Rule-based parser',logistic_regression:'Logistic Regression',jev:'Jev'};
+  const methodDescriptions={parser:'Explicit category terms and a few exclusion rules.',logistic_regression:'Learned text patterns. No extra language rules.',jev:'A pretrained judgment model. Same four category definitions.'};
   const modelDetails={
     dummy_most_frequent:{name:'Majority baseline',feature:'Always predicts the most common training category.'},
     multinomial_nb:{name:'Multinomial Naive Bayes',feature:'Uses weighted single words and adjacent word pairs.'},
@@ -134,19 +146,38 @@
     try{const response=await fetch('/api/results');if(!response.ok)throw new Error('Could not load model results.');const payload=await response.json();renderComparison(payload)}
     catch(error){showComparisonError(error instanceof Error?error.message:'Could not load model results.')}
   }
+  async function loadJevStatus(){
+    const checkbox=document.getElementById('include-jev');const status=document.getElementById('jev-status');
+    try{const response=await fetch('/api/comparison-config');if(!response.ok)throw new Error();const config=await response.json();checkbox.disabled=!config.configured||config.remaining_calls<=0;if(checkbox.disabled)checkbox.checked=false;
+      status.textContent=config.configured?'Jev: '+config.model+'. Shared calls remaining: '+config.remaining_calls+'. One API attempt per selected comparison. Maximum input: 1,000 characters.':'Jev is not configured. Both local methods remain available.';
+    }catch{checkbox.disabled=true;checkbox.checked=false;status.textContent='Jev settings are unavailable. Both local methods remain available.'}
+  }
+  async function loadMethodResults(){
+    const target=document.getElementById('method-results');
+    try{const response=await fetch('/api/method-results');if(!response.ok)throw new Error('Could not load experiment results.');const payload=await response.json();target.replaceChildren();
+      if(!payload.methods||!payload.examples){target.textContent='No saved experiment is available yet.';return}
+      if(payload.task!=='user_request_classification')throw new Error('Experiment results do not match this task.');
+      const wrap=document.createElement('div');wrap.className='table-wrap';const table=document.createElement('table');table.className='model-table';table.style.minWidth='560px';const head=document.createElement('thead');const header=document.createElement('tr');
+      ['Method','Completed','Accuracy','Macro F1'].forEach(text=>{const cell=addCell(header,'th',text);cell.scope='col'});head.append(header);table.append(head);const body=document.createElement('tbody');
+      Object.keys(methodNames).forEach(key=>{const score=payload.methods[key];if(!score||!Number.isInteger(score.completed)||!Number.isInteger(score.total))throw new Error('Experiment results are incomplete.');const complete=score.completed===score.total;const row=document.createElement('tr');addCell(row,'td',methodNames[key],'model-name');addCell(row,'td',score.completed+' / '+score.total,'number');addCell(row,'td',complete&&validScore(score.accuracy)?(score.accuracy*100).toFixed(1)+'%':'Not evaluated','number');addCell(row,'td',complete&&validScore(score.macro_f1)?score.macro_f1.toFixed(3):'Not evaluated','number');body.append(row)});
+      table.append(body);wrap.append(table);target.append(wrap);const note=document.createElement('p');note.className='muted';note.textContent=payload.examples+' cases. '+payload.note;target.append(note);
+    }catch(error){target.textContent=error.message}
+  }
   document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
   document.getElementById('form').addEventListener('submit',async event=>{
-    event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Classifying…';
+    event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Comparing methods...';const requestText=input.value;
     try{
-      const response=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:input.value})});
+      const response=await fetch('/api/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:requestText,include_jev:document.getElementById('include-jev').checked})});
       const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Prediction failed.');
-      result.replaceChildren();const label=document.createElement('p');label.className='label';label.textContent=names[payload.label]||payload.label;result.append(label);
-      const detail=document.createElement('p');detail.className='muted';detail.textContent='Model: '+payload.model;result.append(detail);
-      const explanation=document.createElement('p');explanation.className='muted';explanation.textContent=reasons[payload.reason]||(payload.label==='unclear'?'Choose concert, theatre, or stand-up. Add a clear activity to your request.':'Request category. This prototype does not return event recommendations.');result.append(explanation);
-      if(payload.decision_source==='input_guard'){const note=document.createElement('p');note.className='muted';note.textContent='An explicit input rule returned this result.';result.append(note)}
-    }catch(error){result.textContent=error.message}finally{submit.disabled=false}
+      if(!Array.isArray(payload.results)||payload.results.length!==3||Object.keys(methodNames).some(key=>payload.results.filter(row=>row.method===key).length!==1))throw new Error('Comparison results are incomplete.');
+      result.replaceChildren();const heading=document.createElement('h2');heading.textContent='Same input, three methods';result.append(heading);const quote=document.createElement('p');quote.className='muted';quote.textContent=requestText;result.append(quote);const cards=document.createElement('div');cards.className='method-cards';
+      payload.results.forEach(row=>{const card=document.createElement('article');card.className='method-card';const title=document.createElement('h3');title.textContent=methodNames[row.method];card.append(title);const label=document.createElement('p');label.className='label';if(row.status==='ok'&&!names[row.label])throw new Error('A method returned an invalid category.');label.textContent=row.status==='ok'?names[row.label]:'Not evaluated';card.append(label);const description=document.createElement('p');description.className='muted';description.textContent=row.status==='ok'?methodDescriptions[row.method]:(row.method==='jev'&&document.getElementById('include-jev').disabled?'Jev is not configured or has no calls remaining. No API call was made.':row.message||'No result is available.');card.append(description);if(Number.isFinite(row.elapsed_ms)){const timing=document.createElement('p');timing.className='muted';timing.textContent='Request time: '+row.elapsed_ms.toFixed(1)+' ms';card.append(timing)}cards.append(card)});result.append(cards);
+      const note=document.createElement('p');note.className='muted';note.textContent='LR model: '+payload.model+'. '+payload.scope;result.append(note);
+    }catch(error){result.textContent=error.message}finally{submit.disabled=false;loadJevStatus()}
   });
   loadComparison();
+  loadJevStatus();
+  loadMethodResults();
 </script>
 </body>
 </html>

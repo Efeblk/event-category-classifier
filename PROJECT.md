@@ -10,6 +10,10 @@ This project studies one text-classification task. It has no runtime dependency 
 
 The classifier processes one query. It does not search an event catalog. It does not extract dates, budgets, or locations. It does not keep conversation state.
 
+The main demo compares three approaches on the same original input: a rule-based category parser, Logistic Regression, and optional Jev. Jev is an external comparison model. Naive Bayes and the other local course methods remain in the training experiment. The parser name refers to this specific rule-based recognizer.
+
+The learned comparison result has no extra negation or category rules. Jev uses a fixed four-label question. Missing and failed provider results remain explicit. They do not count as an `unclear` prediction.
+
 The `unclear` label covers requests without one supported positive activity. This includes vague requests, mixed target categories, unsupported activities, and pure exclusions. Explicit rules handle some music-player commands, movie requests, mixed categories, and negation. These rules do not cover all language forms.
 ## Course requirements
 
@@ -34,6 +38,8 @@ The split uses 210 rows for training, 77 for validation, and 77 for testing. All
 The experiment compares a majority dummy, Naive Bayes, three Logistic Regression feature sets, and linear SVM. The validation result selects character-based Logistic Regression. Its raw-model test macro F1 is 0.8195. Its test accuracy is 83.12%.
 
 The 40-case regression set tests the demo guards and language boundaries. We used the same cases to find and fix guard defects. Therefore, this set is not a blind evaluation set. No real-user accuracy is established.
+
+The same-case three-method experiment uses those 40 cases. The parser reaches 57.5% accuracy. Logistic Regression with its zero-vocabulary guard reaches 62.5%. Jev has not run. These results are separate from the 77-row training test. Jev integration tests use controlled provider responses and establish no Jev accuracy.
 
 ## Plan for 1,000 examples
 

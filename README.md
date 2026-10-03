@@ -16,12 +16,13 @@ python -m venv .venv
 .\.venv\Scripts\python.exe prepare_requests.py
 .\.venv\Scripts\python.exe train.py --allow-small-prototype
 .\.venv\Scripts\python.exe evaluate_requests.py
+.\.venv\Scripts\python.exe compare_methods.py
 .\.venv\Scripts\python.exe app.py
 ```
 
 Open [http://127.0.0.1:8011](http://127.0.0.1:8011).
 
-The demo page shows saved results for all six models. It marks the model selected by validation macro F1. The table reads raw-model metrics from `reports/metrics.json`. These metrics exclude the manual input rules.
+The demo shows three results for the same original input: a rule-based category parser, Logistic Regression, and optional Jev. It also shows the saved training results for all six local candidate models.
 
 Use `.venv/bin/python` on Linux or macOS.
 
@@ -33,7 +34,41 @@ Run one guarded command-line prediction:
 .\.venv\Scripts\python.exe predict.py --text "Canlı caz dinlemek istiyorum"
 ```
 
-The command-line tool and browser demo use the same input guards. Load only a model that you trained locally. A joblib file can execute code when Python loads it.
+The `predict.py` command retains the earlier guarded policy. The browser comparison keeps rules separate from learned classification. Load only a model that you trained locally. A joblib file can execute code when Python loads it.
+
+## Same input, three approaches
+
+| Method | Input and behavior |
+|---|---|
+| Rule-based parser | Reads explicit activity terms and applies the existing exclusion and unsupported-activity rules |
+| Logistic Regression | Reads the original text with learned character features. No extra language rules apply. Zero-vocabulary input returns `unclear` |
+| Jev | Reads the original text and one fixed four-label question through the TypeSafe API |
+
+Here, parser means the specific small rule-based category recognizer. The comparison does not cover every possible parser design. Each method uses the same labels. The comparison currently needs a Logistic Regression artifact.
+
+`compare_methods.py` runs the same 40 inspected regression cases for every method. Local evaluation gives 57.5% accuracy for the parser and 62.5% for Logistic Regression. Jev has not been evaluated. No missing or failed Jev result becomes an `unclear` prediction. A partial provider run has no comparable headline accuracy.
+
+The preserved local run is in [evidence/method_comparison.json](evidence/method_comparison.json). It records the dataset and source-code hashes plus every case and prediction. Jev was not requested in that run.
+
+The 40-case comparison and the 77-row training test use different datasets. Do not compare their scores as if they used the same test set. Both use generated data. Neither establishes real-user accuracy.
+
+## Optional Jev comparison
+
+No API call runs on page load or during default evaluation. Select the Jev checkbox to include one external API attempt in an interactive comparison.
+
+Copy `.env.example` to `.env`. Add your TypeSafe key in that local file. Keep it out of chat and Git. Set `JEV_MAX_CALLS` from 1 to 50. Leave it at 0 to disable calls. Restart `app.py` after a settings change.
+
+The pinned model is `jev-1.13.0`. The call limit is shared by the browser and evaluation script. Attempt receipts in `reports/jev_calls/` survive restarts. Failed calls count too. There are no automatic retries. Jev input is limited to 1,000 characters. Local methods accept up to 5,000 characters.
+
+To evaluate all 40 cases with Jev, configure at least 40 remaining calls, then run:
+
+```powershell
+.\.venv\Scripts\python.exe compare_methods.py --include-jev
+```
+
+A limit of 50 allows this 40-case run and up to 10 interactive attempts. Do not delete the receipts to reset an experiment budget. Receipts retain input hashes, the fixed prompt version, returned model, token usage, and validated provider answers. They contain no API key or submitted text. The evaluation report retains the labeled test cases and predictions.
+
+This is an external model comparison. It does not replace the course requirement for Naive Bayes and another class method. See the current [TypeSafe API](https://docs.typesafe.ai/api), [Choice](https://docs.typesafe.ai/primitives/choice), and [model/pricing](https://docs.typesafe.ai/models) documentation. Real Jev calls have not run in this repository. Provider tests use controlled responses.
 
 ## Data
 
@@ -71,6 +106,8 @@ The project has no measured accuracy on real user requests. The generated corpus
 | `request_policy.py` | Apply explicit request-boundary guards |
 | `train.py` | Split data, compare models, and save the selected model |
 | `evaluate_requests.py` | Run the separate regression cases |
+| `method_comparison.py` | Compare rules and learned classification with an optional bounded Jev call |
+| `compare_methods.py` | Evaluate all three approaches on the same labeled cases |
 | `predict.py` | Classify one request with the demo policy |
 | `app.py`, `demo.html` | Run the local browser demo |
 | `tests/` | Check data, models, splitting, and request guards |
@@ -85,9 +122,9 @@ The project has no measured accuracy on real user requests. The generated corpus
 
 GitHub CI runs the controlled tests. The tests make no paid calls.
 
-The current local run passes 37 tests. The browser check returns the expected labels for six sample requests.
+The current local run passes 51 tests. The provider tests make no real API calls.
 
-The comparison table matches all six saved results. Desktop, narrow-screen, and retry checks pass.
+The training comparison table matches all six saved results. The three-method browser check covers eight Turkish and English samples. Desktop and narrow-screen checks pass. Jev is marked as not evaluated when it is unavailable.
 
 The course wording for a benchmark is ambiguous. This project includes an internal majority baseline. Confirm whether the teacher also requires an external published benchmark.
 

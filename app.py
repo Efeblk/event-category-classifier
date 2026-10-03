@@ -7,6 +7,7 @@ from pathlib import Path
 
 import joblib
 from request_policy import classify_input
+from method_comparison import JevClient, compare_request
 
 ROOT = Path(__file__).resolve().parent
 
@@ -15,7 +16,7 @@ def predict_request(artifact, text):
     return classify_input(artifact, text)
 
 
-def make_handler(artifact, metrics):
+def make_handler(artifact, metrics, jev=None):
     class Handler(BaseHTTPRequestHandler):
         def respond(self, status, payload, content_type="application/json; charset=utf-8"):
             body = payload if isinstance(payload, bytes) else json.dumps(payload).encode("utf-8")
@@ -31,11 +32,16 @@ def make_handler(artifact, metrics):
                 self.respond(200, (ROOT / "demo.html").read_bytes(), "text/html; charset=utf-8")
             elif self.path == "/api/results":
                 self.respond(200, metrics)
+            elif self.path == "/api/comparison-config":
+                self.respond(200, jev.public_status() if jev else {"configured": False, "remaining_calls": 0})
+            elif self.path == "/api/method-results":
+                path = ROOT / "reports/method_comparison.json"
+                self.respond(200, json.loads(path.read_text(encoding="utf-8")) if path.exists() else {})
             else:
                 self.respond(404, {"error": "Page not found."})
 
         def do_POST(self):
-            if self.path != "/api/predict":
+            if self.path not in ("/api/predict", "/api/compare"):
                 return self.respond(404, {"error": "Page not found."})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
@@ -44,7 +50,11 @@ def make_handler(artifact, metrics):
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
-                self.respond(200, predict_request(artifact, payload.get("text")))
+                if self.path == "/api/compare":
+                    prediction = compare_request(artifact, payload.get("text"), jev, payload.get("include_jev", False))
+                else:
+                    prediction = predict_request(artifact, payload.get("text"))
+                self.respond(200, prediction)
             except (ValueError, UnicodeDecodeError) as error:
                 self.respond(400, {"error": str(error)})
 
@@ -68,7 +78,11 @@ def main():
         parser.error("This model uses event descriptions. Train a user-request model first.")
     metrics_path = ROOT / "reports/metrics.json"
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
-    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics))
+    try:
+        jev = JevClient()
+    except ValueError as error:
+        parser.error(str(error))
+    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev))
     print(f"Open http://127.0.0.1:{args.port}", flush=True)
     try:
         server.serve_forever()

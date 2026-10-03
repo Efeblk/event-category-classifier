@@ -6,5 +6,8 @@ data/*.csv
 data/*.json
 artifacts/
 reports/
+.env
+.env.*
+!.env.example
 !data/README.md
 !data/request_challenge.json

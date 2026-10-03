@@ -19,23 +19,23 @@ State that the examples are AI-authored. They are not observed user requests. St
 
 Explain that related Turkish and English phrasings stay in one partition. Show the split: 210 training rows, 77 validation rows, and 77 test rows.
 
-List the methods: majority baseline, Naive Bayes, Logistic Regression, and linear SVM. Mention word, word-bigram, and character features.
+Introduce the three main approaches: a rule-based category parser, trained Logistic Regression, and optional pretrained Jev. Explain that the course training comparison also includes Naive Bayes, a majority baseline, and linear SVM. Mention word and character features.
 
 ## Slide 3: Result and interpretation, 55 seconds
 
-Title: Raw-model comparison
-State that validation macro F1 selected Logistic Regression with character groups of length 3 to 5. Explain that macro F1 gives equal weight to each label.
+Title: Same-case comparison and limits
+Show the 40-case table: parser 57.5%, Logistic Regression 62.5%, and Jev not evaluated. Replace the Jev entry only after an actual complete evaluation. All methods use the same original inputs and four labels.
 
-Show the selected model's test macro F1 of 0.8195 and test accuracy of 83.12%. State that the test set has 77 rows.
+State that the cases were inspected during rule changes. This is a regression comparison, not a blind benchmark or real-user accuracy estimate.
 
-Explain that these scores measure performance on the generated corpus. They do not estimate accuracy for real users.
-
-Mention the 40-case guard regression set. The demo with guards reached 80%. The model with its vocabulary guard reached 62.5%. The keyword baseline reached 57.5%. State that the team inspected these cases during guard fixes. Do not present them as a blind benchmark.
+Mention the separate training experiment. Validation macro F1 selected character-based Logistic Regression. Its 77-row test accuracy is 83.12%. This is a different dataset from the 40-case comparison. Macro F1 gives each label equal weight.
 
 ## Slide 4: Demo and next work, 35 seconds
 
-Title: One request in, one label out
-Run one Turkish or English request. Show that the command-line tool and browser use the same guards.
+Title: Same input, three approaches
+Run one Turkish or English request. Show the rule-based parser and Logistic Regression results side by side. Show Jev only after an actual configured API call. Keep an unavailable Jev result marked as not evaluated.
+
+Use "Konser değil, tiyatro istiyorum" to show an exclusion. Explain that Logistic Regression has no extra language rules in this comparison. Its earlier guarded command-line demonstration is a different policy.
 
 State the limits. The system has four labels. It does not search events, extract request details, or keep chat memory. Its rules cannot interpret every negation.
 
@@ -44,6 +44,12 @@ Show the next data step. Five team members can author 200 requests each under on
 ## Q&A notes
 
 **Why Naive Bayes?** The course requires it. It also gives a simple text-classification reference.
+
+**Does Jev replace the class methods?** No. It is an optional external comparison. The experiment still trains and compares Naive Bayes and the other class methods.
+
+**What does parser mean here?** It means our small rule-based category recognizer. It does not represent every parser architecture.
+
+**How do we make the comparison fair?** All three methods receive the same original request and select from the same four labels. Learned classification has no extra language rules. Failed provider calls remain failures. A human-reviewed blind set is still required for stronger conclusions.
 
 **Why character features?** They can handle spelling variation in Turkish and English. Validation selected this feature set.
 
