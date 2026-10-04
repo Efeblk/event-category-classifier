@@ -34,6 +34,7 @@ def make_models(seed: int = 42) -> dict[str, Any]:
     from sklearn.linear_model import LogisticRegression
     from sklearn.naive_bayes import MultinomialNB
     from sklearn.pipeline import Pipeline
+    from sklearn.svm import LinearSVC
 
     def pipeline(
         classifier: Any,
@@ -57,15 +58,27 @@ def make_models(seed: int = 42) -> dict[str, Any]:
             ]
         )
 
+    # Each method uses the same word features and the same character features.
     return {
         "dummy_most_frequent": pipeline(
             DummyClassifier(strategy="most_frequent", random_state=seed), (1, 1)
         ),
-        "multinomial_nb": pipeline(MultinomialNB(alpha=1.0), (1, 2)),
+        "multinomial_nb_word": pipeline(MultinomialNB(alpha=1.0), (1, 2)),
+        "multinomial_nb_char": pipeline(MultinomialNB(alpha=1.0), (3, 5), analyzer="char_wb"),
+        "logistic_regression_word": pipeline(
+            LogisticRegression(max_iter=1_000, class_weight="balanced", random_state=seed),
+            (1, 2),
+        ),
         "logistic_regression_char": pipeline(
             LogisticRegression(max_iter=1_000, class_weight="balanced", random_state=seed),
             (3, 5),
             analyzer="char_wb",
+        ),
+        "linear_svm_word": pipeline(
+            LinearSVC(class_weight="balanced", random_state=seed), (1, 2)
+        ),
+        "linear_svm_char": pipeline(
+            LinearSVC(class_weight="balanced", random_state=seed), (3, 5), analyzer="char_wb"
         ),
     }
 

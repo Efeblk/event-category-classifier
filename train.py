@@ -221,13 +221,13 @@ def _write_reports(
 
     test_rows = [rows[index] for index in parts["test"]]
     with (report_dir / "errors.csv").open("w", encoding="utf-8", newline="") as handle:
-        fields = ("id", "group_id", "actual", "predicted")
+        fields = ("id", "group_id", "text", "actual", "predicted")
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for row, prediction in zip(test_rows, selected_test_predictions):
             if row["label"] != prediction:
                 writer.writerow({
-                    "id": row["id"], "group_id": row["group_id"],
+                    "id": row["id"], "group_id": row["group_id"], "text": row["text"],
                     "actual": row["label"], "predicted": prediction,
                 })
 
