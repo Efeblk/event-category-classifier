@@ -12,7 +12,7 @@ Plain Python 3.13 scripts with no package layout, no web framework, and no front
 
 This repository is **Project 1: Text Classification** for COE025 Natural Language Processing (Fall 25-26, Asst. Prof. Yiğit Bekir Kaya). The requirements come from the Week 1 and Week 2 slides:
 
-- Team of 5 students. Choose one classification problem.
+- Teams of 5 by default. **This project is solo by the teacher's arrangement.** Do not add team names. Choose one classification problem.
 - Implement at least **Naive Bayes plus one other method from class** (Logistic Regression or SVM).
 - **Compare the results with benchmarks.**
 - Use a dataset with **at least 1,000 examples and clear labels**, and check its license. The slides suggest HuggingFace, Kaggle, and UCI.
@@ -30,13 +30,15 @@ Status against the requirements:
 
 - Met: Naive Bayes, Logistic Regression, and Linear SVM, each with word and character features, plus a majority baseline. Also met: a group-disjoint split, macro F1 and per-class metrics, a confusion matrix, and error analysis in `RESULTS.md`.
 - **Not met: dataset size.** There are 364 synthetic rows. Do not hide this or weaken the 1,000-row check in `train.py`.
-- **Weak: benchmark comparison.** The only reference points are the majority baseline and the inspected 40-case set. No external benchmark exists.
+- **Weak: benchmark comparison.** The only reference points are the majority baseline and the inspected 40-case set. No external benchmark exists. A complete, approved Jev run on the 40 cases would give the pretrained reference point.
+
+**Jev is a core part of the project. Do not remove it or suggest removing it.** The central story is that three approaches classify the same input: hand-written rules (Parser), a classical model trained on labeled data (Logistic Regression), and a pretrained model (Jev). The teacher likes Jev. Keep `jev.py` simple and well tested rather than cutting it.
 
 **Stay in Project 1 scope, and keep the code simple.** The teacher grades the code and a 3-minute talk. Prefer methods taught in class (Naive Bayes, Logistic Regression, SVM, TF-IDF, n-grams) and plain, explicit code over clever abstractions. Do not add features from event_recommender, such as dates, places, budgets, or search. Do not add neural models, new services, or new dependencies unless the user asks. Before you add code, ask whether it helps a rubric item and whether a student can explain it in Q&A.
 
 ## Relation to event_recommender
 
-This project is a standalone subset of the team's main product, **event_recommender** ("Bi' Plan", at `C:\Users\efeba\event_recommender`, a Node/TypeScript app for Istanbul events). The main product parses a whole request: dates, places, budgets, categories, negations, and age limits. It also uses Jev through TypeSafe. This repository isolates only the **event-category** part of that job as a course-sized classification task.
+This project is a standalone subset of the author's main product, **event_recommender** ("Bi' Plan", at `C:\Users\efeba\event_recommender`, a Node/TypeScript app for Istanbul events). The main product parses a whole request: dates, places, budgets, categories, negations, and age limits. It also uses Jev through TypeSafe. This repository isolates only the **event-category** part of that job as a course-sized classification task.
 
 - Do not import code, data, or settings from event_recommender. The README promises no dependency. Treat it only as a domain reference.
 - Labels differ. The main product's `Category` type in `web/parser/contract.ts` is `concert | theatre | standup | workshop | exhibition`. Here the labels are `concert`, `theatre`, `stand_up`, and `unclear`. Do not rename the labels here to match it unless the user asks.
@@ -117,4 +119,4 @@ Preserve these unless the user asks to change them.
 
 - The dataset needs 1,000 or more examples with clear labels and a checked license, plus an unseen, human-reviewed evaluation set. Ask the teacher whether synthetic data is acceptable.
 - Add a benchmark comparison that the teacher accepts.
-- Team names (5 students) and teacher access to the GitHub repo are still pending. The repo is due before the Week 4 presentation.
+- The author's name and teacher access to the GitHub repo are still pending. The repo is due before the Week 4 presentation.

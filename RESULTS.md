@@ -53,4 +53,4 @@ The parser and learned model run separately. No parser rules override Logistic R
 
 Run `train.py` and `compare_methods.py` to create detailed reports in `reports/`. Checked-in snapshots are in [evidence/](evidence/). Jev tests use mocked responses and provide no measured Jev accuracy.
 
-Before submission: reach the accepted 1,000-example dataset, confirm the teacher's benchmark requirement, add team names, and set repository access for the teacher.
+Before submission: reach the accepted 1,000-example dataset, confirm the teacher's benchmark requirement, add the author's name, and set repository access for the teacher.
