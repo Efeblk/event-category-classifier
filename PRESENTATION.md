@@ -12,7 +12,7 @@ Show the three approaches: written parser rules, trained Logistic Regression, an
 
 ## 3. Results - 45 seconds
 
-Show the training chart. Character features beat word features for every method because they handle Turkish suffixes and typos. Validation macro F1 selects Logistic Regression with character features. Its test accuracy on 77 separate examples is 83.12%.
+Show the training chart. Character features beat word features for every method because they handle Turkish suffixes and typos. Validation macro F1 selects Logistic Regression with character features. Its test accuracy on 77 separate examples is 83.12%. 5-fold cross-validation gives the same ranking (0.796 ± 0.078 macro F1).
 
 Error analysis: 7 of its 13 test errors are negations such as "I do not want a concert". The parser gets those right, but it misses paraphrases that the model gets right.
 

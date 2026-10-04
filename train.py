@@ -143,6 +143,29 @@ def split_data(rows: list[dict[str, str]], seed: int = 42) -> dict[str, list[int
     return parts
 
 
+def cross_validate(
+    rows: list[dict[str, str]], indices: list[int], seed: int = 42, folds: int = 5
+) -> dict[str, dict[str, Any]]:
+    """Report grouped k-fold macro F1 for fresh models. It does not select a model."""
+    from sklearn.model_selection import StratifiedGroupKFold, cross_val_score
+
+    texts = [rows[index]["text"] for index in indices]
+    labels = [rows[index]["label"] for index in indices]
+    groups = [rows[index]["group_id"] for index in indices]
+    splitter = StratifiedGroupKFold(n_splits=folds, shuffle=True, random_state=seed)
+    results = {}
+    for name, model in make_models(seed).items():
+        scores = cross_val_score(
+            model, texts, labels, groups=groups, cv=splitter, scoring="f1_macro"
+        )
+        results[name] = {
+            "macro_f1_mean": float(scores.mean()),
+            "macro_f1_std": float(scores.std()),
+            "fold_macro_f1": [float(score) for score in scores],
+        }
+    return results
+
+
 def _scores(actual: list[str], predicted: Iterable[str]) -> dict[str, Any]:
     from sklearn.metrics import accuracy_score, classification_report, f1_score
 
@@ -283,6 +306,9 @@ def train(
             },
         }
 
+    # Cross-validation uses only train and validation rows. Test rows stay unseen.
+    cross_validation = cross_validate(rows, parts["train"] + parts["validation"], seed)
+
     selected_name = max(
         models,
         key=lambda name: (evaluations[name]["validation"]["macro_f1"], name),
@@ -348,6 +374,12 @@ def train(
             "fit_split": "train",
             "final_refit": False,
             "test_used_for_selection": False,
+        },
+        "cross_validation": {
+            "folds": 5,
+            "rows": "train_and_validation",
+            "used_for_selection": False,
+            "models": cross_validation,
         },
         "saved_model": str(destination),
         "models": evaluations,

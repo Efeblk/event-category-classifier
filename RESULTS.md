@@ -8,15 +8,17 @@ Seed: 42. Split: 210 training, 77 validation, 77 test examples. Paraphrase famil
 
 Each learned method runs with two feature sets. **Words** uses single words and adjacent word pairs. **Characters** uses groups of 3 to 5 characters.
 
-| Model | Features | Validation macro F1 | Test macro F1 | Test accuracy |
-|---|---|---:|---:|---:|
-| Majority baseline | - | 0.1071 | 0.0769 | 18.18% |
-| Naive Bayes | Words | 0.6386 | 0.6227 | 63.64% |
-| Naive Bayes | Characters | 0.7269 | 0.7508 | 77.92% |
-| Logistic Regression | Words | 0.6771 | 0.6812 | 68.83% |
-| **Logistic Regression** | **Characters** | **0.8185** | **0.8195** | **83.12%** |
-| Linear SVM | Words | 0.7199 | 0.6772 | 68.83% |
-| Linear SVM | Characters | 0.7970 | 0.8052 | 81.82% |
+| Model | Features | Validation macro F1 | 5-fold CV macro F1 | Test macro F1 | Test accuracy |
+|---|---|---:|---:|---:|---:|
+| Majority baseline | - | 0.1071 | 0.105 ± 0.010 | 0.0769 | 18.18% |
+| Naive Bayes | Words | 0.6386 | 0.632 ± 0.086 | 0.6227 | 63.64% |
+| Naive Bayes | Characters | 0.7269 | 0.718 ± 0.080 | 0.7508 | 77.92% |
+| Logistic Regression | Words | 0.6771 | 0.706 ± 0.051 | 0.6812 | 68.83% |
+| **Logistic Regression** | **Characters** | **0.8185** | **0.796 ± 0.078** | **0.8195** | **83.12%** |
+| Linear SVM | Words | 0.7199 | 0.708 ± 0.055 | 0.6772 | 68.83% |
+| Linear SVM | Characters | 0.7970 | 0.772 ± 0.079 | 0.8052 | 81.82% |
+
+Cross-validation repeats training on 5 grouped folds of the 287 train and validation rows. It reports the mean and standard deviation and does not select the model. The test rows stay unseen. The fold scores of the selected model range from 0.73 to 0.95, so one small test split is a noisy estimate. CV gives the same ranking as the single split.
 
 Validation selects Logistic Regression with character features. The saved model retains its training fit.
 
