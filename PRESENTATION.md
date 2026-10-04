@@ -1,5 +1,7 @@
 # Three-minute presentation
 
+Slides: [presentation.pptx](presentation.pptx). Speaker notes hold the timing for each slide.
+
 ## 1. Task - 30 seconds
 
 Show one Turkish request and one English request. Explain the four labels: concert, theatre, stand-up, and unclear. This project classifies requests; it does not search events.
