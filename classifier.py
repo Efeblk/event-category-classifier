@@ -34,7 +34,6 @@ def make_models(seed: int = 42) -> dict[str, Any]:
     from sklearn.linear_model import LogisticRegression
     from sklearn.naive_bayes import MultinomialNB
     from sklearn.pipeline import Pipeline
-    from sklearn.svm import LinearSVC
 
     def pipeline(
         classifier: Any,
@@ -63,21 +62,10 @@ def make_models(seed: int = 42) -> dict[str, Any]:
             DummyClassifier(strategy="most_frequent", random_state=seed), (1, 1)
         ),
         "multinomial_nb": pipeline(MultinomialNB(alpha=1.0), (1, 2)),
-        "logistic_regression_unigram": pipeline(
-            LogisticRegression(max_iter=1_000, class_weight="balanced", random_state=seed),
-            (1, 1),
-        ),
-        "logistic_regression_bigram": pipeline(
-            LogisticRegression(max_iter=1_000, class_weight="balanced", random_state=seed),
-            (1, 2),
-        ),
         "logistic_regression_char": pipeline(
             LogisticRegression(max_iter=1_000, class_weight="balanced", random_state=seed),
             (3, 5),
             analyzer="char_wb",
-        ),
-        "linear_svc": pipeline(
-            LinearSVC(class_weight="balanced", random_state=seed), (1, 2)
         ),
     }
 

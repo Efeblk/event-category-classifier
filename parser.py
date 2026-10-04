@@ -1,4 +1,4 @@
-"""Apply a few explicit request boundaries before learned classification."""
+"""Recognize event categories with explicit words and exclusion rules."""
 
 import re
 import unicodedata
@@ -19,7 +19,7 @@ def plain_text(text):
 
 
 def inspect_request(text):
-    """Return explicit positive categories and a model input without exclusions."""
+    """Find positive categories and remove explicitly excluded category words."""
     plain = plain_text(text)
     matches = sorted((match.start(), match.end(), label)
                      for label, pattern in PATTERNS.items()
@@ -58,7 +58,7 @@ def guard_request(text):
     if len(positives) > 1:
         return text, "multiple_categories"
     if has_exclusions and not positives:
-        # A different activity can be implicit. Let the learned model inspect the rest.
+        # An exclusion followed by a correction can describe another activity.
         if re.search(r"\b(?:ama|but|instead|yerine)\b|,", cleaned):
             return cleaned, None
         return text, "only_exclusions"
@@ -66,24 +66,7 @@ def guard_request(text):
     return cleaned if has_exclusions else text, None
 
 
-def keyword_baseline(text):
+def parse_request(text):
     _, reason = guard_request(text)
     positives, _, _ = inspect_request(text)
     return next(iter(positives)) if not reason and len(positives) == 1 else "unclear"
-
-
-def classify_input(artifact, text):
-    from classifier import _validated_model, classify_request
-
-    if not isinstance(text, str) or not text.strip() or len(text) > 5000:
-        raise ValueError("Enter a request with 1 to 5,000 characters.")
-    # Validate the artifact even when an input guard can decide the outcome.
-    _validated_model(artifact)
-    cleaned, reason = guard_request(text)
-    if reason:
-        return {"label": "unclear", "model": artifact["model_name"],
-                "reason": reason, "decision_source": "input_guard"}
-    result = classify_request(artifact, cleaned)
-    result["model"] = artifact["model_name"]
-    result["decision_source"] = "model"
-    return result

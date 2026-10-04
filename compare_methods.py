@@ -10,7 +10,8 @@ import joblib
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 
 from classifier import LABELS
-from method_comparison import JevClient, PROMPT_VERSION, compare_request
+from jev import JevClient, PROMPT_VERSION
+from method_comparison import compare_request
 
 
 def evaluate(model_path, data_path, output_path, include_jev=False):
@@ -39,7 +40,7 @@ def evaluate(model_path, data_path, output_path, include_jev=False):
         "jev_model": jev.model, "jev_prompt_version": PROMPT_VERSION,
         "jev_requested": include_jev, "methods": {}, "records": [],
         "code_sha256": {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-                        for name in ("classifier.py", "request_policy.py", "method_comparison.py", "compare_methods.py")},
+                        for name in ("classifier.py", "parser.py", "jev.py", "method_comparison.py", "compare_methods.py")},
     }
     for record in records:
         comparison = compare_request(artifact, record["text"], jev, include_jev)

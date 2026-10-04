@@ -1,180 +1,839 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Event request classifier · COE025</title>
-  <style>
-    :root{font-family:system-ui,sans-serif;color:#182c35;background:#f2f5f2;font-synthesis:none}
-    *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}main{max-width:1040px;margin:auto;padding:60px 28px}
-    .eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:#36695c;text-transform:uppercase}
-    h1{font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.04em;margin:18px 0}
-    .lead{max-width:650px;font-size:18px;line-height:1.6;color:#4f656b}.layout{display:grid;grid-template-columns:1.7fr 1fr;gap:36px;margin-top:36px}
-    .panel{background:white;border:1px solid #d6dfdb;border-radius:14px;padding:28px}h2{margin:0 0 18px;font-size:21px}
-    label{display:block;font-size:14px;font-weight:600;margin-bottom:12px}textarea{width:100%;min-height:190px;resize:vertical;border:1px solid #b6c7c1;border-radius:8px;padding:16px;font:16px/1.6 system-ui;color:inherit}
-    textarea:focus,button:focus-visible{outline:3px solid #69aa94;outline-offset:3px}button{cursor:pointer;font:600 15px system-ui}
-    .primary{color:white;background:#155946;border:0;border-radius:8px;padding:13px 22px;margin-top:18px}.primary:disabled{opacity:.6;cursor:wait}
-    .samples{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.sample{background:#f2f5f2;color:#274d43;border:1px solid #d6dfdb;border-radius:6px;padding:7px 10px;font-size:12px}
-    .result{border-top:1px solid #d6dfdb;margin-top:24px;padding-top:20px}.label{font-size:30px;font-weight:650;color:#155946;margin:0 0 8px}
-    .muted{color:#607277;font-size:13px;line-height:1.65}ol{padding-left:22px}li{margin:14px 0;font-size:14px;line-height:1.6}
-    .notice{font-size:13px;line-height:1.7;margin-top:32px;color:#607277}footer{margin-top:36px;border-top:1px solid #d6dfdb;padding-top:18px;color:#607277;font-size:12px}
-    .comparison{margin-top:36px}.comparison-head{display:flex;align-items:start;justify-content:space-between;gap:24px}.comparison-head p{max-width:690px;margin:0}
-    .comparison-status{margin:22px 0 0}.retry{color:#155946;background:white;border:1px solid #88a89e;border-radius:7px;padding:8px 13px;margin-top:12px}
-    .table-wrap{max-width:100%;overflow-x:auto;margin-top:22px;border:1px solid #d6dfdb;border-radius:9px}.model-table{width:100%;min-width:760px;border-collapse:collapse;font-size:14px}
-    .model-table th,.model-table td{text-align:left;padding:14px 16px;border-bottom:1px solid #e2e9e6;vertical-align:top}.model-table th{background:#f2f5f2;color:#35534b;font-size:12px;letter-spacing:.03em}
-    .model-table tbody tr:last-child td{border-bottom:0}.model-table tbody tr.selected{background:#edf7f2}.model-name{font-weight:650;color:#183f34}.feature{color:#607277;line-height:1.45;min-width:220px}
-    .badge{display:inline-block;margin-left:8px;padding:3px 7px;border-radius:999px;background:#155946;color:white;font-size:11px;white-space:nowrap}.number{font-variant-numeric:tabular-nums;white-space:nowrap}
-    .comparison-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:18px}.comparison-notes p{margin:0}
-    .method-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.method-card{border:1px solid #d6dfdb;border-radius:9px;padding:20px}.method-card h3{font-size:16px;margin:0 0 14px}.method-card .label{font-size:24px}.method-card p:last-child{margin-bottom:0}
-    .jev-option{display:flex;align-items:center;gap:8px;margin:16px 0 0}.jev-option input{width:17px;height:17px}.method-benchmark{margin-top:24px}
-    .score-chart{padding:20px}.chart-row{display:grid;grid-template-columns:260px 1fr 46px;align-items:center;gap:16px;margin:16px 0;font-size:13px}.chart-track{background:#e8efeb;border-radius:5px;height:18px;overflow:hidden}.chart-bar{height:100%;background:#36866c;border-radius:5px}.chart-name{line-height:1.5}.comparison-notes{display:block}
-    @media(max-width:600px){.chart-row{grid-template-columns:1fr 46px;gap:8px}.chart-name{grid-column:1/-1}.score-chart{padding:14px}}
-    @media(max-width:740px){main{padding:30px 20px}.layout{grid-template-columns:1fr;gap:20px}.panel{padding:22px}}
-    @media(max-width:600px){.comparison-head{display:block}.comparison-notes,.method-cards{grid-template-columns:1fr}}
-  </style>
-</head>
-<body>
-<main>
-  <div class="eyebrow">COE025 · Project 1 · Text classification</div>
-  <h1>What would you like to do?</h1>
-  <p class="lead">One request. Three methods. Try Turkish or English.</p>
-  <div class="layout">
-    <section class="panel" aria-labelledby="input-title">
-      <h2 id="input-title">Describe your plan</h2>
-      <form id="form">
-        <label for="description">Your request / İsteğin</label>
-        <textarea id="description" maxlength="5000" required placeholder="Canlı caz dinlemek istiyorum. / I want live jazz."></textarea>
-        <div class="samples" aria-label="Sample requests">
-          <button class="sample" type="button" data-sample="Canlı caz dinlemek istiyorum.">TR: Live jazz</button>
-          <button class="sample" type="button" data-sample="Bu hafta bir tiyatro oyunu izlemek istiyorum.">TR: Theatre</button>
-          <button class="sample" type="button" data-sample="I want to see a stand-up comedian tonight.">EN: Stand-up</button>
-          <button class="sample" type="button" data-sample="I would like tickets to a live concert.">EN: Concert</button>
-          <button class="sample" type="button" data-sample="Konser veya tiyatro olabilir.">TR: Two options</button>
-          <button class="sample" type="button" data-sample="Something fun tonight.">EN: Unclear</button>
-          <button class="sample" type="button" data-sample="Konser değil, tiyatro istiyorum.">TR: Exclusion</button>
-          <button class="sample" type="button" data-sample="Bu gece sahnede blues çalan birilerini dinleyelim.">TR: Indirect request</button>
-        </div>
-        <label class="jev-option"><input id="include-jev" type="checkbox" disabled>Include Jev (external API call)</label>
-        <p class="muted" id="jev-status">Checking Jev settings...</p>
-        <button class="primary" id="submit" type="submit">Compare methods</button>
-      </form>
-    </section>
-    <aside class="panel">
-      <h2>Three approaches</h2>
-      <p><strong>Parser</strong><br><span class="muted">Written rules</span></p>
-      <p><strong>Logistic Regression</strong><br><span class="muted">Learned patterns</span></p>
-      <p><strong>Jev</strong><br><span class="muted">Pretrained model / optional API</span></p>
-    </aside>
-  </div>
-  <section class="panel comparison" id="result" role="status" aria-live="polite" hidden></section>
-  <section class="panel comparison" aria-labelledby="method-title">
-    <h2 id="method-title">Same requests, three approaches</h2>
-    <p class="muted">Same labeled cases for each method.</p>
-    <div id="method-results" class="method-benchmark muted" role="status" aria-live="polite">Loading the comparison experiment...</div>
-  </section>
-  <section class="panel comparison" aria-labelledby="comparison-title">
-    <div class="comparison-head">
-      <div>
-        <h2 id="comparison-title">Training experiment</h2>
-        <p class="muted">Validation macro F1 / higher is better</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event request classifier · COE025</title>
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+        color: #182c35;
+        background: #f2f5f2;
+        font-synthesis: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1040px;
+        margin: auto;
+        padding: 60px 28px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        font-weight: 700;
+        color: #36695c;
+        text-transform: uppercase;
+      }
+      h1 {
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+        margin: 18px 0;
+      }
+      .lead {
+        max-width: 650px;
+        font-size: 18px;
+        line-height: 1.6;
+        color: #4f656b;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1.7fr 1fr;
+        gap: 36px;
+        margin-top: 36px;
+      }
+      .panel {
+        background: white;
+        border: 1px solid #d6dfdb;
+        border-radius: 14px;
+        padding: 28px;
+      }
+      h2 {
+        margin: 0 0 18px;
+        font-size: 21px;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 190px;
+        resize: vertical;
+        border: 1px solid #b6c7c1;
+        border-radius: 8px;
+        padding: 16px;
+        font: 16px/1.6 system-ui;
+        color: inherit;
+      }
+      textarea:focus,
+      button:focus-visible {
+        outline: 3px solid #69aa94;
+        outline-offset: 3px;
+      }
+      button {
+        cursor: pointer;
+        font: 600 15px system-ui;
+      }
+      .primary {
+        color: white;
+        background: #155946;
+        border: 0;
+        border-radius: 8px;
+        padding: 13px 22px;
+        margin-top: 18px;
+      }
+      .primary:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      .samples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 14px 0;
+      }
+      .sample {
+        background: #f2f5f2;
+        color: #274d43;
+        border: 1px solid #d6dfdb;
+        border-radius: 6px;
+        padding: 7px 10px;
+        font-size: 12px;
+      }
+      .result {
+        border-top: 1px solid #d6dfdb;
+        margin-top: 24px;
+        padding-top: 20px;
+      }
+      .label {
+        font-size: 30px;
+        font-weight: 650;
+        color: #155946;
+        margin: 0 0 8px;
+      }
+      .muted {
+        color: #607277;
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      ol {
+        padding-left: 22px;
+      }
+      li {
+        margin: 14px 0;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .notice {
+        font-size: 13px;
+        line-height: 1.7;
+        margin-top: 32px;
+        color: #607277;
+      }
+      footer {
+        margin-top: 36px;
+        border-top: 1px solid #d6dfdb;
+        padding-top: 18px;
+        color: #607277;
+        font-size: 12px;
+      }
+      .comparison {
+        margin-top: 36px;
+      }
+      .comparison-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .comparison-head p {
+        max-width: 690px;
+        margin: 0;
+      }
+      .comparison-status {
+        margin: 22px 0 0;
+      }
+      .retry {
+        color: #155946;
+        background: white;
+        border: 1px solid #88a89e;
+        border-radius: 7px;
+        padding: 8px 13px;
+        margin-top: 12px;
+      }
+      .table-wrap {
+        max-width: 100%;
+        overflow-x: auto;
+        margin-top: 22px;
+        border: 1px solid #d6dfdb;
+        border-radius: 9px;
+      }
+      .model-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .model-table th,
+      .model-table td {
+        text-align: left;
+        padding: 14px 16px;
+        border-bottom: 1px solid #e2e9e6;
+        vertical-align: top;
+      }
+      .model-table th {
+        background: #f2f5f2;
+        color: #35534b;
+        font-size: 12px;
+        letter-spacing: 0.03em;
+      }
+      .model-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .model-table tbody tr.selected {
+        background: #edf7f2;
+      }
+      .model-name {
+        font-weight: 650;
+        color: #183f34;
+      }
+      .feature {
+        color: #607277;
+        line-height: 1.45;
+        min-width: 220px;
+      }
+      .badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        background: #155946;
+        color: white;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .number {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .comparison-notes {
+        margin-top: 18px;
+      }
+      .comparison-notes p {
+        margin: 0;
+      }
+      .method-cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .method-card {
+        border: 1px solid #d6dfdb;
+        border-radius: 9px;
+        padding: 20px;
+      }
+      .method-card h3 {
+        font-size: 16px;
+        margin: 0 0 14px;
+      }
+      .method-card .label {
+        font-size: 24px;
+      }
+      .method-card p:last-child {
+        margin-bottom: 0;
+      }
+      .jev-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 16px 0 0;
+      }
+      .jev-option input {
+        width: 17px;
+        height: 17px;
+      }
+      .method-benchmark {
+        margin-top: 24px;
+      }
+      .score-chart {
+        padding: 20px;
+      }
+      .chart-row {
+        display: grid;
+        grid-template-columns: 260px 1fr 46px;
+        align-items: center;
+        gap: 16px;
+        margin: 16px 0;
+        font-size: 13px;
+      }
+      .chart-track {
+        background: #e8efeb;
+        border-radius: 5px;
+        height: 18px;
+        overflow: hidden;
+      }
+      .chart-bar {
+        height: 100%;
+        background: #36866c;
+        border-radius: 5px;
+      }
+      .chart-name {
+        line-height: 1.5;
+      }
+      .comparison-notes {
+        display: block;
+      }
+      @media (max-width: 600px) {
+        .chart-row {
+          grid-template-columns: 1fr 46px;
+          gap: 8px;
+        }
+        .chart-name {
+          grid-column: 1/-1;
+        }
+        .score-chart {
+          padding: 14px;
+        }
+      }
+      @media (max-width: 740px) {
+        main {
+          padding: 30px 20px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .panel {
+          padding: 22px;
+        }
+      }
+      @media (max-width: 600px) {
+        .comparison-head {
+          display: block;
+        }
+        .comparison-notes,
+        .method-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">COE025 · Project 1 · Text classification</div>
+      <h1>What would you like to do?</h1>
+      <p class="lead">One request. Three methods. Try Turkish or English.</p>
+      <div class="layout">
+        <section class="panel" aria-labelledby="input-title">
+          <h2 id="input-title">Describe your plan</h2>
+          <form id="form">
+            <label for="description">Your request / İsteğin</label>
+            <textarea
+              id="description"
+              maxlength="5000"
+              required
+              placeholder="Canlı caz dinlemek istiyorum. / I want live jazz."
+            ></textarea>
+            <div class="samples" aria-label="Sample requests">
+              <button
+                class="sample"
+                type="button"
+                data-sample="Canlı caz dinlemek istiyorum."
+              >
+                TR: Live jazz
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="Bu hafta bir tiyatro oyunu izlemek istiyorum."
+              >
+                TR: Theatre
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="I want to see a stand-up comedian tonight."
+              >
+                EN: Stand-up
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="I would like tickets to a live concert."
+              >
+                EN: Concert
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="Konser veya tiyatro olabilir."
+              >
+                TR: Two options
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="Something fun tonight."
+              >
+                EN: Unclear
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="Konser değil, tiyatro istiyorum."
+              >
+                TR: Exclusion
+              </button>
+              <button
+                class="sample"
+                type="button"
+                data-sample="Bu gece sahnede blues çalan birilerini dinleyelim."
+              >
+                TR: Indirect request
+              </button>
+            </div>
+            <label class="jev-option"
+              ><input id="include-jev" type="checkbox" disabled />Include Jev
+              (external API call)</label
+            >
+            <p class="muted" id="jev-status">Checking Jev settings...</p>
+            <button class="primary" id="submit" type="submit">
+              Compare methods
+            </button>
+          </form>
+        </section>
+        <aside class="panel">
+          <h2>Three approaches</h2>
+          <p>
+            <strong>Parser</strong><br /><span class="muted"
+              >Written rules</span
+            >
+          </p>
+          <p>
+            <strong>Logistic Regression</strong><br /><span class="muted"
+              >Learned patterns</span
+            >
+          </p>
+          <p>
+            <strong>Jev</strong><br /><span class="muted"
+              >Pretrained model / optional API</span
+            >
+          </p>
+        </aside>
       </div>
-    </div>
-    <div class="comparison-status muted" id="comparison-status" role="status" aria-live="polite">Loading model results...</div>
-    <div class="table-wrap" id="comparison-table-wrap" hidden></div>
-    <div class="comparison-notes" id="comparison-notes" hidden></div>
-  </section>
-  <p class="notice">Synthetic course data. Scores do not measure real-user accuracy. Classification only.</p>
-  <footer>COE025 / Local course demo</footer>
-</main>
-<script>
-  const input=document.getElementById('description');
-  const result=document.getElementById('result');
-  const submit=document.getElementById('submit');
-  const names={concert:'Concert / Konser',theatre:'Theatre / Tiyatro',stand_up:'Stand-up',unclear:'Unclear / Belirsiz'};
-  const methodNames={parser:'Rule-based parser',logistic_regression:'Logistic Regression',jev:'Jev'};
-  const methodDescriptions={parser:'Written rules.',logistic_regression:'Learned patterns.',jev:'Pretrained model.'};
-  const modelDetails={
-    dummy_most_frequent:{name:'Majority baseline',feature:'Always predicts the most common training category.'},
-    multinomial_nb:{name:'Multinomial Naive Bayes',feature:'Uses weighted single words and adjacent word pairs.'},
-    logistic_regression_unigram:{name:'Logistic Regression: words',feature:'Uses weighted single words.'},
-    logistic_regression_bigram:{name:'Logistic Regression: word pairs',feature:'Uses weighted single words and adjacent word pairs.'},
-    logistic_regression_char:{name:'Logistic Regression: characters',feature:'Uses groups of 3 to 5 characters.'},
-    linear_svc:{name:'Linear SVM',feature:'Uses weighted single words and adjacent word pairs.'}
-  };
-  const comparisonStatus=document.getElementById('comparison-status');
-  const comparisonTableWrap=document.getElementById('comparison-table-wrap');
-  const comparisonNotes=document.getElementById('comparison-notes');
-  const addCell=(row,tag,text,className)=>{const cell=document.createElement(tag);cell.textContent=text;if(className)cell.className=className;row.append(cell);return cell};
-  const validScore=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=1;
-  function showComparisonError(message){
-    comparisonStatus.replaceChildren();comparisonStatus.textContent=message;
-    const retry=document.createElement('button');retry.type='button';retry.className='retry';retry.textContent='Retry';retry.addEventListener('click',loadComparison);comparisonStatus.append(document.createElement('br'),retry);
-    comparisonTableWrap.hidden=true;comparisonNotes.hidden=true;
-  }
-  function renderComparison(payload){
-    if(!payload||typeof payload!=='object'||!payload.models||typeof payload.models!=='object'||Array.isArray(payload.models))throw new Error('Model results have an invalid format.');
-    if(payload.task!=='user_request_classification'||payload.evaluation_scope!=='raw_model')throw new Error('Model results do not match this request classifier.');
-    if(payload.selection?.metric!=='validation_macro_f1')throw new Error('Model selection details are invalid.');
-    const rows=Object.entries(payload.models).map(([key,value])=>({key,value,detail:modelDetails[key]}));
-    if(rows.length===0)throw new Error('No model results are available.');
-    if(rows.length!==Object.keys(modelDetails).length||rows.some(row=>!row.detail||!row.value||!validScore(row.value.validation?.macro_f1)||!validScore(row.value.test?.accuracy)||!validScore(row.value.test?.macro_f1)))throw new Error('Model results are incomplete or invalid.');
-    const selected=payload.selection?.selected_model;
-    if(typeof selected!=='string'||!rows.some(row=>row.key===selected))throw new Error('The selected model is missing from the results.');
-    rows.sort((a,b)=>b.value.validation.macro_f1-a.value.validation.macro_f1);
-    const chart=document.createElement('div');chart.className='score-chart';chart.setAttribute('aria-label','Validation macro F1 by model');
-    rows.forEach(row=>{
-      const item=document.createElement('div');item.className='chart-row';
-      const name=document.createElement('div');name.className='chart-name';name.textContent=row.detail.name;
-      if(row.key===selected){const badge=document.createElement('span');badge.className='badge';badge.textContent='Selected';name.append(badge)}
-      const track=document.createElement('div');track.className='chart-track';
-      const bar=document.createElement('div');bar.className='chart-bar';bar.style.width=(row.value.validation.macro_f1*100)+'%';track.append(bar);
-      const score=document.createElement('span');score.className='number';score.textContent=row.value.validation.macro_f1.toFixed(3);
-      item.append(name,track,score);chart.append(item);
-    });
-    comparisonTableWrap.replaceChildren(chart);comparisonTableWrap.hidden=false;
-    const split=payload.split;const datasetRows=payload.dataset?.rows;
-    if(!Number.isInteger(datasetRows)||!Number.isInteger(split?.train?.rows)||!Number.isInteger(split?.validation?.rows)||!Number.isInteger(split?.test?.rows))throw new Error('Dataset details are incomplete or invalid.');
-    const splitNote=document.createElement('p');splitNote.className='muted';splitNote.textContent=datasetRows+' synthetic requests / '+split.train.rows+' train / '+split.validation.rows+' validation / '+split.test.rows+' test. Different dataset from the comparison above.';
-    comparisonNotes.replaceChildren(splitNote);comparisonNotes.hidden=false;comparisonStatus.textContent='';
-
-  }
-  async function loadComparison(){
-    comparisonStatus.textContent='Loading model results...';comparisonTableWrap.hidden=true;comparisonNotes.hidden=true;
-    try{const response=await fetch('/api/results');if(!response.ok)throw new Error('Could not load model results.');const payload=await response.json();renderComparison(payload)}
-    catch(error){showComparisonError(error instanceof Error?error.message:'Could not load model results.')}
-  }
-  async function loadJevStatus(){
-    const checkbox=document.getElementById('include-jev');const status=document.getElementById('jev-status');
-    try{const response=await fetch('/api/comparison-config');if(!response.ok)throw new Error();const config=await response.json();checkbox.disabled=!config.configured||config.remaining_calls<=0;if(checkbox.disabled)checkbox.checked=false;
-      status.textContent=config.configured?config.remaining_calls+' API calls left / 1,000 characters max':'Jev is not configured.';
-    }catch{checkbox.disabled=true;checkbox.checked=false;status.textContent='Jev settings are unavailable. Both local methods remain available.'}
-  }
-  async function loadMethodResults(){
-    const target=document.getElementById('method-results');
-    try{const response=await fetch('/api/method-results');if(!response.ok)throw new Error('Could not load experiment results.');const payload=await response.json();target.replaceChildren();
-      if(!payload.methods||!payload.examples){target.textContent='No saved experiment is available yet.';return}
-      if(payload.task!=='user_request_classification')throw new Error('Experiment results do not match this task.');
-      const wrap=document.createElement('div');wrap.className='table-wrap';const table=document.createElement('table');table.className='model-table';table.style.minWidth='560px';const head=document.createElement('thead');const header=document.createElement('tr');
-      ['Method','Completed','Accuracy','Macro F1'].forEach(text=>{const cell=addCell(header,'th',text);cell.scope='col'});head.append(header);table.append(head);const body=document.createElement('tbody');
-      Object.keys(methodNames).forEach(key=>{const score=payload.methods[key];if(!score||!Number.isInteger(score.completed)||!Number.isInteger(score.total))throw new Error('Experiment results are incomplete.');const complete=score.completed===score.total;const row=document.createElement('tr');addCell(row,'td',methodNames[key],'model-name');addCell(row,'td',score.completed+' / '+score.total,'number');addCell(row,'td',complete&&validScore(score.accuracy)?(score.accuracy*100).toFixed(1)+'%':'Not evaluated','number');addCell(row,'td',complete&&validScore(score.macro_f1)?score.macro_f1.toFixed(3):'Not evaluated','number');body.append(row)});
-      table.append(body);wrap.append(table);target.append(wrap);const note=document.createElement('p');note.className='muted';note.textContent=payload.examples+' inspected synthetic cases / Jev scores appear after a complete run.';target.append(note);
-    }catch(error){target.textContent=error.message}
-  }
-  document.querySelectorAll('[data-sample]').forEach(button=>button.addEventListener('click',()=>{input.value=button.dataset.sample;input.focus()}));
-  document.getElementById('form').addEventListener('submit',async event=>{
-    event.preventDefault();submit.disabled=true;result.hidden=false;result.textContent='Comparing methods...';const requestText=input.value;
-    try{
-      const response=await fetch('/api/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:requestText,include_jev:document.getElementById('include-jev').checked})});
-      const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Prediction failed.');
-      if(!Array.isArray(payload.results)||payload.results.length!==3||Object.keys(methodNames).some(key=>payload.results.filter(row=>row.method===key).length!==1))throw new Error('Comparison results are incomplete.');
-      result.replaceChildren();const heading=document.createElement('h2');heading.textContent='Same input, three methods';result.append(heading);const quote=document.createElement('p');quote.className='muted';quote.textContent=requestText;result.append(quote);const cards=document.createElement('div');cards.className='method-cards';
-      payload.results.forEach(row=>{const card=document.createElement('article');card.className='method-card';const title=document.createElement('h3');title.textContent=methodNames[row.method];card.append(title);const label=document.createElement('p');label.className='label';if(row.status==='ok'&&!names[row.label])throw new Error('A method returned an invalid category.');label.textContent=row.status==='ok'?names[row.label]:'Not evaluated';card.append(label);const description=document.createElement('p');description.className='muted';description.textContent=row.status==='ok'?methodDescriptions[row.method]:(row.method==='jev'&&document.getElementById('include-jev').disabled?'Jev is unavailable.':row.message||'No result is available.');card.append(description);if(Number.isFinite(row.elapsed_ms)){const timing=document.createElement('p');timing.className='muted';timing.textContent='Request time: '+row.elapsed_ms.toFixed(1)+' ms';card.append(timing)}cards.append(card)});result.append(cards);
-
-    }catch(error){result.textContent=error.message}finally{submit.disabled=false;loadJevStatus()}
-  });
-  loadComparison();
-  loadJevStatus();
-  loadMethodResults();
-</script>
-</body>
+      <section
+        class="panel comparison"
+        id="result"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></section>
+      <section class="panel comparison" aria-labelledby="method-title">
+        <h2 id="method-title">Same requests, three approaches</h2>
+        <p class="muted">Same labeled cases for each method.</p>
+        <div
+          id="method-results"
+          class="method-benchmark muted"
+          role="status"
+          aria-live="polite"
+        >
+          Loading the comparison experiment...
+        </div>
+      </section>
+      <section class="panel comparison" aria-labelledby="comparison-title">
+        <div class="comparison-head">
+          <div>
+            <h2 id="comparison-title">Training experiment</h2>
+            <p class="muted">Validation macro F1 / higher is better</p>
+          </div>
+        </div>
+        <div
+          class="comparison-status muted"
+          id="comparison-status"
+          role="status"
+          aria-live="polite"
+        >
+          Loading model results...
+        </div>
+        <div class="table-wrap" id="comparison-table-wrap" hidden></div>
+        <div class="comparison-notes" id="comparison-notes" hidden></div>
+      </section>
+      <p class="notice">
+        Synthetic course data. Scores do not measure real-user accuracy.
+        Classification only.
+      </p>
+      <footer>COE025 / Local course demo</footer>
+    </main>
+    <script>
+      const input = document.getElementById("description");
+      const result = document.getElementById("result");
+      const submit = document.getElementById("submit");
+      const names = {
+        concert: "Concert / Konser",
+        theatre: "Theatre / Tiyatro",
+        stand_up: "Stand-up",
+        unclear: "Unclear / Belirsiz",
+      };
+      const methodNames = {
+        parser: "Rule-based parser",
+        logistic_regression: "Logistic Regression",
+        jev: "Jev",
+      };
+      const methodDescriptions = {
+        parser: "Written rules.",
+        logistic_regression: "Learned patterns.",
+        jev: "Pretrained model.",
+      };
+      const modelDetails = {
+        dummy_most_frequent: {
+          name: "Majority baseline",
+          feature: "Always predicts the most common training category.",
+        },
+        multinomial_nb: {
+          name: "Multinomial Naive Bayes",
+          feature: "Uses weighted single words and adjacent word pairs.",
+        },
+        logistic_regression_char: {
+          name: "Logistic Regression: characters",
+          feature: "Uses groups of 3 to 5 characters.",
+        },
+      };
+      const comparisonStatus = document.getElementById("comparison-status");
+      const comparisonTableWrap = document.getElementById(
+        "comparison-table-wrap",
+      );
+      const comparisonNotes = document.getElementById("comparison-notes");
+      const addCell = (row, tag, text, className) => {
+        const cell = document.createElement(tag);
+        cell.textContent = text;
+        if (className) cell.className = className;
+        row.append(cell);
+        return cell;
+      };
+      const validScore = (value) =>
+        typeof value === "number" &&
+        Number.isFinite(value) &&
+        value >= 0 &&
+        value <= 1;
+      function showComparisonError(message) {
+        comparisonStatus.replaceChildren();
+        comparisonStatus.textContent = message;
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "retry";
+        retry.textContent = "Retry";
+        retry.addEventListener("click", loadComparison);
+        comparisonStatus.append(document.createElement("br"), retry);
+        comparisonTableWrap.hidden = true;
+        comparisonNotes.hidden = true;
+      }
+      function renderComparison(payload) {
+        if (
+          !payload ||
+          typeof payload !== "object" ||
+          !payload.models ||
+          typeof payload.models !== "object" ||
+          Array.isArray(payload.models)
+        )
+          throw new Error("Model results have an invalid format.");
+        if (
+          payload.task !== "user_request_classification" ||
+          payload.evaluation_scope !== "raw_model"
+        )
+          throw new Error(
+            "Model results do not match this request classifier.",
+          );
+        if (payload.selection?.metric !== "validation_macro_f1")
+          throw new Error("Model selection details are invalid.");
+        const rows = Object.entries(payload.models).map(([key, value]) => ({
+          key,
+          value,
+          detail: modelDetails[key],
+        }));
+        if (rows.length === 0)
+          throw new Error("No model results are available.");
+        if (
+          rows.length !== Object.keys(modelDetails).length ||
+          rows.some(
+            (row) =>
+              !row.detail ||
+              !row.value ||
+              !validScore(row.value.validation?.macro_f1) ||
+              !validScore(row.value.test?.accuracy) ||
+              !validScore(row.value.test?.macro_f1),
+          )
+        )
+          throw new Error("Model results are incomplete or invalid.");
+        const selected = payload.selection?.selected_model;
+        if (
+          typeof selected !== "string" ||
+          !rows.some((row) => row.key === selected)
+        )
+          throw new Error("The selected model is missing from the results.");
+        rows.sort(
+          (a, b) => b.value.validation.macro_f1 - a.value.validation.macro_f1,
+        );
+        const chart = document.createElement("div");
+        chart.className = "score-chart";
+        chart.setAttribute("aria-label", "Validation macro F1 by model");
+        rows.forEach((row) => {
+          const item = document.createElement("div");
+          item.className = "chart-row";
+          const name = document.createElement("div");
+          name.className = "chart-name";
+          name.textContent = row.detail.name;
+          if (row.key === selected) {
+            const badge = document.createElement("span");
+            badge.className = "badge";
+            badge.textContent = "Selected";
+            name.append(badge);
+          }
+          const track = document.createElement("div");
+          track.className = "chart-track";
+          const bar = document.createElement("div");
+          bar.className = "chart-bar";
+          bar.style.width = row.value.validation.macro_f1 * 100 + "%";
+          track.append(bar);
+          const score = document.createElement("span");
+          score.className = "number";
+          score.textContent = row.value.validation.macro_f1.toFixed(3);
+          item.append(name, track, score);
+          chart.append(item);
+        });
+        comparisonTableWrap.replaceChildren(chart);
+        comparisonTableWrap.hidden = false;
+        const split = payload.split;
+        const datasetRows = payload.dataset?.rows;
+        if (
+          !Number.isInteger(datasetRows) ||
+          !Number.isInteger(split?.train?.rows) ||
+          !Number.isInteger(split?.validation?.rows) ||
+          !Number.isInteger(split?.test?.rows)
+        )
+          throw new Error("Dataset details are incomplete or invalid.");
+        const splitNote = document.createElement("p");
+        splitNote.className = "muted";
+        splitNote.textContent =
+          datasetRows +
+          " synthetic requests / " +
+          split.train.rows +
+          " train / " +
+          split.validation.rows +
+          " validation / " +
+          split.test.rows +
+          " test. Different dataset from the comparison above.";
+        comparisonNotes.replaceChildren(splitNote);
+        comparisonNotes.hidden = false;
+        comparisonStatus.textContent = "";
+      }
+      async function loadComparison() {
+        comparisonStatus.textContent = "Loading model results...";
+        comparisonTableWrap.hidden = true;
+        comparisonNotes.hidden = true;
+        try {
+          const response = await fetch("/api/results");
+          if (!response.ok) throw new Error("Could not load model results.");
+          const payload = await response.json();
+          renderComparison(payload);
+        } catch (error) {
+          showComparisonError(
+            error instanceof Error
+              ? error.message
+              : "Could not load model results.",
+          );
+        }
+      }
+      async function loadJevStatus() {
+        const checkbox = document.getElementById("include-jev");
+        const status = document.getElementById("jev-status");
+        try {
+          const response = await fetch("/api/comparison-config");
+          if (!response.ok) throw new Error();
+          const config = await response.json();
+          checkbox.disabled = !config.configured || config.remaining_calls <= 0;
+          if (checkbox.disabled) checkbox.checked = false;
+          status.textContent = config.configured
+            ? config.remaining_calls + " API calls left / 1,000 characters max"
+            : "Jev is not configured.";
+        } catch {
+          checkbox.disabled = true;
+          checkbox.checked = false;
+          status.textContent =
+            "Jev settings are unavailable. Both local methods remain available.";
+        }
+      }
+      async function loadMethodResults() {
+        const target = document.getElementById("method-results");
+        try {
+          const response = await fetch("/api/method-results");
+          if (!response.ok)
+            throw new Error("Could not load experiment results.");
+          const payload = await response.json();
+          target.replaceChildren();
+          if (!payload.methods || !payload.examples) {
+            target.textContent = "No saved experiment is available yet.";
+            return;
+          }
+          if (payload.task !== "user_request_classification")
+            throw new Error("Experiment results do not match this task.");
+          const wrap = document.createElement("div");
+          wrap.className = "table-wrap";
+          const table = document.createElement("table");
+          table.className = "model-table";
+          table.style.minWidth = "560px";
+          const head = document.createElement("thead");
+          const header = document.createElement("tr");
+          ["Method", "Completed", "Accuracy", "Macro F1"].forEach((text) => {
+            const cell = addCell(header, "th", text);
+            cell.scope = "col";
+          });
+          head.append(header);
+          table.append(head);
+          const body = document.createElement("tbody");
+          Object.keys(methodNames).forEach((key) => {
+            const score = payload.methods[key];
+            if (
+              !score ||
+              !Number.isInteger(score.completed) ||
+              !Number.isInteger(score.total)
+            )
+              throw new Error("Experiment results are incomplete.");
+            const complete = score.completed === score.total;
+            const row = document.createElement("tr");
+            addCell(row, "td", methodNames[key], "model-name");
+            addCell(row, "td", score.completed + " / " + score.total, "number");
+            addCell(
+              row,
+              "td",
+              complete && validScore(score.accuracy)
+                ? (score.accuracy * 100).toFixed(1) + "%"
+                : "Not evaluated",
+              "number",
+            );
+            addCell(
+              row,
+              "td",
+              complete && validScore(score.macro_f1)
+                ? score.macro_f1.toFixed(3)
+                : "Not evaluated",
+              "number",
+            );
+            body.append(row);
+          });
+          table.append(body);
+          wrap.append(table);
+          target.append(wrap);
+          const note = document.createElement("p");
+          note.className = "muted";
+          note.textContent =
+            payload.examples +
+            " inspected synthetic cases / Jev scores appear after a complete run.";
+          target.append(note);
+        } catch (error) {
+          target.textContent = error.message;
+        }
+      }
+      document.querySelectorAll("[data-sample]").forEach((button) =>
+        button.addEventListener("click", () => {
+          input.value = button.dataset.sample;
+          input.focus();
+        }),
+      );
+      document
+        .getElementById("form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          submit.disabled = true;
+          result.hidden = false;
+          result.textContent = "Comparing methods...";
+          const requestText = input.value;
+          try {
+            const response = await fetch("/api/compare", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: requestText,
+                include_jev: document.getElementById("include-jev").checked,
+              }),
+            });
+            const payload = await response.json();
+            if (!response.ok)
+              throw new Error(payload.error || "Prediction failed.");
+            if (
+              !Array.isArray(payload.results) ||
+              payload.results.length !== 3 ||
+              Object.keys(methodNames).some(
+                (key) =>
+                  payload.results.filter((row) => row.method === key).length !==
+                  1,
+              )
+            )
+              throw new Error("Comparison results are incomplete.");
+            result.replaceChildren();
+            const heading = document.createElement("h2");
+            heading.textContent = "Same input, three methods";
+            result.append(heading);
+            const quote = document.createElement("p");
+            quote.className = "muted";
+            quote.textContent = requestText;
+            result.append(quote);
+            const cards = document.createElement("div");
+            cards.className = "method-cards";
+            payload.results.forEach((row) => {
+              const card = document.createElement("article");
+              card.className = "method-card";
+              const title = document.createElement("h3");
+              title.textContent = methodNames[row.method];
+              card.append(title);
+              const label = document.createElement("p");
+              label.className = "label";
+              if (row.status === "ok" && !names[row.label])
+                throw new Error("A method returned an invalid category.");
+              label.textContent =
+                row.status === "ok" ? names[row.label] : "Not evaluated";
+              card.append(label);
+              const description = document.createElement("p");
+              description.className = "muted";
+              description.textContent =
+                row.status === "ok"
+                  ? methodDescriptions[row.method]
+                  : row.method === "jev" &&
+                      document.getElementById("include-jev").disabled
+                    ? "Jev is unavailable."
+                    : row.message || "No result is available.";
+              card.append(description);
+              if (Number.isFinite(row.elapsed_ms)) {
+                const timing = document.createElement("p");
+                timing.className = "muted";
+                timing.textContent =
+                  "Request time: " + row.elapsed_ms.toFixed(1) + " ms";
+                card.append(timing);
+              }
+              cards.append(card);
+            });
+            result.append(cards);
+          } catch (error) {
+            result.textContent = error.message;
+          } finally {
+            submit.disabled = false;
+            loadJevStatus();
+          }
+        });
+      loadComparison();
+      loadJevStatus();
+      loadMethodResults();
+    </script>
+  </body>
 </html>

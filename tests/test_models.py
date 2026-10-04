@@ -25,48 +25,18 @@ class NormalizeTextTests(unittest.TestCase):
 
 
 class ModelDefinitionTests(unittest.TestCase):
-    def test_required_candidates_and_ablation_are_present(self):
+    def test_required_training_methods_are_present(self):
         from sklearn.dummy import DummyClassifier
         from sklearn.linear_model import LogisticRegression
         from sklearn.naive_bayes import MultinomialNB
-        from sklearn.svm import LinearSVC
 
         models = make_models(seed=7)
-
-        self.assertEqual(
-            set(models),
-            {
-                "dummy_most_frequent",
-                "multinomial_nb",
-                "logistic_regression_unigram",
-                "logistic_regression_bigram",
-                "logistic_regression_char",
-                "linear_svc",
-            },
-        )
+        self.assertEqual(set(models), {"dummy_most_frequent", "multinomial_nb", "logistic_regression_char"})
         self.assertIsInstance(models["dummy_most_frequent"]["classifier"], DummyClassifier)
         self.assertIsInstance(models["multinomial_nb"]["classifier"], MultinomialNB)
-        self.assertIsInstance(
-            models["logistic_regression_unigram"]["classifier"], LogisticRegression
-        )
-        self.assertIsInstance(
-            models["logistic_regression_bigram"]["classifier"], LogisticRegression
-        )
-        self.assertIsInstance(
-            models["logistic_regression_char"]["classifier"], LogisticRegression
-        )
-        self.assertIsInstance(models["linear_svc"]["classifier"], LinearSVC)
-        self.assertEqual(
-            models["logistic_regression_unigram"]["tfidf"].ngram_range, (1, 1)
-        )
-        self.assertEqual(
-            models["logistic_regression_bigram"]["tfidf"].ngram_range, (1, 2)
-        )
+        self.assertIsInstance(models["logistic_regression_char"]["classifier"], LogisticRegression)
         self.assertEqual(models["logistic_regression_char"]["tfidf"].analyzer, "char_wb")
-        self.assertEqual(
-            models["logistic_regression_char"]["tfidf"].ngram_range, (3, 5)
-        )
-        self.assertEqual(models["logistic_regression_char"]["tfidf"].min_df, 2)
+        self.assertEqual(models["logistic_regression_char"]["tfidf"].ngram_range, (3, 5))
 
     def test_every_candidate_fits_and_predicts_supported_labels(self):
         samples = {
@@ -104,11 +74,11 @@ class ClassifyRequestTests(unittest.TestCase):
             for index in range(6):
                 texts.append(f"{sample} example {index}")
                 labels.append(label)
-        self.model = make_models(seed=19)["logistic_regression_bigram"]
+        self.model = make_models(seed=19)["logistic_regression_char"]
         self.model.fit(texts, labels)
         self.artifact = {
             "model": self.model,
-            "model_name": "logistic_regression_bigram",
+            "model_name": "logistic_regression_char",
             "labels": sorted(LABELS),
             "dataset_sha256": "fixture",
             "seed": 19,

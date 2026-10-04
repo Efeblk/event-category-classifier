@@ -6,14 +6,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import joblib
-from request_policy import classify_input
-from method_comparison import JevClient, compare_request
+from jev import JevClient
+from method_comparison import compare_request
 
 ROOT = Path(__file__).resolve().parent
-
-
-def predict_request(artifact, text):
-    return classify_input(artifact, text)
 
 
 def make_handler(artifact, metrics, jev=None):
@@ -41,7 +37,7 @@ def make_handler(artifact, metrics, jev=None):
                 self.respond(404, {"error": "Page not found."})
 
         def do_POST(self):
-            if self.path not in ("/api/predict", "/api/compare"):
+            if self.path != "/api/compare":
                 return self.respond(404, {"error": "Page not found."})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
@@ -50,10 +46,7 @@ def make_handler(artifact, metrics, jev=None):
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
-                if self.path == "/api/compare":
-                    prediction = compare_request(artifact, payload.get("text"), jev, payload.get("include_jev", False))
-                else:
-                    prediction = predict_request(artifact, payload.get("text"))
+                prediction = compare_request(artifact, payload.get("text"), jev, payload.get("include_jev", False))
                 self.respond(200, prediction)
             except (ValueError, UnicodeDecodeError) as error:
                 self.respond(400, {"error": str(error)})
@@ -75,7 +68,7 @@ def main():
         parser.error("Train first: python train.py --allow-small-prototype")
     artifact = joblib.load(args.model)
     if artifact.get("task") != "user_request_classification":
-        parser.error("This model uses event descriptions. Train a user-request model first.")
+        parser.error("Train a user-request model first.")
     metrics_path = ROOT / "reports/metrics.json"
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
     try:

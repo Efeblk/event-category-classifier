@@ -84,8 +84,6 @@ def read_csv(path: str | Path, min_rows: int = MIN_ROWS) -> list[dict[str, str]]
     return rows
 
 
-load_data = read_csv
-
 
 def _validate_split(rows: list[dict[str, str]], parts: dict[str, list[int]]) -> None:
     names = tuple(parts)
@@ -211,27 +209,6 @@ def _write_reports(
         json.dump(metadata, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
 
-    with (report_dir / "results.csv").open("w", encoding="utf-8", newline="") as handle:
-        fields = (
-            "model", "training_seconds", "validation_prediction_seconds",
-            "validation_accuracy", "validation_macro_f1", "test_prediction_seconds",
-            "test_accuracy", "test_macro_f1", "selected",
-        )
-        writer = csv.DictWriter(handle, fieldnames=fields)
-        writer.writeheader()
-        for name, result in evaluations.items():
-            writer.writerow({
-                "model": name,
-                "training_seconds": result["training_seconds"],
-                "validation_prediction_seconds": result["validation"]["prediction_seconds"],
-                "validation_accuracy": result["validation"]["accuracy"],
-                "validation_macro_f1": result["validation"]["macro_f1"],
-                "test_prediction_seconds": result["test"]["prediction_seconds"],
-                "test_accuracy": result["test"]["accuracy"],
-                "test_macro_f1": result["test"]["macro_f1"],
-                "selected": name == selected_name,
-            })
-
     split_payload: dict[str, Any] = {"seed": metadata["seed"]}
     for name, indices in parts.items():
         split_payload[name] = {
@@ -268,23 +245,6 @@ def _write_reports(
     display.figure_.savefig(report_dir / "confusion_matrix.png", dpi=160)
     plt.close(display.figure_)
 
-    lines = [
-        "# Training summary", "", f"Dataset rows: {len(rows)}.",
-        f"Selected model: `{selected_name}`.",
-        "Selection used validation macro-F1 only.",
-        "The test split remained unused until model selection was complete.",
-        "The saved model is the selected pipeline fitted on the training split only.",
-        "Metrics below are raw model metrics. They do not include request policy behavior.",
-        BENCHMARK_NOTE,
-        "",
-        "| Model | Validation macro-F1 | Test macro-F1 | Test accuracy |", "|---|---:|---:|---:|",
-    ]
-    for name, result in evaluations.items():
-        lines.append(
-            f"| {name} | {result['validation']['macro_f1']:.4f} | "
-            f"{result['test']['macro_f1']:.4f} | {result['test']['accuracy']:.4f} |"
-        )
-    (report_dir / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def train(

@@ -11,7 +11,8 @@ from urllib.request import Request, urlopen
 from app import make_handler
 from classifier import LABELS, make_models
 from compare_methods import evaluate
-from method_comparison import JevClient, compare_request, load_settings, validate_jev_response
+from jev import JevClient, load_settings, validate_jev_response
+from method_comparison import compare_request
 
 
 def response(label="theatre"):
@@ -36,7 +37,7 @@ class MethodComparisonTests(unittest.TestCase):
         text = "Konser değil, tiyatro istiyorum."
         jev = Mock()
         jev.classify.return_value = {"status": "ok", "label": "theatre"}
-        with patch("method_comparison.keyword_baseline", return_value="theatre") as rules, \
+        with patch("method_comparison.parse_request", return_value="theatre") as rules, \
              patch("method_comparison.classify_request", return_value={"label": "concert"}) as learned:
             result = compare_request(self.artifact, text, jev, True)
         rules.assert_called_once_with(text)
