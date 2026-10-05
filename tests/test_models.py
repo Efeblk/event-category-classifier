@@ -29,14 +29,24 @@ class ModelDefinitionTests(unittest.TestCase):
         from sklearn.dummy import DummyClassifier
         from sklearn.linear_model import LogisticRegression
         from sklearn.naive_bayes import MultinomialNB
+        from sklearn.svm import LinearSVC
 
         models = make_models(seed=7)
-        self.assertEqual(set(models), {"dummy_most_frequent", "multinomial_nb", "logistic_regression_char"})
         self.assertIsInstance(models["dummy_most_frequent"]["classifier"], DummyClassifier)
-        self.assertIsInstance(models["multinomial_nb"]["classifier"], MultinomialNB)
-        self.assertIsInstance(models["logistic_regression_char"]["classifier"], LogisticRegression)
-        self.assertEqual(models["logistic_regression_char"]["tfidf"].analyzer, "char_wb")
-        self.assertEqual(models["logistic_regression_char"]["tfidf"].ngram_range, (3, 5))
+        methods = {"multinomial_nb": MultinomialNB, "logistic_regression": LogisticRegression,
+                   "linear_svm": LinearSVC}
+        features = {"word": ("word", (1, 2)), "char": ("char_wb", (3, 5))}
+        self.assertEqual(
+            set(models),
+            {"dummy_most_frequent"} | {f"{method}_{feature}" for method in methods for feature in features},
+        )
+        for method, classifier in methods.items():
+            for feature, (analyzer, ngrams) in features.items():
+                with self.subTest(model=f"{method}_{feature}"):
+                    model = models[f"{method}_{feature}"]
+                    self.assertIsInstance(model["classifier"], classifier)
+                    self.assertEqual(model["tfidf"].analyzer, analyzer)
+                    self.assertEqual(model["tfidf"].ngram_range, ngrams)
 
     def test_every_candidate_fits_and_predicts_supported_labels(self):
         samples = {

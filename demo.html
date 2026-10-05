@@ -501,12 +501,28 @@
           name: "Majority baseline",
           feature: "Always predicts the most common training category.",
         },
-        multinomial_nb: {
-          name: "Multinomial Naive Bayes",
+        multinomial_nb_word: {
+          name: "Naive Bayes: words",
+          feature: "Uses weighted single words and adjacent word pairs.",
+        },
+        multinomial_nb_char: {
+          name: "Naive Bayes: characters",
+          feature: "Uses groups of 3 to 5 characters.",
+        },
+        logistic_regression_word: {
+          name: "Logistic Regression: words",
           feature: "Uses weighted single words and adjacent word pairs.",
         },
         logistic_regression_char: {
           name: "Logistic Regression: characters",
+          feature: "Uses groups of 3 to 5 characters.",
+        },
+        linear_svm_word: {
+          name: "Linear SVM: words",
+          feature: "Uses weighted single words and adjacent word pairs.",
+        },
+        linear_svm_char: {
+          name: "Linear SVM: characters",
           feature: "Uses groups of 3 to 5 characters.",
         },
       };

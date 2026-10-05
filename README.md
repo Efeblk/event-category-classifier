@@ -36,7 +36,7 @@ Open [localhost:8011](http://127.0.0.1:8011). On Linux or macOS, activate with `
 | `app.py`, `demo.html` | Local browser demo |
 | `tests/` | Tests without real API calls |
 
-Training compares Naive Bayes, Logistic Regression, and a majority baseline. Related translations and paraphrases stay in one partition. Validation macro F1 selects the model; test data does not select it. Macro F1 gives each category equal weight.
+Training compares Naive Bayes, Logistic Regression, and Linear SVM, each with word and character features, plus a majority baseline. Related translations and paraphrases stay in one partition. Validation macro F1 selects the model; test data does not select it. Macro F1 gives each category equal weight.
 
 ## Optional Jev
 
@@ -58,4 +58,4 @@ This project classifies requests only. It does not search events or extract date
 python -m unittest discover -s tests -v
 ```
 
-[Presentation outline](PRESENTATION.md) ? [TypeSafe API](https://docs.typesafe.ai/api)
+[Presentation outline](PRESENTATION.md) · [TypeSafe API](https://docs.typesafe.ai/api)

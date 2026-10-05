@@ -152,6 +152,7 @@ class TrainingFlowTests(unittest.TestCase):
                 mock.patch.object(training, "read_csv", return_value=rows) as read_csv,
                 mock.patch.object(training, "split_data", return_value=parts),
                 mock.patch.object(training, "make_models", return_value=models),
+                mock.patch.object(training, "cross_validate", return_value={}),
                 mock.patch.object(training, "_write_reports") as write_reports,
                 mock.patch("joblib.dump") as dump,
             ):
@@ -176,6 +177,19 @@ class TrainingFlowTests(unittest.TestCase):
         self.assertEqual(metadata["evaluation_scope"], "raw_model")
         self.assertFalse(metadata["course_dataset_ready"])
         write_reports.assert_called_once()
+
+
+class CrossValidationTests(unittest.TestCase):
+    def test_every_model_gets_grouped_fold_scores(self):
+        rows = make_rows(count=200, grouped=True)
+        results = training.cross_validate(rows, list(range(len(rows))), seed=3)
+
+        self.assertEqual(set(results), set(training.make_models()))
+        for name, result in results.items():
+            with self.subTest(model=name):
+                self.assertEqual(len(result["fold_macro_f1"]), 5)
+                self.assertTrue(0 <= result["macro_f1_mean"] <= 1)
+                self.assertTrue(0 <= result["macro_f1_std"] <= 1)
 
 
 if __name__ == "__main__":
