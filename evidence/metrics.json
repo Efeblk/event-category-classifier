@@ -1,22 +1,21 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-04T14:06:19.985024+00:00",
+  "generated_at_utc": "2026-10-06T22:50:13.793292+00:00",
   "seed": 42,
-  "task": "user_request_classification",
-  "dataset_domain": "user_requests",
-  "provenance": "generated_bootstrap",
+  "task": "event_listing_classification",
+  "dataset_domain": "event_listings",
+  "provenance": "gametime_public",
   "language_support": [
-    "tr",
     "en"
   ],
-  "course_dataset_ready": false,
-  "allow_small_prototype": true,
+  "course_dataset_ready": true,
+  "allow_small_prototype": false,
   "evaluation_scope": "raw_model",
-  "benchmark_note": "Metrics use held-out groups from the same generated corpus and are not an external benchmark.",
+  "benchmark_note": "Metrics use held-out performer groups from public Gametime listings. Labels are the ticket site's categories and were not reviewed by hand.",
   "dataset": {
-    "path": "data\\requests.csv",
-    "sha256": "ad21d7eaa6673f27f95c69f54b54cfec2924fceadec1bf9c4ab267c96d5b836a",
-    "rows": 364
+    "path": "data\\events.csv",
+    "sha256": "7d172a60e64f5d1690b38df64f970b28b2dbc0d27405b961954941148fb3f95e",
+    "rows": 3506
   },
   "environment": {
     "python": "3.13.3",
@@ -28,33 +27,30 @@
   },
   "split": {
     "train": {
-      "rows": 210,
-      "groups": 30,
+      "rows": 2103,
+      "groups": 1698,
       "classes": {
-        "stand_up": 49,
-        "concert": 56,
-        "theatre": 56,
-        "unclear": 49
+        "concert": 1545,
+        "stand_up": 338,
+        "theatre": 220
       }
     },
     "validation": {
-      "rows": 77,
-      "groups": 11,
+      "rows": 701,
+      "groups": 566,
       "classes": {
-        "theatre": 14,
-        "concert": 21,
-        "unclear": 21,
-        "stand_up": 21
+        "stand_up": 113,
+        "concert": 515,
+        "theatre": 73
       }
     },
     "test": {
-      "rows": 77,
-      "groups": 11,
+      "rows": 702,
+      "groups": 567,
       "classes": {
-        "unclear": 21,
-        "stand_up": 21,
-        "concert": 14,
-        "theatre": 21
+        "concert": 515,
+        "theatre": 74,
+        "stand_up": 113
       }
     }
   },
@@ -71,80 +67,80 @@
     "used_for_selection": false,
     "models": {
       "dummy_most_frequent": {
-        "macro_f1_mean": 0.10500000000000001,
-        "macro_f1_std": 0.009999999999999998,
+        "macro_f1_mean": 0.2823466582636386,
+        "macro_f1_std": 0.0002171393839129107,
         "fold_macro_f1": [
-          0.1,
-          0.125,
-          0.1,
-          0.1,
-          0.1
+          0.28228845495032545,
+          0.28199863107460643,
+          0.28228845495032545,
+          0.2825788751714678,
+          0.2825788751714678
         ]
       },
       "multinomial_nb_word": {
-        "macro_f1_mean": 0.6320721922748375,
-        "macro_f1_std": 0.08617061786570354,
+        "macro_f1_mean": 0.3856784692259404,
+        "macro_f1_std": 0.02992139909421998,
         "fold_macro_f1": [
-          0.693619271957949,
-          0.6083333333333333,
-          0.7662068965517241,
-          0.5453947368421052,
-          0.5468067226890756
+          0.3841453901745817,
+          0.33553706570347436,
+          0.3791709174617055,
+          0.4041624804466431,
+          0.4253764923432972
         ]
       },
       "multinomial_nb_char": {
-        "macro_f1_mean": 0.7176555649413343,
-        "macro_f1_std": 0.08036017480106382,
+        "macro_f1_mean": 0.36744508357250044,
+        "macro_f1_std": 0.03359784240028256,
         "fold_macro_f1": [
-          0.6282967032967033,
-          0.7219309972792944,
-          0.8578986147951665,
-          0.6507305002370792,
-          0.7294210090984283
+          0.36076311612759393,
+          0.31541957654362046,
+          0.36256165667930373,
+          0.3786611298346974,
+          0.4198199386772867
         ]
       },
       "logistic_regression_word": {
-        "macro_f1_mean": 0.7064729309957491,
-        "macro_f1_std": 0.050744965306639446,
+        "macro_f1_mean": 0.5608880096666776,
+        "macro_f1_std": 0.01917168609600169,
         "fold_macro_f1": [
-          0.7928858151569377,
-          0.6472125435540069,
-          0.7301697653477408,
-          0.6764705882352942,
-          0.6856259426847662
+          0.5769527235354573,
+          0.5696433743103607,
+          0.5656266306626603,
+          0.5689529525238451,
+          0.5232643673010645
         ]
       },
       "logistic_regression_char": {
-        "macro_f1_mean": 0.7959397839461664,
-        "macro_f1_std": 0.07806476613834494,
+        "macro_f1_mean": 0.5463930650970537,
+        "macro_f1_std": 0.03935723897986369,
         "fold_macro_f1": [
-          0.7726419024593466,
-          0.7413550420168068,
-          0.9456707086017431,
-          0.7288081483733657,
-          0.7912231182795698
+          0.5618877871954737,
+          0.5846503546887339,
+          0.5117020770195009,
+          0.5851125725467637,
+          0.48861253403479626
         ]
       },
       "linear_svm_word": {
-        "macro_f1_mean": 0.7083541424572821,
-        "macro_f1_std": 0.05520665816139759,
+        "macro_f1_mean": 0.5434345217650836,
+        "macro_f1_std": 0.032519190319493387,
         "fold_macro_f1": [
-          0.754898119122257,
-          0.638768115942029,
-          0.7846560846560846,
-          0.6594753285929756,
-          0.703973063973064
+          0.5484696231280163,
+          0.594652859229783,
+          0.544017776890043,
+          0.5376355611699791,
+          0.4923967884075964
         ]
       },
       "linear_svm_char": {
-        "macro_f1_mean": 0.772056947250853,
-        "macro_f1_std": 0.07859664813169774,
+        "macro_f1_mean": 0.51801032678071,
+        "macro_f1_std": 0.025456954413233625,
         "fold_macro_f1": [
-          0.7555555555555555,
-          0.7367969289164942,
-          0.9268555008210182,
-          0.7276335148365097,
-          0.7134432361246877
+          0.5206573098433221,
+          0.5319382641712345,
+          0.5236761612371369,
+          0.5440373678845433,
+          0.46974253076731315
         ]
       }
     }
@@ -152,472 +148,388 @@
   "saved_model": "artifacts\\model.joblib",
   "models": {
     "dummy_most_frequent": {
-      "training_seconds": 0.006122999999206513,
+      "training_seconds": 0.01528120000148192,
       "validation": {
-        "accuracy": 0.2727272727272727,
-        "macro_f1": 0.10714285714285714,
+        "accuracy": 0.7346647646219686,
+        "macro_f1": 0.28234649122807015,
         "per_class": {
           "concert": {
-            "precision": 0.2727272727272727,
+            "precision": 0.7346647646219686,
             "recall": 1.0,
-            "f1": 0.42857142857142855,
-            "support": 21
+            "f1": 0.8470394736842105,
+            "support": 515
           },
           "theatre": {
             "precision": 0.0,
             "recall": 0.0,
             "f1": 0.0,
-            "support": 14
+            "support": 73
           },
           "stand_up": {
             "precision": 0.0,
             "recall": 0.0,
             "f1": 0.0,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.0,
-            "recall": 0.0,
-            "f1": 0.0,
-            "support": 21
+            "support": 113
           }
         },
-        "prediction_seconds": 0.0014136999961920083,
-        "batch_rows": 77
+        "prediction_seconds": 0.004723900026874617,
+        "batch_rows": 701
       },
       "test": {
-        "accuracy": 0.18181818181818182,
-        "macro_f1": 0.07692307692307693,
+        "accuracy": 0.7336182336182336,
+        "macro_f1": 0.28211448918104626,
         "per_class": {
           "concert": {
-            "precision": 0.18181818181818182,
+            "precision": 0.7336182336182336,
             "recall": 1.0,
-            "f1": 0.3076923076923077,
-            "support": 14
+            "f1": 0.8463434675431388,
+            "support": 515
           },
           "theatre": {
             "precision": 0.0,
             "recall": 0.0,
             "f1": 0.0,
-            "support": 21
+            "support": 74
           },
           "stand_up": {
             "precision": 0.0,
             "recall": 0.0,
             "f1": 0.0,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.0,
-            "recall": 0.0,
-            "f1": 0.0,
-            "support": 21
+            "support": 113
           }
         },
-        "prediction_seconds": 0.0017675000126473606,
-        "batch_rows": 77
+        "prediction_seconds": 0.0028904000064358115,
+        "batch_rows": 702
       }
     },
     "multinomial_nb_word": {
-      "training_seconds": 0.0066463999974075705,
+      "training_seconds": 0.022201499989023432,
       "validation": {
-        "accuracy": 0.6493506493506493,
-        "macro_f1": 0.6385686218133027,
+        "accuracy": 0.7517831669044223,
+        "macro_f1": 0.39051365845483493,
         "per_class": {
           "concert": {
-            "precision": 0.6153846153846154,
-            "recall": 0.7619047619047619,
-            "f1": 0.6808510638297872,
-            "support": 21
+            "precision": 0.7489051094890511,
+            "recall": 0.996116504854369,
+            "f1": 0.855,
+            "support": 515
           },
           "theatre": {
-            "precision": 0.5,
-            "recall": 0.9285714285714286,
-            "f1": 0.65,
-            "support": 14
+            "precision": 1.0,
+            "recall": 0.1643835616438356,
+            "f1": 0.2823529411764706,
+            "support": 73
           },
           "stand_up": {
-            "precision": 0.875,
-            "recall": 0.6666666666666666,
-            "f1": 0.7567567567567568,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.7777777777777778,
-            "recall": 0.3333333333333333,
-            "f1": 0.4666666666666667,
-            "support": 21
+            "precision": 0.5,
+            "recall": 0.017699115044247787,
+            "f1": 0.03418803418803419,
+            "support": 113
           }
         },
-        "prediction_seconds": 0.0013883000065106899,
-        "batch_rows": 77
+        "prediction_seconds": 0.006619299994781613,
+        "batch_rows": 701
       },
       "test": {
-        "accuracy": 0.6363636363636364,
-        "macro_f1": 0.6226973684210527,
+        "accuracy": 0.7592592592592593,
+        "macro_f1": 0.42795872159742704,
         "per_class": {
           "concert": {
-            "precision": 0.4583333333333333,
-            "recall": 0.7857142857142857,
-            "f1": 0.5789473684210527,
-            "support": 14
+            "precision": 0.7551622418879056,
+            "recall": 0.9941747572815534,
+            "f1": 0.8583403185247276,
+            "support": 515
           },
           "theatre": {
-            "precision": 0.6296296296296297,
-            "recall": 0.8095238095238095,
-            "f1": 0.7083333333333334,
-            "support": 21
+            "precision": 0.9285714285714286,
+            "recall": 0.17567567567567569,
+            "f1": 0.29545454545454547,
+            "support": 74
           },
           "stand_up": {
-            "precision": 0.8235294117647058,
-            "recall": 0.6666666666666666,
-            "f1": 0.7368421052631579,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.7777777777777778,
-            "recall": 0.3333333333333333,
-            "f1": 0.4666666666666667,
-            "support": 21
+            "precision": 0.8,
+            "recall": 0.07079646017699115,
+            "f1": 0.13008130081300814,
+            "support": 113
           }
         },
-        "prediction_seconds": 0.005861500016180798,
-        "batch_rows": 77
+        "prediction_seconds": 0.005982999980915338,
+        "batch_rows": 702
       }
     },
     "multinomial_nb_char": {
-      "training_seconds": 0.013991800020448864,
+      "training_seconds": 0.06703939998988062,
       "validation": {
-        "accuracy": 0.7402597402597403,
-        "macro_f1": 0.7269002359008119,
+        "accuracy": 0.7432239657631954,
+        "macro_f1": 0.36159138593635604,
         "per_class": {
           "concert": {
-            "precision": 0.6428571428571429,
-            "recall": 0.8571428571428571,
-            "f1": 0.7346938775510204,
-            "support": 21
+            "precision": 0.7448979591836735,
+            "recall": 0.9922330097087378,
+            "f1": 0.8509575353871773,
+            "support": 515
           },
           "theatre": {
-            "precision": 0.6111111111111112,
-            "recall": 0.7857142857142857,
-            "f1": 0.6875,
-            "support": 14
-          },
-          "stand_up": {
-            "precision": 0.9047619047619048,
-            "recall": 0.9047619047619048,
-            "f1": 0.9047619047619048,
-            "support": 21
-          },
-          "unclear": {
             "precision": 0.9,
-            "recall": 0.42857142857142855,
-            "f1": 0.5806451612903226,
-            "support": 21
+            "recall": 0.1232876712328767,
+            "f1": 0.21686746987951808,
+            "support": 73
+          },
+          "stand_up": {
+            "precision": 0.2,
+            "recall": 0.008849557522123894,
+            "f1": 0.01694915254237288,
+            "support": 113
           }
         },
-        "prediction_seconds": 0.0031223999976646155,
-        "batch_rows": 77
+        "prediction_seconds": 0.01640739999129437,
+        "batch_rows": 701
       },
       "test": {
-        "accuracy": 0.7792207792207793,
-        "macro_f1": 0.7508322451677387,
+        "accuracy": 0.7521367521367521,
+        "macro_f1": 0.3853020345846194,
         "per_class": {
           "concert": {
-            "precision": 0.7058823529411765,
-            "recall": 0.8571428571428571,
-            "f1": 0.7741935483870968,
-            "support": 14
+            "precision": 0.7489051094890511,
+            "recall": 0.996116504854369,
+            "f1": 0.855,
+            "support": 515
           },
           "theatre": {
-            "precision": 0.7407407407407407,
-            "recall": 0.9523809523809523,
-            "f1": 0.8333333333333334,
-            "support": 21
-          },
-          "stand_up": {
-            "precision": 0.84,
-            "recall": 1.0,
-            "f1": 0.9130434782608695,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.875,
-            "recall": 0.3333333333333333,
-            "f1": 0.4827586206896552,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.005912799999350682,
-        "batch_rows": 77
-      }
-    },
-    "logistic_regression_word": {
-      "training_seconds": 0.012665400019614026,
-      "validation": {
-        "accuracy": 0.6753246753246753,
-        "macro_f1": 0.6771399639046698,
-        "per_class": {
-          "concert": {
-            "precision": 0.6521739130434783,
-            "recall": 0.7142857142857143,
-            "f1": 0.6818181818181818,
-            "support": 21
-          },
-          "theatre": {
-            "precision": 0.6,
-            "recall": 0.8571428571428571,
-            "f1": 0.7058823529411765,
-            "support": 14
-          },
-          "stand_up": {
-            "precision": 0.875,
-            "recall": 0.6666666666666666,
-            "f1": 0.7567567567567568,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.6111111111111112,
-            "recall": 0.5238095238095238,
-            "f1": 0.5641025641025641,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.0015907999768387526,
-        "batch_rows": 77
-      },
-      "test": {
-        "accuracy": 0.6883116883116883,
-        "macro_f1": 0.6811969826675709,
-        "per_class": {
-          "concert": {
-            "precision": 0.4782608695652174,
-            "recall": 0.7857142857142857,
-            "f1": 0.5945945945945946,
-            "support": 14
-          },
-          "theatre": {
-            "precision": 0.7391304347826086,
-            "recall": 0.8095238095238095,
-            "f1": 0.7727272727272727,
-            "support": 21
-          },
-          "stand_up": {
-            "precision": 0.8333333333333334,
-            "recall": 0.7142857142857143,
-            "f1": 0.7692307692307693,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.7692307692307693,
-            "recall": 0.47619047619047616,
-            "f1": 0.5882352941176471,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.0031401000160258263,
-        "batch_rows": 77
-      }
-    },
-    "logistic_regression_char": {
-      "training_seconds": 0.028205600014189258,
-      "validation": {
-        "accuracy": 0.8181818181818182,
-        "macro_f1": 0.8184665690261417,
-        "per_class": {
-          "concert": {
-            "precision": 0.72,
-            "recall": 0.8571428571428571,
-            "f1": 0.782608695652174,
-            "support": 21
-          },
-          "theatre": {
-            "precision": 0.8,
-            "recall": 0.8571428571428571,
-            "f1": 0.8275862068965517,
-            "support": 14
-          },
-          "stand_up": {
-            "precision": 0.95,
-            "recall": 0.9047619047619048,
-            "f1": 0.926829268292683,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.8235294117647058,
-            "recall": 0.6666666666666666,
-            "f1": 0.7368421052631579,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.0036013999779243022,
-        "batch_rows": 77
-      },
-      "test": {
-        "accuracy": 0.8311688311688312,
-        "macro_f1": 0.8195224130708001,
-        "per_class": {
-          "concert": {
-            "precision": 0.7058823529411765,
-            "recall": 0.8571428571428571,
-            "f1": 0.7741935483870968,
-            "support": 14
-          },
-          "theatre": {
-            "precision": 0.8260869565217391,
-            "recall": 0.9047619047619048,
-            "f1": 0.8636363636363636,
-            "support": 21
-          },
-          "stand_up": {
-            "precision": 0.9130434782608695,
-            "recall": 1.0,
-            "f1": 0.9545454545454546,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.8571428571428571,
-            "recall": 0.5714285714285714,
-            "f1": 0.6857142857142857,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.004020799999125302,
-        "batch_rows": 77
-      }
-    },
-    "linear_svm_word": {
-      "training_seconds": 0.00989709998248145,
-      "validation": {
-        "accuracy": 0.7142857142857143,
-        "macro_f1": 0.7199468786115448,
-        "per_class": {
-          "concert": {
-            "precision": 0.6818181818181818,
-            "recall": 0.7142857142857143,
-            "f1": 0.6976744186046512,
-            "support": 21
-          },
-          "theatre": {
-            "precision": 0.7058823529411765,
-            "recall": 0.8571428571428571,
-            "f1": 0.7741935483870968,
-            "support": 14
-          },
-          "stand_up": {
-            "precision": 0.875,
-            "recall": 0.6666666666666666,
-            "f1": 0.7567567567567568,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.6363636363636364,
-            "recall": 0.6666666666666666,
-            "f1": 0.6511627906976745,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.00166379997972399,
-        "batch_rows": 77
-      },
-      "test": {
-        "accuracy": 0.6883116883116883,
-        "macro_f1": 0.6771761734997029,
-        "per_class": {
-          "concert": {
-            "precision": 0.45,
-            "recall": 0.6428571428571429,
-            "f1": 0.5294117647058824,
-            "support": 14
-          },
-          "theatre": {
-            "precision": 0.782608695652174,
-            "recall": 0.8571428571428571,
-            "f1": 0.8181818181818182,
-            "support": 21
-          },
-          "stand_up": {
-            "precision": 0.7894736842105263,
-            "recall": 0.7142857142857143,
-            "f1": 0.75,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.7333333333333333,
-            "recall": 0.5238095238095238,
-            "f1": 0.6111111111111112,
-            "support": 21
-          }
-        },
-        "prediction_seconds": 0.002025800000410527,
-        "batch_rows": 77
-      }
-    },
-    "linear_svm_char": {
-      "training_seconds": 0.0204966000164859,
-      "validation": {
-        "accuracy": 0.8051948051948052,
-        "macro_f1": 0.7969974695387756,
-        "per_class": {
-          "concert": {
-            "precision": 0.75,
-            "recall": 0.8571428571428571,
-            "f1": 0.8,
-            "support": 21
-          },
-          "theatre": {
-            "precision": 0.6470588235294118,
-            "recall": 0.7857142857142857,
-            "f1": 0.7096774193548387,
-            "support": 14
+            "precision": 0.7777777777777778,
+            "recall": 0.0945945945945946,
+            "f1": 0.1686746987951807,
+            "support": 74
           },
           "stand_up": {
             "precision": 1.0,
-            "recall": 0.9523809523809523,
-            "f1": 0.975609756097561,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.8125,
-            "recall": 0.6190476190476191,
-            "f1": 0.7027027027027027,
-            "support": 21
+            "recall": 0.07079646017699115,
+            "f1": 0.1322314049586777,
+            "support": 113
           }
         },
-        "prediction_seconds": 0.005615700007183477,
-        "batch_rows": 77
-      },
-      "test": {
-        "accuracy": 0.8181818181818182,
-        "macro_f1": 0.8052366987850859,
+        "prediction_seconds": 0.013231100019766018,
+        "batch_rows": 702
+      }
+    },
+    "logistic_regression_word": {
+      "training_seconds": 0.06065339999622665,
+      "validation": {
+        "accuracy": 0.7047075606276747,
+        "macro_f1": 0.537720989272679,
         "per_class": {
           "concert": {
-            "precision": 0.7058823529411765,
-            "recall": 0.8571428571428571,
-            "f1": 0.7741935483870968,
-            "support": 14
+            "precision": 0.8041825095057035,
+            "recall": 0.8213592233009709,
+            "f1": 0.8126801152737753,
+            "support": 515
           },
           "theatre": {
-            "precision": 0.8260869565217391,
-            "recall": 0.9047619047619048,
-            "f1": 0.8636363636363636,
-            "support": 21
+            "precision": 0.42857142857142855,
+            "recall": 0.5342465753424658,
+            "f1": 0.47560975609756095,
+            "support": 73
           },
           "stand_up": {
-            "precision": 0.9130434782608695,
-            "recall": 1.0,
-            "f1": 0.9545454545454546,
-            "support": 21
-          },
-          "unclear": {
-            "precision": 0.7857142857142857,
-            "recall": 0.5238095238095238,
-            "f1": 0.6285714285714286,
-            "support": 21
+            "precision": 0.38095238095238093,
+            "recall": 0.2831858407079646,
+            "f1": 0.3248730964467005,
+            "support": 113
           }
         },
-        "prediction_seconds": 0.0038973999908193946,
-        "batch_rows": 77
+        "prediction_seconds": 0.006017299980157986,
+        "batch_rows": 701
+      },
+      "test": {
+        "accuracy": 0.7037037037037037,
+        "macro_f1": 0.5423568472279073,
+        "per_class": {
+          "concert": {
+            "precision": 0.7951127819548872,
+            "recall": 0.8213592233009709,
+            "f1": 0.8080229226361032,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.4794520547945205,
+            "recall": 0.47297297297297297,
+            "f1": 0.47619047619047616,
+            "support": 74
+          },
+          "stand_up": {
+            "precision": 0.3711340206185567,
+            "recall": 0.3185840707964602,
+            "f1": 0.34285714285714286,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.004353099997388199,
+        "batch_rows": 702
+      }
+    },
+    "logistic_regression_char": {
+      "training_seconds": 0.33094459999119863,
+      "validation": {
+        "accuracy": 0.6932952924393724,
+        "macro_f1": 0.5616325322643412,
+        "per_class": {
+          "concert": {
+            "precision": 0.8213552361396304,
+            "recall": 0.7766990291262136,
+            "f1": 0.7984031936127745,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.47058823529411764,
+            "recall": 0.547945205479452,
+            "f1": 0.5063291139240507,
+            "support": 73
+          },
+          "stand_up": {
+            "precision": 0.35658914728682173,
+            "recall": 0.40707964601769914,
+            "f1": 0.38016528925619836,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.012026699987472966,
+        "batch_rows": 701
+      },
+      "test": {
+        "accuracy": 0.6837606837606838,
+        "macro_f1": 0.5764524864148491,
+        "per_class": {
+          "concert": {
+            "precision": 0.8177966101694916,
+            "recall": 0.7495145631067961,
+            "f1": 0.7821681864235056,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.5757575757575758,
+            "recall": 0.5135135135135135,
+            "f1": 0.5428571428571428,
+            "support": 74
+          },
+          "stand_up": {
+            "precision": 0.34146341463414637,
+            "recall": 0.49557522123893805,
+            "f1": 0.4043321299638989,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.012025900010485202,
+        "batch_rows": 702
+      }
+    },
+    "linear_svm_word": {
+      "training_seconds": 0.018810100009432063,
+      "validation": {
+        "accuracy": 0.7546362339514978,
+        "macro_f1": 0.5587855657592082,
+        "per_class": {
+          "concert": {
+            "precision": 0.8003412969283277,
+            "recall": 0.9106796116504854,
+            "f1": 0.851952770208901,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.6428571428571429,
+            "recall": 0.3698630136986301,
+            "f1": 0.46956521739130436,
+            "support": 73
+          },
+          "stand_up": {
+            "precision": 0.4520547945205479,
+            "recall": 0.2920353982300885,
+            "f1": 0.3548387096774194,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.0034694999922066927,
+        "batch_rows": 701
+      },
+      "test": {
+        "accuracy": 0.7435897435897436,
+        "macro_f1": 0.556709700394297,
+        "per_class": {
+          "concert": {
+            "precision": 0.787052810902896,
+            "recall": 0.8970873786407767,
+            "f1": 0.838475499092559,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.7,
+            "recall": 0.3783783783783784,
+            "f1": 0.49122807017543857,
+            "support": 74
+          },
+          "stand_up": {
+            "precision": 0.4266666666666667,
+            "recall": 0.2831858407079646,
+            "f1": 0.3404255319148936,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.0034146000107284635,
+        "batch_rows": 702
+      }
+    },
+    "linear_svm_char": {
+      "training_seconds": 0.061712700000498444,
+      "validation": {
+        "accuracy": 0.7275320970042796,
+        "macro_f1": 0.540584965774488,
+        "per_class": {
+          "concert": {
+            "precision": 0.8014311270125224,
+            "recall": 0.8699029126213592,
+            "f1": 0.8342644320297952,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.5230769230769231,
+            "recall": 0.4657534246575342,
+            "f1": 0.4927536231884058,
+            "support": 73
+          },
+          "stand_up": {
+            "precision": 0.36363636363636365,
+            "recall": 0.24778761061946902,
+            "f1": 0.29473684210526313,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.011717499990481883,
+        "batch_rows": 701
+      },
+      "test": {
+        "accuracy": 0.7150997150997151,
+        "macro_f1": 0.552865213882163,
+        "per_class": {
+          "concert": {
+            "precision": 0.793418647166362,
+            "recall": 0.8427184466019417,
+            "f1": 0.8173258003766478,
+            "support": 515
+          },
+          "theatre": {
+            "precision": 0.6153846153846154,
+            "recall": 0.43243243243243246,
+            "f1": 0.5079365079365079,
+            "support": 74
+          },
+          "stand_up": {
+            "precision": 0.34951456310679613,
+            "recall": 0.3185840707964602,
+            "f1": 0.3333333333333333,
+            "support": 113
+          }
+        },
+        "prediction_seconds": 0.012544999975943938,
+        "batch_rows": 702
       }
     }
   }

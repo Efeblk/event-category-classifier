@@ -3,11 +3,14 @@
 import re
 import unicodedata
 
-# These words identify explicit activity mentions. They do not cover all meanings.
+# These words identify explicit category mentions in titles and requests. They do not
+# cover all meanings. Ambiguous words such as "tour" or "live" are left out on purpose.
 PATTERNS = {
-    "concert": r"\b(?:konser\w*|concert\w*|gig\w*)\b|\b(?:live|canli) (?:music|muzik|jazz|caz)\b",
-    "theatre": r"\b(?:tiyatro\w*|theatre\w*|theater\w*)\b|\b(?:stage play|stage drama\w*|sahne oyunu)\b|\b(?:bir|a|the) (?:oyun|play)\b",
-    "stand_up": r"\bstand[ -]?up\b|\b(?:comedian\w*|komedyen\w*)\b|\bcomedy show\b",
+    "concert": r"\b(?:konser\w*|concert\w*|gig\w*|orchestra\w*|orkestra\w*|symphon\w*|senfoni\w*|philharmoni\w*|filarmoni\w*|tribute|dj set)\b"
+               r"|\b(?:live|canli) (?:music|muzik|jazz|caz)\b",
+    "theatre": r"\b(?:tiyatro\w*|theatre\w*|theater\w*|musical\w*|muzikal\w*|ballet\w*|bale|opera|broadway|nutcracker|cirque)\b"
+               r"|\b(?:stage play|stage drama\w*|sahne oyunu)\b|\b(?:bir|a|the) (?:oyun|play)\b",
+    "stand_up": r"\bstand[ -]?up\b|\b(?:comedian\w*|komedyen\w*|comics|improv)\b|\bcomedy (?:show|club|night|tour)\b",
 }
 BEFORE_NEGATION = re.compile(r"\b(?:no|not|never|without|avoid|except|don't|dont|skip)\b")
 AFTER_NEGATION = re.compile(r"\b(?:istem\w*|olmas\w*|degil|haric|yerine)\b|\b(?:is not|isn't|isnt)\b")

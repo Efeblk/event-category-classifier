@@ -9,7 +9,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from app import make_handler
-from classifier import LABELS, make_models
+from classifier import ARTIFACT_TASK, DATASET_DOMAIN, LABELS, OUTPUT_LABELS, make_models
 from compare_methods import evaluate
 from jev import JevClient, load_settings, validate_jev_response
 from method_comparison import compare_request
@@ -18,7 +18,7 @@ from method_comparison import compare_request
 def response(label="theatre"):
     return {"model": "jev-1.13.0", "answers": {"activity": {
         "type": "choice", "choice": label, "confidence": 0.8,
-        "probabilities": {key: 0.85 if key == label else 0.05 for key in LABELS}}},
+        "probabilities": {key: 0.85 if key == label else 0.05 for key in OUTPUT_LABELS}}},
         "usage": {"input_tokens": 100, "output_tokens": 20}}
 
 
@@ -27,11 +27,11 @@ class MethodComparisonTests(unittest.TestCase):
     def setUpClass(cls):
         model = make_models()["logistic_regression_char"]
         examples = ["concert live music", "concert tickets", "theatre stage play", "theatre actors",
-                    "standup comedian comedy", "standup comedy show", "something unclear", "unclear other activity"]
-        model.fit(examples, ["concert", "concert", "theatre", "theatre", "stand_up", "stand_up", "unclear", "unclear"])
+                    "standup comedian comedy", "standup comedy show"]
+        model.fit(examples, ["concert", "concert", "theatre", "theatre", "stand_up", "stand_up"])
         cls.artifact = {"model": model, "model_name": "logistic_regression_char", "labels": LABELS,
-                        "dataset_sha256": "test", "seed": 42, "task": "user_request_classification",
-                        "dataset_domain": "user_requests", "provenance": "test"}
+                        "dataset_sha256": "test", "seed": 42, "task": ARTIFACT_TASK,
+                        "dataset_domain": DATASET_DOMAIN, "provenance": "test"}
 
     def test_methods_receive_identical_original_text_without_lr_language_guards(self):
         text = "Konser değil, tiyatro istiyorum."
@@ -110,6 +110,20 @@ class MethodComparisonTests(unittest.TestCase):
             self.assertEqual(result["methods"]["jev"]["not_run"], 2)
             self.assertIsNone(result["methods"]["jev"]["accuracy"])
             self.assertIsNone(result["methods"]["jev"]["macro_f1"])
+            self.assertEqual(result["task"], ARTIFACT_TASK)
+
+    def test_abstaining_counts_as_wrong_and_unused_unclear_label_is_not_scored(self):
+        with tempfile.TemporaryDirectory() as directory:
+            data_path = Path(directory) / "cases.json"
+            data_path.write_text(json.dumps({"records": [
+                {"text": "concert tickets", "label": "concert"},
+                {"text": "theatre play", "label": "theatre"}]}), encoding="utf-8")
+            with patch("compare_methods.joblib.load", return_value=self.artifact),                  patch("compare_methods.JevClient", return_value=JevClient({}, directory)),                  patch("method_comparison.parse_request", side_effect=["concert", "unclear"]):
+                result = evaluate(Path("unused.joblib"), data_path, Path(directory) / "result.json")
+            parser = result["methods"]["parser"]
+            self.assertEqual(parser["accuracy"], 0.5)
+            self.assertNotIn("unclear", parser["per_class"])
+            self.assertEqual(parser["macro_f1"], 0.5)
 
     def test_partial_provider_run_has_no_comparable_accuracy_score(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -176,8 +190,8 @@ class JevClientTests(unittest.TestCase):
             self.assertNotIn("private-test-key", json.dumps(result))
             body = transport.call_args.args[0]
             payload = json.loads(body)
-            self.assertEqual(payload["state"]["request"], "Konser değil, tiyatro istiyorum.")
-            self.assertEqual(set(payload["questions"]["activity"]["criteria"]), set(LABELS))
+            self.assertEqual(payload["state"]["text"], "Konser değil, tiyatro istiyorum.")
+            self.assertEqual(set(payload["questions"]["activity"]["criteria"]), set(OUTPUT_LABELS))
             self.assertNotIn(b"private-test-key", body)
             receipt = (Path(directory) / "001.json").read_text()
             self.assertNotIn("private-test-key", receipt)

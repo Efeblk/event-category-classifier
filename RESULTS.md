@@ -1,58 +1,67 @@
 # Results
 
-These scores use synthetic requests. They do not measure accuracy on real users.
+These scores use public Gametime event titles. The labels are the ticket site's categories and were not reviewed by hand.
 
 ## Training
 
-Seed: 42. Split: 210 training, 77 validation, 77 test examples. Paraphrase families do not cross partitions. The vocabulary is fitted on training data only. Validation selects the model.
+Seed: 42. 3,506 titles. Split: 2,103 training, 701 validation, 702 test examples. One performer's titles never cross partitions. The vocabulary is fitted on training data only. Validation selects the model.
 
 Each learned method runs with two feature sets. **Words** uses single words and adjacent word pairs. **Characters** uses groups of 3 to 5 characters.
 
 | Model | Features | Validation macro F1 | 5-fold CV macro F1 | Test macro F1 | Test accuracy |
 |---|---|---:|---:|---:|---:|
-| Majority baseline | - | 0.1071 | 0.105 ± 0.010 | 0.0769 | 18.18% |
-| Naive Bayes | Words | 0.6386 | 0.632 ± 0.086 | 0.6227 | 63.64% |
-| Naive Bayes | Characters | 0.7269 | 0.718 ± 0.080 | 0.7508 | 77.92% |
-| Logistic Regression | Words | 0.6771 | 0.706 ± 0.051 | 0.6812 | 68.83% |
-| **Logistic Regression** | **Characters** | **0.8185** | **0.796 ± 0.078** | **0.8195** | **83.12%** |
-| Linear SVM | Words | 0.7199 | 0.708 ± 0.055 | 0.6772 | 68.83% |
-| Linear SVM | Characters | 0.7970 | 0.772 ± 0.079 | 0.8052 | 81.82% |
-
-Cross-validation repeats training on 5 grouped folds of the 287 train and validation rows. It reports the mean and standard deviation and does not select the model. The test rows stay unseen. The fold scores of the selected model range from 0.73 to 0.95, so one small test split is a noisy estimate. CV gives the same ranking as the single split.
+| Majority baseline | - | 0.2823 | 0.282 ± 0.000 | 0.2821 | 73.36% |
+| Naive Bayes | Words | 0.3905 | 0.386 ± 0.030 | 0.4280 | 75.93% |
+| Naive Bayes | Characters | 0.3616 | 0.367 ± 0.034 | 0.3853 | 75.21% |
+| Logistic Regression | Words | 0.5377 | 0.561 ± 0.019 | 0.5424 | 70.37% |
+| **Logistic Regression** | **Characters** | **0.5616** | **0.546 ± 0.039** | **0.5765** | **68.38%** |
+| Linear SVM | Words | 0.5588 | 0.543 ± 0.033 | 0.5567 | 74.36% |
+| Linear SVM | Characters | 0.5406 | 0.518 ± 0.025 | 0.5529 | 71.51% |
 
 Validation selects Logistic Regression with character features. The saved model retains its training fit.
 
-Character features beat word features for every method, by 0.08 to 0.14 macro F1. Turkish adds suffixes to words (`konser`, `konsere`, `konserine`), and the data has typos (`consert`, `teatr`, `standap`). Character groups still match these forms, but whole words do not.
+- **Accuracy misleads here.** 73% of test titles are concerts, so always answering `concert` scores 73.36% accuracy but only 0.28 macro F1. Macro F1 gives each category equal weight, so it is the metric used for selection.
+- **Naive Bayes stays close to the baseline.** It mostly predicts the large concert class. Logistic Regression and Linear SVM use balanced class weights and recover the smaller classes.
+- **Words and characters are close.** Cross-validation repeats training on 5 grouped folds of the 2,804 train and validation rows. It ranks Logistic Regression with words slightly first (0.561), and the top four models are within one standard deviation of each other.
 
 ## Error analysis
 
-The selected model makes 13 errors on the 77 test examples ([errors.csv](evidence/errors.csv)).
+The selected model makes 222 errors on the 702 test titles ([errors.csv](evidence/errors.csv)).
 
 | Class | Precision | Recall | F1 |
 |---|---:|---:|---:|
-| concert | 0.706 | 0.857 | 0.774 |
-| theatre | 0.826 | 0.905 | 0.864 |
-| stand_up | 0.913 | 1.000 | 0.955 |
-| unclear | 0.857 | **0.571** | 0.686 |
+| concert | 0.818 | 0.750 | 0.782 |
+| theatre | 0.576 | 0.514 | 0.543 |
+| stand_up | **0.341** | 0.496 | **0.404** |
 
-- **Negation is the main weakness.** 7 errors are exclusion-only requests such as "I do not want a concert" and "Tiyatro olmasın". The category word is present, so the model predicts that category. Bag-of-features models do not represent negation.
-- 2 more `unclear` errors are near-topic: "Sinemada film izlemek istiyorum" → theatre and "Biraz eğlenmek istiyoruz" → concert.
-- 4 errors are real categories with no direct keyword, such as "Suggest an event where a rapper is on stage" → theatre.
-
-The rule-based parser gets all 9 `unclear` errors right but all 4 category errors wrong. Rules handle negation, and the learned model handles paraphrases and typos. The errors are complementary, but this project keeps the methods separate and does not combine them.
+- **Names carry no category.** 158 errors are concert ↔ stand-up, mostly bare names such as "Bob Dylan" → stand_up and "Anthony Jeselnik" → concert. A text model cannot know who a performer is unless the training data contains that performer, and the grouped split prevents that.
+- **Theatre is broad.** 57 errors are theatre ↔ concert. Well-known shows without a category word fail too: "Wicked" and "Othello" → concert. Gametime's theater category also includes ballet, circus, variety shows, and some orchestra concerts.
+- **Label noise exists.** For example, "St. Louis Symphony Orchestra - Live at The Sheldon" is labeled theatre.
+- Only 15 of the 222 error titles contain an explicit category word.
 
 ## Same-input comparison
 
-This uses 40 separately authored cases. They were inspected during development and are not a blind benchmark. This dataset differs from the 77-example test above.
+36 titles, 12 per class, sampled from the test split with seed 42 ([method_comparison.json](evidence/method_comparison.json)). They were not used to select the model or write rules. A method that answers `unclear` is counted as wrong.
+
+| Method | Correct | Accuracy | Macro F1 |
+|---|---:|---:|---:|
+| Parser | 7/36 | 19.4% | 0.291 |
+| Logistic Regression | 23/36 | 63.9% | 0.648 |
+| Jev | Not evaluated | - | - |
+
+The parser answers only when a title contains an explicit word ("Musical", "Ballet", "Philharmonic", "Comedy Club"). It answers `unclear` for bare names. Its request rules also misfire on titles: "That's Not Me Comedy Tour" reads as an exclusion of comedy. Jev is the method that could use knowledge of performers; a complete run would fill its row.
+
+## Transfer to requests
+
+The title-trained model was also run on the 40 inspected Turkish and English requests ([request_transfer.json](evidence/request_transfer.json)). These are not a blind benchmark.
 
 | Method | Correct | Accuracy |
 |---|---:|---:|
-| Parser | 23/40 | 57.5% |
-| Logistic Regression | 25/40 | 62.5% |
-| Jev | Not evaluated | - |
+| Parser | 24/40 | 60.0% |
+| Logistic Regression | 12/40 | 30.0% |
 
-The parser and learned model run separately. No parser rules override Logistic Regression. If the input has no fitted text features, the learned classifier returns `unclear`.
+The parser's rules were written for requests and handle Turkish and negation. Logistic Regression learned English titles, so it fails on requests. A model needs training data that matches its input.
 
 Run `train.py` and `compare_methods.py` to create detailed reports in `reports/`. Checked-in snapshots are in [evidence/](evidence/). Jev tests use mocked responses and provide no measured Jev accuracy.
 
-Before submission: reach the accepted 1,000-example dataset, confirm the teacher's benchmark requirement, add the author's name, and set repository access for the teacher.
+Before submission: add the author's name and set repository access for the teacher.

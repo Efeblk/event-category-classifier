@@ -1,11 +1,12 @@
 CC0 1.0 Universal
 
-The original, AI-authored request examples in prepare_requests.py and
-data/request_challenge.json use the CC0 1.0 Universal public domain dedication.
+The original, AI-authored request examples in data/request_challenge.json use
+the CC0 1.0 Universal public domain dedication.
 
 The full terms are available at:
 https://creativecommons.org/publicdomain/zero/1.0/legalcode
 
-This dedication does not cover provider-derived event descriptions, third-party
-software, or any later contributed dataset. Record the terms for later data
-separately.
+This dedication does not cover the Gametime event listings. They come from
+rebrowser/gametime-dataset under CC BY-NC 4.0
+(https://creativecommons.org/licenses/by-nc/4.0/). Event titles copied into
+evidence/ keep that license.

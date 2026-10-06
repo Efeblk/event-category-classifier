@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Event request classifier · COE025</title>
+    <title>Event category classifier · COE025</title>
     <style>
       :root {
         font-family: system-ui, sans-serif;
@@ -333,75 +333,61 @@
   <body>
     <main>
       <div class="eyebrow">COE025 · Project 1 · Text classification</div>
-      <h1>What would you like to do?</h1>
-      <p class="lead">One request. Three methods. Try Turkish or English.</p>
+      <h1>What kind of event is this?</h1>
+      <p class="lead">One event title. Three methods. Requests also work, but the model learned from English titles.</p>
       <div class="layout">
         <section class="panel" aria-labelledby="input-title">
-          <h2 id="input-title">Describe your plan</h2>
+          <h2 id="input-title">Enter an event</h2>
           <form id="form">
-            <label for="description">Your request / İsteğin</label>
+            <label for="description">Event title or request</label>
             <textarea
               id="description"
               maxlength="5000"
               required
-              placeholder="Canlı caz dinlemek istiyorum. / I want live jazz."
+              placeholder="Elf The Musical"
             ></textarea>
-            <div class="samples" aria-label="Sample requests">
+            <div class="samples" aria-label="Sample inputs">
               <button
                 class="sample"
                 type="button"
-                data-sample="Canlı caz dinlemek istiyorum."
+                data-sample="Hamilton"
               >
-                TR: Live jazz
+                Title only
               </button>
               <button
                 class="sample"
                 type="button"
-                data-sample="Bu hafta bir tiyatro oyunu izlemek istiyorum."
+                data-sample="Metallica"
               >
-                TR: Theatre
+                Band name
               </button>
               <button
                 class="sample"
                 type="button"
-                data-sample="I want to see a stand-up comedian tonight."
+                data-sample="Kevin Hart"
               >
-                EN: Stand-up
+                Comedian name
               </button>
               <button
                 class="sample"
                 type="button"
-                data-sample="I would like tickets to a live concert."
+                data-sample="Nashville Symphony - Holiday Pops"
               >
-                EN: Concert
+                Keyword
               </button>
               <button
                 class="sample"
                 type="button"
-                data-sample="Konser veya tiyatro olabilir."
+                data-sample="Comedy Club Open Mic Night"
               >
-                TR: Two options
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Something fun tonight."
-              >
-                EN: Unclear
+                Comedy keyword
               </button>
               <button
                 class="sample"
                 type="button"
                 data-sample="Konser değil, tiyatro istiyorum."
               >
-                TR: Exclusion
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Bu gece sahnede blues çalan birilerini dinleyelim."
-              >
-                TR: Indirect request
+                TR request
               </button>
             </div>
             <label class="jev-option"
@@ -441,7 +427,7 @@
         hidden
       ></section>
       <section class="panel comparison" aria-labelledby="method-title">
-        <h2 id="method-title">Same requests, three approaches</h2>
+        <h2 id="method-title">Same inputs, three approaches</h2>
         <p class="muted">Same labeled cases for each method.</p>
         <div
           id="method-results"
@@ -471,8 +457,8 @@
         <div class="comparison-notes" id="comparison-notes" hidden></div>
       </section>
       <p class="notice">
-        Synthetic course data. Scores do not measure real-user accuracy.
-        Classification only.
+        Public Gametime listings (CC BY-NC 4.0). Labels are the ticket site's
+        categories. Classification only.
       </p>
       <footer>COE025 / Local course demo</footer>
     </main>
@@ -565,11 +551,11 @@
         )
           throw new Error("Model results have an invalid format.");
         if (
-          payload.task !== "user_request_classification" ||
+          payload.task !== "event_listing_classification" ||
           payload.evaluation_scope !== "raw_model"
         )
           throw new Error(
-            "Model results do not match this request classifier.",
+            "Model results do not match this event classifier.",
           );
         if (payload.selection?.metric !== "validation_macro_f1")
           throw new Error("Model selection details are invalid.");
@@ -643,7 +629,7 @@
         splitNote.className = "muted";
         splitNote.textContent =
           datasetRows +
-          " synthetic requests / " +
+          " public event titles / " +
           split.train.rows +
           " train / " +
           split.validation.rows +
@@ -702,7 +688,7 @@
             target.textContent = "No saved experiment is available yet.";
             return;
           }
-          if (payload.task !== "user_request_classification")
+          if (payload.task !== "event_listing_classification")
             throw new Error("Experiment results do not match this task.");
           const wrap = document.createElement("div");
           wrap.className = "table-wrap";
@@ -755,7 +741,7 @@
           note.className = "muted";
           note.textContent =
             payload.examples +
-            " inspected synthetic cases / Jev scores appear after a complete run.";
+            " labeled inputs / Unclear counts as wrong / Jev scores appear after a complete run.";
           target.append(note);
         } catch (error) {
           target.textContent = error.message;

@@ -1,17 +1,32 @@
 # Dataset
 
-`python prepare_requests.py` creates `requests.csv` locally.
+`python prepare_events.py` downloads the source files and creates `events.csv` and `events.audit.json` locally. They are not committed.
 
-- 364 AI-authored requests: 208 Turkish and 156 English.
-- Four labels: `concert`, `theatre`, `stand_up`, `unclear`.
-- 91 examples per label, in 52 paraphrase families.
-- Translations and paraphrases share a `group_id` and stay in one partition.
-- Original synthetic examples use [CC0-1.0](LICENSE). No observed user or ticket-provider text is included.
+## Source
 
-`unclear` means there is no single supported activity: vague requests, multiple acceptable categories, unsupported activities, or exclusions without a positive request.
+- [rebrowser/gametime-dataset](https://huggingface.co/datasets/rebrowser/gametime-dataset) on Hugging Face, also on [Kaggle](https://www.kaggle.com/datasets/rebrowser/gametime-dataset). Event listings from the Gametime ticket marketplace, published by Rebrowser.
+- License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). Non-commercial course use with attribution.
+- Pinned commit `f24a84e1bedee99bef273332fe705cc7ed1958be`: 30 daily `events/data/*.csv` files, 2026-08-24 to 2026-09-22.
 
-The generator rejects duplicate normalized text and conflicting labels. CSV fields are `id,text,label,group_id,title,source,source_url`. The last three fields record source metadata; title and URL are empty for this synthetic dataset.
+## Preparation
 
-`request_challenge.json` has 40 extra AI-authored cases. These cases were inspected during development. They are regression cases, not a blind test.
+- Category mapping: `music` → `concert`, `theater` → `theatre`, `comedy` → `stand_up`. Sports and other categories are dropped.
+- Text is the event title. Ticketing notes such as "(21+ Event)", "(Rescheduled from 3/28)", and "(Open Caption)" are removed.
+- 76 Toronto International Film Festival screenings are dropped. Gametime lists them as theater, but they are films.
+- Repeated dates of one show become one row. 15 titles that appear under two categories are dropped.
+- `group_id` is the first listed performer, so one performer's titles stay in one partition.
 
-The corpus is below the course's 1,000-example requirement. Add teacher-approved examples before submission. Keep related wording grouped and reserve unseen evaluation cases before changing the models.
+Result: **3,506 rows**, 2,831 groups. 2,575 concert, 564 stand-up, 367 theatre.
+
+CSV fields are `id,text,label,group_id,title,source,source_url`. `title` is the original title. `source_url` points to the pinned source file.
+
+## Known limits
+
+- English and US-centric.
+- Many titles are only a name ("Metallica", "Kevin Hart"). The category then depends on knowing the performer.
+- Labels come from the ticket site and were not reviewed by hand. Gametime's theater category is broad: plays, musicals, ballet, opera, circus, and some orchestra concerts.
+- The classes are imbalanced: 73% concert.
+
+## Request challenge set
+
+`request_challenge.json` has 40 AI-authored Turkish and English requests (CC0, see [LICENSE](LICENSE)). It was written for an earlier version of this project and inspected during development. Here it is a secondary transfer test, not a blind benchmark. It includes an `unclear` label, which the title models cannot predict except when no feature is known.
