@@ -1,4 +1,4 @@
-"""Text normalization, model definitions, and request classification."""
+"""Text normalization, model definitions, and event category classification."""
 
 from __future__ import annotations
 
@@ -7,9 +7,12 @@ import unicodedata
 from typing import Any
 
 
-LABELS = ("concert", "theatre", "stand_up", "unclear")
-ARTIFACT_TASK = "user_request_classification"
-DATASET_DOMAIN = "user_requests"
+LABELS = ("concert", "theatre", "stand_up")
+# Methods may abstain with this label. It is not a training class.
+UNCLEAR = "unclear"
+OUTPUT_LABELS = LABELS + (UNCLEAR,)
+ARTIFACT_TASK = "event_listing_classification"
+DATASET_DOMAIN = "event_listings"
 
 
 _WHITESPACE = re.compile(r"\s+")
@@ -98,9 +101,9 @@ def _validated_model(artifact: object) -> Any:
     if not isinstance(artifact, dict) or not required_keys.issubset(artifact):
         raise ValueError("Model artifact has an unsupported schema.")
     if artifact["task"] != ARTIFACT_TASK:
-        raise ValueError("Model artifact task is not user request classification.")
+        raise ValueError("Model artifact task is not event listing classification.")
     if artifact["dataset_domain"] != DATASET_DOMAIN:
-        raise ValueError("Model artifact dataset domain is not user requests.")
+        raise ValueError("Model artifact dataset domain is not event listings.")
     if set(map(str, artifact["labels"])) != set(LABELS):
         raise ValueError("Model artifact does not contain the required labels.")
 
@@ -113,7 +116,7 @@ def _validated_model(artifact: object) -> Any:
 
 
 def classify_request(artifact: object, text: object) -> dict[str, object]:
-    """Classify one request and reject text outside the fitted vocabulary."""
+    """Classify one text. Text outside the fitted vocabulary returns unclear."""
     normalized = normalize_text(text)
     if not normalized:
         raise ValueError("Prediction text must contain non-whitespace characters.")
@@ -124,7 +127,7 @@ def classify_request(artifact: object, text: object) -> dict[str, object]:
         raise ValueError("Model artifact does not contain the expected TF-IDF pipeline.")
     features = vectorizer.transform([normalized])
     if getattr(features, "nnz", 0) == 0:
-        return {"label": "unclear", "reason": "unknown_terms"}
+        return {"label": UNCLEAR, "reason": "unknown_terms"}
 
     label = str(model.predict([normalized])[0])
     if label not in LABELS:

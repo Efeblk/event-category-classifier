@@ -170,13 +170,34 @@ class TrainingFlowTests(unittest.TestCase):
         artifact = dump.call_args.args[0]
         self.assertIs(artifact["model"], good)
         self.assertEqual(artifact["model_name"], "good")
-        self.assertEqual(artifact["task"], "user_request_classification")
-        self.assertEqual(artifact["dataset_domain"], "user_requests")
-        self.assertEqual(artifact["provenance"], "generated_bootstrap")
+        self.assertEqual(artifact["task"], "event_listing_classification")
+        self.assertEqual(artifact["dataset_domain"], "event_listings")
+        self.assertEqual(artifact["provenance"], "gametime_public")
+        # The fixture has fewer than 1,000 rows, so it is not course-ready.
         self.assertFalse(artifact["course_dataset_ready"])
         self.assertEqual(metadata["evaluation_scope"], "raw_model")
         self.assertFalse(metadata["course_dataset_ready"])
         write_reports.assert_called_once()
+
+
+class ComparisonSetTests(unittest.TestCase):
+    def test_comparison_set_is_balanced_deterministic_and_from_test_only(self):
+        rows = make_rows(count=300)
+        test_indices = list(range(0, 300, 2))
+
+        first = training.comparison_records(rows, test_indices, seed=5)
+        second = training.comparison_records(rows, list(reversed(test_indices)), seed=5)
+
+        self.assertEqual(first, second)
+        test_ids = {rows[index]["id"] for index in test_indices}
+        self.assertTrue({record["id"] for record in first} <= test_ids)
+        for label in training.LABELS:
+            self.assertEqual(
+                sum(record["label"] == label for record in first),
+                training.COMPARISON_ROWS_PER_CLASS,
+            )
+        # The whole set must fit inside the 50-call Jev limit.
+        self.assertLessEqual(len(first), 50)
 
 
 class CrossValidationTests(unittest.TestCase):

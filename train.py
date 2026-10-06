@@ -1,4 +1,4 @@
-"""Train and evaluate Turkish and English user-request classifiers."""
+"""Train and evaluate event listing category classifiers."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import hashlib
 import importlib.metadata
 import json
 import platform
+import random
 import sys
 import time
 from collections import Counter, defaultdict
@@ -27,11 +28,12 @@ from classifier import (
 REQUIRED_COLUMNS = ("id", "text", "label", "group_id", "title", "source", "source_url")
 MIN_ROWS = 1_000
 MIN_CLASS_ROWS_PER_SPLIT = 5
-DATASET_PROVENANCE = "generated_bootstrap"
-LANGUAGE_SUPPORT = ("tr", "en")
+COMPARISON_ROWS_PER_CLASS = 12
+DATASET_PROVENANCE = "gametime_public"
+LANGUAGE_SUPPORT = ("en",)
 BENCHMARK_NOTE = (
-    "Metrics use held-out groups from the same generated corpus and are not an "
-    "external benchmark."
+    "Metrics use held-out performer groups from public Gametime listings. Labels are "
+    "the ticket site's categories and were not reviewed by hand."
 )
 
 
@@ -217,6 +219,22 @@ def _package_versions() -> dict[str, str]:
     return versions
 
 
+def comparison_records(
+    rows: list[dict[str, str]], test_indices: list[int], seed: int = 42
+) -> list[dict[str, str]]:
+    """Pick a fixed, class-balanced sample of test titles for the three-method comparison."""
+    by_label: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for index in sorted(test_indices, key=lambda index: rows[index]["id"]):
+        by_label[rows[index]["label"]].append(rows[index])
+    generator = random.Random(seed)
+    records = []
+    for label in LABELS:
+        count = min(COMPARISON_ROWS_PER_CLASS, len(by_label[label]))
+        for row in generator.sample(by_label[label], count):
+            records.append({"id": row["id"], "text": row["text"], "label": label})
+    return records
+
+
 def _write_reports(
     report_dir: Path,
     rows: list[dict[str, str]],
@@ -240,6 +258,16 @@ def _write_reports(
         }
     with (report_dir / "split.json").open("w", encoding="utf-8") as handle:
         json.dump(split_payload, handle, ensure_ascii=False, indent=2)
+        handle.write("\n")
+
+    comparison = {
+        "name": "Gametime test-split comparison set",
+        "provenance": "Sampled from the held-out test split. Gametime categories are the labels.",
+        "license": "CC BY-NC 4.0",
+        "records": comparison_records(rows, parts["test"], metadata["seed"]),
+    }
+    with (report_dir / "comparison_set.json").open("w", encoding="utf-8") as handle:
+        json.dump(comparison, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
 
     test_rows = [rows[index] for index in parts["test"]]
@@ -271,7 +299,7 @@ def _write_reports(
 
 
 def train(
-    data_path: str | Path = "data/requests.csv",
+    data_path: str | Path = "data/events.csv",
     model_path: str | Path = "artifacts/model.joblib",
     report_dir: str | Path = "reports",
     seed: int = 42,
@@ -327,6 +355,7 @@ def train(
     destination = Path(model_path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     dataset_sha256 = _dataset_sha256(source_path)
+    course_dataset_ready = len(rows) >= MIN_ROWS
     artifact = {
         "model": models[selected_name],
         "model_name": selected_name,
@@ -337,7 +366,7 @@ def train(
         "dataset_domain": DATASET_DOMAIN,
         "provenance": DATASET_PROVENANCE,
         "language_support": list(LANGUAGE_SUPPORT),
-        "course_dataset_ready": False,
+        "course_dataset_ready": course_dataset_ready,
     }
     joblib.dump(artifact, destination)
 
@@ -357,7 +386,7 @@ def train(
         "dataset_domain": DATASET_DOMAIN,
         "provenance": DATASET_PROVENANCE,
         "language_support": list(LANGUAGE_SUPPORT),
-        "course_dataset_ready": False,
+        "course_dataset_ready": course_dataset_ready,
         "allow_small_prototype": allow_small_prototype,
         "evaluation_scope": "raw_model",
         "benchmark_note": BENCHMARK_NOTE,
@@ -393,7 +422,7 @@ def train(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data", default="data/requests.csv")
+    parser.add_argument("--data", default="data/events.csv")
     parser.add_argument("--model", default="artifacts/model.joblib")
     parser.add_argument("--reports-dir", default="reports")
     parser.add_argument("--seed", type=int, default=42)

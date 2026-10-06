@@ -4,6 +4,8 @@ from classifier import (
     ARTIFACT_TASK,
     DATASET_DOMAIN,
     LABELS,
+    OUTPUT_LABELS,
+    UNCLEAR,
     classify_request,
     make_models,
     normalize_text,
@@ -53,7 +55,6 @@ class ModelDefinitionTests(unittest.TestCase):
             "concert": "canlı müzik konser sahne gitar",
             "theatre": "tiyatro sahne oyun oyuncu perde",
             "stand_up": "stand up komedi mizah kahkaha",
-            "unclear": "kararsızım belki bir etkinlik olabilir",
         }
         texts = []
         labels = []
@@ -76,7 +77,6 @@ class ClassifyRequestTests(unittest.TestCase):
             "concert": "live music concert guitar",
             "theatre": "theatre stage play actor",
             "stand_up": "stand up comedy jokes",
-            "unclear": "maybe something undecided",
         }
         texts = []
         labels = []
@@ -94,7 +94,7 @@ class ClassifyRequestTests(unittest.TestCase):
             "seed": 19,
             "task": ARTIFACT_TASK,
             "dataset_domain": DATASET_DOMAIN,
-            "provenance": "generated_bootstrap",
+            "provenance": "gametime_public",
         }
 
     def test_known_request_uses_the_trained_model_and_reports_probabilities(self):
@@ -102,6 +102,10 @@ class ClassifyRequestTests(unittest.TestCase):
 
         self.assertEqual(result["label"], "concert")
         self.assertEqual(set(result["model_probabilities"]), set(LABELS))
+
+    def test_unclear_is_an_abstain_output_not_a_training_class(self):
+        self.assertNotIn(UNCLEAR, LABELS)
+        self.assertEqual(OUTPUT_LABELS, LABELS + (UNCLEAR,))
 
     def test_zero_vocabulary_request_returns_unclear(self):
         result = classify_request(self.artifact, "qxzv blorpt nymwax")

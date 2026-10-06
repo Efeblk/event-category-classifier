@@ -6,6 +6,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import joblib
+from classifier import ARTIFACT_TASK
 from jev import JevClient
 from method_comparison import compare_request
 
@@ -52,7 +53,7 @@ def make_handler(artifact, metrics, jev=None):
                 self.respond(400, {"error": str(error)})
 
         def log_message(self, format, *args):
-            # Do not log the submitted request.
+            # Do not log the submitted text.
             pass
 
     return Handler
@@ -65,10 +66,10 @@ def main():
     args = parser.parse_args()
     # Load only artifacts made locally by train.py. Joblib files can execute code.
     if not args.model.exists():
-        parser.error("Train first: python train.py --allow-small-prototype")
+        parser.error("Train first: python train.py")
     artifact = joblib.load(args.model)
-    if artifact.get("task") != "user_request_classification":
-        parser.error("Train a user-request model first.")
+    if artifact.get("task") != ARTIFACT_TASK:
+        parser.error("Train an event listing model first: python train.py")
     metrics_path = ROOT / "reports/metrics.json"
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
     try:
