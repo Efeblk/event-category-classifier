@@ -13,7 +13,7 @@ from method_comparison import compare_request
 ROOT = Path(__file__).resolve().parent
 
 
-def make_handler(artifact, metrics, jev=None):
+def make_handler(artifact, metrics, jev=None, slot_artifact=None):
     class Handler(BaseHTTPRequestHandler):
         def respond(self, status, payload, content_type="application/json; charset=utf-8"):
             body = payload if isinstance(payload, bytes) else json.dumps(payload).encode("utf-8")
@@ -48,6 +48,14 @@ def make_handler(artifact, metrics, jev=None):
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
                 prediction = compare_request(artifact, payload.get("text"), jev, payload.get("include_jev", False))
+                if slot_artifact is not None:
+                    from slots import display_spans, parser_tags, predict_tags
+                    text = payload["text"]
+                    prediction["slots"] = {
+                        "parser": {"model": "regex: date, time, timeofday only", "spans": display_spans(text, parser_tags(text.split()))},
+                        "token_model": {"model": slot_artifact["model_name"], "spans": display_spans(text, predict_tags(slot_artifact, [text.split()])[0])},
+                        "jev": {"message": "Jev slots are not implemented."},
+                    }
                 self.respond(200, prediction)
             except (ValueError, UnicodeDecodeError) as error:
                 self.respond(400, {"error": str(error)})
@@ -62,21 +70,31 @@ def make_handler(artifact, metrics, jev=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8011)
-    parser.add_argument("--model", type=Path, default=ROOT / "artifacts/model.joblib")
+    parser.add_argument("--model", type=Path, default=ROOT / "artifacts/lr_model.joblib")
+    parser.add_argument("--no-slots", action="store_true")
+    parser.add_argument("--slot-model", type=Path, default=ROOT / "artifacts/slot_model.joblib")
     args = parser.parse_args()
     # Load only artifacts made locally by train.py. Joblib files can execute code.
     if not args.model.exists():
         parser.error("Train first: python train.py")
     artifact = joblib.load(args.model)
     if artifact.get("task") != ARTIFACT_TASK:
-        parser.error("Train an event listing model first: python train.py")
+        parser.error("Train a MASSIVE intent model first: python train.py")
     metrics_path = ROOT / "reports/metrics.json"
     metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
     try:
         jev = JevClient()
     except ValueError as error:
         parser.error(str(error))
-    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev))
+    slot_artifact = None
+    import importlib.util
+    if not args.no_slots and args.slot_model.exists() and importlib.util.find_spec("slots") is not None:
+        slot_artifact = joblib.load(args.slot_model)
+        from slots import predict_tags
+        predict_tags(slot_artifact, [])
+        if slot_artifact["dataset_sha256"] != artifact["dataset_sha256"]:
+            parser.error("Intent and slot artifacts use different data.")
+    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev, slot_artifact))
     print(f"Open http://127.0.0.1:{args.port}", flush=True)
     try:
         server.serve_forever()
