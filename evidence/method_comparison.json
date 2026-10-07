@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "task": "intent_classification",
-  "generated_at_utc": "2026-10-07T21:15:27.454847+00:00",
+  "generated_at_utc": "2026-10-07T22:34:59.606004+00:00",
   "evaluation_scope": "40 MASSIVE tr-TR official test requests",
   "examples": 40,
   "provenance": "Uniform sample without replacement, seed 42. Not the full benchmark.",
@@ -395,13 +395,13 @@
           "method": "parser",
           "status": "ok",
           "label": "weather_query",
-          "elapsed_ms": 0.425
+          "elapsed_ms": 0.395
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "social_post",
-          "elapsed_ms": 10.019
+          "elapsed_ms": 14.249
         },
         {
           "method": "jev",
@@ -418,13 +418,13 @@
           "method": "parser",
           "status": "ok",
           "label": "play_music",
-          "elapsed_ms": 0.167
+          "elapsed_ms": 0.132
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "play_music",
-          "elapsed_ms": 1.268
+          "elapsed_ms": 1.157
         },
         {
           "method": "jev",
@@ -441,13 +441,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.026
+          "elapsed_ms": 0.024
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "general_joke",
-          "elapsed_ms": 1.024
+          "elapsed_ms": 0.978
         },
         {
           "method": "jev",
@@ -464,13 +464,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.017
+          "elapsed_ms": 0.016
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "news_query",
-          "elapsed_ms": 0.939
+          "elapsed_ms": 0.894
         },
         {
           "method": "jev",
@@ -487,13 +487,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.021
+          "elapsed_ms": 0.02
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_factoid",
-          "elapsed_ms": 1.046
+          "elapsed_ms": 0.9
         },
         {
           "method": "jev",
@@ -510,13 +510,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.024
+          "elapsed_ms": 0.02
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "music_query",
-          "elapsed_ms": 1.1
+          "elapsed_ms": 0.884
         },
         {
           "method": "jev",
@@ -533,13 +533,13 @@
           "method": "parser",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 0.095
+          "elapsed_ms": 0.08
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 1.078
+          "elapsed_ms": 0.984
         },
         {
           "method": "jev",
@@ -562,7 +562,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "takeaway_order",
-          "elapsed_ms": 0.999
+          "elapsed_ms": 0.899
         },
         {
           "method": "jev",
@@ -579,13 +579,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.027
+          "elapsed_ms": 0.026
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "email_sendemail",
-          "elapsed_ms": 1.043
+          "elapsed_ms": 1.338
         },
         {
           "method": "jev",
@@ -602,13 +602,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.027
+          "elapsed_ms": 0.036
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_factoid",
-          "elapsed_ms": 1.025
+          "elapsed_ms": 1.276
         },
         {
           "method": "jev",
@@ -625,13 +625,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.024
+          "elapsed_ms": 0.026
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "takeaway_order",
-          "elapsed_ms": 1.253
+          "elapsed_ms": 1.026
         },
         {
           "method": "jev",
@@ -654,7 +654,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_factoid",
-          "elapsed_ms": 1.099
+          "elapsed_ms": 1.084
         },
         {
           "method": "jev",
@@ -671,13 +671,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.031
+          "elapsed_ms": 0.032
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "cooking_recipe",
-          "elapsed_ms": 1.469
+          "elapsed_ms": 1.026
         },
         {
           "method": "jev",
@@ -694,13 +694,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.028
+          "elapsed_ms": 0.027
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "news_query",
-          "elapsed_ms": 1.038
+          "elapsed_ms": 0.969
         },
         {
           "method": "jev",
@@ -723,7 +723,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "iot_cleaning",
-          "elapsed_ms": 0.985
+          "elapsed_ms": 0.933
         },
         {
           "method": "jev",
@@ -740,13 +740,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.024
+          "elapsed_ms": 0.025
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "iot_coffee",
-          "elapsed_ms": 1.504
+          "elapsed_ms": 0.928
         },
         {
           "method": "jev",
@@ -763,13 +763,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.026
+          "elapsed_ms": 0.024
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "music_settings",
-          "elapsed_ms": 1.059
+          "elapsed_ms": 0.903
         },
         {
           "method": "jev",
@@ -786,13 +786,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.027
+          "elapsed_ms": 0.031
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "weather_query",
-          "elapsed_ms": 1.091
+          "elapsed_ms": 1.092
         },
         {
           "method": "jev",
@@ -815,7 +815,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "recommendation_events",
-          "elapsed_ms": 1.042
+          "elapsed_ms": 1.004
         },
         {
           "method": "jev",
@@ -832,13 +832,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.029
+          "elapsed_ms": 0.031
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_stock",
-          "elapsed_ms": 1.025
+          "elapsed_ms": 0.999
         },
         {
           "method": "jev",
@@ -855,13 +855,13 @@
           "method": "parser",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 0.021
+          "elapsed_ms": 0.022
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 1.434
+          "elapsed_ms": 0.918
         },
         {
           "method": "jev",
@@ -878,13 +878,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.026
+          "elapsed_ms": 0.023
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_factoid",
-          "elapsed_ms": 1.1
+          "elapsed_ms": 0.931
         },
         {
           "method": "jev",
@@ -901,13 +901,13 @@
           "method": "parser",
           "status": "ok",
           "label": "play_music",
-          "elapsed_ms": 0.03
+          "elapsed_ms": 0.029
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "play_music",
-          "elapsed_ms": 1.227
+          "elapsed_ms": 1.052
         },
         {
           "method": "jev",
@@ -924,13 +924,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.043
+          "elapsed_ms": 0.227
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "email_sendemail",
-          "elapsed_ms": 1.263
+          "elapsed_ms": 1.903
         },
         {
           "method": "jev",
@@ -947,13 +947,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.026
+          "elapsed_ms": 0.028
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "social_post",
-          "elapsed_ms": 1.352
+          "elapsed_ms": 1.077
         },
         {
           "method": "jev",
@@ -970,13 +970,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.035
+          "elapsed_ms": 0.034
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "email_addcontact",
-          "elapsed_ms": 1.35
+          "elapsed_ms": 1.219
         },
         {
           "method": "jev",
@@ -999,7 +999,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_definition",
-          "elapsed_ms": 1.012
+          "elapsed_ms": 0.964
         },
         {
           "method": "jev",
@@ -1022,7 +1022,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "cooking_recipe",
-          "elapsed_ms": 0.969
+          "elapsed_ms": 1.056
         },
         {
           "method": "jev",
@@ -1045,7 +1045,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "weather_query",
-          "elapsed_ms": 0.984
+          "elapsed_ms": 1.003
         },
         {
           "method": "jev",
@@ -1062,13 +1062,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.107
+          "elapsed_ms": 0.093
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "calendar_remove",
-          "elapsed_ms": 1.071
+          "elapsed_ms": 1.023
         },
         {
           "method": "jev",
@@ -1085,13 +1085,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.03
+          "elapsed_ms": 0.029
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_currency",
-          "elapsed_ms": 1.079
+          "elapsed_ms": 1.003
         },
         {
           "method": "jev",
@@ -1114,7 +1114,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "music_likeness",
-          "elapsed_ms": 0.95
+          "elapsed_ms": 0.897
         },
         {
           "method": "jev",
@@ -1131,13 +1131,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.023
+          "elapsed_ms": 0.024
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "music_likeness",
-          "elapsed_ms": 0.932
+          "elapsed_ms": 0.921
         },
         {
           "method": "jev",
@@ -1154,13 +1154,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.033
+          "elapsed_ms": 0.048
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "music_likeness",
-          "elapsed_ms": 1.037
+          "elapsed_ms": 1.132
         },
         {
           "method": "jev",
@@ -1177,13 +1177,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.038
+          "elapsed_ms": 0.039
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "email_sendemail",
-          "elapsed_ms": 1.129
+          "elapsed_ms": 1.138
         },
         {
           "method": "jev",
@@ -1206,7 +1206,7 @@
           "method": "logistic_regression",
           "status": "ok",
           "label": "cooking_recipe",
-          "elapsed_ms": 1.11
+          "elapsed_ms": 1.237
         },
         {
           "method": "jev",
@@ -1223,13 +1223,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.086
+          "elapsed_ms": 0.085
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "calendar_set",
-          "elapsed_ms": 1.04
+          "elapsed_ms": 1.027
         },
         {
           "method": "jev",
@@ -1246,13 +1246,13 @@
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.02
+          "elapsed_ms": 0.021
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "qa_factoid",
-          "elapsed_ms": 1.295
+          "elapsed_ms": 0.922
         },
         {
           "method": "jev",
@@ -1269,13 +1269,13 @@
           "method": "parser",
           "status": "ok",
           "label": "datetime_query",
-          "elapsed_ms": 0.069
+          "elapsed_ms": 0.063
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "datetime_query",
-          "elapsed_ms": 1.17
+          "elapsed_ms": 1.053
         },
         {
           "method": "jev",
@@ -1292,13 +1292,13 @@
           "method": "parser",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 0.022
+          "elapsed_ms": 0.021
         },
         {
           "method": "logistic_regression",
           "status": "ok",
           "label": "alarm_set",
-          "elapsed_ms": 0.951
+          "elapsed_ms": 0.921
         },
         {
           "method": "jev",
@@ -1309,9 +1309,9 @@
     }
   ],
   "code_sha256": {
-    "classifier.py": "cba44575c2cf116fa4590fab4b7b20161aa0456b3efdd37147b2e990e9df2889",
+    "classifier.py": "57820dfe5d044e84d0c053d4bc5ec67626ef6d3eea0bdabccdc5414a782b9ea7",
     "parser.py": "ee16dde18b93fbcd1e0cf5579674ac49efaf8d766988c77a4a289e462e6d86b7",
-    "jev.py": "b07f8dba11352229064cf1820b827de82f1af4b93d349dd7e535ca78b8fd05e3",
+    "jev.py": "3fcc1274477e699e9061c0331c56602e3b5b65cef412df588ac603b7289b7507",
     "method_comparison.py": "522a49e602514d973b341761d66a1fa4e147282c7be93d1f34d41aade6edd870",
     "compare_methods.py": "c668a44ff49ac525c96bea8f11ae8bcfb032a923a31fad3bd80a805970dc5995"
   }

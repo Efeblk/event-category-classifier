@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Read [README.md](README.md) first. [PLAN.md](PLAN.md) records the completed rewrite.
+Read [README.md](README.md) first.
 
 ## Project and course context
 
@@ -76,7 +76,7 @@ runs match; timestamps/request milliseconds are not deterministic.
 - Keep MIN_ROWS=1000 and the explicit small-prototype flag in train.py. Validate
   ids, text, labels, scenario and partition. Audit cross-partition/mixed-label texts.
 - Intent selection uses dev macro F1; slot selection uses dev exact-span micro F1.
-  Refit intent winners on train alone, never train+dev. Test is scored once per
+  Fit every candidate on train alone, never train+dev. Test is scored once per
   candidate after selection in each reproducibility run. Never tune on test.
 - Write Parser intent/slot rules from train only. Keep Parser and learned outputs
   independent. Zero fitted TF-IDF features return unclear with unknown_terms.

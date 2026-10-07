@@ -42,7 +42,7 @@ Official partitions: **11,514 train / 2,033 dev / 2,974 test**. No resplitting o
 removal of duplicate texts. Train contains all 60 intents; dev lacks
 `audio_volume_other`, and test lacks `cooking_query`. Fixed 60-label macro F1
 assigns zero to absent classes. Dev macro F1 selects the intent winner; dev exact
-span F1 selects the slot winner. Final fits use train alone, never train+dev.
+span F1 selects the slot winner. Every model fits on train alone, never train+dev.
 Test is evaluated after selection; no rules or settings are tuned on test.
 
 Intent candidates: majority, Naive Bayes, Logistic Regression and Linear SVM

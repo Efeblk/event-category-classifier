@@ -31,8 +31,8 @@ Dev lacks `audio_volume_other`; test lacks `cooking_query`. Train has all 60.
 is also balanced characters, dev macro F1 0.7838. Balanced weights improve both LR
 feature variants and narrowly improve character SVM on dev. Word SVM prefers
 unbalanced weights. Unbalanced character SVM has higher test scores; this does
-not change the dev-selected winner. Both saved intent models are refitted on
-train alone, without dev, then each candidate is scored once on test per run.
+not change the dev-selected winner. Every candidate is fitted on train alone,
+without dev, and scored once on test after selection.
 
 ## Published Turkish reference
 

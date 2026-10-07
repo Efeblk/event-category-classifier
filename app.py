@@ -51,9 +51,12 @@ def make_handler(artifact, metrics, jev=None, slot_artifact=None):
                 if slot_artifact is not None:
                     from slots import display_spans, parser_tags, predict_tags
                     text = payload["text"]
+                    tokens = text.split()
+                    parser_spans = display_spans(text, parser_tags(tokens))
+                    model_spans = display_spans(text, predict_tags(slot_artifact, [tokens])[0])
                     prediction["slots"] = {
-                        "parser": {"model": "regex: date, time, timeofday only", "spans": display_spans(text, parser_tags(text.split()))},
-                        "token_model": {"model": slot_artifact["model_name"], "spans": display_spans(text, predict_tags(slot_artifact, [text.split()])[0])},
+                        "parser": {"model": "regex: date, time, timeofday only", "spans": parser_spans},
+                        "token_model": {"model": slot_artifact["model_name"], "spans": model_spans},
                         "jev": {"message": "Jev slots are not implemented."},
                     }
                 self.respond(200, prediction)
@@ -86,12 +89,15 @@ def main():
         jev = JevClient()
     except ValueError as error:
         parser.error(str(error))
+    # Slots are optional. Run with --no-slots if the slot extension was removed.
     slot_artifact = None
-    import importlib.util
-    if not args.no_slots and args.slot_model.exists() and importlib.util.find_spec("slots") is not None:
-        slot_artifact = joblib.load(args.slot_model)
+    if not args.no_slots and args.slot_model.exists():
         from slots import predict_tags
-        predict_tags(slot_artifact, [])
+        slot_artifact = joblib.load(args.slot_model)
+        try:
+            predict_tags(slot_artifact, [])  # validates the artifact
+        except ValueError as error:
+            parser.error(str(error))
         if slot_artifact["dataset_sha256"] != artifact["dataset_sha256"]:
             parser.error("Intent and slot artifacts use different data.")
     server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev, slot_artifact))

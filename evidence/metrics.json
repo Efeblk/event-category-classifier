@@ -218,7 +218,6 @@
     "selected_model": "linear_svm_char",
     "logistic_regression_model": "logistic_regression_char",
     "fit_split": "train",
-    "final_refit": true,
     "test_used_for_selection": false
   },
   "class_weight_check": {

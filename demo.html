@@ -1,63 +1,245 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Turkish request intent classifier</title>
-<style>
-* { box-sizing:border-box } body { margin:0; background:#f4f6f3; color:#19372e; font:16px/1.6 system-ui }
-main { max-width:1100px; margin:auto; padding:45px 24px } h1 { font-size:clamp(28px,5vw,44px); line-height:1.2 }
-section, article { background:white; border:1px solid #cfddd4; border-radius:12px; padding:24px; margin:20px 0 }
-label { display:block; font-weight:600 } textarea { width:100%; min-height:110px; padding:12px; font:inherit; border:1px solid #92aea0; border-radius:6px }
-button { cursor:pointer; border:1px solid #b8cdc0; border-radius:6px; background:#eaf3ee; padding:9px 14px; font:inherit; margin:8px 6px 8px 0 }
-button[type=submit] { color:white; background:#155946 } button:disabled { opacity:.5; cursor:default }
-.samples { display:flex; flex-wrap:wrap } .samples button { font-size:13px } .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px }
-.cards article { margin:0; padding:18px; min-width:0 } .intent { font-weight:700; overflow-wrap:anywhere } .muted { color:#536c61; font-size:14px }
-.highlight { background:#ffe4a1; border-radius:3px; padding:2px 0 } .request { white-space:pre-wrap } .table-wrap { overflow-x:auto }
-table { width:100%; border-collapse:collapse; font-size:14px } td,th { text-align:left; padding:8px; border-bottom:1px solid #d7e2dc }
-:focus-visible { outline:3px solid #458f6b; outline-offset:2px } @media(max-width:700px) { .cards { grid-template-columns:1fr } main { padding:24px 16px } }
-</style></head><body><main>
-<p class="muted">COE025 · Solo Project 1 · MASSIVE tr-TR</p>
-<h1>What does this request ask for?</h1>
-<p>60 intents. Written rules, learned patterns, and an optional pretrained model.</p>
-<section><form id="form"><label for="request">Turkish request</label>
-<textarea id="request" maxlength="5000" required placeholder="Bir Türkçe istek yazın"></textarea>
-<div class="samples" id="samples" aria-label="Official dev examples"></div>
-<p class="muted">Example buttons are human-localized requests from the official dev split.</p>
-<label><input type="checkbox" id="include-jev" disabled> Include Jev (paid API, one attempt)</label>
-<p id="jev-status" class="muted">Checking Jev settings…</p><button type="submit" id="submit">Compare methods</button></form></section>
-<section id="result" hidden aria-live="polite"></section>
-<section><h2>Official intent results</h2><p class="muted">Selected by dev macro F1. Every model uses train only. The full test has 2,974 requests.</p><div id="metrics"></div></section>
-<section><h2>Same-input comparison</h2><div id="comparison"></div><p class="muted">40 sampled test requests. This small sample is separate from the paper benchmark.</p></section>
-<footer class="muted">Intent classification is the core. Slot filling is an optional extension; it does not search or execute requests. Jev slots are not implemented.</footer>
-</main><script>
-const examples = [{"text": "yarın sabah altıya alarm kur", "intent": "alarm_set", "id": "173"}, {"text": "haftanın hava tahmini nasıl", "intent": "weather_query", "id": "99"}, {"text": "bugünün kaçamak günü olarak işaretlenmesi gerekiyor", "intent": "calendar_set", "id": "6540"}, {"text": "büyük ev ablukada'dan arayan bulur dinlemek istiyorum", "intent": "play_music", "id": "67"}];
-const methodNames = {parser:"Parser",logistic_regression:"Logistic Regression",jev:"Jev"};
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turkish request intent classifier</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f6f3; color: #19372e; font: 16px/1.6 system-ui; }
+    main { max-width: 1100px; margin: auto; padding: 45px 24px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.2; }
+    section, article { background: white; border: 1px solid #cfddd4; border-radius: 12px; padding: 24px; margin: 20px 0; }
+    label { display: block; font-weight: 600; }
+    textarea { width: 100%; min-height: 110px; padding: 12px; font: inherit; border: 1px solid #92aea0; border-radius: 6px; }
+    button { cursor: pointer; border: 1px solid #b8cdc0; border-radius: 6px; background: #eaf3ee; padding: 9px 14px; font: inherit; margin: 8px 6px 8px 0; }
+    button[type=submit] { color: white; background: #155946; }
+    button:disabled { opacity: .5; cursor: default; }
+    .samples { display: flex; flex-wrap: wrap; }
+    .samples button { font-size: 13px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .cards article { margin: 0; padding: 18px; min-width: 0; }
+    .intent { font-weight: 700; overflow-wrap: anywhere; }
+    .muted { color: #536c61; font-size: 14px; }
+    .highlight { background: #ffe4a1; border-radius: 3px; padding: 2px 0; }
+    .request { white-space: pre-wrap; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td, th { text-align: left; padding: 8px; border-bottom: 1px solid #d7e2dc; }
+    :focus-visible { outline: 3px solid #458f6b; outline-offset: 2px; }
+    @media (max-width: 700px) {
+      .cards { grid-template-columns: 1fr; }
+      main { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p class="muted">COE025 · Solo Project 1 · MASSIVE tr-TR</p>
+  <h1>What does this request ask for?</h1>
+  <p>60 intents. Written rules, learned patterns, and an optional pretrained model.</p>
+
+  <section>
+    <form id="form">
+      <label for="request">Turkish request</label>
+      <textarea id="request" maxlength="5000" required placeholder="Bir Türkçe istek yazın"></textarea>
+      <div class="samples" id="samples" aria-label="Official dev examples"></div>
+      <p class="muted">Example buttons are human-localized requests from the official dev split.</p>
+      <label><input type="checkbox" id="include-jev" disabled> Include Jev (paid API, one attempt)</label>
+      <p id="jev-status" class="muted">Checking Jev settings…</p>
+      <button type="submit" id="submit">Compare methods</button>
+    </form>
+  </section>
+
+  <section id="result" hidden aria-live="polite"></section>
+
+  <section>
+    <h2>Official intent results</h2>
+    <p class="muted">Selected by dev macro F1. Every model uses train only. The full test has 2,974 requests.</p>
+    <div id="metrics"></div>
+  </section>
+
+  <section>
+    <h2>Same-input comparison</h2>
+    <div id="comparison"></div>
+    <p class="muted">40 sampled test requests. This small sample is separate from the paper benchmark.</p>
+  </section>
+
+  <footer class="muted">Intent classification is the core. Slot filling is an optional extension; it does not search or execute requests. Jev slots are not implemented.</footer>
+</main>
+
+<script>
+// Examples come from the official dev split, never from test.
+const examples = [
+  { text: "yarın sabah altıya alarm kur", intent: "alarm_set", id: "173" },
+  { text: "haftanın hava tahmini nasıl", intent: "weather_query", id: "99" },
+  { text: "bugünün kaçamak günü olarak işaretlenmesi gerekiyor", intent: "calendar_set", id: "6540" },
+  { text: "büyük ev ablukada'dan arayan bulur dinlemek istiyorum", intent: "play_music", id: "67" },
+];
+const methodNames = { parser: "Parser", logistic_regression: "Logistic Regression", jev: "Jev" };
 const request = document.getElementById("request");
-function el(tag,text,cls) { const item=document.createElement(tag); if(text!==undefined) item.textContent=text; if(cls) item.className=cls; return item; }
-for(const example of examples) { const button=el("button",example.intent);button.type="button";button.title="Dev id "+example.id;button.addEventListener("click",()=>{request.value=example.text;request.focus();});document.getElementById("samples").append(button); }
-function highlighted(text,spans) {
-  const paragraph=el("p",undefined,"request"),characters=Array.from(text);let cursor=0;
-  for(const span of spans) {
-    paragraph.append(document.createTextNode(characters.slice(cursor,span.start).join("")));
-    const word=el("span",characters.slice(span.start,span.end).join(""),"highlight");word.title=span.type;paragraph.append(word);cursor=span.end;
+
+// All text goes in through textContent, never innerHTML.
+function el(tag, text, className) {
+  const item = document.createElement(tag);
+  if (text !== undefined) item.textContent = text;
+  if (className) item.className = className;
+  return item;
+}
+
+for (const example of examples) {
+  const button = el("button", example.intent);
+  button.type = "button";
+  button.title = "Dev id " + example.id;
+  button.addEventListener("click", () => {
+    request.value = example.text;
+    request.focus();
+  });
+  document.getElementById("samples").append(button);
+}
+
+// Server offsets count Unicode code points, so split the text the same way.
+function highlighted(text, spans) {
+  const paragraph = el("p", undefined, "request");
+  const characters = Array.from(text);
+  let cursor = 0;
+  for (const span of spans) {
+    paragraph.append(document.createTextNode(characters.slice(cursor, span.start).join("")));
+    const word = el("span", characters.slice(span.start, span.end).join(""), "highlight");
+    word.title = span.type;
+    paragraph.append(word);
+    cursor = span.end;
   }
-  paragraph.append(document.createTextNode(characters.slice(cursor).join("")));return paragraph;
+  paragraph.append(document.createTextNode(characters.slice(cursor).join("")));
+  return paragraph;
 }
-async function json(url,options) { const response=await fetch(url,options);const payload=await response.json();if(!response.ok) throw new Error(payload.error || "Request failed");return payload; }
-async function status() { const checkbox=document.getElementById("include-jev");try {const config=await json("/api/comparison-config");checkbox.disabled=!config.configured || config.remaining_calls<=0;if(checkbox.disabled) checkbox.checked=false;document.getElementById("jev-status").textContent=config.configured?config.remaining_calls+" attempts left; max 1,000 characters":"Jev is not configured. No API calls are made.";} catch {checkbox.disabled=true;checkbox.checked=false;document.getElementById("jev-status").textContent="Jev settings unavailable.";} }
-document.getElementById("form").addEventListener("submit",async event=>{
- event.preventDefault();const button=document.getElementById("submit"),result=document.getElementById("result"),text=request.value;button.disabled=true;result.hidden=false;result.textContent="Comparing…";
- try {const payload=await json("/api/compare",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,include_jev:document.getElementById("include-jev").checked})});
- result.replaceChildren(el("h2","Intent: same input, three methods"));const cards=el("div",undefined,"cards");
- for(const row of payload.results) {const card=el("article");card.append(el("h3",methodNames[row.method]),el("p",row.status==="ok"?row.label:"Not evaluated","intent"),el("p",row.status==="ok"?"Request time: "+row.elapsed_ms+" ms":row.message,"muted"));cards.append(card);}result.append(cards);
- if(payload.slots) {result.append(el("h2","Optional slots"));for(const key of ["parser","token_model"]) {const row=payload.slots[key];result.append(el("h3",key==="parser"?"Parser slots":"Token classifier: "+row.model),el("p",row.model,"muted"),highlighted(text,row.spans));result.append(el("p",row.spans.length?row.spans.map(s=>s.type+": "+s.text).join(" · "):"No slots extracted.","muted"));}result.append(el("p",payload.slots.jev.message,"muted"));}
- else result.append(el("p","Slot extension unavailable; intent classification is active.","muted"));
- } catch(error) {result.textContent=error.message;} finally {button.disabled=false;status();}
+
+async function json(url, options) {
+  const response = await fetch(url, options);
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.error || "Request failed");
+  return payload;
+}
+
+async function status() {
+  const checkbox = document.getElementById("include-jev");
+  const message = document.getElementById("jev-status");
+  try {
+    const config = await json("/api/comparison-config");
+    checkbox.disabled = !config.configured || config.remaining_calls <= 0;
+    if (checkbox.disabled) checkbox.checked = false;
+    message.textContent = config.configured
+      ? config.remaining_calls + " attempts left; max 1,000 characters"
+      : "Jev is not configured. No API calls are made.";
+  } catch {
+    checkbox.disabled = true;
+    checkbox.checked = false;
+    message.textContent = "Jev settings unavailable.";
+  }
+}
+
+function showIntents(result, rows) {
+  result.replaceChildren(el("h2", "Intent: same input, three methods"));
+  const cards = el("div", undefined, "cards");
+  for (const row of rows) {
+    const card = el("article");
+    const ok = row.status === "ok";
+    card.append(
+      el("h3", methodNames[row.method]),
+      el("p", ok ? row.label : "Not evaluated", "intent"),
+      el("p", ok ? "Request time: " + row.elapsed_ms + " ms" : row.message, "muted"),
+    );
+    cards.append(card);
+  }
+  result.append(cards);
+}
+
+function showSlots(result, text, slots) {
+  if (!slots) {
+    result.append(el("p", "Slot extension unavailable; intent classification is active.", "muted"));
+    return;
+  }
+  result.append(el("h2", "Optional slots"));
+  for (const key of ["parser", "token_model"]) {
+    const row = slots[key];
+    const title = key === "parser" ? "Parser slots" : "Token classifier: " + row.model;
+    const summary = row.spans.length
+      ? row.spans.map(span => span.type + ": " + span.text).join(" · ")
+      : "No slots extracted.";
+    result.append(el("h3", title), el("p", row.model, "muted"), highlighted(text, row.spans), el("p", summary, "muted"));
+  }
+  result.append(el("p", slots.jev.message, "muted"));
+}
+
+document.getElementById("form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = document.getElementById("submit");
+  const result = document.getElementById("result");
+  const text = request.value;
+  button.disabled = true;
+  result.hidden = false;
+  result.textContent = "Comparing…";
+  try {
+    const payload = await json("/api/compare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, include_jev: document.getElementById("include-jev").checked }),
+    });
+    showIntents(result, payload.results);
+    showSlots(result, text, payload.slots);
+  } catch (error) {
+    result.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    status();
+  }
 });
-function table(target,headers,rows) { const wrap=el("div",undefined,"table-wrap"),tab=el("table"),head=el("tr");for(const h of headers) head.append(el("th",h));tab.append(head);for(const cells of rows) {const row=el("tr");for(const c of cells) row.append(el("td",c));tab.append(row);}wrap.append(tab);target.append(wrap); }
-const pct=value=>typeof value==="number"?(100*value).toFixed(2)+"%":"Not evaluated";
-async function reports() {
- const metrics=document.getElementById("metrics"),comparison=document.getElementById("comparison");
- try {const p=await json("/api/results");if(p.task!=="intent_classification" || !p.models) throw new Error("Train the MASSIVE models first.");metrics.append(el("p","Winner: "+p.selection.selected_model+"; demo LR: "+p.selection.logistic_regression_model,"muted"));table(metrics,["Model","Dev accuracy","Dev macro F1","Test accuracy","Test macro F1"],Object.entries(p.models).map(([name,m])=>[name,pct(m.dev.accuracy),m.dev.macro_f1.toFixed(4),pct(m.test.accuracy),m.test.macro_f1.toFixed(4)]));} catch(error) {metrics.textContent=error.message;}
- try {const p=await json("/api/method-results");if(!p.methods) throw new Error("Run compare_methods.py to save results.");table(comparison,["Method","Accuracy","Macro F1","Coverage","Answered accuracy"],Object.entries(p.methods).map(([name,m])=>[methodNames[name],pct(m.accuracy),typeof m.macro_f1==="number"?m.macro_f1.toFixed(4):"Not evaluated",pct(m.coverage),pct(m.answered_accuracy)]));} catch(error) {comparison.textContent=error.message;}
+
+function table(target, headers, rows) {
+  const wrap = el("div", undefined, "table-wrap");
+  const tab = el("table");
+  const head = el("tr");
+  for (const header of headers) head.append(el("th", header));
+  tab.append(head);
+  for (const cells of rows) {
+    const row = el("tr");
+    for (const cell of cells) row.append(el("td", cell));
+    tab.append(row);
+  }
+  wrap.append(tab);
+  target.append(wrap);
 }
-status();reports();
-</script></body></html>
+
+const pct = value => typeof value === "number" ? (100 * value).toFixed(2) + "%" : "Not evaluated";
+const f1 = value => typeof value === "number" ? value.toFixed(4) : "Not evaluated";
+
+async function reports() {
+  const metrics = document.getElementById("metrics");
+  try {
+    const p = await json("/api/results");
+    if (p.task !== "intent_classification" || !p.models) throw new Error("Train the MASSIVE models first.");
+    metrics.append(el("p", "Winner: " + p.selection.selected_model + "; demo LR: " + p.selection.logistic_regression_model, "muted"));
+    table(metrics, ["Model", "Dev accuracy", "Dev macro F1", "Test accuracy", "Test macro F1"],
+      Object.entries(p.models).map(([name, m]) =>
+        [name, pct(m.dev.accuracy), f1(m.dev.macro_f1), pct(m.test.accuracy), f1(m.test.macro_f1)]));
+  } catch (error) {
+    metrics.textContent = error.message;
+  }
+
+  const comparison = document.getElementById("comparison");
+  try {
+    const p = await json("/api/method-results");
+    if (!p.methods) throw new Error("Run compare_methods.py to save results.");
+    table(comparison, ["Method", "Accuracy", "Macro F1", "Coverage", "Answered accuracy"],
+      Object.entries(p.methods).map(([name, m]) =>
+        [methodNames[name], pct(m.accuracy), f1(m.macro_f1), pct(m.coverage), pct(m.answered_accuracy)]));
+  } catch (error) {
+    comparison.textContent = error.message;
+  }
+}
+
+status();
+reports();
+</script>
+</body>
+</html>
