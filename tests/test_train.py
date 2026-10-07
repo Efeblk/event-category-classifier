@@ -18,7 +18,10 @@ class TrainTests(unittest.TestCase):
         self.assertEqual(parts,split_data(rows,99))
         self.assertEqual([len(x) for x in parts.values()],[60]*3)
         self.assertEqual(set(sum(parts.values(),[])),set(range(180)))
-        with self.assertRaises(ValueError): split_data(rows[:-1])
+        self.assertEqual(len(split_data(rows[:-1])["test"]),59)
+        with self.assertRaises(ValueError): split_data(rows[1:])
+        invalid=[dict(r) for r in rows];invalid[0]["partition"]="other"
+        with self.assertRaises(ValueError): split_data(invalid)
     def test_data_validation_preserves_official_duplicates(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/"data.jsonl"

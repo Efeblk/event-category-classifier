@@ -34,12 +34,12 @@ const request = document.getElementById("request");
 function el(tag,text,cls) { const item=document.createElement(tag); if(text!==undefined) item.textContent=text; if(cls) item.className=cls; return item; }
 for(const example of examples) { const button=el("button",example.intent);button.type="button";button.title="Dev id "+example.id;button.addEventListener("click",()=>{request.value=example.text;request.focus();});document.getElementById("samples").append(button); }
 function highlighted(text,spans) {
-  const paragraph=el("p",undefined,"request");let cursor=0;
+  const paragraph=el("p",undefined,"request"),characters=Array.from(text);let cursor=0;
   for(const span of spans) {
-    paragraph.append(document.createTextNode(text.slice(cursor,span.start)));
-    const word=el("span",text.slice(span.start,span.end),"highlight");word.title=span.type;paragraph.append(word);cursor=span.end;
+    paragraph.append(document.createTextNode(characters.slice(cursor,span.start).join("")));
+    const word=el("span",characters.slice(span.start,span.end).join(""),"highlight");word.title=span.type;paragraph.append(word);cursor=span.end;
   }
-  paragraph.append(document.createTextNode(text.slice(cursor)));return paragraph;
+  paragraph.append(document.createTextNode(characters.slice(cursor).join("")));return paragraph;
 }
 async function json(url,options) { const response=await fetch(url,options);const payload=await response.json();if(!response.ok) throw new Error(payload.error || "Request failed");return payload; }
 async function status() { const checkbox=document.getElementById("include-jev");try {const config=await json("/api/comparison-config");checkbox.disabled=!config.configured || config.remaining_calls<=0;if(checkbox.disabled) checkbox.checked=false;document.getElementById("jev-status").textContent=config.configured?config.remaining_calls+" attempts left; max 1,000 characters":"Jev is not configured. No API calls are made.";} catch {checkbox.disabled=true;checkbox.checked=false;document.getElementById("jev-status").textContent="Jev settings unavailable.";} }

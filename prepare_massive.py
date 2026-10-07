@@ -97,6 +97,9 @@ def prepare(data_dir="data"):
             rows.append({key: row[key] for key in ("id", "partition", "intent", "scenario")} | {
                 "text": row["utt"], "tokens": tokens, "tags": tags})
         (directory / "LICENSE").write_bytes((Path(temporary) / MEMBERS[1]).read_bytes())
+    all_intents = set().union(*(set(counts) for counts in intents.values()))
+    audit["missing_intents"] = {part: sorted(all_intents-set(counts)) for part, counts in intents.items()}
+    audit["official_split_note"] = "Dev lacks audio_volume_other; test lacks cooking_query. Keep official rows and 60 output labels."
     audit.update(partition_counts={p: c["rows"] for p,c in partitions.items()},
                  intent_counts=dict(intents), slot_counts=dict(slots),
                  cross_partition_normalized_duplicates=sum(len(parts)>1 for parts in duplicates.values()))

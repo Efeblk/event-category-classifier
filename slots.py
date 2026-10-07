@@ -98,6 +98,15 @@ def make_slot_models(seed=42):
             "linear_svm":LinearSVC(random_state=seed)}
 
 
+def compact_indices(matrix):
+    """LinearSVC requires 32-bit sparse indices; our matrix is well below the limit."""
+    if max(matrix.shape, default=0) >= 2**31 or matrix.nnz >= 2**31:
+        raise ValueError("Slot feature matrix exceeds 32-bit sparse index limits.")
+    matrix.indices = matrix.indices.astype("int32")
+    matrix.indptr = matrix.indptr.astype("int32")
+    return matrix
+
+
 def predict_tags(artifact, sentences):
     if not isinstance(artifact,dict) or artifact.get("task") != "slot_token_classification" or artifact.get("dataset_domain") != "massive_tr":
         raise ValueError("Incompatible slot artifact.")
@@ -106,7 +115,7 @@ def predict_tags(artifact, sentences):
     if model is not None and set(map(str,model.classes_)) != set(artifact["tags"]): raise ValueError("Slot artifact tags do not match model.")
     features = [token_features(tokens,i) for tokens in sentences for i in range(len(tokens))]
     if not features: return [[] for _ in sentences]
-    predictions = ["O"]*len(features) if model is None else list(map(str,model.predict(artifact["vectorizer"].transform(features))))
+    predictions = ["O"]*len(features) if model is None else list(map(str,model.predict(compact_indices(artifact["vectorizer"].transform(features)))))
     result = [];offset=0
     for tokens in sentences:
         result.append(repair_bio(predictions[offset:offset+len(tokens)]));offset+=len(tokens)

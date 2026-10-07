@@ -35,5 +35,41 @@ class SlotTests(unittest.TestCase):
         self.assertEqual(features["word+2"],"gel");self.assertEqual(features["word-1"],"<BOUNDARY>")
         self.assertTrue(token_features(["5"],0)["number"])
         self.assertEqual(display_spans("  yarın  gel",["B-date","O"]),[{"type":"date","start":2,"end":7,"text":"yarın"}])
+    def test_candidates_fit_real_sparse_features(self):
+        from sklearn.feature_extraction import DictVectorizer
+        from slots import compact_indices, make_slot_models
+        tokens=["yarın","gel","saat","beşte"]
+        features=[token_features(tokens,i) for i in range(4)]
+        vectorizer=DictVectorizer();x=compact_indices(vectorizer.fit_transform(features))
+        self.assertEqual(str(x.indices.dtype),"int32")
+        tags=["B-date","O","O","B-time"]
+        for name,model in make_slot_models().items():
+            if model is not None: model.fit(x,tags)
+            artifact={"task":"slot_token_classification","dataset_domain":"massive_tr","tags":sorted(set(tags)),"vectorizer":vectorizer,"model":model}
+            prediction=predict_tags(artifact,[tokens])[0]
+            self.assertEqual(len(prediction),4)
+            self.assertEqual(prediction,repair_bio(prediction))
+
+    def test_http_optional_slots_preserve_text(self):
+        import json
+        import threading
+        from http.server import HTTPServer
+        from urllib.request import Request, urlopen
+        from app import make_handler
+        from tests.test_models import fixture_artifact
+        artifact={"task":"slot_token_classification","dataset_domain":"massive_tr","model_name":"all_O","model":None,"vectorizer":None,"tags":["O"]}
+        server=HTTPServer(("127.0.0.1",0),make_handler(fixture_artifact(),{},slot_artifact=artifact))
+        worker=threading.Thread(target=server.serve_forever,kwargs={"poll_interval":.01},daemon=True);worker.start()
+        try:
+            text="  yarın saat 5'te gel"
+            body=json.dumps({"text":text}).encode()
+            with urlopen(Request(f"http://127.0.0.1:{server.server_port}/api/compare",data=body),timeout=2) as handle:
+                result=json.load(handle)
+            self.assertEqual(result["slots"]["token_model"]["spans"],[])
+            for span in result["slots"]["parser"]["spans"]:
+                self.assertEqual(text[span["start"]:span["end"]],span["text"])
+        finally:
+            server.shutdown();server.server_close();worker.join(timeout=2)
+
     def test_slot_artifact_validation(self):
         with self.assertRaises(ValueError): predict_tags({},[["hi"]])

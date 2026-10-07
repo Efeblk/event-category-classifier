@@ -9,12 +9,13 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 from classifier import ARTIFACT_TASK, DATASET_DOMAIN, LABELS, make_models, normalize_text
+from parser import parse_request, parser_scores
 
 MIN_ROWS = 1000
 BENCHMARK = {
     "source": "https://arxiv.org/html/2204.08582v2#A4",
-    "tables": "Appendix D, Tables 7?9; quoted, not reproduced",
-    "training": "Paper: all 51 locales; ours: tr-TR train only. Same official tr-TR test, all 60 intents.",
+    "tables": "Appendix D, Tables 7–9; quoted, not reproduced",
+    "training": "Paper: all 51 locales; ours: tr-TR train only. Same official tr-TR test; 60 output intents (59 represented in test).",
     "models": {
         "XLM-R base": {"intent_accuracy": .863, "intent_accuracy_pm": .012, "slot_f1": .749, "slot_f1_pm": .007, "exact_match": .652, "exact_match_pm": .017},
         "mT5 encoder-only": {"intent_accuracy": .871, "intent_accuracy_pm": .012, "slot_f1": .761, "slot_f1_pm": .007, "exact_match": .677, "exact_match_pm": .017},
@@ -58,8 +59,10 @@ def split_data(rows: list[dict], seed: int = 42) -> dict[str, list[int]]:
     if sum(map(len, parts.values())) != len(rows):
         raise ValueError("Unsupported official partition.")
     for part, indices in parts.items():
-        if {rows[i]["intent"] for i in indices} != set(LABELS):
-            raise ValueError(f"The {part} split must contain all intents.")
+        if not indices:
+            raise ValueError(f"The {part} split is empty.")
+        if part == "train" and {rows[i]["intent"] for i in indices} != set(LABELS):
+            raise ValueError("The train split must contain all intents.")
     # No five-example minimum: cooking_query has only four train examples.
     return parts
 
@@ -129,7 +132,7 @@ def train(data_path="data/massive_tr.jsonl", model_path="artifacts/model.joblib"
     confused = Counter((a,b) for a,b in zip(labels["test"],predictions[selected]) if a != b)
     metadata = {"seed": seed, "task": ARTIFACT_TASK, "dataset_domain": DATASET_DOMAIN,
                 "dataset": {"sha256": digest, "rows": len(rows)},
-                "split": {p: {"rows": len(indices), "intents": dict(Counter(labels[p]))} for p,indices in parts.items()},
+                "split": {p: {"rows": len(indices), "intents": dict(Counter(labels[p])), "missing_intents": sorted(set(LABELS)-set(labels[p]))} for p,indices in parts.items()},
                 "duplicate_audit": {"cross_partition_texts": sum(len(p)>1 for p in duplicate_parts.values()),
                                     "mixed_intent_texts": sum(len(p)>1 for p in duplicate_labels.values()), "action": "preserved official rows"},
                 "selection": {"metric": "dev_macro_f1", "selected_model": selected, "logistic_regression_model": lr_selected,
@@ -139,6 +142,7 @@ def train(data_path="data/massive_tr.jsonl", model_path="artifacts/model.joblib"
                                                "preferred": "balanced" if evaluations[name]["dev"]["macro_f1"] >= evaluations[name+"_unbalanced"]["dev"]["macro_f1"] else "unbalanced"}
                                        for name in models if name.startswith(("logistic_regression", "linear_svm")) and not name.endswith("_unbalanced")},
                 "benchmark": BENCHMARK, "models": evaluations,
+                "parser": {p: parser_scores(labels[p], [parse_request(text) for text in texts[p]]) for p in ("dev", "test")},
                 "top_confused_intent_pairs": [{"gold": a, "predicted": b, "count": n} for (a,b),n in confused.most_common(15)]}
     directory = Path(report_dir)
     write_json(directory/"metrics.json", metadata)

@@ -7,7 +7,66 @@ import unicodedata
 from typing import Any
 
 
-LABELS = ('alarm_query', 'alarm_remove', 'alarm_set', 'audio_volume_down', 'audio_volume_mute', 'audio_volume_other', 'audio_volume_up', 'calendar_query', 'calendar_remove', 'calendar_set', 'cooking_query', 'cooking_recipe', 'datetime_convert', 'datetime_query', 'email_addcontact', 'email_query', 'email_querycontact', 'email_sendemail', 'general_greet', 'general_joke', 'general_quirky', 'iot_cleaning', 'iot_coffee', 'iot_hue_lightchange', 'iot_hue_lightdim', 'iot_hue_lightoff', 'iot_hue_lighton', 'iot_hue_lightup', 'iot_wemo_off', 'iot_wemo_on', 'lists_createoradd', 'lists_query', 'lists_remove', 'music_dislikeness', 'music_likeness', 'music_query', 'music_settings', 'news_query', 'play_audiobook', 'play_game', 'play_music', 'play_podcasts', 'play_radio', 'qa_currency', 'qa_definition', 'qa_factoid', 'qa_maths', 'qa_stock', 'recommendation_events', 'recommendation_locations', 'recommendation_movies', 'social_post', 'social_query', 'takeaway_order', 'takeaway_query', 'transport_query', 'transport_taxi', 'transport_ticket', 'transport_traffic', 'weather_query')
+LABELS = ('alarm_query',
+ 'alarm_remove',
+ 'alarm_set',
+ 'audio_volume_down',
+ 'audio_volume_mute',
+ 'audio_volume_other',
+ 'audio_volume_up',
+ 'calendar_query',
+ 'calendar_remove',
+ 'calendar_set',
+ 'cooking_query',
+ 'cooking_recipe',
+ 'datetime_convert',
+ 'datetime_query',
+ 'email_addcontact',
+ 'email_query',
+ 'email_querycontact',
+ 'email_sendemail',
+ 'general_greet',
+ 'general_joke',
+ 'general_quirky',
+ 'iot_cleaning',
+ 'iot_coffee',
+ 'iot_hue_lightchange',
+ 'iot_hue_lightdim',
+ 'iot_hue_lightoff',
+ 'iot_hue_lighton',
+ 'iot_hue_lightup',
+ 'iot_wemo_off',
+ 'iot_wemo_on',
+ 'lists_createoradd',
+ 'lists_query',
+ 'lists_remove',
+ 'music_dislikeness',
+ 'music_likeness',
+ 'music_query',
+ 'music_settings',
+ 'news_query',
+ 'play_audiobook',
+ 'play_game',
+ 'play_music',
+ 'play_podcasts',
+ 'play_radio',
+ 'qa_currency',
+ 'qa_definition',
+ 'qa_factoid',
+ 'qa_maths',
+ 'qa_stock',
+ 'recommendation_events',
+ 'recommendation_locations',
+ 'recommendation_movies',
+ 'social_post',
+ 'social_query',
+ 'takeaway_order',
+ 'takeaway_query',
+ 'transport_query',
+ 'transport_taxi',
+ 'transport_ticket',
+ 'transport_traffic',
+ 'weather_query')
 # Methods may abstain with this label. It is not a training class.
 UNCLEAR = "unclear"
 OUTPUT_LABELS = LABELS + (UNCLEAR,)
@@ -17,7 +76,6 @@ DATASET_DOMAIN = "massive_tr"
 
 _WHITESPACE = re.compile(r"\s+")
 _TURKISH_UPPER_I = str.maketrans({"I": "\u0131", "\u0130": "i"})
-_TURKISH_LETTER = re.compile("[çğıöşüÇĞİÖŞÜ]")
 
 
 def normalize_text(value: object) -> str:
@@ -101,7 +159,7 @@ def _validated_model(artifact: object) -> Any:
         raise ValueError("Model artifact task is not intent classification.")
     if artifact["dataset_domain"] != DATASET_DOMAIN:
         raise ValueError("Model artifact dataset domain is not MASSIVE Turkish.")
-    if set(map(str, artifact["labels"])) != set(LABELS):
+    if not isinstance(artifact["labels"], (list, tuple)) or len(artifact["labels"]) != len(LABELS) or set(map(str, artifact["labels"])) != set(LABELS):
         raise ValueError("Model artifact does not contain the required labels.")
 
     model = artifact["model"]

@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 import joblib
 from sklearn.feature_extraction import DictVectorizer
-from slots import HIGHLIGHT_SLOTS, PARSER_SLOT_TYPES, exact_match, make_slot_models, parser_tags, predict_tags, slot_scores, token_features
+from slots import compact_indices, HIGHLIGHT_SLOTS, PARSER_SLOT_TYPES, exact_match, make_slot_models, parser_tags, predict_tags, slot_scores, token_features
 from classifier import _validated_model
 from train import read_data, split_data, write_json, BENCHMARK
 
@@ -20,7 +20,7 @@ def train_slots(data_path="data/massive_tr.jsonl", intent_path="artifacts/model.
             raise ValueError("Invalid token/tag alignment.")
     features = [token_features(tokens,i) for tokens in sentences["train"] for i in range(len(tokens))]
     vectorizer = DictVectorizer()
-    x = vectorizer.fit_transform(features)
+    x = compact_indices(vectorizer.fit_transform(features))
     y = [tag for tags in truth["train"] for tag in tags]
     tag_labels = sorted(set(y))
     digest = hashlib.sha256(Path(data_path).read_bytes()).hexdigest()

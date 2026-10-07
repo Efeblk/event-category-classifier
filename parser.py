@@ -33,6 +33,6 @@ def parser_scores(actual, predicted):
     answered = [i for i, label in enumerate(predicted) if label != "unclear"]
     correct = sum(a == b for a,b in zip(actual, predicted))
     return {"coverage": len(answered)/len(actual) if actual else 0,
-            "answered_accuracy": correct/len(answered) if answered else None,
+            "answered_accuracy": sum(actual[i] == predicted[i] for i in answered)/len(answered) if answered else None,
             "overall_accuracy": correct/len(actual) if actual else 0,
             "answered": len(answered), "correct": correct, "total": len(actual)}
