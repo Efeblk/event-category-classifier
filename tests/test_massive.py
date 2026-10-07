@@ -8,11 +8,11 @@ from prepare_massive import parse_annotation, extract_archive
 
 class MassiveTests(unittest.TestCase):
     def test_bio_and_suffixes(self):
-        self.assertEqual(parse_annotation("yar?n toplant?yla", "[date : yar?n] [event_name : toplant?yla]"),
-                         (["yar?n", "toplant?yla"], ["B-date", "B-event_name"]))
+        self.assertEqual(parse_annotation("yarın toplantıyla", "[date : yarın] [event_name : toplantıyla]"),
+                         (["yarın", "toplantıyla"], ["B-date", "B-event_name"]))
         self.assertEqual(parse_annotation("bu hafta gel", "[date : bu hafta] gel")[1], ["B-date", "I-date", "O"])
     def test_invalid_annotation(self):
-        for text, annotation in [("yar?n", "bug?n"), ("ankara'da", "[place_name : ankara]'da")]:
+        for text, annotation in [("yarın", "bugün"), ("ankara'da", "[place_name : ankara]'da")]:
             with self.assertRaises(ValueError): parse_annotation(text, annotation)
     def test_hash_and_allowlist(self):
         with tempfile.TemporaryDirectory() as tmp:
