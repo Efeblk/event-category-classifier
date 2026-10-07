@@ -12,6 +12,7 @@ from sklearn.metrics import accuracy_score, classification_report, f1_score
 from classifier import OUTPUT_LABELS
 from jev import JevClient, PROMPT_VERSION
 from method_comparison import compare_request
+from parser import parser_scores
 
 
 def evaluate(model_path, data_path, output_path, include_jev=False):
@@ -64,6 +65,9 @@ def evaluate(model_path, data_path, output_path, include_jev=False):
                           macro_f1=f1_score(actual, labels, labels=labels_in_set, average="macro", zero_division=0),
                           per_class=classification_report(actual, labels, labels=labels_in_set,
                                                           output_dict=True, zero_division=0))
+        if method == "parser" and len(completed) == len(records):
+            result.update(parser_scores(actual, labels))
+        result["evaluation_status"] = "evaluated" if len(completed) == len(records) else "not evaluated"
         output["methods"][method] = result
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(output, ensure_ascii=True, indent=2) + "\n", encoding="utf-8")
@@ -75,7 +79,7 @@ def evaluate(model_path, data_path, output_path, include_jev=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", type=Path, default=Path("artifacts/model.joblib"))
+    parser.add_argument("--model", type=Path, default=Path("artifacts/lr_model.joblib"))
     parser.add_argument("--data", type=Path, default=Path("reports/comparison_set.json"))
     parser.add_argument("--output", type=Path, default=Path("reports/method_comparison.json"))
     parser.add_argument("--include-jev", action="store_true", help="Make one paid API attempt per example. No automatic retries.")

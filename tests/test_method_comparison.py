@@ -178,7 +178,7 @@ class JevClientTests(unittest.TestCase):
             receipt = json.loads((Path(directory) / "001.json").read_text())
             self.assertEqual(receipt["status"], "error")
 
-    def test_live_request_has_same_text_and_four_labels_but_no_key_in_body_or_receipt(self):
+    def test_live_request_has_same_text_and_61_labels_but_no_key_in_body_or_receipt(self):
         with tempfile.TemporaryDirectory() as directory:
             provider = response()
             provider["debug"] = "private-test-key"
@@ -196,6 +196,14 @@ class JevClientTests(unittest.TestCase):
             receipt = (Path(directory) / "001.json").read_text()
             self.assertNotIn("private-test-key", receipt)
             self.assertNotIn("Konser", receipt)
+
+    def test_unicode_payload_fits_original_byte_cap(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = Mock(return_value=response())
+            client = JevClient({"TYPESAFE_API_KEY":"fixture", "JEV_MAX_CALLS":"1"}, directory, transport)
+            self.assertEqual(client.classify("ş" * 1000)["status"],"ok")
+            self.assertLessEqual(len(transport.call_args.args[0]),8000)
+            self.assertEqual(len(json.loads(transport.call_args.args[0])["questions"]["activity"]["criteria"]),61)
 
     def test_disabled_and_oversized_requests_make_no_calls(self):
         with tempfile.TemporaryDirectory() as directory:

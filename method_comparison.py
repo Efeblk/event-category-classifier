@@ -27,4 +27,4 @@ def compare_request(artifact, text, jev=None, include_jev=False):
             "status": "not_configured", "message": "Jev is not configured. No API call was made."}
     results.append({"method": "jev", **result})
     return {"results": results, "model": artifact["model_name"],
-            "scope": "Same original input. Parser uses rules. Logistic Regression was trained on English event titles; zero-vocabulary input returns unclear."}
+            "scope": "Same original input. Parser uses rules. Logistic Regression was trained on MASSIVE Turkish requests; zero-vocabulary input returns unclear."}
