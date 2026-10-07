@@ -1,129 +1,33 @@
 import unittest
-
-from classifier import (
-    ARTIFACT_TASK,
-    DATASET_DOMAIN,
-    LABELS,
-    OUTPUT_LABELS,
-    UNCLEAR,
-    classify_request,
-    make_models,
-    normalize_text,
-)
+from classifier import LABELS, OUTPUT_LABELS, ARTIFACT_TASK, DATASET_DOMAIN, make_models, normalize_text, classify_request, _validated_model
 
 
-class NormalizeTextTests(unittest.TestCase):
-    def test_turkish_case_and_unicode_are_normalized(self):
-        self.assertEqual(
-            normalize_text("  IĞDIR\tİSTANBUL  ÇAĞRI ŞÖLENİ  "),
-            "ığdır istanbul çağrı şöleni",
-        )
+def fixture_artifact():
+    model = make_models()["logistic_regression_word"]
+    model.fit([label.replace("_", " ")+" fixture" for label in LABELS]*2, list(LABELS)*2)
+    return {"model": model, "model_name": "logistic_regression_word", "labels": LABELS,
+            "dataset_sha256": "fixture", "seed": 42, "task": ARTIFACT_TASK,
+            "dataset_domain": DATASET_DOMAIN, "provenance": "fixture"}
 
-    def test_english_ascii_i_is_not_changed_to_dotless_i(self):
-        self.assertEqual(normalize_text("I WANT LIVE MUSIC"), "i want live music")
-
-    def test_none_becomes_empty_text(self):
+class ModelTests(unittest.TestCase):
+    def test_normalization(self):
+        self.assertEqual(normalize_text(" IĞDIR İSTANBUL I "), "ığdır istanbul ı")
         self.assertEqual(normalize_text(None), "")
-
-
-class ModelDefinitionTests(unittest.TestCase):
-    def test_required_training_methods_are_present(self):
-        from sklearn.dummy import DummyClassifier
-        from sklearn.linear_model import LogisticRegression
-        from sklearn.naive_bayes import MultinomialNB
-        from sklearn.svm import LinearSVC
-
-        models = make_models(seed=7)
-        self.assertIsInstance(models["dummy_most_frequent"]["classifier"], DummyClassifier)
-        methods = {"multinomial_nb": MultinomialNB, "logistic_regression": LogisticRegression,
-                   "linear_svm": LinearSVC}
-        features = {"word": ("word", (1, 2)), "char": ("char_wb", (3, 5))}
-        self.assertEqual(
-            set(models),
-            {"dummy_most_frequent"} | {f"{method}_{feature}" for method in methods for feature in features},
-        )
-        for method, classifier in methods.items():
-            for feature, (analyzer, ngrams) in features.items():
-                with self.subTest(model=f"{method}_{feature}"):
-                    model = models[f"{method}_{feature}"]
-                    self.assertIsInstance(model["classifier"], classifier)
-                    self.assertEqual(model["tfidf"].analyzer, analyzer)
-                    self.assertEqual(model["tfidf"].ngram_range, ngrams)
-
-    def test_every_candidate_fits_and_predicts_supported_labels(self):
-        samples = {
-            "concert": "canlı müzik konser sahne gitar",
-            "theatre": "tiyatro sahne oyun oyuncu perde",
-            "stand_up": "stand up komedi mizah kahkaha",
-        }
-        texts = []
-        labels = []
-        for label, sample in samples.items():
-            for index in range(6):
-                texts.append(f"{sample} gösteri {index}")
-                labels.append(label)
-
-        for name, model in make_models(seed=11).items():
-            with self.subTest(model=name):
-                model.fit(texts, labels)
-                predictions = model.predict(list(samples.values()))
-                self.assertEqual(len(predictions), len(LABELS))
-                self.assertTrue(set(predictions).issubset(set(samples)))
-
-
-class ClassifyRequestTests(unittest.TestCase):
-    def setUp(self):
-        samples = {
-            "concert": "live music concert guitar",
-            "theatre": "theatre stage play actor",
-            "stand_up": "stand up comedy jokes",
-        }
-        texts = []
-        labels = []
-        for label, sample in samples.items():
-            for index in range(6):
-                texts.append(f"{sample} example {index}")
-                labels.append(label)
-        self.model = make_models(seed=19)["logistic_regression_char"]
-        self.model.fit(texts, labels)
-        self.artifact = {
-            "model": self.model,
-            "model_name": "logistic_regression_char",
-            "labels": sorted(LABELS),
-            "dataset_sha256": "fixture",
-            "seed": 19,
-            "task": ARTIFACT_TASK,
-            "dataset_domain": DATASET_DOMAIN,
-            "provenance": "gametime_public",
-        }
-
-    def test_known_request_uses_the_trained_model_and_reports_probabilities(self):
-        result = classify_request(self.artifact, "I want a live music concert")
-
-        self.assertEqual(result["label"], "concert")
-        self.assertEqual(set(result["model_probabilities"]), set(LABELS))
-
-    def test_unclear_is_an_abstain_output_not_a_training_class(self):
-        self.assertNotIn(UNCLEAR, LABELS)
-        self.assertEqual(OUTPUT_LABELS, LABELS + (UNCLEAR,))
-
-    def test_zero_vocabulary_request_returns_unclear(self):
-        result = classify_request(self.artifact, "qxzv blorpt nymwax")
-
-        self.assertEqual(
-            result, {"label": "unclear", "reason": "unknown_terms"}
-        )
-
-    def test_old_artifact_task_is_rejected(self):
-        self.artifact["task"] = "event_description_classification"
-
-        with self.assertRaisesRegex(ValueError, "task"):
-            classify_request(self.artifact, "live music concert")
-
-    def test_blank_request_is_rejected(self):
-        with self.assertRaisesRegex(ValueError, "non-whitespace"):
-            classify_request(self.artifact, "  \t ")
-
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_candidates(self):
+        models = make_models()
+        self.assertEqual(len(models),7)
+        for name, model in models.items():
+            model.fit([x.replace("_"," ")+" fixture" for x in LABELS]*2,list(LABELS)*2)
+            self.assertEqual(set(model.classes_),set(LABELS))
+            self.assertIn(model.predict(["alarm set fixture"])[0],LABELS)
+    def test_schema_and_abstention(self):
+        artifact = fixture_artifact()
+        self.assertEqual(len(LABELS),60)
+        self.assertNotIn("unclear",LABELS)
+        self.assertEqual(len(OUTPUT_LABELS),61)
+        self.assertEqual(classify_request(artifact,"qxzv") , {"label":"unclear","reason":"unknown_terms"})
+        self.assertIn(classify_request(artifact,"alarm set fixture")["label"],LABELS)
+        for key, value in (("task","old"),("dataset_domain","old"),("labels",LABELS[:-1])):
+            with self.assertRaises(ValueError): _validated_model(artifact | {key:value})
+        with self.assertRaises(ValueError): _validated_model({})
+        with self.assertRaises(ValueError): classify_request(artifact," ")

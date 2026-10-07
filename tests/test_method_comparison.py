@@ -15,10 +15,10 @@ from jev import JevClient, load_settings, validate_jev_response
 from method_comparison import compare_request
 
 
-def response(label="theatre"):
+def response(label="calendar_set"):
     return {"model": "jev-1.13.0", "answers": {"activity": {
         "type": "choice", "choice": label, "confidence": 0.8,
-        "probabilities": {key: 0.85 if key == label else 0.05 for key in OUTPUT_LABELS}}},
+        "probabilities": {key: 0.85 if key == label else 0.15 / (len(OUTPUT_LABELS)-1) for key in OUTPUT_LABELS}}},
         "usage": {"input_tokens": 100, "output_tokens": 20}}
 
 
@@ -28,7 +28,7 @@ class MethodComparisonTests(unittest.TestCase):
         model = make_models()["logistic_regression_char"]
         examples = ["concert live music", "concert tickets", "theatre stage play", "theatre actors",
                     "standup comedian comedy", "standup comedy show"]
-        model.fit(examples, ["concert", "concert", "theatre", "theatre", "stand_up", "stand_up"])
+        model.fit([label.replace("_", " ")+" fixture" for label in LABELS]*2, list(LABELS)*2)
         cls.artifact = {"model": model, "model_name": "logistic_regression_char", "labels": LABELS,
                         "dataset_sha256": "test", "seed": 42, "task": ARTIFACT_TASK,
                         "dataset_domain": DATASET_DOMAIN, "provenance": "test"}
@@ -36,14 +36,14 @@ class MethodComparisonTests(unittest.TestCase):
     def test_methods_receive_identical_original_text_without_lr_language_guards(self):
         text = "Konser değil, tiyatro istiyorum."
         jev = Mock()
-        jev.classify.return_value = {"status": "ok", "label": "theatre"}
-        with patch("method_comparison.parse_request", return_value="theatre") as rules, \
-             patch("method_comparison.classify_request", return_value={"label": "concert"}) as learned:
+        jev.classify.return_value = {"status": "ok", "label": "calendar_set"}
+        with patch("method_comparison.parse_request", return_value="calendar_set") as rules, \
+             patch("method_comparison.classify_request", return_value={"label": "play_music"}) as learned:
             result = compare_request(self.artifact, text, jev, True)
         rules.assert_called_once_with(text)
         learned.assert_called_once_with(self.artifact, text)
         jev.classify.assert_called_once_with(text)
-        self.assertEqual([row["label"] for row in result["results"]], ["theatre", "concert", "theatre"])
+        self.assertEqual([row["label"] for row in result["results"]], ["calendar_set", "play_music", "calendar_set"])
 
     def test_optional_jev_is_not_called_by_default(self):
         jev = Mock()
@@ -63,7 +63,7 @@ class MethodComparisonTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 compare_request(self.artifact, text, jev, True)
         with self.assertRaises(ValueError):
-            compare_request(self.artifact, "concert", jev, "true")
+            compare_request(self.artifact, "play_music", jev, "true")
         jev.classify.assert_not_called()
 
     def test_http_compare_returns_three_results_and_keeps_configuration_private(self):
@@ -84,7 +84,7 @@ class MethodComparisonTests(unittest.TestCase):
                     result = json.load(handle)
                 self.assertEqual([row["method"] for row in result["results"]],
                                  ["parser", "logistic_regression", "jev"])
-                self.assertEqual(result["results"][2]["label"], "theatre")
+                self.assertEqual(result["results"][2]["label"], "calendar_set")
                 bad = json.dumps({"text": "theatre play", "include_jev": "true"}).encode()
                 with self.assertRaises(HTTPError) as error:
                     urlopen(Request(base + "/api/compare", data=bad), timeout=2)
@@ -100,8 +100,8 @@ class MethodComparisonTests(unittest.TestCase):
             data_path = Path(directory) / "cases.json"
             output_path = Path(directory) / "result.json"
             data_path.write_text(json.dumps({"provenance": "test fixture", "records": [
-                {"text": "concert tickets", "label": "concert"},
-                {"text": "theatre play", "label": "theatre"}]}), encoding="utf-8")
+                {"text": "concert tickets", "label": "play_music"},
+                {"text": "theatre play", "label": "calendar_set"}]}), encoding="utf-8")
             with patch("compare_methods.joblib.load", return_value=self.artifact), \
                  patch("compare_methods.JevClient", return_value=JevClient({}, directory)):
                 result = evaluate(Path("unused.joblib"), data_path, output_path)
@@ -116,9 +116,9 @@ class MethodComparisonTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             data_path = Path(directory) / "cases.json"
             data_path.write_text(json.dumps({"records": [
-                {"text": "concert tickets", "label": "concert"},
-                {"text": "theatre play", "label": "theatre"}]}), encoding="utf-8")
-            with patch("compare_methods.joblib.load", return_value=self.artifact),                  patch("compare_methods.JevClient", return_value=JevClient({}, directory)),                  patch("method_comparison.parse_request", side_effect=["concert", "unclear"]):
+                {"text": "concert tickets", "label": "play_music"},
+                {"text": "theatre play", "label": "calendar_set"}]}), encoding="utf-8")
+            with patch("compare_methods.joblib.load", return_value=self.artifact),                  patch("compare_methods.JevClient", return_value=JevClient({}, directory)),                  patch("method_comparison.parse_request", side_effect=["play_music", "unclear"]):
                 result = evaluate(Path("unused.joblib"), data_path, Path(directory) / "result.json")
             parser = result["methods"]["parser"]
             self.assertEqual(parser["accuracy"], 0.5)
@@ -129,13 +129,13 @@ class MethodComparisonTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             data_path = Path(directory) / "cases.json"
             data_path.write_text(json.dumps({"records": [
-                {"text": "theatre play", "label": "theatre"},
-                {"text": "concert tickets", "label": "concert"}]}), encoding="utf-8")
+                {"text": "theatre play", "label": "calendar_set"},
+                {"text": "concert tickets", "label": "play_music"}]}), encoding="utf-8")
             client = Mock()
             client.configured = True
             client.remaining_calls.return_value = 2
             client.model = "jev-1.13.0"
-            client.classify.side_effect = [{"status": "ok", "label": "theatre"},
+            client.classify.side_effect = [{"status": "ok", "label": "calendar_set"},
                                           {"status": "error", "message": "Unavailable"}]
             with patch("compare_methods.joblib.load", return_value=self.artifact), \
                  patch("compare_methods.JevClient", return_value=client):
@@ -147,7 +147,7 @@ class MethodComparisonTests(unittest.TestCase):
 
 class JevClientTests(unittest.TestCase):
     def test_valid_provider_answer_is_accepted(self):
-        self.assertEqual(validate_jev_response(response(), "jev-1.13.0")["choice"], "theatre")
+        self.assertEqual(validate_jev_response(response(), "jev-1.13.0")["choice"], "calendar_set")
 
     def test_malformed_provider_answers_are_rejected(self):
         for mutate in (
@@ -186,7 +186,7 @@ class JevClientTests(unittest.TestCase):
             transport = Mock(return_value=provider)
             client = JevClient({"TYPESAFE_API_KEY": "private-test-key", "JEV_MAX_CALLS": "1"}, directory, transport)
             result = client.classify("Konser değil, tiyatro istiyorum.")
-            self.assertEqual(result["label"], "theatre")
+            self.assertEqual(result["label"], "calendar_set")
             self.assertNotIn("private-test-key", json.dumps(result))
             body = transport.call_args.args[0]
             payload = json.loads(body)
@@ -201,7 +201,7 @@ class JevClientTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             transport = Mock()
             disabled = JevClient({}, directory, transport)
-            self.assertEqual(disabled.classify("concert")["status"], "not_configured")
+            self.assertEqual(disabled.classify("play_music")["status"], "not_configured")
             enabled = JevClient({"TYPESAFE_API_KEY": "test", "JEV_MAX_CALLS": "1"}, directory, transport)
             self.assertEqual(enabled.classify("x" * 1001)["status"], "not_run")
             self.assertEqual(enabled.remaining_calls(), 1)

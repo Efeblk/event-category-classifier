@@ -15,7 +15,7 @@ MEMBERS = ("1.0/data/tr-TR.jsonl", "1.0/LICENSE")
 
 
 def normalized(text):
-    return " ".join(unicodedata.normalize("NFKC", text).translate(str.maketrans({"I": "?", "?": "i"})).lower().split())
+    return " ".join(unicodedata.normalize("NFKC", text).translate(str.maketrans({"I": "ı", "İ": "i"})).lower().split())
 
 
 def parse_annotation(text, annotated):

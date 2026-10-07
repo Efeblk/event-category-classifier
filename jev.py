@@ -17,12 +17,8 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_JEV_MODEL = "jev-1.13.0"
 PROMPT_VERSION = "event-listing-v1"
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
-CRITERIA = {
-    "concert": "A music event: a singer, band, DJ, orchestra, or other live music performance.",
-    "theatre": "A staged performance such as a play, musical, ballet, opera, or circus show.",
-    "stand_up": "A comedy event: stand-up, a comedian's set, or a live comedy show.",
-    "unclear": "None of the three categories, more than one category, or not enough information.",
-}
+CRITERIA = {label: label.replace("_", " ") for label in OUTPUT_LABELS}
+
 INSTRUCTIONS = (
     "Classify the event category of `text`. It is usually the title of a ticketed event "
     "listing, and it may also be a Turkish or English request for an event. Use general "
