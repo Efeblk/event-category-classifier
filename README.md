@@ -24,6 +24,18 @@ python app.py
 
 Open [localhost:8011](http://127.0.0.1:8011). On Linux or macOS, activate with `source .venv/bin/activate`.
 
+## Demo requests
+
+Try these in order to illustrate the methods' strengths and limits. Parser and Logistic Regression outputs below were verified with the current model. Jev outputs are expected, not live-verified; check them before presenting.
+
+| Level | Request | Parser | Logistic Regression | Expected Jev |
+|---|---|---|---|---|
+| Easy | Bu akşam bir konsere gitmek istiyorum. | `concert` | `concert` | `concert` |
+| Medium | Bu gece sahnede blues çalan birilerini dinleyelim. | `unclear` | `concert` | `concert` |
+| Hard | Müzik olmasın, mikrofon başında şaka yapan biri olsun. | `unclear` | `unclear` | `stand_up` |
+
+The easy request names the category explicitly. The medium request describes a music performance without the Parser's keywords. The hard request describes stand-up indirectly and excludes music. These are selected demo examples, not an accuracy benchmark.
+
 ## Project files
 
 | File | Purpose |
