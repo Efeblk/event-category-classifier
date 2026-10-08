@@ -1,0 +1,1103 @@
+id,text,gold_tags,predicted_tags,boundary_errors,type_confusions
+8,tek ihtiyacımız olan pembe,O O O B-color_type,O O O O,0,0
+31,koridor u süpür,B-house_place O O,O O O,0,0
+50,olly gmt artı beş in kaç olduğunu söyle bana,O B-time_zone I-time_zone I-time_zone O O O O O,O O O O O O O O O,0,0
+100,haftanın hava durumu tahmini nedir,B-time O O O O,O O O O O,0,0
+132,paket servisi sipariş et,B-order_type O O O,B-order_type I-order_type O O,1,0
+168,paket servis yapıyorlar mı,B-order_type I-order_type O O,B-order_type O O O,1,0
+170,eve teslim yapıyorlar mı,O B-order_type O O,O O O O,0,0
+174,perşembe sabah yedide uyan,B-date B-time I-time O,B-date B-timeofday B-time O,1,0
+177,bana biraz iş dünyası haberlerini söyle,O O B-news_topic I-news_topic O O,O O O O O O,0,0
+220,rock listemden müzik çal,B-playlist_name I-playlist_name O O,B-music_genre O O O,0,0
+254,olly benim favori fenerbahçe oyuncumdan güzel bir bölüm oynat,O O O B-music_genre O O O O O,O O O O O O O B-podcast_descriptor O,0,0
+281,amerikan doları ingiliz sterlini oranları nedir,B-news_topic I-news_topic I-news_topic I-news_topic I-news_topic O,B-currency_name I-currency_name B-currency_name I-currency_name O O,0,0
+296,nirvana çalma listesini çal,B-playlist_name I-playlist_name I-playlist_name O,O O O O,0,0
+297,volkan konak şarkılarını karıştır,B-artist_name I-artist_name O B-player_setting,B-person O O B-player_setting,0,0
+310,bu yıl yeni yıl hangi güne denk geliyor,B-date I-date O O O O O O,B-date O O O O O O O,1,0
+315,lütfen bir saat daha sessiz ol,O B-time I-time I-time O O,O O O O O O,0,0
+319,iki gün sonra bursa'da hava nasıl olacak söyler misin,B-time I-time I-time B-place_name O O O O O,B-date I-date I-date B-place_name O O O O O,0,1
+321,fişi çek,B-device_type O,O O,0,0
+322,prizimi etkinleştir,B-device_type O,O O,0,0
+329,yaz dostum,B-song_name I-song_name,O O,0,0
+355,bir nisan hangi gün,B-date I-date O O,O B-date O O,1,0
+362,mirkelam şarkılarından ikinci şarkıyı çal,B-artist_name O O O O,O O O O O,0,0
+385,yeni çağ da sansasyonel ne var,B-media_type I-media_type O O O O,O O O O O O,0,0
+393,benim çalma listemden tekrar bir şarkı aç,O O O B-music_genre O O O,O O O O O O O,0,0
+407,bir saat sonra rock müzik çalabilir misin,B-time I-time I-time B-music_genre O O O,O B-time O B-music_genre O O O,1,0
+426,birinci prizi aç,B-device_type I-device_type O,O B-device_type O,1,0
+437,dini sohbetler klasörünü aç,B-artist_name I-artist_name O O,B-artist_name O O O,1,0
+451,bim stok fiyatı ile ilgili en son haberleri getir,B-news_topic I-news_topic I-news_topic O O O O O O,B-business_name O O O O O O O O,0,0
+473,ceza çal,B-song_name O,B-artist_name O,0,1
+494,iyi bir espri nasıl olur,B-joke_type O O O O,O O O O O,0,0
+631,boğaz kazası ile ilgili haberler için bildirim ayarla,B-news_topic I-news_topic O O O O O O,B-person B-news_topic O O O O O O,1,0
+668,acilen iki burger ve bir kola istiyorum,O O B-food_type O O B-food_type O,O O B-food_type O O O O,0,0
+680,bitcoin fiyatı hakkında beni haberdar tut,B-news_topic I-news_topic O O O O,O O O O O O,0,0
+726,haftanın hava durumu ayrıntılarını özetleyin,B-time O O O O,O O O O O,0,0
+765,lütfen bana en yeni sağlayıcı mdan güncel haber başlıklarını verir misiniz,O O B-media_type I-media_type I-media_type O O O O O O,O O O O O O O O O O O,0,0
+767,lütfen bana genellikle bakmadığım bir kaynaktan en son haberleri bulabilir misin,O O O O O O O O O O O,O O O O O B-media_type O O O O O,0,0
+779,teoman 'dan paramparça 'yı dinlemek istiyorum,B-artist_name O B-song_name O O O,B-artist_name O O O O O,0,0
+782,ceza 'dan evin delisi 'ni aç,B-artist_name O B-song_name I-song_name O O,B-artist_name O O O O O,0,0
+783,aşk şarkıları çal,B-song_name I-song_name O,B-music_genre O O,0,0
+790,ılıman veya sert hava,B-weather_descriptor O B-weather_descriptor O,O O O O,0,0
+837,yaklaşan abd seçimleri için b. b. c. anket tahminleri nelerdir,B-news_topic I-news_topic I-news_topic O B-media_type I-media_type I-media_type I-media_type O O,O O O O B-media_type I-media_type I-media_type O O O,1,0
+891,biraz dini müzik çal,O B-music_descriptor O O,O B-artist_name O O,0,1
+897,akşam altı da ev ışıklar amber yap,B-time I-time O B-house_place O B-color_type O,B-time I-time O O O O O,0,0
+936,aç ve koşu çalma listemden müzik çal,O O B-playlist_name I-playlist_name I-playlist_name O O,O O B-playlist_name O O O O,1,0
+944,türkiye ile japonya arasındaki saat farkı ne,B-place_name O O O O O O,B-place_name O B-place_name O O O O,0,0
+967,uludağ kebap tan gel al ımı alabilir miyim,B-business_name I-business_name O B-order_type I-order_type O O O,B-business_name I-business_name O O O O O O,0,0
+1043,teslimat yapan en yakın tayland restoranını ara,B-order_type O O O B-food_type B-business_type O,B-order_type O O O O B-business_type O,0,0
+1047,iyi bir ağlamaya ihtiyacım var hüzünlü rock şarkıları çalabilir misin,O O O O O B-music_descriptor B-music_genre O O O,O O O O O O B-music_genre O O O,0,0
+1063,spor haberleri için saatlik bildirim ver,B-news_topic O O B-general_frequency O O,B-news_topic O O O O O,0,0
+1071,koridor daki ışıkları daha da aydınlat,B-house_place O O O O O,O O O O O O,0,0
+1072,lütfen ekran parlaklığını sonuna kadar aç,O B-device_type O B-change_amount I-change_amount O,O O O O O O,0,0
+1076,rock metal çalma,B-music_genre I-music_genre O,B-music_genre B-music_genre O,1,0
+1093,washington post web sitesine gidin,B-media_type I-media_type O O O,O O O O O,0,0
+1098,on beş mart haftanın hangi gününe denk gelir,B-date I-date I-date O O O O O,B-date I-date I-date I-date O O O O,1,0
+1123,sırada zaman yok 'dan son feci bisikletin 'i çal,O B-song_name I-song_name O B-artist_name I-artist_name I-artist_name O O,O O O O O B-song_name O O O,0,0
+1124,sırada nil karaibrahimgil kanatlarım var ruhumda çalmak için hazırla,O B-artist_name I-artist_name B-song_name I-song_name I-song_name O O O,O O O O O O O O O,0,0
+1156,uluslararası kadınlar günü hakkında son haberler,B-news_topic I-news_topic I-news_topic O O O,B-place_name O O O O O,0,0
+1160,bu hafta her bir gece ne kadar soğuk olacak,B-date I-date B-general_frequency I-general_frequency I-general_frequency O O B-weather_descriptor O,B-date I-date B-general_frequency I-general_frequency O O O B-weather_descriptor O,1,0
+1176,gül döktüm yollarına şarkısını kim söylüyor,B-song_name I-song_name I-song_name O O O,O O O O O O,0,0
+1180,biden ile ilgili bugünkü en flaş haber konuları bul,B-news_topic O O B-date B-media_type I-media_type I-media_type O O,B-person O O B-date O O O O O,0,1
+1191,eğer tekirdağ da gündoğumu ise hatay da saat kaç,O B-place_name O B-time O B-place_name O O O,O O O O O B-place_name O O O,0,0
+1238,pandora,O,B-app_name,0,0
+1247,öğrenmek istiyorum tadım pizza adrese teslimat yapıyor mu,O O B-business_name I-business_name O B-order_type O O,O O O B-food_type O B-order_type O O,0,0
+1256,bildiğin en komik fıkra ne,O B-joke_type I-joke_type O O,O O B-joke_type O O,1,0
+1294,akademi ödülleri haberlerini bana hızlı haber ver,B-news_topic I-news_topic O O O O O,O O O O O O O,0,0
+1301,biden'ın dış politikası hakkındaki haberi söyle,B-news_topic I-news_topic I-news_topic O O O,B-person O B-news_topic O O O,1,0
+1336,yıldız tilbe şarkılarını seviyorum onu çal lütfen,B-artist_name I-artist_name O O O O O,O O O O O O O,0,0
+1371,hürriyetin ön sayfasında ne var,B-media_type O O O O,O O O O O,0,0
+1372,iyi bir espri nedir,B-joke_type O O O,O O O O,0,0
+1377,lütfen oğlumun odasının ışığını kapat,O B-house_place I-house_place O O,O B-relation B-house_place O O,1,0
+1425,fransa'yla ilgili bir şey duyduğunda haber ver,B-news_topic O O O O O O,B-person O O O O O O,0,1
+1440,dört veya üzeri puanlı güncel rock şarkılarını çal,B-music_descriptor I-music_descriptor I-music_descriptor I-music_descriptor O B-music_genre O O,O O O O O B-music_genre O O,0,0
+1458,bugün alanya için sıcaklık ne,O B-place_name O B-weather_descriptor I-weather_descriptor,B-date B-place_name O O O,0,0
+1467,slayer çal,B-artist_name O,O O,0,0
+1509,sabah alarmına kadar ses çıkartma,B-timeofday O O O O,B-time O O O O,0,1
+1516,domino's sosisli pizza sipariş et,B-business_name B-ingredient B-food_type O O,B-business_name O B-food_type O O,0,0
+1542,güneş bir hayli parlak bu havayı günün geri kalan kısmında da görecek miyiz,O O O O O O B-time I-time I-time I-time O O O,B-weather_descriptor O O O O O O O O O O O O,0,0
+1546,yazın dinlenmesi gereken şarkılar playlisti mi çal,B-playlist_name I-playlist_name I-playlist_name I-playlist_name I-playlist_name O O,O O O O B-playlist_name O O,1,0
+1547,bu hafta lokasyonumda hava nasıl olacak,B-date I-date O O O O,B-date I-date B-place_name O O O,0,0
+1554,lambaları söndür,B-device_type O,O O,0,0
+1579,bana basketbolla ilgili bir espri bul,O B-joke_type O O O O,O O O O O O,0,0
+1581,geçerli gün ay ve yıl nedir,O O O O O O,O O B-date O O O,0,0
+1593,dünya haberlerinden bildirim ayarla,B-media_type I-media_type O O,B-place_name O O O,0,0
+1636,bana hürriyetten en son haberleri göster,O B-media_type O O O O,O O O O O O,0,0
+1653,bir sonraki yağmur ne zaman,O O B-weather_descriptor O O,O O O O O,0,0
+1666,son altı saatteki en temiz haberler neler,B-time I-time I-time B-media_type I-media_type O O,B-time I-time I-time O O O O,0,0
+1671,bin dokuz yüz doksan ile iki bin yılları arasında yayınlanmış tüm müzik parçalarını çal,B-date I-date I-date I-date O B-date I-date O O O O O O O,B-date I-date I-date I-date O B-date I-date B-event_name O O O O O O,0,0
+1683,yarınki hava sıcak olacak evet mi hayır mı,B-date B-weather_descriptor I-weather_descriptor O O O O O,B-date O B-weather_descriptor O O O O O,1,0
+1684,evet mi hayır mı yarınki hava sıcak olacak,O O O O B-date B-weather_descriptor I-weather_descriptor O,O O O O B-date B-weather_descriptor B-weather_descriptor O,1,0
+1692,benim için biraz hafif arabesk bul,O O O O B-music_genre O,O O O B-music_descriptor O O,0,0
+1703,elektrikli süpürgem her gün sabah on ile on bir arasında başlamalı,B-device_type I-device_type B-general_frequency I-general_frequency O B-time O B-time I-time O O,B-device_type I-device_type B-general_frequency I-general_frequency B-time I-time O B-time I-time O O,1,0
+1710,rock modunu değiştir,B-music_genre O B-player_setting,B-music_genre O O,0,0
+1719,alarmı sadece pazartesi sabah altıya kur,O O B-date B-timeofday B-time O,O O B-date B-time I-time O,1,0
+1750,bütün ışıkları söndür,B-device_type I-device_type O,O O O,0,0
+1759,başkan trumpla ilgili haberleri ver,B-news_topic I-news_topic O O O,B-news_topic B-news_topic O O O,1,0
+1760,terörizm hakkında son haberler,B-news_topic O O O,O O O O,0,0
+1784,yemek salonunu kapat,B-house_place I-house_place O,O O O,0,0
+1786,ebeveyn yatak odasını kapat,B-house_place I-house_place I-house_place O,O B-house_place I-house_place O,1,0
+1803,prömiyer lig de bugün hangi takımlar oynuyor,B-news_topic I-news_topic O B-date O O O,O O O B-date O O O,0,0
+1812,lütfen bana tatlandırıcısız kahve yap,O O B-coffee_type O O,O O O O O,0,0
+1830,baharatlı bir şeyler almak istiyorum,B-food_type O O O O,O O O O O,0,0
+1832,coldplay albüm çal,B-playlist_name O O,B-song_name O O,0,1
+1833,temalar çalma listesini döngüye alabilir misin,B-playlist_name O O O O O,O O O O O O,0,0
+1874,oynatılanlar listesine şarkı ekle,B-playlist_name O O O,O O O O,0,0
+1904,bana maçın önemli anlarını getir,O B-news_topic I-news_topic I-news_topic O,O O O O O,0,0
+1941,evimi temizle,B-house_place O,O O,0,0
+1962,merhaba google benim gaana uygulamamda wacky playlist'i çal,O O O O O B-playlist_name O O,O O O O O O O O,0,0
+2007,lütfen yaşım ondokuzu çal,O B-song_name I-song_name O,O O O O,0,0
+2113,benim semtteki bütün etkinlikleri söyle bana,O B-place_name O O O O,O O O O O O,0,0
+2146,şu andan iki yıl sonrası için kış gündönümü hangi gün,O O B-time I-time O O B-event_name I-event_name O O,O O B-date B-event_name O O O O O O,0,0
+2166,yarın sabah altıya alarm kur,B-date B-timeofday B-time O O,B-date B-time I-time O O,1,0
+2174,martılar sanatçısı kim,B-song_name O O,O O O,0,0
+2178,benim muhitimde anlık hava nasıl,B-place_name I-place_name O O O,O B-place_name O O O,1,0
+2198,dört aralık bin dokuz yüz seksen iki haftanın hangi günüydü,B-date I-date I-date I-date I-date I-date I-date O O O,B-date I-date O B-date I-date O B-date O O O,1,0
+2203,b. b. c. world başlıkları,B-media_type I-media_type I-media_type I-media_type O,B-media_type I-media_type I-media_type O O,1,0
+2205,iki saat sessizlik,B-time I-time O,B-time O O,1,0
+2206,şu andan itibaren sessize al,O O O O O,O B-date I-date O O,0,0
+2225,yıldız tilbe 'den delikanlım 'ı çal,B-artist_name I-artist_name O B-song_name O O,O O O B-song_name O O,0,0
+2264,çalışma odası için açık renk,B-house_place I-house_place O O O,O B-house_place O O O,1,0
+2283,evimin ışıklarının rengini maviye değiştirmem gerekiyor,B-house_place O O B-color_type O O,O O O B-color_type O O,0,0
+2296,beni bugünün süper lig sonuçları ylagüncel tut,O B-date B-news_topic I-news_topic I-news_topic O O,O B-date O O O O O,0,0
+2330,şu an için ağrı yerel saatini görüntüle,O O O B-place_name O O O,O O O O O O O,0,0
+2334,yarın sabah saat altı için bir alarm ekle,B-date B-time O B-time O O O O,B-date B-time I-time I-time O O O O,1,0
+2336,bir paket makarna al götür yap,O O B-food_type B-order_type I-order_type O,O B-order_type B-food_type B-order_type O O,1,0
+2338,bir paket erişte siparişi ver ve onu al götür siparişi yap,O O B-food_type O O O O B-order_type I-order_type O O,O O B-food_type O O O O O B-order_type O O,1,0
+2350,evde açık renkler yerine koyu renkleri koy,B-house_place O O O B-color_type I-color_type O,O O O O O O O,0,0
+2351,olly eve koyu renkler yerine açık renkli ışıklar koy,O B-house_place B-color_type O O O O O O,O O B-color_type O O O O O O,0,0
+2414,michael's pizzadan bir pizza sipariş etmek istiyorum,B-business_name I-business_name O B-food_type O O O,B-business_name B-food_type O B-food_type O O O,1,0
+2447,öğle yemeği için çorba sipariş etmek istiyorum beykoz restoran dan bir tavuk çorba iste,B-meal_type I-meal_type O B-food_type O O O B-business_name B-business_type O O O O O,B-meal_type I-meal_type O B-food_type O O O O B-business_type O O B-food_type O O,0,0
+2531,alexa arka arkaya rap ve arabesk şarkıları çal bana,O O O B-music_genre O B-music_genre O O O,O O O B-music_genre O B-music_descriptor O O O,0,1
+2542,yatak odası ışıklarını kırmızı ve salon ışıklarını normal renk yap lütfen,B-house_place I-house_place O B-color_type O B-house_place O B-color_type O O O,B-house_place I-house_place O B-color_type O O O O O O O,0,0
+2560,rastgele müzik çal,O O O,B-artist_name O O,0,0
+2564,lütfen haftaya cuma sabah altı buçuğa alarmı kur,O O B-date B-time I-time I-time O O,O B-date I-date B-time I-time I-time O O,1,0
+2594,en sonki çevre haberlerinden bahset,O O B-news_topic O O,O O O O O,0,0
+2610,mc donalds siparişimi iptal etmiştim girdi mi,B-business_name I-business_name O O O O O,O B-business_name O O O O O,1,0
+2638,bana erdoğan hakkında haberler göster,O B-news_topic O O O,O B-person O O O,0,1
+2647,irem derici için bir pandora kanalı oluşturur musun,B-artist_name I-artist_name O O O O O O,O O O O B-app_name O O O,0,0
+2690,prizi kapat,B-device_type O,O O,0,0
+2704,biraz indie rock dinleyelim olur mu,O B-music_genre I-music_genre O O O,O O B-music_genre O O O,1,0
+2709,olly bugün biraz hüzünlü şarkılar dinlemek istiyorum,O B-date O B-music_genre I-music_genre O O,O B-date O O O O O,0,0
+2717,sarı odaları dinlemek istiyorum,B-song_name I-song_name O O,B-audiobook_name I-audiobook_name O O,0,1
+2777,bugün şemsiye almalı mıyım,B-date O O O,B-date B-weather_descriptor O O,0,0
+2781,biraz caz müzik çal lütfen,O B-music_genre I-music_genre O O,O B-music_genre O O O,1,0
+2840,gelecek ayın ikisi hangi gün,B-event_name I-event_name I-event_name O O,B-date I-date I-date O O,0,1
+2850,papa johnsda paket servisi var mı,B-business_name I-business_name O O O O,B-business_name I-business_name B-order_type I-order_type O O,0,0
+2859,olly bu şehirde saat kaç,O B-place_name I-place_name O O,O O O O O,0,0
+2887,lütfen bana sabah haberlerinde hava durumu ile ilgili makaleleri göster,O O B-media_type I-media_type B-news_topic I-news_topic O O O O,O O B-timeofday O O O O O O O,0,0
+2906,parlaklık yüzde doksan,O B-change_amount I-change_amount,O B-change_amount O,1,0
+2908,taco hut adrese teslim yapıyor mu bana söyle,B-business_name I-business_name O O O O O O,O B-business_name O O O O O O,1,0
+2921,bloomberg web sitesindeki haberler neler,B-media_type O O O O,O O O O O,0,0
+2962,lütfen haluk levent ten bir şarkı çal,O B-artist_name I-artist_name O O O O,O B-person B-event_name O O O O,0,0
+3020,salcılar paket servis yapıyor mu,B-business_name O O O O,B-business_name B-order_type I-order_type O O,0,0
+3021,paket servis müsait louies,O O O B-business_name,B-order_type I-order_type O O,0,0
+3034,bana sıcaklığı söyle,O B-weather_descriptor O,O O O,0,0
+3060,tgrt den yeni haberler nelerdir,B-media_type O O O O,B-person O O O O,0,1
+3080,abur cubur zamanı,B-food_type I-food_type O,O O O,0,0
+3096,new jersey'de hava nasıl,B-place_name I-place_name O O,B-place_name B-place_name O O,1,0
+3116,geçen yıldan benim favori parçamı çal,B-date I-date O O O O,O O O O O O,0,0
+3117,grup seksendörtün akıyor zaman albümünden bir şey çal,B-artist_name I-artist_name O O O O O O,O O O O O O O O,0,0
+3127,bu ay kaç kere kasırga çıktı,B-date I-date O O B-news_topic O,B-date I-date O O O O,0,0
+3128,olly bu ay kaç hortum olacak,O B-date I-date O B-news_topic O,O B-date I-date O O O,0,0
+3138,bana tuzlu karamel aromalı kremalı bir kahve yap,O B-coffee_type I-coffee_type I-coffee_type I-coffee_type O O O,O O O O B-coffee_type O O O,1,0
+3204,lütfen not et jazz seviyorum ve diskodan nefret ediyorum,O O O B-music_genre O O B-place_name O O,O O O B-music_genre O O O O O,0,0
+3205,pinhani 'den büyük adam 'ı aç,B-artist_name O B-song_name I-song_name O O,B-artist_name O O O O O,0,0
+3207,tarkan 'dan dudu dudu yayınla,B-artist_name O B-song_name I-song_name O,B-artist_name O O O O,0,0
+3214,erdoğanın rusya ile ilişkilerine yönelik soruşturma nın şu anki durumu nedir,B-news_topic B-place_name O B-news_topic I-news_topic I-news_topic O O O O O,B-news_topic B-place_name O O B-event_name O O O O O O,0,0
+3228,kurban bayramı bu yıl haftanın hangi gününe denk geliyor,B-event_name I-event_name B-date I-date O O O O O,B-event_name I-event_name O B-date I-date O O O O,1,0
+3253,bu öğlen yağmur bekleniyor mu,O B-timeofday O O O,O B-timeofday B-weather_descriptor O O,0,0
+3264,reggae müzik çal,B-music_genre O O,O O O,0,0
+3276,guşgana kebapçısı adrese teslim yapıyor mu olly,B-business_name I-business_name O O O O O,O O O O O O O,0,0
+3295,yakınlardaki tadım pizza teslimat yapıyor mu,O B-business_name I-business_name O O O,O B-business_type B-food_type B-order_type O O,0,0
+3306,hafta için hava tahmini nasıl,B-date O O O O,B-time O O O O,0,1
+3320,lütfen cezvemi benim için çalıştır,O B-device_type O O O,O O O O O,0,0
+3326,fişi kapat,O O,B-device_type O,0,0
+3337,otuz üç bin yedi yüz yetmiş için hava raporu,O O O O O O O O O,B-date I-date O O O O O O O,0,0
+3400,sıla 'nın canlı bir versiyonunu çal,B-artist_name O O O O O,O O O O O O,0,0
+3401,en popüler emre aydın şarkısı çal,O O B-artist_name I-artist_name O O,O O O B-place_name O O,0,0
+3407,bu hafta yağmur veya kar beklentisi var mı,B-date I-date B-weather_descriptor I-weather_descriptor I-weather_descriptor O O O,B-date I-date B-weather_descriptor O B-weather_descriptor O O O,1,0
+3426,dışarısı kaç derece,O O B-weather_descriptor,O O O,0,0
+3441,çarşamba ayın yirmisi mi,O B-date I-date O,B-date O O O,0,0
+3444,saat on mu,O B-time O,O O O,0,0
+3522,lütfen balkon ışıklarımı aç,O B-house_place O O,O O O O,0,0
+3542,oturma odasının ışıklarını yeşil ve kırmızıya çevir,B-house_place I-house_place O B-color_type I-color_type I-color_type O,B-house_place I-house_place O B-color_type O B-color_type O,1,0
+3543,ışığın biraz daha kırmızımsı olmasını istiyorum,O O O B-color_type O O,O O O O O O,0,0
+3550,biraz led zeppelin aç,O B-artist_name I-artist_name O,O O O O,0,0
+3570,bahçe avlusundaki ışıkları kapat,B-house_place I-house_place O O,B-house_place B-house_place O O,1,0
+3603,habertürk'den son haberler neler,B-media_type O O O,O O O O,0,0
+3623,bugün dünyada neler oluyor,B-date O O O,B-date B-place_name O O,0,0
+3624,star t. v.' den haberler,B-media_type I-media_type I-media_type I-media_type O,B-media_type I-media_type I-media_type O O,1,0
+3671,bu restoran da paket servis alabilir miyim,O B-business_type O O O O O,O B-business_type O B-order_type I-order_type O O,0,0
+3674,mutfağın farklı renkte olmasını seviyorum,B-house_place O O O O,O O O O O,0,0
+3695,bugün üçe bir alarm istiyorum,B-date B-time O O O,B-date O O O O,0,0
+3717,lütfen benim doksanlar rap hitlerimi çal,O O B-music_genre I-music_genre O O,O O O B-music_genre O O,1,0
+3723,bu şarkıdan sonra tarkanın kedi gibi şarkısını dinlemek istiyorum,O O O B-artist_name O O O O O,O O O O O O O O O,0,0
+3727,hande yener den yalanın batsın çal,B-artist_name I-artist_name O B-song_name I-song_name O,B-artist_name I-artist_name O B-song_name B-song_name O,1,0
+3750,olly sel ile ilgili yeni bir haber çıkarsa hemen haber verir misin,O B-news_topic O O O O O O O O O O,O B-person O O O O O O O O O O,0,1
+3780,benim geceyarısı sevdası çalma listemi çal,O B-playlist_name I-playlist_name O O O,O O O O O O,0,0
+3812,on beş dakika boyunca sessize al,B-time I-time I-time O O O,B-time I-time I-time I-time O O,1,0
+3822,bana arabalar hakkında bilgi bul,O B-news_topic O O O,O O O O O,0,0
+3829,hafta içi dokuza ayarlanmış alarmı kaldır lütfen,B-date I-date B-time O O O O,O O B-time O O O O,0,0
+3835,çin yemeği paket servis siparişi yapmak istiyorum,B-food_type I-food_type B-order_type O O O O,B-food_type O B-order_type I-order_type O O O,2,0
+3870,bu haftasonu benim uçuş um için uyanmak üzere ben hangi saat için alarm ımı ayarladım,B-date I-date O O O O B-alarm_type O O O O O O O O,B-date I-date O B-event_name O O O O O O O O O O O,0,0
+3907,geçen yılın hitleri ni çal bana,O O O O O O,B-date O B-music_descriptor O O O,0,0
+3911,bu yıl grammy almış bazı şarkılar çal,O O O O O O O,O B-date O O O O O,0,0
+3912,oryantal ve folk müzik dinlemek istiyorum,B-music_genre I-music_genre I-music_genre O O O,O O B-music_genre O O O,1,0
+3982,lütfen benim itunes kütüphanemde ilk şarkıyı seç,O O B-playlist_name I-playlist_name O O O,O O O B-place_name O O O,0,0
+3995,ramazan bayramı haftanın hangi günü,B-event_name I-event_name B-date O B-date,B-person B-event_name O O O,1,0
+4001,survivor da ne oldu,B-news_topic O O O,B-place_name O O O,0,1
+4024,lütfen gücü kapat,O O O,O B-device_type O,0,0
+4031,doksanlar dans müzikleri çal,B-song_name I-song_name I-song_name O,B-music_genre O O O,0,0
+4048,lütfen günaydın et lokantasının sipariş alıp almadığını öğren,O B-business_name I-business_name I-business_name O O O O,O O O O O O O O,0,0
+4073,ayın beşi hangi gün,O B-date O O,B-date I-date O O,1,0
+4081,yarın eve giderken markette durup yiyecek almayı hatırlamak için bir alarm kurmak istiyorum,B-date O O B-event_name I-event_name I-event_name I-event_name O O O O O O,B-date O O O O O O O O O O O O,0,0
+4088,tepe ışığını kapat,O O O,B-device_type O O,0,0
+4112,mevcut zamanı g. m. t. den e. s. t. e çevir,O O B-time_zone I-time_zone I-time_zone O B-time_zone I-time_zone I-time_zone O O,O O B-time_zone I-time_zone B-media_type O O B-time_zone I-time_zone O O,2,0
+4116,karışık çalma listesini çal lütfen,O O B-playlist_name O O,B-player_setting B-playlist_name O O O,0,0
+4119,kaliforniya daki barajın yıkılmasıyla ilgili her şeyi bilmek istiyorum,B-place_name O O O O O O O O,O O O O O O O O O,0,0
+4125,nereden paket adana yemeği ve bir duble rakı alabilirim,O O B-food_type I-food_type O O O B-food_type O,O B-order_type B-food_type O O O O O O,1,0
+4132,bugün için niğde aksaray da yağmur ihtimali oranını bildir bana,B-date O B-place_name I-place_name O B-weather_descriptor O O O O,B-date O O O O B-weather_descriptor O O O O,0,0
+4136,imogen heap açabilir misin lütfen,B-artist_name I-artist_name O O O,O O O O O,0,0
+4137,hacıoğlunun paket servisi yapıp yapmadığını teyit eder misin,B-business_name B-order_type I-order_type O O O O O,O B-order_type I-order_type O O O O O,0,0
+4152,yıllar utansın şarkısını çal lütfen,B-song_name I-song_name O O O,O O O O O,0,0
+4155,ses seviyesini yüzde otuz beşe getir,O O B-change_amount I-change_amount I-change_amount O,O O B-change_amount O B-change_amount O,1,0
+4177,bana dünyadaki son politik haber başlıklarını ver,O B-place_name O B-news_topic O O O,O O O B-news_topic O O O,0,0
+4183,new york için mevcut zaman,B-place_name I-place_name O O B-time_zone,B-place_name I-place_name O O O,0,0
+4205,pentagram 'dan bir 'i dinlemek istiyorum,B-artist_name O B-song_name O O O,O O O O O O,0,0
+4212,bu akşam çim biçmem mümkün olacak mı,B-timeofday I-timeofday B-weather_descriptor I-weather_descriptor O O O,B-timeofday I-timeofday B-event_name O O O O,0,0
+4216,bana şimdiye kadar anlatılan en komik fıkrayı anlat,O O O O B-joke_type I-joke_type O O,O O O O O O O O,0,0
+4217,güzel komik fıkralar duymak isterim,B-joke_type I-joke_type O O O,O B-joke_type O O O,1,0
+4236,halen öğleden sonra mı,O O O O,O B-time I-time O,0,0
+4247,evdeki tüm ışıkları maviye çevir,O O O B-color_type O,B-house_place O O B-color_type O,0,0
+4248,ev ışıkları mavi,O O B-color_type,B-house_place O B-color_type,0,0
+4253,doğu standart saat diliminde şu an saat kaç,B-time_zone O O O O O O O,B-time_zone B-time_zone O O O O O O,0,0
+4254,türkiyenin doğu kıyısında saat kaç,B-place_name B-time_zone I-time_zone O O,B-place_name B-time_zone O O O,1,0
+4268,listedeki bir sonraki şarkıya geç,O O O O B-player_setting,O O O O O,0,0
+4272,kahvem soğuk lütfen daha fazla kahve yap,O O O O O O O,O B-weather_descriptor O O O O O,0,0
+4283,bu odadaki parlaklığı artır,B-house_place I-house_place O O,O B-house_place O O,1,0
+4299,ışığı burada daha kırmızı yap,O O B-color_type I-color_type O,O O O B-color_type O,1,0
+4305,teoman 'dan kupa kızı ve sinek valesi şarkısını çal,B-artist_name O B-song_name I-song_name I-song_name I-song_name I-song_name O O,B-artist_name O O O O O O O O,0,0
+4312,paris'te hava on dereceden az mı olacak,B-place_name O B-weather_descriptor I-weather_descriptor I-weather_descriptor O O,B-place_name O O O O O O,0,0
+4319,yarın onda kalkmam gerek,B-date B-time O O,B-date O O O,0,0
+4400,sabah gazetesinde hakkında en çok konuşulan makaleler nelerdir,B-media_type I-media_type O O O O O O,B-time O O O O O O O,0,0
+4402,bugün bir şemsiye taşımam gerekecek mi,B-date O O O O O,B-date O B-weather_descriptor O O O,0,0
+4439,san francisco'da hava nasıl,B-place_name I-place_name O O,B-place_name B-place_name O O,1,0
+4442,üçte kahve yap,B-time O O,O O O,0,0
+4443,kahve makinesini üçte çalıştır,B-device_type I-device_type B-time O,B-device_type I-device_type O O,0,0
+4449,bugün öğleden sonra bir de yağmur yağacak mı,B-date B-time I-time I-time O O B-weather_descriptor O,B-date B-time I-time I-time O B-weather_descriptor I-weather_descriptor O,1,0
+4461,tersane ocakbaşı da sadece akşam yemeği mi var,B-business_name I-business_name O O O O O O,O B-date O O B-meal_type I-meal_type O O,0,0
+4463,mart ayında kaç cumartesi var,B-date I-date O B-date O,B-date O O O O,1,0
+4482,bu sabah yolumdaki karları temizlemem lazım mı,O B-timeofday B-weather_descriptor O O O O,O B-timeofday O O O O O,0,0
+4492,benim bölgemdeki en son suç istatistikleri nasıl,O O O O B-news_topic I-news_topic O,O O O O O O O,0,0
+4496,vogue bugün ne paylaştı,B-media_type B-date O O,O B-date O O,0,0
+4544,on iki parça baharatlı bal hardallı kanat kombo ve içecek olarak da sprite sipariş et,O O O O B-food_type I-food_type I-food_type I-food_type O O O O B-drink_type O O,B-date I-date O O O O O O O O O O O O O,0,0
+4547,köpek gezdirme çalma listesi açl,B-playlist_name I-playlist_name I-playlist_name I-playlist_name O,B-list_name B-playlist_name O O O,1,0
+4550,hey olly ben ege 'den müzik istiyorum,O O O B-artist_name O O O,O O O O O O O,0,0
+4567,nytimescom dan en son başlıkları oku,B-media_type O O O O O,B-artist_name O O O O O,0,1
+4589,spor maçları için bir uyarı kur,B-event_name I-event_name O O O O,B-news_topic B-event_name O O O O,1,0
+4606,günün borsa bilgilerini bul,B-date O O O,O O O O,0,0
+4614,yarın sıcaklık kırktan yüksek mi olacak,B-date B-weather_descriptor I-weather_descriptor I-weather_descriptor O O,B-date B-weather_descriptor O B-weather_descriptor O O,1,0
+4662,show tv den haberler alexa,B-media_type I-media_type O O O,O B-media_type O O O,1,0
+4680,sandalet mi yoksa çorap ve ayakkabı mı giymem lazım,B-weather_descriptor I-weather_descriptor I-weather_descriptor I-weather_descriptor I-weather_descriptor I-weather_descriptor I-weather_descriptor O O,B-weather_descriptor O O O O O O O O,1,0
+4692,ben güzelden anlarım şarkı sını çal,B-artist_name I-artist_name I-artist_name O O O,O O O O O O,0,0
+4710,bu yıl cadılar bayramı hangi gün,B-date I-date B-event_name I-event_name O O,O O B-event_name I-event_name O O,0,0
+4764,pazartesi günü yağmur yağacak mı,B-date O B-weather_descriptor O O,B-date O B-weather_descriptor I-weather_descriptor O,1,0
+4767,meksika amerika sınır duvarı nı içeren yeni bir bilgi var mı,B-news_topic I-news_topic I-news_topic I-news_topic O O O O O O O,B-food_type O O O O O O O O O O,0,0
+4772,bana bu zaman dilimi ni söyle,O B-time_zone I-time_zone I-time_zone O O,O O O O O O,0,0
+4780,doğumgünüm bu sene yirmi yedi haziranda hangi güne denk geliyor,B-event_name O O B-date I-date I-date O O O O,O B-date I-date O B-date I-date O O O O,1,0
+4798,her gün kahve istiyorum,B-date I-date O O,B-general_frequency I-general_frequency O O,0,1
+4813,başka bir şehir de saat kaç,B-place_name I-place_name I-place_name O O O,O O B-place_name O O O,1,0
+4826,lambaları pembe yap,O B-color_type O,O O O,0,0
+4882,bir şehir de saat kaç,B-place_name I-place_name O O O,O B-place_name O O O,1,0
+4887,hadise'nin şarkısı ile ilgili benim fikrimi kaydet,B-artist_name O O O O O O,B-person O O O O O O,0,1
+4890,türkiye deki hava felaketleri ile ilgili tüm mevcut bildirimleri kur,B-place_name O B-event_name I-event_name O O O O O O,B-place_name O O O O O O O O O,0,0
+4896,tepe lambalarını azalt,B-house_place O O,B-place_name O O,0,1
+4909,kardeş türküler den şarkılar çal,B-artist_name I-artist_name O O O,B-podcast_name I-podcast_name O O O,0,1
+4928,oynatma listemi çal,B-playlist_name I-playlist_name O,O O O,0,0
+4953,tren kazası haberleri,B-news_topic I-news_topic O,B-transport_type B-news_topic O,1,0
+4957,bu ayın yirmi üçü haftanın hangi günü,B-date I-date I-date I-date O O O,B-date I-date I-date I-date I-date O O,1,0
+4960,müzik mor ve ötesi,O B-artist_name I-artist_name I-artist_name,O B-artist_name O O,1,0
+4968,bu yıl başkanlık seçimini kim kazandı,B-date I-date B-news_topic I-news_topic O O,O O O O O O,0,0
+4973,olly kumralım çal,O B-song_name O,O O O,0,0
+4982,gelmiş geçmiş en komik fıkra hangisi,O O B-joke_type I-joke_type O O,O O O O O O,0,0
+5010,her zamankinden yap,B-coffee_type I-coffee_type O,B-general_frequency O O,0,0
+5016,piyasa iniş çıkış hakkında yeni haberleri ver,B-news_topic I-news_topic I-news_topic O O O O,O O O O O O O,0,0
+5027,en yakın on üçüncü cuma ne zaman,O O B-date I-date I-date O O,O O O O B-date O O,1,0
+5050,tüm akıllı cihazları kapat,O O O O,O B-device_type O O,0,0
+5062,lütfen bana seksenlerden şarkılar çal,O O B-music_genre O O,O O O O O,0,0
+5074,bu hafta hava nasıldı,O B-time O O,B-date I-date O O,0,0
+5103,olly tüm futbol antrenmanı alarmlarını iptal et,O O B-alarm_type I-alarm_type O O O,O O B-event_name I-event_name O O O,0,1
+5118,ölürüm sana,B-song_name I-song_name,B-song_name O,1,0
+5134,arabesk çalma listemden şarkılar bul,B-playlist_name I-playlist_name I-playlist_name O O,O O O O O,0,0
+5152,lütfen iki şarkı atla,O O O B-player_setting,O O O O,0,0
+5158,karma albümünden en son şarkıyı çal,B-music_album O O O O O,O O O O O O,0,0
+5159,lütfen sanatçı tarkan'nın şarkısını çalar mısın,O O B-artist_name O O O,O O O O O O,0,0
+5245,çevre haberleri bildirimi ayarla,B-news_topic O O O,O O O O,0,0
+5261,bu şarkı ece mumayın mı,O O B-artist_name I-artist_name I-artist_name,O O O O O,0,0
+5278,lütfen sadece karışık pop müzik çal,O O B-music_genre I-music_genre O O,O O B-player_setting B-music_genre O O,1,0
+5279,lütfen müzik çalar da duygusal bir şarkı çal,O B-device_type I-device_type O B-music_descriptor O O O,O O B-device_type O O O O O,1,0
+5286,t.r.t haberden göç haberleri göster,B-media_type O B-news_topic O O,O O B-news_topic O O,0,0
+5296,olly baa habertürk'ten popüler haberleri ver,O O B-media_type O O O,O O O O O O,0,0
+5307,bugün yirmi mart mı,B-date I-date I-date O,B-date B-date I-date O,1,0
+5318,lütfen sadece ece ronayın şarkılarını çal,O O B-artist_name I-artist_name O O,O O O O O O,0,0
+5332,birleşik devletler ve kanada saat farkı,B-place_name I-place_name O B-place_name O O,B-currency_name I-currency_name O B-currency_name O O,0,2
+5333,ingiltere ile amerika arasındaki zaman farkı ne,B-place_name O B-place_name O O O O,B-person O B-place_name O O O O,0,1
+5370,son trump tartışması ne,O B-news_topic I-news_topic O,O B-news_topic O O,1,0
+5396,lütfen soketi kapat,O O O,O B-device_type O,0,0
+5406,h. d. iskender eve servis yapıyor mu,B-business_name I-business_name I-business_name B-order_type I-order_type O O,O B-place_name O B-order_type I-order_type O O,0,0
+5439,gece için şemsiye lazım mı,B-timeofday O B-weather_descriptor O O,B-time O B-weather_descriptor O O,0,1
+5501,lütfen bütün ışıkları aç,O B-device_type I-device_type O,O O O O,0,0
+5523,sekiz buçuğu gtm dörtten gmt beş buçuğa çevir,B-time I-time B-time_zone I-time_zone I-time_zone I-time_zone I-time_zone O,O O O O O O B-time O,0,0
+5524,şu anki hava,B-time I-time O,O O O,0,0
+5525,bir saat boyunca sessize al,B-time I-time O O O,B-time I-time I-time O O,1,0
+5529,saat kaçta yürüyüşe çıkmalıyım,O O B-event_name I-event_name,O O O O,0,0
+5554,bu şarkı murat bozun mu,O O B-artist_name I-artist_name O,O O O O O,0,0
+5557,reggae istiyorum,B-music_genre O,O O,0,0
+5568,gelecek pazar sabah saat dokuz için alarm kur,B-date I-date B-time O B-time O O O,B-date I-date B-time I-time I-time O O O,1,0
+5577,akşam çok fırtınalı olursa her yerimi kapatan bir ceket lazım olacak,B-timeofday B-weather_descriptor I-weather_descriptor O B-weather_descriptor I-weather_descriptor I-weather_descriptor O B-weather_descriptor O O,B-time O B-weather_descriptor O O O O O B-weather_descriptor O O,1,1
+5578,kış sabah ında sıcak çoraplar lazım olacak bana,B-weather_descriptor B-timeofday O B-weather_descriptor I-weather_descriptor O O O,O B-timeofday O B-weather_descriptor O O O O,1,0
+5600,yemek fiyatını ve hepsini kontrol et,B-food_type O O O O O,O O O O O O,0,0
+5619,önceki şarkıyı çal,B-music_descriptor B-song_name O,O O O,0,0
+5635,sabah altı da uyandığımdan emin ol,B-timeofday B-time O O O O,B-time I-time O O O O,1,0
+5658,can bonomo 'dan bir müzik çal benim için,B-artist_name I-artist_name O O O O O O,B-person O O O O O O O,0,0
+5683,benim parti şarkıları çalma listemi çal,O B-playlist_name I-playlist_name O O O,O B-playlist_name O O O O,1,0
+5697,süpürmeye başla,B-device_type O,O O,0,0
+5721,bana yarın bu bölgedeki hava durumunu söyle,O B-date B-place_name I-place_name O O O,O B-date O O O O O,0,0
+5722,bu hafta için yedi günlük hava tahminini göster,B-date I-date O B-weather_descriptor I-weather_descriptor I-weather_descriptor I-weather_descriptor O,B-date I-date O B-time O O O O,0,0
+5727,koridor ışık parlaklığını artır,B-house_place O O O,O O O O,0,0
+5732,araba lastiklerimi yakın zamanda kar lastiklerine çevirmeli miyim,O O O O B-weather_descriptor I-weather_descriptor O O,O O O O B-weather_descriptor O O O,1,0
+5757,ikiye çeyrek var,B-time I-time I-time,O O O,0,0
+5774,sivasta şu anki saat,B-place_name O O O,B-business_name O O O,0,1
+5813,sessiz şarkı çal,B-song_name O O,O O O,0,0
+5820,model pembe mezarlık,B-artist_name B-song_name I-song_name,O O O,0,0
+5823,yüzde yirmi azalt,B-change_amount I-change_amount O,O B-change_amount O,1,0
+5871,bugün mersin'de hava nasıl,B-date B-weather_descriptor I-weather_descriptor O,B-date B-place_name O O,0,0
+5886,sıcak konu,O O,B-weather_descriptor O,0,0
+5911,müzikleri yeniden oynat,O B-player_setting I-player_setting,O O O,0,0
+5919,new york köprüsü teklifi için en son güncelleme nedir,B-news_topic I-news_topic I-news_topic I-news_topic O O O O O,B-place_name I-place_name I-place_name O O O O O O,0,0
+5930,huffington post'dan herhangi bir son dakika haberi,B-media_type I-media_type O O O O O,B-media_type O O O O O O,1,0
+5948,listemden güzel bir şarkı çal,O B-music_descriptor I-music_descriptor I-music_descriptor O,O O O O O,0,0
+5952,şimdi benim için iyi bir fıkra söyle,O O O B-joke_type O O O,O O O O O O O,0,0
+5953,yaşamak için şehir daha mı ucuz daha mı pahalı,O O B-place_name O O O O O O,O O O O O O O O O,0,0
+5955,şehir kanun ve düzen açısından ne kadar güvenli,O O O O O O O O,B-place_name O O O O O O O,0,0
+5970,benim için bohemian raphsody çalmanı istiyorum,O O B-song_name I-song_name O O,O O O O O O,0,0
+5974,öğlen tabletleri almak için alarm kurdum mu,B-timeofday B-event_name I-event_name O O O O,B-time O O O O O O,0,1
+5985,bm'den en son haberleri göster,B-media_type O O O O,B-person O O O O,0,1
+5997,ulusal zaman diliminde saat kaç,B-time_zone O O O O,B-place_name O O O O,0,1
+6023,aşırı nemli bir gece mi olacak,B-weather_descriptor I-weather_descriptor O B-timeofday O O,O O O O O O,0,0
+6024,bugün işe mont veya hırka götürmem gerekir mi,B-date O B-weather_descriptor O B-weather_descriptor O O O,B-date O O O O O O O,0,0
+6055,garajdaki ışığı açık mı bıraktım,B-house_place O O O O,O O O O O,0,0
+6064,bir saat boyunca konuşma,B-time I-time O O,B-time O O O,1,0
+6093,arabanın üstünü açmalı mıyım,B-weather_descriptor I-weather_descriptor I-weather_descriptor O,O O O O,0,0
+6103,bugün los angeles california'da hava nasıl olacak,B-date B-place_name I-place_name I-place_name O O O,B-date B-place_name I-place_name B-place_name O O O,1,0
+6112,tavuk dünyası dan patates kızartması ve kanat söyle,B-business_name I-business_name O B-food_type I-food_type I-food_type I-food_type O,B-food_type B-business_name O B-food_type I-food_type O B-food_type O,2,0
+6118,hey taksim istanbul da saat kaç,O B-place_name I-place_name O O O,O B-place_name B-place_name O O O,1,0
+6159,yerleri temizler,B-house_place O,O O,0,0
+6172,güneş gözlükleri bugün için iyi bir seçim mi,B-weather_descriptor I-weather_descriptor B-date O O O O O,B-weather_descriptor O B-date O O O O O,1,0
+6295,trafik sıkışıklığının bu kadar uzun sürmesinden nefret ediyorum,O O O O B-time O O O,O O O O O O O O,0,0
+6301,mumbar ne demek,B-food_type O O,B-definition_word O O,0,1
+6331,sezon öncesi beyzbol biletleri aldım,B-event_name I-event_name I-event_name O O,O O O O O,0,0
+6366,bana amerikada ziyaret edilecek en iyi turistik yerlerden bazılarını söyle,O B-place_name O O B-place_name I-place_name I-place_name I-place_name O O,O B-place_name O O O O O O O O,0,0
+6370,önümüzdeki haftam nasıl görünüyor,B-date I-date O O,O O O O,0,0
+6372,bitkilerle ilgili haberler,B-news_topic I-news_topic O,O O O,0,0
+6433,lütfen bil ki bugün cemil ile bir toplantım randevum,O O O O B-person O O O B-event_name,O O O B-date B-person O O B-event_name O,0,0
+6539,bugünü diyetimin başlangıcı olarak işaretle,B-date B-event_name I-event_name O O,B-date O O O O,0,0
+6542,yumuşak peynir sert peynirden daha mı iyi,B-food_type I-food_type O O O O O,O B-food_type O O O O O,1,0
+6559,hey olly kız arkadaşımı seviyor musun,O O B-relation I-relation O O,O O O O O O,0,0
+6596,bu yerden döndüğümde,B-place_name I-place_name O,O O O,0,0
+6645,n. s. a. için mi çalışıyorsun,O O O O O O,B-podcast_name B-media_type B-place_name O O O,0,0
+6720,seneye istanbul da gerçekleşecek olan istanbul komedi festivali ile ilgili neler biliyorsun,B-date B-place_name O O O B-event_name I-event_name I-event_name O O O O,O B-place_name O O O B-place_name B-movie_type B-event_name O O O O,1,0
+6725,öğleden sonraki programımı hatırlat,B-timeofday I-timeofday O O,B-time O O O,0,0
+6729,tiffany's house'da ki kahvaltıyı iptal et,B-place_name I-place_name I-place_name B-meal_type O O,B-place_name I-place_name O O O O,1,0
+6732,kayınbabam ve kayınvalidemle pazar günü için buluşma hatırlatıcısı ekle,B-relation I-relation I-relation B-date I-date O B-event_name O O,O O O B-date O O B-event_name O O,1,0
+6746,takvimimde haziranın ilk haftasını tatil olarak ayarla,O B-time I-time I-time B-event_name O O,O O O O B-event_name O O,0,0
+6764,bana camları yıkamam gerektiğini hatırlat,O B-event_name I-event_name I-event_name O,O O O O O,0,0
+6774,cuma günü için bir etkinlik ayarla,B-date I-date O O O O,B-date O O O O O,1,0
+6789,joanna ile cumartesi günü öğleden sonra dörde görüşme ayarla,B-person O B-date O B-time I-time I-time O O,B-person O B-date O B-time I-time I-time B-event_name O,0,0
+6801,bana bu cuma toplantılarımı göster,O B-date I-date O O,O O B-date B-event_name O,1,0
+6806,bana bu cuma öğleden sonra ki takvim etkinliğimi göster,O B-date I-date B-timeofday I-timeofday O O O O,O O B-date B-time I-time O O O O,1,1
+6815,bana annemin doğum gününü bir hafta önce hatırlat,O B-relation B-event_name I-event_name B-time I-time I-time O,O B-relation B-event_name I-event_name O B-date O O,0,0
+6819,olly bu gece dokuzda jazz barda çok güzel bir müzik grubu çalıyor gitmek istiyorum,O B-timeofday I-timeofday B-time O B-place_name O O O B-event_name I-event_name I-event_name O O,O B-timeofday I-timeofday B-time B-music_genre B-place_name O O O O B-event_name O O O,1,0
+6878,cuma öğleden sonra iki buçukta muhasebe departmanıyla bir toplantı planla,B-date B-time I-time I-time I-time B-business_name I-business_name O B-event_name O,B-date B-time I-time I-time I-time O O O B-event_name O,0,0
+6891,sabah programlarının müsaitliği var mı,B-timeofday B-event_name O O O,B-time O O O O,0,1
+6892,bana film programını verebilir misin,O B-event_name O O O,O O O O O,0,0
+6897,bana ayın yedisinde akşam saat beşte leyla 'yı almamı hatırlat,O O B-date B-timeofday O B-time B-person O B-event_name O,O B-date I-date B-time I-time B-time B-event_name O O O,1,1
+6902,gelecek ay yağ değişimim için bir hatırlatıcı ayarla,B-date I-date B-event_name I-event_name O O O O,B-date I-date B-event_name O O O O O,1,0
+6909,öğleden sonra birden sonra ve üçten önce neler oluyor,O O B-time I-time O B-time I-time O O,B-time I-time I-time I-time O O O O O,1,0
+6923,hatırlatıcıyı salı sabahı dokümanların çıktısını alacak şekilde ayarla,O B-date B-timeofday B-event_name I-event_name I-event_name O O,O B-date B-timeofday O O O O O,0,0
+6936,bana ilacımı sabah dokuzda almamı hatırlat,O B-event_name B-time I-time O O,O O B-time I-time B-event_name O,0,0
+6937,öğlen için patronla öğle yemeği anımsatıcısı kur,B-timeofday O B-event_name I-event_name I-event_name O O,B-timeofday O B-relation B-meal_type B-event_name O O,1,0
+6959,toplantımı başlamadan bir saat önce bana hatırlat,B-event_name O B-time I-time O O O,B-event_name O O O O O O,0,0
+6964,patronumla bir sonraki toplantımı gerçekleşmeden bir saat önce hatırlatabilir misin,B-relation O O B-event_name O B-time I-time O O O,B-relation O O B-event_name O O O O O O,0,0
+6980,bana yapılacaklar listesini ver,O O O O,O B-list_name O O,0,0
+7025,yeni yılı takvimden kaldır,B-event_name I-event_name O O,O B-event_name O O,1,0
+7026,bu hafta ilçemde hangi etkinlikler oluyor,B-date I-date B-place_name O O O,B-date I-date O O O O,0,0
+7044,öğleden sonra beş te hazırlanmaya başlamamı anımsat lütfen,B-time I-time I-time O B-event_name O O O,B-time I-time I-time O O O O O,0,0
+7057,çarşamba öğle burak ile bir öğle yemeği buluşması programla,B-date B-timeofday B-person O O B-event_name I-event_name I-event_name O,B-date B-time B-person O O B-event_name B-meal_type O O,1,1
+7061,emine ile cuma toplantımdan yirmi dört saat önce bana bir hatırlatma ver,B-person O B-date B-event_name B-time I-time I-time I-time O O O O,B-person O B-date B-event_name B-time I-time O O O O O O,1,0
+7073,benim bir sonraki etkinliğim için takvimimi araştır ve öncesinde beni bilgilendir,O O O O O O O O B-time O O,O O O O O O O O O O O,0,0
+7100,bana bir gün önce arabamın son günü olduğunu hatırlat,O B-date I-date I-date B-event_name O O O O,O O O O B-event_name O O O O,0,0
+7111,otuz bir mart taki doktor randevusu saat kaçta,B-date I-date I-date O B-event_name I-event_name O O,B-date O B-date O B-event_name I-event_name O O,1,0
+7117,on dokuzundaki etkinlikler i benim takvimimden kaldır,B-date I-date O O O O O,O B-time O O O O O,0,0
+7140,öğle yemeği buluşmasından bir saat önce beni bilgilendirmek için bir hatırlatıcı ayarla,B-event_name I-event_name I-event_name O O O O O O O O O,B-meal_type I-meal_type O O O O O O O O O O,0,0
+7151,her tek sayılı pazar günü için hatırlatma kur,O B-general_frequency I-general_frequency I-general_frequency I-general_frequency O O O,B-general_frequency I-general_frequency O B-date O O O O,1,0
+7168,bana yirmi altı martta yaklaşan yıllık etkinliğin ayrıntılarını verebilir misin,O B-date I-date I-date O B-general_frequency B-event_name O O O,O B-date I-date I-date O O O O O O,0,0
+7181,beni perşembe sabahı altıda uyandır ki toplantı için zamanım olsun,O B-date B-time I-time O O B-event_name O O O,O B-date B-timeofday B-time O O B-event_name O O O,1,0
+7185,doktor ahmet ile bir sonraki randevum ne zaman,B-person I-person O O O B-event_name O O,B-person B-person O O O B-event_name O O,1,0
+7196,bana on beş martta alper ile yapacağım toplantıyı hatırlat,O B-time I-time I-time B-person O O B-event_name O,O B-date I-date I-date B-person O O B-event_name O,0,1
+7199,gelecek haftanın ingilizce finalinden önce üç iki ve bir saat için bir bildiri ayarla,B-date I-date B-event_name I-event_name O O O O O O O O O O,B-date I-date O O O O B-time O O O O O O O,0,0
+7209,salı günü çöpü çıkarmamı hatırlatabilir misin,B-date O B-event_name I-event_name O O,B-date O O O O O,0,0
+7224,tomun evliliğinin gerçekleşeceği mekan nerede,O B-event_name O O O,O O O O O,0,0
+7232,gelecek haftaki etkinlikler neler,O B-date O O,B-date I-date O O,1,0
+7257,lütfen bana yarım saat içinde annemi aramayı hatırlat,O O B-time I-time I-time B-relation B-event_name O,O O B-time I-time O B-relation O O,1,0
+7278,bana rümeysanın doğum gününü yirmi dört saat önceden hatırlat,O B-person B-event_name I-event_name B-time I-time I-time I-time O,O B-person B-event_name I-event_name B-time I-time I-time O O,1,0
+7287,bana yıldönümümü bir gün önceden hatırlat,O B-event_name B-date I-date I-date O,O B-event_name O O O O,0,0
+7291,yarın sabah ondan bir saat sonrasını engelle,B-date B-timeofday B-time I-time I-time O O,B-date B-timeofday B-time O O O O,1,0
+7292,yarın akşam dörtten altıya kadar müsait değilim takvimimi işaretle,B-date B-timeofday B-time I-time O O O O O,B-date B-time B-time I-time O O O O O,0,1
+7293,cumartesiye bir saatlik bir randevu ayarla,B-date B-time I-time O O O,B-date O B-time O B-event_name O,1,0
+7295,lütfen takvimimi temizle,O O B-time,O O O,0,0
+7319,bugün öğleden sonra ikiden dörde kadar neler oluyor,B-date B-time I-time I-time I-time I-time O O,B-date B-time I-time I-time I-time O O O,1,0
+7353,sadece önümüzdeki haftalarda adana'nın hava durumunu bana bildir,O B-time I-time B-place_name O O O O,O O B-date B-place_name O O O O,0,0
+7355,bana saat altıda yemeği kontrol etmem gerektiğini hatırlat,O O B-time B-event_name I-event_name I-event_name O O,O O B-time O O O O O,0,0
+7380,lütfen bugün müşterilerle olan toplantıyı göster,O B-date B-relation O O O,O B-date B-relation O B-event_name O,0,0
+7397,önümüzdeki üç ay için planlanmış bir etkinlik var mı,B-time I-time I-time O O O O O O,O B-date I-date O O O O O O,0,0
+7477,bana her yılın beş martında evlilik yıldönümü hediyeleri hazırlamamı hatırlat,O B-general_frequency I-general_frequency B-date I-date B-event_name I-event_name I-event_name O O,O B-general_frequency I-general_frequency O B-date B-event_name B-event_name O O O,2,0
+7502,öğleden sonra dörtte ali ile yapacağım toplantıya dair ajandada ne var,B-time I-time I-time B-person O O O O O O O,B-time I-time I-time B-person O O B-event_name O O O O,0,0
+7524,bugün saat akşam beşyirmide yapılan toplantıda osman şirketime ne kadar yatırım yapmak ister,B-date O B-time I-time O B-event_name B-person O O O O O O,B-date O B-time I-time O B-event_name B-event_name O O O O O O,0,1
+7528,haziranın on üçü seçim sonuçları günü lütfen bunu ayarla,B-date I-date I-date B-event_name I-event_name O O O O,O O B-date B-event_name O O O O O,2,0
+7531,lütfen maaş günlerini ekle,O B-event_name I-event_name O,O B-event_name O O,1,0
+7549,saat üçe kadar toplantı istiyorum,B-time I-time O B-event_name O,O B-time O B-event_name O,1,0
+7556,takvimimi bana her cuma alışveriş yapmamı hatırlatacak şekilde ayarla,O O B-general_frequency I-general_frequency B-event_name I-event_name O O O,O O B-general_frequency I-general_frequency O O O O O,0,0
+7559,bana bu akşam sekizde kuru temizlemeden kıyafetlerimi almayı hatırlat,O O B-time I-time B-event_name I-event_name I-event_name O O,O B-timeofday I-timeofday B-time O O B-event_name O O,2,0
+7570,bugün plan nedir,O O O,B-date O O,0,0
+7583,takvimindeki tanışma toplantısı,O O O,O O B-event_name,0,0
+7596,lütfen öğleyin pastahanede emre ile bir buluşma programla,O B-timeofday B-place_name B-person O O B-event_name O,O O O O O O B-event_name O,0,0
+7598,sonraki müsait olan toplantı gününe aliyle terörizmi tartışma toplantısı ayarla lütfen,B-date I-date O O O B-person B-event_name I-event_name I-event_name O O,O O O B-event_name O O O B-event_name I-event_name O O,1,0
+7606,can ile yarın üçte buluş,B-person O B-date B-time O,B-person O B-date O O,0,0
+7609,salı günündeki toplantı hatırlatmasını kaldır,B-date I-date B-event_name O O,B-date O B-event_name O O,1,0
+7628,kütüphanedeyken bana yeni bir kütüphane kartı almam gerektiğini hatırlat,B-place_name O B-event_name I-event_name I-event_name I-event_name I-event_name O O,O O O O O O O O O,0,0
+7655,hatırlatmaya nisanın yirmisini abimin doğum günü olarak ekle,O B-date I-date B-relation B-event_name I-event_name O O,O B-date O B-relation B-event_name I-event_name O O,1,0
+7660,bugün öğleden sonra üçten itibaren olan tüm randevularımı iptal et ve beni detaylı bilgilendir,B-date O O B-time O O O B-event_name O O O O O O,B-date B-time I-time I-time O O O B-event_name O O O O O O,1,0
+7664,mike ile bir öğle yemeği ekle,B-person O O B-meal_type I-meal_type O,B-person O O B-event_name B-meal_type O,1,0
+7666,onur ile yarın üçte toplantım olduğunu işaretler misin,B-person O B-date B-time B-event_name O O O,O O B-date O B-event_name O O O,0,0
+7680,takvimimde bu ayın tüm golf ekinliklerini sil,O B-date I-date O B-event_name I-event_name O,O O B-date O B-place_name O O,1,0
+7693,ayın yirmi birine herhangi bir şey planladım mı,B-date I-date I-date O O O O O,O B-date I-date O O O O O,1,0
+7711,hey benim diğer tüm toplantılarımı iptal et ve iki mart çağrılarını birkanın doğum günü olduğu için takviminde bir etkinlik olarak etiketle,O O O O O O O O B-date I-date O B-person B-event_name I-event_name O O O O O O O,O O O O B-event_name O O O B-date I-date O O B-event_name I-event_name O O O O O O O,0,0
+7712,hey olly iki mart için benim tüm randevularımı ve aramaları iptal et çünkü o gün jim'in doğum günü bu etkinliği takvime kaydet,O O B-date I-date O O O O O O O O O O O B-person B-event_name I-event_name O O O O,O O B-date I-date O O O B-event_name O O O O O O O B-person B-event_name I-event_name O O O O,0,0
+7718,hey bu cuma günü toplantı için semih beye davet gönder ve cuma günü öğleden sonrası için takvimimi engelle,O B-date I-date I-date B-event_name O B-person I-person O O O B-date I-date I-date I-date O O O,O O B-date O B-event_name O O B-person O O O B-date O B-time I-time O O O,3,0
+7751,her pazartesi çöpleri çıkarmayı hatırlat,B-general_frequency I-general_frequency O O O,O B-general_frequency B-event_name O O,1,0
+7767,kuğulu parkta dört şubata öğleden sonra ikiye takvime bir alıştırma ekle,B-place_name I-place_name B-date I-date B-time I-time I-time O O O O,B-place_name I-place_name O B-date B-time I-time I-time O O O O,1,0
+7768,lütfen dört şubatta öğleden sonra ikide merkez parkta antrenman ekle,O B-date I-date B-time I-time I-time B-place_name I-place_name O O,O B-date I-date B-time I-time I-time B-place_name O O O,1,0
+7778,bana pazar öğleden sonra ne yapacağımı hatırlat,O B-date B-timeofday I-timeofday O O O,O B-date B-time I-time O O O,0,1
+7808,bana perşembe sabah on birde annemi kuaföre götürmem gerektiğini hatırlat,O B-date B-time I-time I-time B-relation I-relation O O O,O B-date B-time I-time I-time B-relation B-event_name O O O,1,0
+7843,bana iki saat önceden adana müzik merkezindeki keman dersi için öğleden sonra dörtte çıkmam gerektiğini bildir,O B-time I-time O B-place_name I-place_name I-place_name B-event_name I-event_name O B-time I-time I-time O O O,O B-time I-time O O O B-place_name O B-event_name O B-time I-time I-time O O O,2,0
+7847,kayıtlar açıldığında beni uyar,B-event_name O O O,O O O O,0,0
+7863,bana bu öğleden sonra beşte akşam yemeğine başlamam gerektiğini hatırlat,O O B-time I-time I-time B-event_name I-event_name O O O,O B-timeofday I-timeofday I-timeofday B-time B-meal_type I-meal_type O O O,1,1
+7876,son iki aydır neler oluyor,B-date I-date I-date O O,O O O O O,0,0
+7879,gelecek üç etkinliğim neler,O O O O,O B-date O O,0,0
+7889,bu akşam futbol maçı ne zaman olacak,B-timeofday I-timeofday B-event_name I-event_name O O O,B-timeofday I-timeofday B-event_name B-sport_type O O O,1,0
+7894,bana bir saat içinde seçimle ilgili bilgi ver,O B-time I-time O B-event_name O O O,O B-time I-time O O O O O,0,0
+7902,yarın öğleden sonra iki de şahsımla ali arasında bir toplantı kur,B-date B-time I-time I-time O O B-person O O B-event_name O,B-date B-time I-time I-time O B-event_name B-person O O B-event_name O,0,0
+7918,takvim etkinliği mahmut özdemiri davet et,O O B-person I-person O O,O O O O O O,0,0
+7919,yeni toplantı için burak ve melis i de katılımcı olarak ekle,O B-event_name O B-person I-person I-person O O O O O,O B-event_name O O O O O O O O O,0,0
+7946,mersin de yaklaşan konserler neler,B-place_name O O O O,B-place_name O O B-event_name O,0,0
+7953,benim cumartesi günü doktorum ile olan randevumu kaldır lütfen,O B-date I-date B-relation O O B-event_name O O,O B-date O B-event_name O O B-event_name O O,1,1
+7956,bu etkinliği tekrarlayan olarak çevirir misin,O O O O O O,O O B-general_frequency O O O,0,0
+7970,bana zamanında bir hediye almam için düğünü hatırlat,O O O O O O B-event_name O,O O O B-event_name I-event_name O B-event_name O,0,0
+7971,etkinliğin ilk iki günü için bir anımsatıcı kut,O O B-date I-date O O O O,O O O B-date O O O O,1,0
+7975,etkinlikte vale servisi var mı,O B-relation I-relation O O,O O O O O,0,0
+7978,yarın öğlenden önce için hangi hatırlatıcılar var,B-date B-timeofday O O O O O,B-date B-time O O O O O,0,1
+8004,derya benimle boşanma hakkında konuşmak istiyor lütfen ben müsait olur olmaz bir toplantı ayarlar mısın,B-person O B-event_name O O O O O O O O O B-event_name O O,B-person O O O O O O O O O O O B-event_name O O,0,0
+8005,ayın yirmisi pazartesi günü serdar ile hafta sonu gezimiz hakkında konuşmam gerekiyor,B-date I-date I-date I-date B-person O B-event_name I-event_name I-event_name O B-event_name O,B-date I-date B-date O B-person O B-date B-time B-event_name O O O,2,0
+8033,paskalya hangi güne denk geliyor,B-event_name O O O O,B-place_name O O O O,0,1
+8056,benim cuma günü bir randevum var mı,O B-date O O O O O,O B-date O O B-event_name O O,0,0
+8058,bugün satış toplantım var mı,B-date B-event_name I-event_name O O,B-date O B-event_name O O,1,0
+8079,ekmeğin pişmesi için bir saat içerisinde bir hatırlatıcı kur,B-event_name I-event_name O B-time I-time O O O O,O O O O O O O O O,0,0
+8085,bu hafta için bir randevu oluşturmak istiyorum,B-date I-date O O O O O,B-date I-date O O B-event_name O O,0,0
+8110,lütfen takvimime denetim ekle,O O B-event_name O,O O O O,0,0
+8116,bir şubat ve on altı mart aralığındaki süreçte hangi toplantılar yer aldı,B-date I-date I-date I-date I-date I-date O O O B-event_name O O,O O O O B-date I-date I-date O O B-event_name O O,1,0
+8140,bekir ile öğle yemeği yiyeceğim için on üçüne bir hatırlatıcı ayarla,O O B-meal_type I-meal_type O O B-date I-date O O O,B-person O B-meal_type I-meal_type O O O O O O O,0,0
+8165,saat on iki buçuk senin on dakika içerisinde bir toplantın var,B-time I-time I-time I-time O B-time I-time O O B-event_name O,O B-time I-time I-time O O B-time O O B-event_name O,2,0
+8182,dişçi randevusunu silebilir misin,O B-event_name O O,B-event_name I-event_name O O,1,0
+8241,yılın geri kalanı için benim herşey imi temizle,B-date I-date I-date O O O O O,B-time I-time I-time O O O O O,0,1
+8245,pazarları saat on birde kilise hizmetlerinden haberdar olmam gerekiyor,B-date O B-time I-time B-event_name I-event_name O O O,B-date O B-time I-time B-event_name B-business_name O O O,1,0
+8248,yarınki yemek tarihini takvime ekle,B-date B-meal_type O O O,B-date O O O O,0,0
+8260,lütfen beni sadıkın doğum gününden bir gün önce uyar,O O B-person B-event_name I-event_name B-date I-date I-date O,O O O B-event_name I-event_name O O O O,0,0
+8261,bir sonraki randevumdan bir saat önce bana bir uyarı gönder,O O B-event_name B-time I-time I-time O O O O,O O B-event_name O O O O O O O,0,0
+8269,salı günü toplantı için otuz dakikalık hatırlatma,B-date O O O B-time I-time O,B-date O B-event_name O O O O,0,0
+8280,on beş marta hatırlatıcı ayarlamam gerekiyor,B-date I-date I-date O O O,B-date B-time B-date O O O,1,0
+8289,bugün dörtteki fakülte buluşması içi hatırlatıcı kur,B-date B-time B-event_name I-event_name O O O,B-date B-time O O O O O,0,0
+8290,salı günü gelecek haftanın yöneticiler toplantısı hakkında bir hatırlatıcı aç,B-date I-date I-date I-date B-event_name I-event_name O O O O,B-date O B-date I-date B-event_name I-event_name O O O O,1,0
+8300,on sekiz mart saat beş ile altı arasındaki etkinliği kaydet,B-date I-date I-date B-time I-time I-time I-time I-time O O,B-date I-date I-date O B-time O B-time O O O,1,0
+8302,haftaya pazartesi günkü toplantıyı kaldır,B-date I-date I-date B-event_name O,B-date B-date O B-event_name O,1,0
+8308,dün öğle saatlerinde taksim meydanında ki protesto ne hakkındaydı,B-date B-time I-time B-place_name I-place_name I-place_name O O O,B-date B-timeofday O B-place_name I-place_name O O O O,1,0
+8320,bu hafta sonu geçit töreni hakkında daha fazla bilgiye ihtiyacım var,B-date I-date I-date B-event_name I-event_name O O O O O O,B-date I-date I-date O O O O O O O O,0,0
+8343,bugün çarşamba mı,O B-date O,B-date B-date O,0,0
+8366,on sekiz martı pearl'ün doğum günü için tekrarlayan bir randevu yap,B-date I-date I-date B-event_name I-event_name I-event_name I-event_name O O B-event_name O,B-date I-date I-date B-person B-event_name I-event_name O O O B-event_name O,1,0
+8387,çamaşırlar için akşam sekize hatırlatıcı oluştur,O O B-time I-time O O,B-place_name O B-time I-time O O,0,0
+8394,ilaçlarımı almam için her gün öğlen bir hatırlatıcı ayarla,O O O B-general_frequency I-general_frequency B-timeofday O O O,B-event_name O O B-general_frequency I-general_frequency B-time I-time O O,0,0
+8415,salı günü öğleden sonra üç için ali ile ofiste bir toplantı ekle,B-date O B-time I-time I-time O B-person O B-place_name O B-event_name O,B-date I-date B-time I-time I-time O B-person O B-place_name O B-event_name O,1,0
+8436,lütfen mart ayında her çarşamba öğlen on iki için yemekli toplantı ayarla,O B-date O B-general_frequency I-general_frequency B-time I-time I-time O B-event_name I-event_name O,O B-date O B-general_frequency I-general_frequency B-time I-time I-time O O B-event_name O,1,0
+8461,mayıs ayı için planlarım neler,B-date I-date O O O,B-date O O O O,1,0
+8474,yarın öğleden sonra ikiye canın doğum günü partisini yüz yirmi üçü takvimime ekle,B-date B-time I-time I-time B-person B-event_name I-event_name I-event_name B-place_name I-place_name I-place_name O O,B-date B-time I-time I-time B-person B-event_name I-event_name I-event_name O O B-date O O,0,0
+8496,yarın sabahki toplantılarımı söyle,B-date B-timeofday B-event_name O,B-date B-timeofday O O,0,0
+8525,üçten beşe kadar toplantı hatırlatıcıları,B-time I-time O B-event_name O,O B-time O B-event_name O,1,0
+8562,bugün öğleden sonra ikideki toplantımı sil,O B-time I-time I-time B-event_name O,B-date B-time I-time I-time B-event_name O,0,0
+8568,ebru ve ahmet'e salı sabah on birdeki brunch için bir takvim daveti gönderir misin,B-person I-person I-person B-date B-time I-time I-time B-event_name O O O O O O,B-person O B-person B-date B-time I-time I-time B-event_name O O O O O O,1,0
+8570,yarın öğleden sonra saat ikide beni meşgul olarak işaretler misin,B-date O O B-time I-time O O O O O,B-date B-time I-time I-time I-time O O O O O,1,0
+8585,on üçünde bir doğum günü partisi olduğunu hatırlat bana,B-date I-date O B-event_name I-event_name I-event_name O O O,O B-date O B-event_name I-event_name I-event_name O O O,1,0
+8598,bana mahmutu saat akşam altıda havaalanından almamı hatırlat,O B-event_name O B-time I-time B-place_name O O,O B-person O B-time I-time O O O,0,1
+8618,bana her salı perşembe ve cumartesi günleri bitkilerimi sulamamı hatırlat,O B-general_frequency I-general_frequency I-general_frequency I-general_frequency I-general_frequency O B-event_name I-event_name O,O B-general_frequency I-general_frequency B-date O B-date O O O O,1,0
+8635,şükran gününden üç hafta önce bana hindi siparişini hatırlatabilir misin,O O O O O O B-event_name I-event_name O O,B-food_type B-date B-date I-date O O O O O O,0,0
+8640,yarın kütüphanedeki etkinliği takvimime not almak istiyorum,B-date B-place_name O O O O O,B-date O O O O O O,0,0
+8642,bugün için hatırlatıcılarıma öğleden sonra dörtteki konferans bağlantısını ekle,B-date O O B-time I-time I-time B-event_name I-event_name O,B-date O O B-time I-time I-time B-event_name O O,1,0
+8667,son üç ayda mr. richards ile kaç toplantı yaptım,B-time I-time I-time B-person I-person O O B-event_name O,B-time I-time I-time O B-person O O B-event_name O,1,0
+8672,öpücük konseri nerede,B-event_name I-event_name O,O O O,0,0
+8679,bugün aziz patrick günü mü,B-date B-event_name I-event_name I-event_name O,B-date O O O O,0,0
+8694,etkinlik volkan ve gamzeyi içerecek,O B-person O B-person O,O O O O O,0,0
+8765,benim takvimime bugün saat dokuz da hd iskender de akşam yemeği koy,O O B-date O B-time O B-place_name I-place_name O B-meal_type I-meal_type O,O O O B-time I-time O O O O B-meal_type I-meal_type O,1,0
+8766,benim yirmi beş mart cumartesi için toplantı m var mı,O B-date I-date I-date I-date O B-event_name O O O,O B-date I-date I-date B-date O B-event_name O O O,1,0
+8767,canan'ın doğum günü on iki nisan mı,B-person O O B-date I-date I-date O,B-person B-event_name I-event_name O B-date I-date O,1,0
+8771,yirmi üç mart için planladığım alışveriş seyahatini sil,B-date I-date I-date O O B-event_name I-event_name O,B-date I-date I-date O O B-list_name O O,0,0
+8825,bana gelecek cuma erdal ile olan görüşmemin bir hatırlatıcısını kur,O O B-date B-person O O B-event_name O O O,O O B-date B-person O O O O O O,0,0
+8846,bu yıl yirmi dokuz ekim için herhangi bir planım var mı,B-date I-date I-date I-date I-date O O O O O O,B-date O B-date I-date I-date O O O O O O,1,0
+8857,ceza ile yaklaşan toplantıyı hatırlat,B-person O O B-event_name O,B-artist_name O O B-event_name O,0,1
+8868,her salı sabah onda annemi aramamı anımsat,B-general_frequency I-general_frequency B-time I-time B-event_name I-event_name O,B-general_frequency I-general_frequency B-time I-time B-relation B-event_name O,1,0
+8900,her pazar yinelenen anımsatıcı kur,B-general_frequency I-general_frequency O O O,B-general_frequency B-date O O O,1,0
+8912,bana bugün akşam altıdan sonraki etkinlikleri söyle,O B-date B-time I-time I-time O O,O B-date B-time I-time O O O,1,0
+8916,gün için programım nedir,B-date O O O,O O O O,0,0
+8939,aylanın kızının hediye partisi,B-person B-event_name I-event_name I-event_name,O O O B-event_name,1,0
+8960,yaklaşan toplantı hakkında akşam uyarı vermeni istiyorum,O B-event_name O B-timeofday O O O,O B-event_name O B-time O O O,0,1
+8967,eşimin doğum gününden iki gün önce bana hatırlat,B-relation B-event_name I-event_name O O O O O,B-relation B-event_name I-event_name O B-date O O O,0,0
+8977,bana bekleyen fatura ödemeleri hakkında hatırlatıcılar ayarla,O B-event_name I-event_name I-event_name O O O,O O B-person B-event_name O O O,1,0
+8978,sadece hafta boyunca patronumla yapacağım önemli toplantıları bana bildir,O B-time I-time B-event_name I-event_name I-event_name I-event_name O O,O B-date O B-relation O O B-event_name O O,1,0
+8985,ok google ahmetin doğum gününü takvimden sil,O O B-event_name I-event_name I-event_name O O,O O B-person B-event_name I-event_name O O,1,0
+9011,şükran günü etkinliği bu ayın on dördünde mi,B-event_name I-event_name O B-date I-date I-date I-date O,B-date B-event_name O O B-date I-date I-date O,2,0
+9019,yirmi ila yirmi beş haziran arası toplantılar,B-time I-time I-time I-time I-time I-time B-event_name,B-date O O B-date I-date O B-event_name,0,0
+9030,takvimden bugünkü hastane randevusunu kaldır,O B-date B-event_name I-event_name O,O B-date O B-event_name O,1,0
+9035,raci nikah hatırlatıcı,B-person B-event_name O,O O O,0,0
+9043,takvimdeki yaklaşan etkinlikler,O B-event_name I-event_name,O O O,0,0
+9053,salı günü meliha ile toplantı için hatırlatıcı kur,B-date O B-person O B-event_name O O O,B-date I-date B-person O B-event_name O O O,1,0
+9054,etkinlik hatırlatıcı salı günü mona,O O B-date O B-event_name,O O B-date O O,0,0
+9062,ahmet'in doğum gününü yirmi iki hazirana koyar mısın,B-event_name I-event_name I-event_name B-date I-date I-date O O,B-person B-event_name I-event_name O B-date I-date O O,2,0
+9095,bu akşamki canan ile yemeği kaldır,B-event_name I-event_name I-event_name I-event_name I-event_name O,O B-timeofday B-person O O O,0,0
+9110,yirmi beş mart toplu iki bin on yedi sergisi o tarihleri not et,B-date I-date I-date B-event_name I-event_name I-event_name I-event_name I-event_name I-event_name O O O O,B-date I-date I-date O B-date I-date I-date I-date B-event_name O O O O,1,0
+9114,bu takvim etkinliği için tekrarlayan hatırlatma oluştur,O O O O O O O,O O O O B-general_frequency O O,0,0
+9124,gelecek hafta için çalışma takvimimdeki etkinlikleri göster,B-date I-date O B-event_name O O O,B-date I-date O O O O O,0,0
+9137,italyan restoranı öğle ve akşam yemekleri arasında saat kaçta kapalı,B-business_name I-business_name O O O O O O O O,B-food_type B-business_type B-meal_type O B-time I-time O O O O,0,0
+9138,şampiyonluk maçı resmi olarak ne zaman başlıyor,B-event_name I-event_name O O O O O,O O O O O O O,0,0
+9149,gala akşam yemeğinin kaçta başlanması bekleniyor,O B-event_name I-event_name O O O,O B-time B-meal_type O O O,0,0
+9153,lütfen cumartesi günü canan ile akşam yemeği takvimime ekle,O B-date O B-event_name I-event_name I-event_name I-event_name O O,O B-date O B-person O B-meal_type I-meal_type O O,0,0
+9155,cuma gününe saat üçte dişçi randevusu ekle lütfen,B-date I-date O B-time B-event_name I-event_name O O,B-date O O B-time B-event_name I-event_name O O,1,0
+9175,takvimim son on dakikada güncellendi mi,O B-time I-time I-time O O,O O B-time I-time O O,1,0
+9182,anne babamı havaalanından alma planlarımı iptal et,B-event_name I-event_name B-place_name B-event_name O O O,B-relation O O O O O O,0,0
+9204,radyo best fm,O B-radio_name I-radio_name,O O O,0,0
+9269,sekiz yüz doksan yedi f. m. aç,B-radio_name I-radio_name I-radio_name I-radio_name I-radio_name I-radio_name O,O O O O B-radio_name I-radio_name O,1,0
+9270,dokuz yüz otuz yedi f.m. çal,B-radio_name I-radio_name I-radio_name I-radio_name I-radio_name O,B-radio_name O B-radio_name I-radio_name B-radio_name O,1,0
+9284,f. m. çal,O O O,B-radio_name I-radio_name O,0,0
+9301,trt fm aç,O O O,B-radio_name I-radio_name O,0,0
+9303,eskiler istasyonu nu oynat,B-radio_name I-radio_name O O,B-place_name B-radio_name O O,1,0
+9316,benim için kiss f. m. çal,O O B-radio_name I-radio_name I-radio_name O,O O O B-radio_name I-radio_name O,1,0
+9326,lütfen şimdi radyo d'yi oynat,O O B-radio_name I-radio_name O,O O O O O,0,0
+9327,hemen şimdi radyoda bir am frekansını tara lütfen,B-date I-date O O O O O O,O O O O O O O O,0,0
+9358,sekiz yüz seksen dokuz radyo kanalını başlat,B-radio_name I-radio_name I-radio_name I-radio_name O O O,O O O B-radio_name O O O,1,0
+9384,trt radyoyu aç,B-radio_name I-radio_name O,B-radio_name O O,1,0
+9426,r'n b. çalan istasyon dinlemek istiyorum,B-radio_name I-radio_name I-radio_name I-radio_name O O,B-person B-media_type O O O O,0,0
+9457,let it go şarkısını çal,B-song_name I-song_name I-song_name O O,O O B-song_name O O,1,0
+9460,doksanlardan hip hop çal,B-music_genre O O O,O B-music_genre I-music_genre O,0,0
+9471,amerikan folk müziği müzik istasyonu aç,B-music_genre I-music_genre I-music_genre O O O,B-music_genre B-music_genre I-music_genre O O O,1,0
+9494,lütfen pop şarkılar çalan bir f. m. kanalı çalabilir misin,O B-music_genre O O O B-radio_name I-radio_name O O O,O B-music_genre O O O B-radio_name I-radio_name I-radio_name O O,1,0
+9519,herhangi bir pop f.m kanalı çal,O O B-music_genre B-radio_name O O,O O B-music_genre O O O,0,0
+9520,radyo yayını yapan son doktoru çal,B-media_type I-media_type O O O O,O O O O B-song_name O,0,0
+9524,fularsız entellik programına bağlan,B-radio_name I-radio_name O O,B-podcast_name O O O,0,0
+9528,radyo viva'yı aç ve hoparlörlerimden çal,O B-radio_name O O B-device_type O,O O O O O O,0,0
+9545,haber galeri programını,O O O,O B-podcast_name O,0,0
+9554,power fm de romantik bir müzik çal,B-radio_name I-radio_name O B-music_genre O B-media_type O,B-radio_name I-radio_name O O O O O,0,0
+9561,radyoda power fm'i çal,O B-radio_name I-radio_name O,O B-radio_name B-person O,1,0
+9568,sıla 'dan canlı konser serileri aç,O O O O O O,B-artist_name O O B-event_name O O,0,0
+9569,ok google yüz altı nokta yedi 'yi aç,O O B-radio_name I-radio_name I-radio_name I-radio_name O O,O O O B-radio_name I-radio_name I-radio_name O O,1,0
+9591,doksan bir nokta üç f.m. de bhuli bisri yaadien programını aç,B-radio_name I-radio_name I-radio_name I-radio_name I-radio_name O O O O O O,O O B-radio_name I-radio_name I-radio_name O O O O O O,1,0
+9592,erkek sorunları ele alan podcastler ara,B-podcast_descriptor I-podcast_descriptor O O B-media_type O,B-relation O O O O O,0,0
+9594,doksan dokuz nokta dört f. m. şarkılar,B-radio_name I-radio_name I-radio_name I-radio_name I-radio_name I-radio_name B-media_type,B-radio_name I-radio_name I-radio_name I-radio_name I-radio_name I-radio_name O,0,0
+9601,ülke radyosu 'nu aç,B-radio_name I-radio_name O O,O O O O,0,0
+9617,bana sabahları yayınlanan ekonomi ekoloji şovları çal,O O O B-radio_name I-radio_name O O,O B-timeofday O O O O O,0,0
+9619,araba radyosunda radyo dumanı çal,O B-device_type O O O,O O O O O,0,0
+9620,yatak odasındaki radyoda balkonumdan yıldızlar 'ı dinleyebilir miyim,B-house_place I-house_place O O O O O O,B-house_place I-house_place O O B-event_name O O O,0,0
+9630,benim için ntv radyo'yu aç,O O B-radio_name I-radio_name O,O O O O O,0,0
+9637,joyturk radyoda çalma listemi başlat,B-radio_name O O O O,O O O O O,0,0
+9640,spotify ve egzersiz aç,O O O O,B-app_name O O O,0,0
+9651,benim p. s. dört üzerinde netflix aç,O B-device_type I-device_type I-device_type O B-app_name O,O B-device_type I-device_type I-device_type O O O,0,0
+9656,bana hoparlöründen hareketli bir şarkı çal,O O B-music_descriptor O O O,O O O O O O,0,0
+9669,sabahattin ali 'den kürk mantolu madonna 'yı dinlemek istiyorum,B-audiobook_author I-audiobook_author O B-audiobook_name I-audiobook_name I-audiobook_name O O O,B-timeofday B-person O B-audiobook_name I-audiobook_name I-audiobook_name O O O,0,0
+9674,benim favori tarzan sesli kitabımı çalabilir misin,O O B-audiobook_name O O O O,O O O B-media_type I-media_type O O,0,0
+9676,burak göral 'dan benim sesli kitabımı kaldığı yerden devam ettir,B-audiobook_author I-audiobook_author O O O O B-player_setting I-player_setting I-player_setting I-player_setting,O O O O B-media_type I-media_type B-player_setting I-player_setting I-player_setting I-player_setting,0,0
+9678,kuyucaklı yusuf 'u açabilir misin,B-audiobook_name I-audiobook_name O B-player_setting I-player_setting,O O O O O,0,0
+9680,geçen sefer dinlemeyi bıraktığım yerden harry potterı devam ettir,O O O O O B-audiobook_name I-audiobook_name B-player_setting I-player_setting,B-date O O O O B-audiobook_name I-audiobook_name B-player_setting I-player_setting,0,0
+9689,kitabı durdur,O B-player_setting,O O,0,0
+9691,yalan yanlış hayatlar sesli kitabını aç,B-audiobook_name I-audiobook_name I-audiobook_name O O O,O O O B-media_type I-media_type O,0,0
+9700,şapka 'yı aç,B-audiobook_name O O,B-weather_descriptor O O,0,1
+9720,puslu kıtalar atlasını kaldığı yerden devam ettir,B-audiobook_name I-audiobook_name I-audiobook_name B-player_setting I-player_setting I-player_setting I-player_setting,O O O B-player_setting I-player_setting I-player_setting I-player_setting,0,0
+9726,sesli kitabı durdur,B-media_type I-media_type B-player_setting,B-media_type I-media_type O,0,0
+9732,davinci şifresi sesli kitabını aç,B-audiobook_name I-audiobook_name B-media_type I-media_type O,B-audiobook_name O B-media_type I-media_type O,1,0
+9746,senden önce ben'i aç,B-audiobook_name I-audiobook_name I-audiobook_name O,O O O O,0,0
+9754,olly kiralık konak ı dinleyelim,O B-audiobook_name I-audiobook_name O O,O O O O O,0,0
+9760,çalmayı durdur,B-player_setting I-player_setting,O O,0,0
+9761,beklet,B-player_setting,O,0,0
+9767,gezegenler sesli kitabını çal,B-audiobook_name B-media_type I-media_type O,O B-media_type I-media_type O,0,0
+9768,sesli kitap okumaya devam et,B-media_type I-media_type B-player_setting I-player_setting I-player_setting,B-media_type I-media_type B-player_setting B-player_setting I-player_setting,1,0
+9772,sesli kitabı okumaya devam et lütfen,B-media_type I-media_type B-player_setting I-player_setting I-player_setting O,B-media_type I-media_type B-player_setting B-player_setting I-player_setting O,1,0
+9793,romantik şarkılar çal,O O O,B-playlist_name O O,0,0
+9795,kanunlar gibi yi kaldığı yerden devam ettir,B-song_name I-song_name O B-player_setting I-player_setting I-player_setting I-player_setting,O O O B-player_setting I-player_setting I-player_setting I-player_setting,0,0
+9812,harrypotter sesli kitabını aç ve en son çaldığımız yerden başlat,B-audiobook_name B-media_type I-media_type O O O O O O O,O B-media_type I-media_type O O O O O O O,0,0
+9815,sesli kitapta bu playbeki çal lütfen,B-media_type I-media_type O O O O,B-media_type O O O O O,1,0
+9853,alexa mahalle kahvesi son bölümünü başlat,O B-audiobook_name I-audiobook_name O O B-player_setting,O B-place_name O O O O,0,0
+9855,tekrar alacakaranlık kuşağı nın sesli pleybekini başlat,O B-audiobook_name I-audiobook_name O O O B-player_setting,O O O O B-media_type O O,0,0
+9856,çalıkuşu kitabını oynat,B-audiobook_name O O,O O O,0,0
+9875,bana daha çok latife tekin kitabı oku,O O O B-audiobook_author I-audiobook_author B-media_type B-player_setting,O O O O O O O,0,0
+9885,sesli kuran çal lütfen,O B-audiobook_name O O,B-media_type B-audiobook_name O O,0,0
+9895,suyu arayan adam ı oynatmayı sürdür,B-audiobook_name I-audiobook_name I-audiobook_name O B-player_setting I-player_setting,O O O O O O,0,0
+9896,yaban da beşinci bölüme başla,B-audiobook_name O B-player_setting I-player_setting I-player_setting,B-audiobook_name O B-place_name B-podcast_descriptor O,0,0
+9897,ahmet ümit 'ten polisiye romanları geri çal,B-audiobook_author I-audiobook_author O B-audiobook_name I-audiobook_name B-player_setting I-player_setting,B-person O O O O O O,0,0
+9909,eylül ü oynatmayı sürdür,B-audiobook_name O B-player_setting I-player_setting,O O O O,0,0
+9912,olly yumurtaları ne kadar süre haşlamam gerekiyor,O B-food_type O O O B-cooking_type O,O O O O O O O,0,0
+9923,bir yumurtayı ne kadar kaynatmam lazım,O B-food_type O O B-cooking_type O,O B-food_type O O O O,0,0
+9931,yumurtayı ne kadar süre haşlamam lazım,B-food_type O O O B-cooking_type O,B-food_type O O O O O,0,0
+9941,nasıl tereyağlı tavuk pişireyim,O B-food_type I-food_type B-cooking_type,O O B-food_type O,1,0
+9942,yaş pastaya konulacakların tümü neler,B-food_type I-food_type O O O,O O O O O,0,0
+9943,sebzeli lazanya ne kadar sürede yapılır,B-food_type I-food_type O O O O,O B-food_type O O O O,1,0
+9955,bana bir kızarmış tavuk hazırlama videosu göster,O O B-food_type I-food_type O B-media_type O,O O B-food_type I-food_type O O O,0,0
+9956,tereyağı ne ile değiştirilebilir,B-ingredient O O O,B-food_type O O O,0,1
+9961,patates kızartmak için en iyi fırın sıcaklığı ne,B-ingredient B-cooking_type O O O O O O,B-food_type O O O O O O O,0,1
+9969,safran yerine ne kullanılabilir,B-ingredient O O O,O O O O,0,0
+9976,hey robot bana yahni için malzeme listesi ver,O O O B-food_type O O O O,O O O O O O O O,0,0
+9977,lütfen internet araması yapıp italyan yemekleri pişirmek için uygun youtube videoları göster,O O O O B-food_type O O O O B-media_type I-media_type O,O O O O B-food_type O O O O O O O,0,0
+9979,bana biraz yulaf pişir,O O B-ingredient O,O O O O,0,0
+9980,bugün menü nedir ona haşlanmış sebzeler de ekle,B-date O O O B-food_type I-food_type O O,B-date O O O O O O O,0,0
+9986,kaynatmak,B-cooking_type,O,0,0
+9994,bulgur pilavı tarifi verir misin,B-food_type I-food_type O O O,O B-food_type O O O,1,0
+10016,şükran günü hindisi tarifini beş cümleyle versen ne derdin,B-food_type I-food_type I-food_type O O O O O O,B-date O B-food_type O O O O O O,1,0
+10019,bana on iki adet yulaf ezmeli kurabiyeyi nasıl pişireceğimi söyler misin,O O O O B-food_type I-food_type I-food_type O O O O,O B-date I-date O O B-food_type O O O O O,1,0
+10023,kuzu külbastı yapmak için neye ihtiyacım var,B-food_type I-food_type O O O O O,O O O O O O O,0,0
+10045,bana ev yapımı terbiyeli erişteli tavuk çorbası tarifi verebilir misin,O O O B-food_type I-food_type I-food_type I-food_type O O O,O O O O O B-food_type I-food_type O O O,1,0
+10048,nasıl hindi pişiririm,O B-food_type O,O O O,0,0
+10072,fırında tavuk için pişirme süreleri,B-device_type B-food_type O O O,B-food_type I-food_type O O O,1,0
+10076,karbonat yerine kabartma tozu kullanılabilir mi,B-ingredient I-ingredient I-ingredient I-ingredient O O,O O O O O O,0,0
+10077,bu akşam için bir yemek tarifi bul,B-timeofday I-timeofday O O B-meal_type O O,B-timeofday I-timeofday O O O O O,0,0
+10078,akşam yemeği için ne pişirmeliyim,B-event_name I-event_name O O O,B-meal_type I-meal_type O O O,0,1
+10090,ton balığı tarifi alabilir miyim,B-food_type I-food_type O O O,O O O O O,0,0
+10097,çizburger rica ederim,B-food_type O O,O O O,0,0
+10099,risotto nasıl yapılır biliyor musun,B-food_type O O O O,O O O O O,0,0
+10105,orta az pişmiş olması için bifteği ne kadar pişirmeliyim,O O O O O B-food_type O O O,O O O O O O O O O,0,0
+10107,bir pilav tarifine ihtiyacım var,O B-food_type O O O,O B-ingredient O O O,0,1
+10119,altı kiloluk bir hindiyi ne kadar süre pişirirsin,O O O B-food_type O O O O,O O O O O O O O,0,0
+10132,biftek orta kıvamda olsun diye ne kadar süre pişirmeliyim,B-food_type O O O O O O O O,B-food_type O O O O O O O B-cooking_type,0,0
+10156,biber dolması nasıl yapılır öğrenmem lazım,B-food_type I-food_type O O O O,B-food_type O O O O O,1,0
+10166,elmalı turta tarifi ara,B-food_type I-food_type O O,B-food_type O O O,1,0
+10182,omlet için kaç yumurta lazım,B-food_type O O B-food_type O,O O O O O,0,0
+10213,meşhur pilav tarifleri listesi,O B-food_type O O,O B-ingredient O O,0,1
+10217,nefisyemektarifleri uygulaması içinde acuka tarifini bul,B-app_name O O B-food_type O O,O O O O O O,0,0
+10220,büyük bir kek pişirmek için hangi malzemelere ihtiyacım var,O O B-food_type B-cooking_type O O O O O,O O B-food_type O O O O O O,0,0
+10256,super mario indir,B-game_name I-game_name O,B-business_name B-game_name O,1,0
+10276,battleship oynayalım,B-game_name O,O O,0,0
+10285,lütfen clash of clans oynat,O B-game_name I-game_name I-game_name O,O O B-game_name O O,1,0
+10286,lütfen clash of clans başlat,O B-game_name I-game_name I-game_name O,O O O O O,0,0
+10288,benimle tic tac toe oyunu oynar mısın,O B-game_name I-game_name I-game_name O O O,O B-game_name I-game_name O O O O,1,0
+10308,masa tenisi aç,B-game_name I-game_name O,O O O,0,0
+10321,fifa on yedi oynamak istiyorum,B-game_name I-game_name I-game_name O O,B-game_name O B-game_name O O,1,0
+10333,saga aç,B-game_name O,O O,0,0
+10338,benim için harry potter ve sırlar odası oyununu aç,O O B-game_name I-game_name I-game_name I-game_name I-game_name O O,O O O O O O B-house_place O O,0,0
+10350,araba yarışı oynat,B-game_name I-game_name O,O B-song_name O,0,0
+10352,mfö çal,B-game_name O,B-song_name O,0,1
+10353,papa pear saga çal,B-game_name I-game_name I-game_name O,B-business_name O O O,0,0
+10365,ikinci oyuncu olarak bir contra oyunu aç,O O O O B-game_name O O,O O O O O O O,0,0
+10366,yüksek hızda araba yarışı oynamalıyız,O O B-game_name I-game_name O,O O O B-event_name O,0,0
+10381,bizim için competitive crossword başlat,O O B-game_name I-game_name O,O O O O O,0,0
+10433,benim görev listemi kaldır,O B-list_name O O,O O O O,0,0
+10472,mutfak listeme başlamama yardım et,B-list_name O O O O,B-house_place O O O O,0,1
+10494,kalemi kırtasiyeden çıkar,O B-list_name O,O O O,0,0
+10497,antalyadaki beş yıldızlı otellerin bir listesini alabilir miyim,B-place_name B-list_name I-list_name I-list_name O O O O,B-place_name O O O O O O O,0,0
+10503,postaneyi cumartesi yapılacak işler listeme ekle,O B-date B-list_name I-list_name O O,O B-date O O O O,0,0
+10513,bu haftanın alışveriş listesini yapmak istiyorum,O B-time B-list_name O O O,B-date I-date B-list_name O O O,0,0
+10523,eski ingilizce şarkılar listemi çalma listesinden sil,B-list_name I-list_name O O O O O,O O O O O O O,0,0
+10525,araba ödememi takvimimden kaldır,O O O O,O B-event_name O O,0,0
+10534,bugün için yapılacaklar listesi nasıl,B-date O O O O,B-date O B-list_name O O,0,0
+10568,eski müzik listesini kaldır,B-list_name I-list_name O O,B-music_genre O O O,0,0
+10579,konum listemi sıfırla,B-list_name O O,O O O,0,0
+10640,satın almam gerekenler listesine deterjan ekle,B-list_name I-list_name I-list_name O O O,O O O O O O,0,0
+10645,alışveriş listeme kırmızı şarap ekle,B-list_name I-list_name O O O,B-list_name O O O O,1,0
+10655,parti zamanı adlı listeyi kaldır,B-list_name I-list_name O O O,B-event_name O O O O,0,0
+10667,planlar listesini yenile,B-list_name O O,O O O,0,0
+10678,masraflar listeme beş lira harcadığımı ekle,B-list_name O O O O O,O O O O O O,0,0
+10753,migros listesine ne koydum,B-list_name I-list_name O O,B-business_name O O O,0,0
+10786,bugün için etkinlikler listemi temizle,B-date O B-list_name O O,B-date O O O O,0,0
+10815,alışveriş listeme diş macunu ekle,B-list_name O O O O,B-list_name O B-event_name O O,0,0
+10846,şu anda nintendo anahtarını satın almak için yeterli param yok lütfen amazon istek listemden kaldırır mısın,O O O O O O O O O O O O O O O O,O O O O O O O O O O O B-business_name B-list_name O O O,0,0
+10936,lütfen benim favori albümler listemi kaldır,O O B-list_name I-list_name O O,O O O O O O,0,0
+10985,bu hafta yapılacakları sil,B-date I-date B-list_name O,B-date I-date O O,0,0
+10996,aliyi kişiler listeme ekle,B-person B-list_name I-list_name O,B-person O O O,0,0
+11098,bin dokuz yüz doksan vergi listesinden kurtul,B-date I-date I-date I-date B-list_name O O,B-date I-date I-date I-date O O O,0,0
+11107,benim şu an geçerli listem neler,O O O B-list_name O O,O O O O O O,0,0
+11124,çalışma listemdeki öğeleri listele,B-list_name O O O,O O O O,0,0
+11133,geçen hafta oluşturduğum konuk listesini kaldır,B-date I-date O B-list_name O O,B-date I-date O O O O,0,0
+11146,kişi listeme çalışma kişileri ekle,B-list_name I-list_name O O O,B-list_name O O O O,1,0
+11166,google keep,B-app_name I-app_name,O O,0,0
+11177,alışveriş listesine bir kol saati ekle,B-list_name I-list_name O O O O,B-list_name O O B-event_name O O,1,0
+11186,giysiler listem var,B-list_name O O,O O O,0,0
+11259,sonraki podcaste atla,B-podcast_descriptor O B-player_setting,O O O,0,0
+11266,benim kütüphanemden bir podcast çal,O B-podcast_name O O O,O O O O O,0,0
+11267,en son arabesk şampiyonlar ligi ile ilgili ilginç bir podcast bul,O O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O O O O O O,O O O O O O O O O O O,0,0
+11273,j. k. rowling'in harry potter'ının bir sonraki bölümünü çal,B-audiobook_author I-audiobook_author I-audiobook_author B-audiobook_name I-audiobook_name O O O O,O B-business_name O O O O O O O,0,0
+11286,isimsiz podcast ını çal,B-podcast_name I-podcast_name O O,O O O O,0,0
+11302,son liberteryen podcast ini aç,O B-podcast_name O O O,O O O O O,0,0
+11306,dün dinlediğim podcasti oynat,B-podcast_descriptor I-podcast_descriptor O O,B-date O O O,0,0
+11322,günün en iyi podcastleri hangileri,B-date O O O O,O O O O O,0,0
+11328,philadelphia eagles content için podcasti aç,B-podcast_name I-podcast_name I-podcast_name O O O,O O O O O O,0,0
+11331,bana podcastimdeki en iyi derecelendirme alan rock şarkıları göster,O O O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O,O O O O O O B-music_genre O O,0,0
+11335,tüm slow müzik şarkılarını çal ve karıştır,O O O O B-player_setting I-player_setting I-player_setting,O B-music_genre O O O O B-player_setting,1,0
+11339,benim en çok izlenen podcast ımı oynat,O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O O O,O O O O O O O,0,0
+11340,mynet in yeni podcast i var mı,B-person O O O O O O,B-media_type O O O O O O,0,1
+11341,en son disney podcast'ini bul,O O B-podcast_name O O,O O O O O,0,0
+11343,murat meriç'in bir sonraki bölümüne geç,B-podcast_name I-podcast_name B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O,B-person B-person O O O O,0,0
+11345,podcastte sonraki bölümü aç,O O B-podcast_descriptor O,O B-podcast_descriptor I-podcast_descriptor O,1,0
+11349,olly geçen gece başladığım podcast ı başlat,O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O O O,O B-date I-date B-podcast_name O O O,0,0
+11361,ebru gündeş podcasti onu çal,B-podcast_name I-podcast_name O O O,B-person I-person O O O,0,1
+11366,podcastte önceki bölüme geri dön,O B-podcast_descriptor I-podcast_descriptor O O,O O B-podcast_descriptor B-player_setting I-player_setting,1,0
+11368,bana ahmet in podcast ını çal,O B-person I-person O O O,O B-person O O O O,1,0
+11409,sıradaki podcast bölümüne atla,B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O,B-podcast_descriptor I-podcast_descriptor O O,1,0
+11418,mesut sürenin en son podcast ını çal,B-person I-person O O O O O,B-person O O O O O O,1,0
+11423,otuz saniye geri git,B-time I-time B-player_setting I-player_setting,B-date B-time O O,1,0
+11424,enes batur,B-radio_name I-radio_name,O O,0,0
+11438,podcastin bir sonraki bölümüne git lütfen,O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O O,O O O O O O,0,0
+11451,en son selda podcast ını dinlemek istiyorum,O O B-podcast_name O O O O,O O O O O O O,0,0
+11453,n. f. l. üzerinden podcastleri başlat,B-podcast_name I-podcast_name I-podcast_name O O O,B-podcast_name B-radio_name O O O O,1,0
+11455,bir sonraki bölüme git,O O O B-player_setting,O O B-podcast_descriptor O,0,0
+11458,bir sonraki podcast bölümüne devam et,B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor I-podcast_descriptor B-player_setting I-player_setting,O O O O O B-player_setting,1,0
+11459,bu podcast ta son bölüme geri git,O O O B-podcast_descriptor I-podcast_descriptor B-player_setting I-player_setting,O O O O B-podcast_descriptor O O,1,0
+11460,spor podcasti dinlemek istiyorum,B-podcast_name I-podcast_name O O,B-news_topic O O O,0,0
+11467,yarım elma nın en son podcastini çal,B-podcast_name I-podcast_name O B-podcast_descriptor I-podcast_descriptor I-podcast_descriptor O,B-audiobook_name B-news_topic O O O O O,0,0
+11474,podcast serisi ne devam et,B-podcast_descriptor I-podcast_descriptor O O O,O O O O B-player_setting,0,0
+11476,önceki podcasti çal,B-podcast_descriptor I-podcast_descriptor O,O O O,0,0
+11483,ringcast oynamaya başla,B-podcast_name O O,O O O,0,0
+11490,podcastteki sonraki programı çal,O B-podcast_descriptor I-podcast_descriptor O,O O O O,0,0
+11505,benim en son çaldığım podcastimi yeniden oynat,O O O O O B-player_setting I-player_setting,O O O O O O O,0,0
+11515,hadi podcast te onuncu yıl marşı nı dinleyelim,O O O B-podcast_name I-podcast_name I-podcast_name I-podcast_name O,O O O O O O O O,0,0
+11525,bir sonraki uygun podcasti görmek istiyorum,O O O B-podcast_descriptor O O,O O O O O O,0,0
+11529,hey listeden benim favori podcastimi çal,O O O B-podcast_descriptor O O,O O O O O O,0,0
+11536,çalma listesine favoriler podcasti ekle ve başla,O O O O O O B-player_setting,O O O O O O O,0,0
+11539,bir sonraki podcasti başlat,O O O B-player_setting,O O O O,0,0
+11546,geçen hafta dan tüm felsefe kanalı nı çaldır,O O O O B-podcast_name I-podcast_name O O,B-date I-date O O O O O O,0,0
+11582,eskişehir civarında caz gösterimi yapan hiçbir yer var mı,B-place_name O B-movie_type I-movie_type O O O O O,B-place_name O B-music_genre O O O O O O,0,0
+11598,memleketimde olan köpek gösterisi etkinliklerini bana bildir lütfen,B-place_name O B-event_name I-event_name O O O O,B-place_name O O B-event_name O O O O,1,0
+11600,mersinde sinemada bu gece hangi filmi izleyebilirim,B-place_name O B-timeofday I-timeofday O B-business_type O,B-place_name O B-timeofday I-timeofday O O O,0,0
+11607,bu civardaki tiyatroların listesini ver,O B-place_name B-business_type O O,O O O O O,0,0
+11610,bana şu anda şehirde devam eden sirk gösterilerinin listesini ver,O O O B-place_name O O B-event_name O O O,O O O B-place_name O O O O O O,0,0
+11612,afyon 'da hangi silah gösterisi var,B-place_name O O B-event_name I-event_name O,B-place_name O O O O O,0,0
+11628,kartal'da eczane nerede,B-place_name B-business_type O,B-place_name O O,0,0
+11633,bugün sinemada hangi filmler gösteriliyor,B-date B-business_type O O O,B-date O O O O,0,0
+11643,yakında gerçekleşecek etkinlikler hangileri,B-time O O O,O O O O,0,0
+11665,olly birkaç defile arıyorum bir kaç kilometre yakında giyim mağazaları bulabilir misin,O O B-business_type O B-place_name I-place_name I-place_name I-place_name O O O O,O O O O O O O O O B-business_type O O,0,0
+11678,yerel bölgedeki en iyi puanlı barları bilmek istiyorum,O O O O O B-business_type O O,O O O O O O O O,0,0
+11681,lütfen bana yakında olan maratonları göster,O O O O B-event_name O,O O O O O O,0,0
+11695,hiç aksiyon filmi önerin var mı,O B-movie_type O O O O,O O O O O O,0,0
+11700,bana en yakın konumdaki kebapçının yorumlarını göster,O B-place_name I-place_name I-place_name B-business_type O O,O O O O O O O,0,0
+11705,istanbul boğazı'nda bana resim sergisi göster,B-place_name I-place_name O B-event_name I-event_name O,B-place_name I-place_name O O B-event_name O,1,0
+11706,bu civarda hangi mağazalar var,B-place_name I-place_name O O O,O O O B-business_type O,0,0
+11720,yüzme,B-event_name,O,0,0
+11733,yeni film dabbe nasıl,O O B-movie_name O,O O O O,0,0
+11744,bu hafta sonu açılan hangi yeni drama filmleri var,O B-time I-time O O O B-movie_type O O,B-date I-date I-date O O O O O O,0,0
+11751,on mil içinde dükkanlar neler,B-place_name I-place_name I-place_name B-business_type O,O O O O O,0,0
+11770,bu hafta sonu muş'ta etkinlik var mı,B-date I-date I-date B-place_name O O O,B-date I-date I-date O O O O,0,0
+11778,yakınımdaki en iyi şarap tatma barı nerededir,O O O B-business_type I-business_type I-business_type O,O O O B-business_type O O O,1,0
+11796,barlar sokağına yakın en uygun fiyatlı içecekler hangi barda,B-place_name I-place_name O O O O O O O,B-business_type O O O O O O O O,0,0
+11798,kütüphanedeki bir sonraki etkinlik ne,B-place_name O O O O,O O O O O,0,0
+11802,buralarda hiç iyi pizzacı var mı,O O O B-business_type O O,O O O B-food_type O O,0,1
+11825,kadın kıyafetleri için izmirde alışveriş merkezi arayın,O O O B-place_name B-business_type I-business_type O,B-news_topic O O B-place_name O B-business_type O,1,0
+11841,bu bölgede herhangi bir el sanatları fuarı var mı,O O O O B-event_name I-event_name I-event_name O O,O O O O O O B-event_name O O,1,0
+11844,körfez bölgesinde ilginç bir şeyler oluyor mu,B-place_name I-place_name O O O O O,B-place_name O O O O O O,1,0
+11845,olly karataşta olan heyecanlı etkinlikleri bana bildir,O B-place_name O O O O O,O O O O O O O,0,0
+11867,mersin 'de yarın bir spor etkinliği var mı,B-place_name O B-date O B-event_name I-event_name O O,B-place_name O B-date O O O O O,0,0
+11875,civarda yemek festivali var mı,O B-event_name I-event_name O O,O O B-event_name O O,1,0
+11916,yakındaki tema parkları nelerdir,O B-event_name I-event_name O,O O O O,0,0
+11942,bana yakın olan bir mobilyacı bulabilir misin,O O O O B-business_type O O,O O O O O O O,0,0
+11953,en yakın koçtaş nerede,O O B-business_name O,O O O O,0,0
+11954,benim bölgemde tiyatro nerede,O O B-business_type O,O O O O,0,0
+11990,sinemalarda kötü olmayan bir film,B-place_name O O O O,O O O O O,0,0
+12004,lütfen bana yakınımdaki en iyi giyim mağazalarını listele,O O O O O B-business_type I-business_type O,O O O O O O B-business_type O,1,0
+12019,yakınlarda glutensiz fırın bul,O B-business_type I-business_type O,O O O O,0,0
+12020,bana beş kilometre içerisinde hangi kıyafet dükkanları olduğunu söyle,O O O O O B-business_type I-business_type O O,O O B-place_name O O O O O O,0,0
+12051,bir hediye bulmalıyım birkaç kilometre çapında hangi mağazalar var,O B-business_type O B-place_name I-place_name I-place_name O B-business_type O,O O O O O O O B-business_type O,0,0
+12054,kent etrafında neler oluyor,B-place_name I-place_name O O,O O O O,0,0
+12066,hangi dükkanlar bana yakın,O B-business_type O O,O O O O,0,0
+12070,piazza alış veriş merkezi ne zaman açılıyor,B-business_name I-business_name I-business_name I-business_name O O O,O O O O O O O,0,0
+12073,yerel güncel olaylar öner,B-event_name I-event_name I-event_name O,O O O O,0,0
+12098,bana yakındaki müzik etkinliklerini göster,O O B-event_name I-event_name O,O O O O O,0,0
+12104,recep ivedik üç,B-movie_name I-movie_name I-movie_name,B-person O O,0,0
+12127,pazar günü sabah saat beşte trenle aksaray'a gitmem gerekiyor,B-date O B-time I-time I-time B-transport_type B-place_name O O,B-date O B-time I-time I-time B-transport_type O O O,0,0
+12150,olly bana bu hafta sonu paris 'e eurostar 'dan bir bilet ayırt,O O B-date I-date I-date B-place_name O B-transport_name O O O O,O O B-date I-date I-date O O O O O O O,0,0
+12166,istanbul'dan ankara'ya tren biletimi ayırt,B-place_name I-place_name B-transport_type O O,B-place_name B-place_name B-transport_type O O,1,0
+12182,on dokuzuncu caddede trafik koşulları nasıl,B-place_name I-place_name I-place_name O O O,B-date B-time B-place_name O O O,1,0
+12189,bilet için tren istasyonuna nasıl gidebilirim,O O B-place_name I-place_name O O,O O B-transport_type B-place_name O O,1,0
+12235,lütfen bu hafta sonu için bir tren bileti al,O O B-time I-time O O B-transport_type O O,O B-date I-date I-date O O B-transport_type O O,0,0
+12240,benim ev seyahatim için saat beş de trafik nasıl,O B-place_name O O O B-time O O O,O O O O O B-time O O O,0,0
+12244,birde sinemaya gitmek için bir taksi ayarla,B-time B-place_name O O O B-transport_type O,B-time O O O O B-transport_type O,0,0
+12252,sefaköy'e giden trenler ne zaman kalkıyor,B-place_name O O O O O,B-person O B-transport_type O O O,0,1
+12254,bana şehir trafiğini bildir,O B-place_name O O,O O O O,0,0
+12256,atatürk parkı yolu yakınlarında şu anda trafik nasıl,B-place_name I-place_name I-place_name O O O O O,B-place_name I-place_name O O O O O O,1,0
+12261,önümüzde ki çarşamba veya perşembe eskişehire giden bir tren için seçeneklerin neler olduğunu söyle,O O B-date O B-date B-place_name O O B-transport_type O O O O O,O O B-date O B-date O O O B-transport_type O O O O O,0,0
+12281,ankaradan eskişehire bir tren bileti ayırt lütfen,B-place_name I-place_name O B-transport_type O O O,B-place_name O O B-transport_type O O O,1,0
+12294,bana büyükşehir opera binasına giden tren tarifelerini göster,O B-place_name I-place_name I-place_name O B-transport_type O O,O O O O O B-transport_type O O,0,0
+12306,antalya 'ya bir sonraki tren için birinci sınıf bir bilet ayırt,B-place_name O O O B-transport_type O B-transport_descriptor I-transport_descriptor O O O,B-place_name O O O B-transport_type O O O O O O,0,0
+12329,sarı taksi çağır,B-transport_type I-transport_type O,O B-transport_type O,1,0
+12339,bu salı sabah dokuz için bana tek yön tren bileti ayırt,O B-date B-time I-time O O B-transport_descriptor I-transport_descriptor B-transport_type O O,O B-date B-time I-time O O O O B-transport_type O O,0,0
+12343,balıkesir istasyonundan salı günü için on bin sekiz yüz seksen yedi treni saatleri nelerdir,B-place_name I-place_name B-date O O B-transport_name I-transport_name I-transport_name I-transport_name I-transport_name I-transport_name B-transport_type O O,O O B-date I-date O B-date O O O O O B-transport_type O O,1,0
+12366,londradan parise bağlantı treni var mı ve saat kaçta,B-place_name I-place_name O B-transport_type O O O O O,O O O B-transport_type O O O O O,0,0
+12376,kartal a ilk metro saat kaçta,B-place_name O O B-transport_type O O,B-business_name O O B-place_name O O,0,2
+12419,üsküdar lisesi için en hızlı rota,B-place_name I-place_name O O O O,B-place_name O O O O O,1,0
+12442,çarşı otoyolunda trafik durumu nedir,B-place_name O O O O,O O O O O,0,0
+12452,beni havaalanına uberle götür,O B-place_name B-transport_agency O,O B-place_name O O,0,0
+12473,buradan eve nasıl gidebilirim,O B-place_name O O,O O O O,0,0
+12548,ev için bir araç lazım bana,B-place_name O O O O O,O O O O O O,0,0
+12558,lütfen bana uber'den bir taksi ayırt,O O B-transport_agency O B-transport_type O,O O B-person O B-transport_type O,0,1
+12581,bugün tarsus treni kaçta kalkıyor,B-date O B-transport_type O O,B-date B-place_name B-transport_type O O,0,0
+12582,ilk metro sabah saat kaçta geliyor,O B-transport_type B-timeofday O O O,O B-place_name B-time O O O,0,2
+12606,eskişehir'den kütahya'ya bir tren bileti almalıyım,B-place_name I-place_name O B-transport_type O O,B-place_name B-place_name O B-transport_type O O,1,0
+12607,adana'dan istanbul'a aktarmalı tren biletine ihtiyacım var,B-place_name I-place_name O B-transport_type O O O,B-place_name B-place_name O B-transport_type O O O,1,0
+12672,şehirde trafik nasıl,O O O,B-place_name O O,0,0
+12689,bugün sabah saat sekiz için istanbul haydarpaşa ya bir tren bileti ayırt,B-date B-time I-time I-time O B-place_name I-place_name O O B-transport_type O O,B-date B-time I-time I-time O B-place_name O O O B-transport_type O O,1,0
+12716,bana macide için bir taksi ara,O B-place_name O O B-transport_type O,O O O O B-transport_type O,0,0
+12779,en yakın taksiyi ayırt,O O B-transport_agency O,O O B-transport_type O,0,1
+12797,benim bulunduğum yerden konuma tren saatleri,O O O B-place_name O O,O O O O B-transport_type O,0,0
+12800,halk kütüphanesi nerede,B-business_type I-business_type O,B-media_type O O,0,0
+12813,manisadan doğu ekspresi için tren bileti ayırt lütfen,B-place_name B-transport_name I-transport_name O B-transport_type O O O,B-place_name B-time_zone B-transport_name O B-transport_type O O O,1,0
+12814,lütfen salı günü için antalya 'dan ısparta 'ya bir bilet ayırt,O B-date O O B-place_name O B-place_name O O O O,O B-date I-date O B-place_name O B-place_name O O O O,1,0
+12817,alışveriş merkezine nasıl gidebilirim,B-place_name O O O,B-list_name O O O,0,1
+12838,trafik şu an nasıl,O O B-time O,O O O O,0,0
+12844,ofise gitmek için bana bir taksi ayırtır mısın,B-place_name O O O O B-transport_type O O,O O O O O B-transport_type O O,0,0
+12846,lütfen yarın sabah kayseri 'den kars 'a bir tren bileti ayırt,O B-date B-timeofday B-place_name O B-place_name O O B-transport_type O O,O B-date B-timeofday B-time O B-place_name O O B-transport_type O O,0,1
+12866,doğu ekspresinin zamanlaması nedir,B-transport_name I-transport_name O O,B-time_zone O O O,0,0
+12883,yirmi altıncı hafta sonu urfa'dan los angeles'a tren bileti ayırt,B-date I-date I-date I-date B-place_name I-place_name I-place_name B-transport_type O O,B-date I-date I-date I-date O O B-place_name B-transport_type O O,1,0
+12905,sabah dokuzda bir taksi rezerve et lütfen,B-time O O B-transport_type O O O,B-time I-time O B-transport_type O O O,1,0
+12932,olly bağdat caddesi için yol tarifine ihtiyacım var,O B-place_name I-place_name O O O O O,O O B-place_name O O O O O,1,0
+12951,dünyanın en yüksek binası hangisidir,B-place_name O O O O,O O O O O,0,0
+12972,dünyanın en yüksek zirvesi hangisidir,B-place_name O O O O,O O O O O,0,0
+12986,kaprislinin tanımına bak,B-definition_word O O,O O O,0,0
+12999,nükhet duru kaç yaşında,B-person I-person O O,O O O O,0,0
+13016,gafın tanımına bak,B-definition_word O O,O O O,0,0
+13031,en yakın pizzacı nedir,O O B-business_type O,O O B-food_type O,0,1
+13043,mahalle pastanesinden tatlı patates turtası istiyorum,O O O O O O,B-place_name O O B-food_type O O,0,0
+13044,cumartesi gecesi konseri için satılan biletleri görmek istiyorum,B-date B-timeofday O O O O O O,B-date B-time B-event_name O O O O O,0,1
+13067,benim için bir şekersiz diyet ve malzemeler için de bir alışveriş listesi oluşturabilir misin,O O O O O O O O O O O O O O,O O O O O O O O O O B-list_name O O O,0,0
+13069,portakalın tanımları nelerdir,B-definition_word O O,O O O,0,0
+13074,şafak sezer neden komik değil,B-person I-person O O O,O O O O O,0,0
+13077,murat bozun doğum günü nedir,B-person I-person O O O,B-person I-person B-event_name I-event_name O,0,0
+13099,britanyanın şu anki başbakanı kim,B-place_name O O O O,O O O O O,0,0
+13135,kıvanç tatlıtuğun doğum tarihi ne zaman,B-person I-person O O O O,B-person I-person B-event_name I-event_name O O,0,0
+13140,bana kasırga hakkında her şeyi anlat,O B-definition_word O O O O,O B-news_topic O O O O,0,1
+13154,ayşe yılmazın telefon numarasını biliyor musun,B-person I-person O O O O,B-person I-person B-personal_info I-personal_info O O,0,0
+13166,salınım yapmayı hecele ve tanımla,B-definition_word I-definition_word O O O,O O O O O,0,0
+13177,kilo almamak için hareket etmemi hatırlat,O O O O O O,O O O O B-event_name O,0,0
+13178,vakit geçmeden altı ay içinde görüşmediğim eski arkadaşlarımla iletişime geçmemi hatırlat,O O O O O O O O O O O,O O B-time B-date O O O O O O O,0,0
+13192,altı yüz yirmi beşin kökü nedir,O O O O O O,O O O B-date O O,0,0
+13215,benim şehir merkezindeki işime trafiğe takılmadan gidilecek en hızlı yol hangisi,O B-place_name O O O O O O O O O,O B-place_name I-place_name O O O O O O O O,1,0
+13221,ceyda düvenci güzel görünmek için neler yapıyor,B-person I-person O O O O O,B-place_name O O O O O O,0,0
+13222,sibel can çocuklarının kıyafetlerini nereden alıyor,B-person I-person O O O O,B-artist_name B-person O O O O,1,0
+13242,en iyi çikolatalı kurabiye tarifi ne,O O O O O O,O O B-food_type I-food_type O O,0,0
+13252,namık kemalin ilk romanının adı neydi,B-person I-person O O O O,O B-person O O O O,1,0
+13283,bill gates ne kadar para kazandı,B-person I-person O O O O,O O O O O O,0,0
+13303,benim için akşam yemeği hazırlar mısın,O O O O O O,O O B-meal_type I-meal_type O O,0,0
+13312,alexa benim bu ay için on dolarım var bu ay her gün ne kadar harcamam gerekiyor,O O B-date I-date O O O O O O B-general_frequency I-general_frequency O O O O,O O B-date I-date O O O O O B-date B-general_frequency I-general_frequency O O O O,0,0
+13318,yakınımdaki hangi süpermarketin glutensiz ekmekte en iyi fiyata sahip olduğunu bilmek istiyorum,O O B-business_type B-food_type I-food_type O O O O O O O,O O O O O O O O O O O O,0,0
+13361,dakikliğin tanımı nedir,B-definition_word O O,O O O,0,0
+13372,hokey maçları bu akşam kaçta,O O B-timeofday I-timeofday O,B-event_name I-event_name O B-timeofday O,1,0
+13400,tüm arkadaşlarıma komik bir mesaj gönder,O O O O O O,O B-relation O O O O,0,0
+13439,halide edip adıvar kaç yaşında,B-person I-person I-person O O,B-person O B-person O O,1,0
+13460,on sekiz üssü otuz birin kaç olduğunu söyle,O O O O O O O O,B-date I-date O O O O O O,0,0
+13487,olly kaliforniyanın başkenti neresidir,O B-place_name O O,O O O O,0,0
+13494,motivasyonun tanımını ver,B-definition_word O O,O O O,0,0
+13521,dünya niye yuvarlak,O O O,B-place_name O O,0,0
+13546,özcan deniz en son hangi filmdeydi,B-person I-person O O O O,O O O O O O,0,0
+13547,cem yılmaz dün gece nerede görüldü,B-person I-person B-date I-date O O,B-person I-person B-date O O O,1,0
+13548,senden t. v.' yi açmanı istiyorum,O O O O O O,O B-media_type O O O O,0,0
+13580,ağrı dağı ne kadar yüksek,B-place_name I-place_name O O O,O O O O O,0,0
+13604,cem boynerin doğduğu yeri söyle,B-person I-person O O O,B-person O O O O,1,0
+13607,kıvançın evli olup olmadığını teyit edebilir misin,B-person O O O O O O,O O O O O O O,0,0
+13625,en büyük çalışma masası hangisi,B-definition_word I-definition_word I-definition_word I-definition_word O,O O O O O,0,0
+13630,bulunduğum yere en yakın hayvanat bahçesi hangisi,O O O O O O O,O O O O B-place_name O O,0,0
+13636,cüneyt arkının doğum günü ne,B-person I-person O O O,B-person I-person B-event_name I-event_name O,0,0
+13639,geçen hafta turkcell hisse senedi değerindeki artış nedir,O O B-business_name O O O O O,B-date I-date B-business_name O O O O O,0,0
+13666,şu anda poundun değeri nedir,O O B-currency_name O O,O O O O O,0,0
+13685,dolar arttı mı,O O O,B-currency_name O O,0,0
+13688,çinde en güncel döviz kuru nedir,B-place_name O O O O O,O O O O O O,0,0
+13705,elektronik emisyon sistemi nedir,B-definition_word I-definition_word I-definition_word O,O O O O,0,0
+13706,bir rotoru tarif et,O B-definition_word O O,O O O O,0,0
+13714,mango nedir,B-definition_word O,O O,0,0
+13717,rusyayı gerçekten alaska dan görebiliyor musun,B-place_name O B-place_name O O O,O O O O O O,0,0
+13722,amerikan doları ve japon yeni için günlük döviz kuru bilgilerini listele,B-currency_name I-currency_name O B-currency_name I-currency_name O O O O O O,B-currency_name I-currency_name O B-currency_name O O O O O O O,1,0
+13738,amerika birleşik devletleri ve çin arasındaki döviz kurları ne kadar,B-place_name I-place_name I-place_name O B-place_name O O O O O,B-place_name B-currency_name O O B-food_type O O O O O,1,1
+13740,çin için döviz kuru nedir,B-place_name O O O O,B-food_type O O O O,0,1
+13754,bana avrasya petrolün şu anki hisse fiyatını söyle,O B-business_name I-business_name O O O O O,O B-place_name O O O O O O,0,0
+13758,nükhet duru kaç yaşında,B-person I-person O O,O O O O,0,0
+13777,bir kredi kartını tarif edebilir misin,O B-definition_word I-definition_word O O O,O O O O O O,0,0
+13780,ibrahim kutluay evli mi,B-person I-person O O,B-person O O O,1,0
+13796,meksika ile birleşik devletler arasındaki döviz kuru nedir,B-currency_name O B-currency_name I-currency_name O O O O,B-food_type O B-currency_name I-currency_name O O O O,0,1
+13798,dünyada ortalama bir ülke kaç kilometre karedir,O O O O O O O,B-place_name O O O O O O,0,0
+13799,boyun eğdirenin tanımı nedir,B-definition_word I-definition_word O O,O B-definition_word O O,1,0
+13823,güneş ne ​​kadar uzaklıkta,O O O O,B-weather_descriptor O O O,0,0
+13853,dünyada en çok volkan olan yer neresidir,O O O O O O O,B-place_name O O O O O O,0,0
+13855,tarkan'ın en popüler şarkıları hangileridir,B-artist_name O O O O,B-person O O O O,0,1
+13867,uludağ millî parkı nerede,B-place_name I-place_name I-place_name O,B-place_name I-place_name O O,1,0
+13871,mutlu bir doğum gününü nasıl tarif edersin,B-definition_word I-definition_word I-definition_word I-definition_word O O O,O O B-event_name I-event_name O O O,0,0
+13881,lütfen bana zeki müren hakkında bilgi verin,O O B-artist_name I-artist_name O O O,O O B-person I-person O O O,0,1
+13895,bana hakan şükürden bahseder misin,O B-person I-person O O,O B-person O O O,1,0
+13900,yaşamın tanımı,B-definition_word O,O O,0,0
+13907,şaşkına dönmüşün tanımını yap,B-definition_word I-definition_word O O,B-definition_word O O O,1,0
+13926,orhan pamukun doğum günü ne zaman,B-person I-person O O O O,B-person I-person B-event_name I-event_name O O,0,0
+13927,lebron james in değeri ne,B-person I-person O O O,O B-person O O O,1,0
+13966,yenin değeri ne kadar,B-currency_name O O O,O O O O,0,0
+13974,laos nerededir,B-place_name O,O O,0,0
+13982,şu andaki dolar kuru,O O B-currency_name O,O O O O,0,0
+14000,tembel hayvanı tarif et,B-definition_word I-definition_word O O,B-definition_word O O O,1,0
+14015,ekvatorun koordinatları nelerdir,B-place_name O O,O O O,0,0
+14026,bir kalem dört dolar ve bir kitap on dolarsa iki kalem ve üç kitap alırsam ne kadar öderim,O O O O O O O O O O O O O O O O O O,O O O B-currency_name O O O O O O O O O O O O O O,0,0
+14096,toros dağları nerede,O O O,B-place_name O O,0,0
+14101,hadise neler yapıyor,B-person O O,B-artist_name O O,0,1
+14115,kaya kumu ile ilgili bilgiler ver,B-definition_word I-definition_word O O O O,O B-definition_word O O O O,1,0
+14117,piramitler nerede bulunur,B-place_name O O,O O O,0,0
+14118,piramitler in coğrafi detaylarını göster,B-place_name O O O O,O O O O O,0,0
+14138,lütfen bana silindirin tanımının ne olduğunu söyle,O O B-definition_word O O O O,O O O O O O O,0,0
+14150,converse ayakkabı nedir,B-definition_word I-definition_word O,O O O,0,0
+14151,ne tür güneş gözlükleri pilot gözlüğü olarak kabul edilir,O O O O O O O O O,O O B-weather_descriptor B-event_name O O O O O,0,0
+14154,afrika bilgileri,B-place_name O,O O,0,0
+14272,hey kitap nedir,O B-definition_word O,O O O,0,0
+14304,pezo ve yen arasındaki oran nedir,B-currency_name O B-currency_name O O O,O O B-currency_name O O O,0,0
+14317,amerika birleşik devletlerinin büyüklüğü nedir,O O O O O,B-place_name I-place_name I-place_name O O,0,0
+14339,çin e karşı hindistan ile ilgili bana ekonomi ve g.d.p bilgisi ver,B-place_name O O B-place_name O O O O O O O O,B-food_type O O B-news_topic O O O O O O O O,0,2
+14355,sally deniz kenarında kaç tane deniz kabuğu sattı,O O O O O O O O,O B-person O O O O O O,0,0
+14367,dördüncü dünya savaşı çıkacak mı,O O O O O,O B-place_name O O O,0,0
+14368,yirmi yıl sonra dünya nüfusu ne kadar olacak,O O O O O O O O,B-date I-date O B-place_name O O O O,0,0
+14395,dünyanın en derin noktası neresidir,O O O O O,B-place_name O O O O,0,0
+14412,yeni futbol oyun kurallarını tanımla,O O O O O,O B-news_topic O O O,0,0
+14414,bilgisayar hard disk tanımı yap,B-definition_word I-definition_word I-definition_word O O,B-definition_word O O O O,1,0
+14418,obama günlük hayatında neler yapıyor,B-person O O O O,O O O O O,0,0
+14419,meryem bu sene yeni bir film çekecek mi,B-person O O O O O O O,B-person B-date I-date O O O O O,0,0
+14429,kaftan nedir,B-definition_word O,O O,0,0
+14442,fiji nerede,B-place_name O,O O,0,0
+14449,tülin şahinin yeni bir bebeği mi var,B-person I-person O O O O O,B-person O O O O O O,1,0
+14465,disney lande yol tarifi,B-place_name I-place_name O O,B-place_name O O O,1,0
+14490,atatürk kültür merkezi ne zaman inşa edildi,B-place_name I-place_name I-place_name O O O O,B-place_name B-definition_word B-time_zone O O O O,1,0
+14530,ingiliz sterlini abd doları karşısında istediğim orana gelince beni uyar,B-currency_name I-currency_name I-currency_name I-currency_name O O O O O O,B-currency_name I-currency_name B-currency_name I-currency_name O O O O O O,1,0
+14549,hande yener konser programı hakkında bir liste yapın,B-person I-person O O O O O O,B-artist_name I-artist_name B-event_name O O O O O,0,1
+14555,bu şirket hissesinin hisse fiyatları çıktığında veya indiğinde bana bildir,O O O O O O O O O O,O B-business_name O O O O O O O O,0,0
+14567,dünyadaki en büyük aktif yanardağ hangisidir,B-place_name O O O O O,O O O O O O,0,0
+14591,bana televizyon devresinin tanımını ver,O B-definition_word I-definition_word O O,O B-definition_word O O O,1,0
+14592,bana akıllı telefon devresinin tanımını yap,O B-definition_word I-definition_word I-definition_word O O,O B-definition_word I-definition_word O O O,1,0
+14597,nevşehirin nüfusu ne kadar,B-place_name O O O,B-person O O O,0,1
+14601,abraham lincoln kaç yıl boyunca amerika birleşik devletleri başkanıydı,O O O O O O O O O,O O O O O O B-place_name O O,0,0
+14605,gülşen bubikoğlu tarık akandan ne zaman ayrıldı,B-person I-person I-person I-person O O O,B-person I-person B-person I-person O O O,1,0
+14608,beren saat hangi yeni filmin üzerinde çalışıyor,B-person I-person O O O O O,O O O O O O O,0,0
+14622,kürenin ne olduğunu açıkla,B-definition_word O O O,O O O O,0,0
+14646,bugün new jersey için en ucuz uçak biletlerini göster,B-date B-place_name I-place_name O O O O O O,B-date B-place_name O O O O O O O,1,0
+14653,rusyanın nüfusu nedir,B-place_name O O,O O O,0,0
+14661,ahmet davutoğlunun doğum yılı kaç,B-person I-person O O O,B-person I-person B-event_name I-event_name O,0,0
+14673,amazon ormanındaki hayvanlar aleminden bahseder misin,B-place_name I-place_name O O O O,B-business_name O O O O O,0,0
+14690,ok google başkan ne demek,O O B-definition_word O O,O O O O O,0,0
+14700,kompozit diş dolgusu tam olarak ne anlama geliyor,B-definition_word I-definition_word I-definition_word O O O O O,O B-event_name O O O O O O,0,0
+14701,heartstone kâğıt oyununu tanımla,B-definition_word I-definition_word I-definition_word O,O O O O,0,0
+14705,okey google nesrin cavadzade nerede yaşıyor,O O B-person I-person O O,O O O O O O,0,0
+14742,şu an euro abd doları kuru ne,O O O B-currency_name I-currency_name O O,O O B-currency_name B-currency_name I-currency_name O O,0,0
+14791,sandalye neyden yapılmış,O O O,B-definition_word O O,0,0
+14792,bana yakın bir yürüyüş yolu nerededir,O O O O O O,O O O B-transport_type O O,0,0
+14794,mirkelamın favori arabası nedir,B-person O O O,O O O O,0,0
+14874,eti gıda için hisse senedi fiyatını kontrol et,B-business_name I-business_name O O O O O O,O O O O O O O O,0,0
+14912,cumhurbaşkanı inönü nerede doğmuştur,O B-person O O,B-person I-person O O,1,0
+14917,mazhar alansonun yeni albümü ne zaman çıkacak,B-person I-person O O O O O,O O O O O O O,0,0
+14981,iphone yedi açıklama,B-definition_word I-definition_word O,O O O,0,0
+14995,durum ne demek,B-definition_word O O,O O O,0,0
+15010,ingilterede bir amerikan doları ne kadar,B-currency_name O B-currency_name I-currency_name O O,O O B-currency_name I-currency_name O O,0,0
+15056,banu alkanın yeni erkek arkadaşı kaç yaşında,B-person I-person O O O O O,B-person I-person O O B-person O O,0,0
+15092,samsung t. v. ile ilgili tanım bul,B-definition_word I-definition_word I-definition_word O O O O,B-business_name O O O O O O,0,0
+15094,mersin içelde yaşayan insan sayısına bak,B-place_name I-place_name O O O O,B-place_name O O O O O,1,0
+15127,hoparlörü tanımla,B-definition_word O,O O,0,0
+15138,sosyal ağlarımı kontrol et,B-media_type I-media_type O O,O O O O,0,0
+15155,en son selfimi facebook hesabıma yükler misin,O O O B-media_type I-media_type O O,O O O B-media_type O O O,1,0
+15177,lütfen bu paylaşımı twitterda tekrar paylaş,O O O B-media_type O O,O O O O O O,0,0
+15186,düğün dilekleri,B-event_name O,O O,0,0
+15187,arkadaş gönderisinde paylaş,O O O,B-relation O O,0,0
+15197,japonya ziyaretimi twitter da yayınla,O O B-media_type O O,B-place_name O B-media_type O O,0,0
+15276,facebookta güzel havanın tadını çıkardığımı söyleyen yeni bir durum paylaş,B-media_type B-weather_descriptor I-weather_descriptor O O O O O O O,B-media_type O O O O O O O O O,0,0
+15298,olly sıcak sosyal medya konuları neler,O O O O O O,O B-weather_descriptor O O O O,0,0
+15348,kim şu anda facebook canlı yayın yapıyor,O O O B-media_type I-media_type I-media_type O,O O O B-media_type O O O,1,0
+15350,metro'dan memnun değilim lütfen bana yardım eder misin,B-business_name O O O O O O O,B-person O O O O O O O,0,1
+15359,apple a iphoneumun pilinin her zaman bittiği tweeti aç,B-business_name O O O O O O B-media_type I-media_type,B-business_name O O O O O O B-media_type O,1,0
+15399,ağla ilgili sorunlar için vodafona bir şikayet ilet,O O O O B-business_name O O O,O O O O O O O O,0,0
+15401,twitter'ı aç mesaj at,B-business_name O O O,B-media_type O O O,0,1
+15444,şirket adına iki başparmak aşağı,B-business_name I-business_name O O O,O O O O O,0,0
+15448,sonynin ses sorunları hakkında bir tweet gönder,B-business_name O O O O B-media_type O,O O O O O B-media_type O,0,0
+15454,atlas globale tweet at ve bagajımı kaybettikleri için kızgınım de,B-business_name I-business_name B-media_type I-media_type O O O O O O,O O B-media_type I-media_type O O O O O O,0,0
+15456,pegasus'a bir tweet göndermek istiyorum çantamı kaybettiğiniz için kızgınım,B-business_name O B-media_type O O O O O O,B-person O B-media_type O O O O O O,0,1
+15457,burgerimle ilgili bir sorunum var burger kinge tweet atabilirmisin,O O O O O B-business_name I-business_name B-media_type I-media_type,O O O O O B-business_name I-business_name B-media_type O,1,0
+15464,ürünü zamanında teslim almadım lcwaikikiye bu konuda tweet at,O O O O B-business_name O O B-media_type O,O O O O O O O B-media_type I-media_type,1,0
+15467,arçelike onlardan nefret ettiğimi söyle,B-business_name O O O O,O O O O O,0,0
+15472,online kitapçı için bir şikayet tweeti at,B-business_name I-business_name O O O B-media_type I-media_type,O O O O O B-media_type I-media_type,0,0
+15508,siri twitterı aç ve potusa berbat olduğu tweetini at,O B-media_type O O O O O O O,O B-media_type O O O O O B-media_type O,0,0
+15518,tweet ile otokoça şikayet gönder,B-media_type O B-business_name O O,B-media_type O O O O,0,0
+15532,olly şahin kuruyemişe tweetle ve onlara müşteri hizmetlerinin korkunç olduğunu söyle,O B-business_name I-business_name B-media_type O O O O O O O,O O O B-media_type O O O O O O O,0,0
+15546,papa johns'a soğuk pizza hakkında tweet at,B-business_name I-business_name O O O B-media_type I-media_type,B-business_name B-person O B-food_type O B-media_type I-media_type,1,0
+15548,samsung'a mobil şikayet tweet'i at,B-business_name O O B-media_type I-media_type,B-business_name O O B-media_type O,1,0
+15553,lütfen daikin servisine olumsuz yanıt tweeti,O B-business_name I-business_name O O B-media_type,O O O O O B-media_type,0,0
+15554,geciken hizmetleri için lütfen dell servisine tweet at,O O O O B-business_name I-business_name B-media_type I-media_type,O O O O O B-business_name B-media_type I-media_type,1,0
+15557,bir şikayet ile ilgili tweet atman gerekiyor,O O O O B-media_type I-media_type O,O O O O B-media_type O O,1,0
+15565,deltaya onları bir daha asla kullanmayacağımı söyler misin,B-business_name O O O O O O O,O O O O O O O O,0,0
+15587,galeriyi aç resim ismini paylaş,B-media_type O O O O,B-device_type O O O O,0,1
+15592,superonline a bir şikayet tweeti at,B-business_name I-business_name O O B-media_type I-media_type,B-business_name O O O B-media_type I-media_type,1,0
+15593,arçeliğe şikayet tweeti at,B-business_name O B-media_type I-media_type,O O B-media_type I-media_type,0,0
+15598,şirket ismini aç ve şikayetler bul,B-business_name I-business_name O O O O,O O O O O O,0,0
+15610,şu tweet'i gönder a. b. c. şirketi'nden memnun değilim benim hesabımın takipleri çok kötü,O B-media_type O O O O O O O O O O O O,O B-media_type O B-email_address I-email_address B-media_type O O O O O O O O,0,0
+15635,mcdonald'sın kötü bir servisi olduğu hakkında tweet at,O O O O O O B-media_type I-media_type,B-business_name O O O O O B-media_type I-media_type,0,0
+15655,google müşteri hizmetlerine tweet at yeni nexus telefonum çalışmayı durdurdu yardım lütfen,O O O B-media_type I-media_type O O O O O O O,B-business_name I-business_name I-business_name B-media_type I-media_type O O O O O O O,0,0
+15656,getire hala teslimatım için beklediğimi söyleyen bir mesaj tweet at,B-business_name O O O O O O O B-media_type I-media_type,O O B-order_type O O O O O B-media_type I-media_type,0,0
+15661,benim edevlet de twitter a en son girişimi postla,O B-business_name O B-media_type O O O O O,O O O B-media_type O O O O O,0,0
+15672,apple'a geçen hafta onarım için gönderdiğim iphone'un alınmaması hakkında tweet at,B-business_name O O O O O O O O B-media_type I-media_type,B-business_name B-date I-date O O O O O O B-media_type I-media_type,0,0
+15676,lütfen sıralı kebapa hizmetlerine ilişkin şikayeti tweet olarak ekle,O B-business_name I-business_name O O O B-media_type O O,O O B-business_name I-business_name O O B-media_type O O,1,0
+15693,çikolata paketinde böcek olduğuna dair tweet at,O O O O O B-media_type I-media_type,B-food_type O O O O B-media_type I-media_type,0,0
+15700,son pazarda süresi dolmuş ürünler,O O O O O,O B-date O O O,0,0
+15703,defacto ya boyutlarının çok hızlı tükendiğini tweet at,B-business_name O O O O O B-media_type I-media_type,O O O O O O B-media_type I-media_type,0,0
+15721,mcdonalds hakkında iğrenmiş yüz suratı tweet'i at,B-business_name O O O O B-media_type I-media_type,B-business_name O O O O B-media_type O,1,0
+15747,bu kişinin e-postasını ekle,O O B-personal_info O,O O O O,0,0
+15756,lütfen takımıma e-posta at,O B-relation O O,O O O O,0,0
+15785,posta kutumda yeni bir şey var mı,O O O O O O O,O B-email_folder O O O O O,0,0
+15792,bugün kiminle buluşacağım,B-date O B-event_name,B-date O O,0,0
+15794,seth nerede yaşıyor,B-person O B-personal_info,O O O,0,0
+15946,kişilerde ali tunayı bul,O B-person I-person O,O B-person O O,1,0
+15948,kişileri aç ve ıclal aydını ara,O O O B-person I-person O,O O O O O O,0,0
+15950,john doe'dan gelen e-postayı yanıtla,B-person I-person O O O,B-person B-person O O O,1,0
+15963,ben kazım dan herhangi bir yeni email aldım mı,O B-person O O O O O O O,O O O O O O O O O,0,0
+15983,melek'in e-posta adresi ne,B-person B-personal_info I-personal_info O,B-person O O O,0,0
+16005,yusuf et gmail nokta koma mail gönder,B-email_address I-email_address I-email_address I-email_address I-email_address O O,O B-email_address I-email_address I-email_address I-email_address O O,1,0
+16024,cahite yarın meşgulüm diye bir eposta gönder,B-person O O O O O O,O B-date O O O O O,0,0
+16028,hey siri iş arkadaşına bir mail başlat,O O B-relation I-relation O O O,O O O B-relation O O O,1,0
+16029,lütfen iş arkadaşıma yeni bir eposta oluştur,O B-relation I-relation O O O O,O O B-relation O O O O,1,0
+16050,gmail'i kontrol et,O O O,B-person O O,0,0
+16061,son on dakikada hiç e-posta aldım mı,B-time I-time I-time O O O O,O B-time I-time O O O O,1,0
+16103,erkek kardeşime bir email gönder ve evlilik yıldönümü de,B-relation I-relation O O O O B-event_name I-event_name O,B-relation B-relation O O O O O B-event_name O,2,0
+16120,yardım sadece cemreye gönderilecek,O O B-person O,O O O O,0,0
+16148,nihata hızlı cevap ver bu yüzden lütfen bir mail gönder,B-person O O O O O O O O O,O O O O O O O O O O,0,0
+16178,bugün hiç trendyol'dan posta geldi mi,B-date O B-person O O O,B-date O O O O O,0,0
+16222,bana nalan sden bahset,O B-person I-person O,O O O O,0,0
+16229,on iki ay içinde hangi kişiyi aramadım,B-time I-time I-time O O O O,O B-time B-date O O O O,1,0
+16245,hazal et a ü nokta kom a eposta gönder,B-email_address I-email_address I-email_address I-email_address I-email_address I-email_address O O O,B-person O O O B-email_address I-email_address O O O,1,0
+16273,selin'e nasıl ulaşırım,B-person O B-personal_info,B-person O O,0,0
+16280,lütfen aile ve arkadaş listemde olan burcuya bir eposta gönder,O B-relation O B-relation O O B-person O O O,O B-relation O O O O O O O O,0,0
+16282,yarın için tüm randevuları iptal etmek için asistanım seline bir eposta gönder,B-date O O B-event_name O O O B-relation B-person O O O,B-date O O B-event_name O O O O O O O O,0,0
+16296,anneme denizin doğum günü partisinin pazar günü olduğunu söylemek için bir email gönder,B-relation B-person B-event_name I-event_name I-event_name B-date I-date O O O O O O,B-relation B-person B-event_name I-event_name I-event_name B-date O O O O O O O,1,0
+16297,emreye teşekkür etmek için bir eposta gönder,B-person O O O O O O,O O O O O O O,0,0
+16314,sevime bir eposta gönder,B-person O O O,O O O O,0,0
+16317,azimeden yeni epostalar aldım mı,B-person O O O O,O O O O O,0,0
+16320,uğur özkanın epostasını yanıtlamak istiyorum,B-person I-person O O O,O O O O O,0,0
+16354,işverenimden gelen e-postaları kontrol et,B-relation O O O O,O O O O O,0,0
+16361,son bir saat içinden hiç yeni epostalarım var mı,B-time I-time I-time O O O O O O,B-time O O O O O O O O,1,0
+16398,lütfen epostayı cihana gönder,O O B-person O,O O O O,0,0
+16430,lütfen anne ve babaya nasıl olduklarını soran bir e-posta gönder,O B-relation O B-relation O O O O O O,O B-relation O O O O O O O O,0,0
+16437,lütfen bu e-postayı arkadaşıma gönder,O O O B-relation O,O O O O O,0,0
+16518,berna durdu için yeni bir eposta ekle,B-person I-person O O O O O,O O O O O O O,0,0
+16523,cemilin iletişim bilgilerini söylermisin,O O O O,B-person O O O,0,0
+16535,çağlara bir eposta yazabilirmisin,B-person O O O,O O O O,0,0
+16560,patronumun epostasına akşam dörtte geleceğim sözüyle cevap ver,B-relation O O O O O O O,B-relation O B-time I-time O O O O,0,0
+16583,şirket çalışanımın ev telefonu numarası var mı,B-relation I-relation B-personal_info I-personal_info I-personal_info O O,B-relation O B-personal_info I-personal_info I-personal_info O O,1,0
+16591,bill den yeni bir email aldım ve hemen cevap vermem lazım,O O O O O O O O O O O,B-person O O O O O O O O O O,0,0
+16624,hizmet sorunlarım hakkında kırcılara gönderilecek bir epostaya ihtiyacım var,O O O B-business_name O O O O O,O O O O O O O O O,0,0
+16668,bugün saat dört ten beri gelen email var mı hiç,B-date B-time I-time O O O O O O O,B-date O B-time O O O O O O O,1,0
+16672,ben irtibata girdi mi,B-person O O O,O O O O,0,0
+16693,mersin narlıkuyuda yer alan lowes hardwarei email kişilerime ekle,B-place_name I-place_name O O O O O O O,B-place_name O O O O O O O O,1,0
+16694,gratis'e giden e-postayı bul ve onu kişi listeme koy,B-business_name O O O O O B-list_name I-list_name O,B-person O O O O O B-list_name O O,1,1
+16710,kişilerimin kaçı marmaris'te yaşıyor veya çalışıyor,O O B-place_name O O O,O O O O O O,0,0
+16733,bana amazon'dan gelen en son e-postaları göster,O B-business_name O O O O O,O B-person O O O O O,0,1
+16763,son on dakikadaki epostalar,B-time I-time I-time O,O B-time O O,1,0
+16765,dünkü e-postanın görüşme saati ne kadar,B-date O O O O O,B-date O B-event_name O O O,0,0
+16791,yeni bir email oluştur ama bu kez burak örnek nokta com diye yeni bir adres aldım,O O O O O O O B-email_address I-email_address I-email_address I-email_address O O O O O,O O O O O O O O O B-email_address I-email_address O O O O O,1,0
+16797,taksi beyin telefon numarası ne kişilerimde kayıtlı,B-business_name I-business_name B-personal_info I-personal_info O O O,B-transport_type B-person B-personal_info I-personal_info O O O,0,0
+16799,öğleden beri hiç e-posta aldım mı,B-timeofday O O O O O,B-time O O O O O,0,1
+16846,lütfen hakan belber için kişilerime bir eposta ekle hakan belber at yahoo nokta com,O B-person I-person O O O O O B-email_address I-email_address I-email_address I-email_address I-email_address I-email_address,O B-person O O O O O O B-person O B-email_address I-email_address I-email_address I-email_address,2,0
+16859,son e-postamda susan'a ne söyledim,O O B-person O O,O O B-place_name O O,0,1
+16872,naty i benim kişilerimde bul ve email gönder,B-person O O O O O O O,O O O O O O O O,0,0
+16874,brenden için bende kaç telefon numarası mevcut,B-person O O O B-personal_info I-personal_info O,O O O O B-personal_info I-personal_info O,0,0
+16880,toplantı ile ilgili mehmete email gönder,B-event_name O O B-person O O,B-event_name O O O O O,0,0
+16891,burak meriçe gönder ve email,B-person I-person O O O,O O O O O,0,0
+16899,jeffrey burnette'den hiç e-posta aldım mı,B-person I-person O O O O,O B-person O O O O,1,0
+16907,jay'in telefon numarası,B-person B-personal_info I-personal_info,B-person B-personal_info O,1,0
+16938,emrenin epostasını yanıtla,B-person O O,O O O,0,0
+16944,büyükanneme cumartesi günü uğrayacağız diye bir eposta gönder o zaman görüşürüz,B-relation O O O O O O O O O O,O B-date O O O O O O O O O,0,0
+16974,lütfen gelir vergisi departmanının tüm yeni e-postalarını kontrol edin,O B-business_name I-business_name I-business_name O O O O O,O O O O O O O O O,0,0
+16975,lütfen hüsey adına bana bir kişi numarası bul ve söyle,O B-person O O O O B-personal_info O O O,O O O O O O B-personal_info O O O,0,0
+16992,jane doe bana e-posta göndermiş mi,B-person I-person O O O O,B-person O O O O O,1,0
+17042,john at gmail nokta com'a bir e-posta yaz,B-email_address I-email_address I-email_address I-email_address I-email_address O O O,B-person B-email_address I-email_address I-email_address I-email_address O O O,1,0
+17043,tim at hotmail nokta com a email gönder,B-email_address I-email_address I-email_address I-email_address I-email_address O O O,O B-email_address I-email_address I-email_address I-email_address O O O,1,0
+17054,benim email kişilerime michael den gelen yeni e-posta ları da ekle,O O O B-person O O O O O O O,O O O B-artist_name O O O O O O O,0,1
+17075,bugün saat dörtten sonra alınan yeni bir e-posta var mı,B-date O B-time I-time O O O O O O,B-date O B-time O O O O O O O,1,0
+17081,yakın zamanda kaydettiğim belgelerle şirket çalışanım için bir e-posta oluştur,O O O O B-relation I-relation O O O O,O O O O O O O O O O,0,0
+17095,kamil'in e-postası nedir,B-person B-personal_info O,B-person O O,0,0
+17098,son saatte alınan e-postaları bana göster,B-time I-time O O O O,O B-time O O O O,1,0
+17111,pelinin kişi detayı,B-person B-personal_info I-personal_info,O O O,0,0
+17123,bölgesel başkan yardımcısı için email oluştur,B-relation I-relation I-relation O O O,O O O O O O,0,0
+17179,eser bana bir email gönderdi mi,B-person O O O O O,O O O O O O,0,0

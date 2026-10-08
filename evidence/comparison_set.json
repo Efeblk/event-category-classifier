@@ -1,0 +1,207 @@
+{
+  "name": "40 MASSIVE tr-TR official test requests",
+  "provenance": "Uniform sample without replacement, seed 42. Not the full benchmark.",
+  "license": "CC BY 4.0",
+  "records": [
+    {
+      "id": "15276",
+      "text": "facebookta güzel havanın tadını çıkardığımı söyleyen yeni bir durum paylaş",
+      "label": "social_post"
+    },
+    {
+      "id": "2709",
+      "text": "olly bugün biraz hüzünlü şarkılar dinlemek istiyorum",
+      "label": "play_music"
+    },
+    {
+      "id": "494",
+      "text": "iyi bir espri nasıl olur",
+      "label": "general_joke"
+    },
+    {
+      "id": "6426",
+      "text": "teknoloji",
+      "label": "general_quirky"
+    },
+    {
+      "id": "5757",
+      "text": "ikiye çeyrek var",
+      "label": "datetime_query"
+    },
+    {
+      "id": "5250",
+      "text": "şarkının adı",
+      "label": "music_query"
+    },
+    {
+      "id": "3398",
+      "text": "lütfen akşam beş için alarmımı kur",
+      "label": "alarm_set"
+    },
+    {
+      "id": "2480",
+      "text": "paket servis için ara",
+      "label": "takeaway_order"
+    },
+    {
+      "id": "16120",
+      "text": "yardım sadece cemreye gönderilecek",
+      "label": "email_sendemail"
+    },
+    {
+      "id": "12972",
+      "text": "dünyanın en yüksek zirvesi hangisidir",
+      "label": "qa_factoid"
+    },
+    {
+      "id": "2163",
+      "text": "yemek siparişi nasıl gidiyor",
+      "label": "takeaway_query"
+    },
+    {
+      "id": "14053",
+      "text": "mehmet ali alabora hangi yılda oyunculuğa başladı",
+      "label": "qa_factoid"
+    },
+    {
+      "id": "9961",
+      "text": "patates kızartmak için en iyi fırın sıcaklığı ne",
+      "label": "cooking_recipe"
+    },
+    {
+      "id": "712",
+      "text": "c. n. n. den son haberleri duymak istiyorum",
+      "label": "news_query"
+    },
+    {
+      "id": "635",
+      "text": "elektrik süpürgesini başlat",
+      "label": "iot_cleaning"
+    },
+    {
+      "id": "2288",
+      "text": "sabah altı da kahve başlat",
+      "label": "iot_coffee"
+    },
+    {
+      "id": "5152",
+      "text": "lütfen iki şarkı atla",
+      "label": "music_settings"
+    },
+    {
+      "id": "5468",
+      "text": "güneş gözlüğü almam gerekiyor mu",
+      "label": "weather_query"
+    },
+    {
+      "id": "11839",
+      "text": "çevremde neler oluyor",
+      "label": "recommendation_events"
+    },
+    {
+      "id": "14342",
+      "text": "akbank hisse senedi fiyatı ne kadar",
+      "label": "qa_stock"
+    },
+    {
+      "id": "533",
+      "text": "sabah dokuza alarm kur",
+      "label": "alarm_set"
+    },
+    {
+      "id": "13363",
+      "text": "kıyamet ne zaman kopacak",
+      "label": "general_quirky"
+    },
+    {
+      "id": "4692",
+      "text": "ben güzelden anlarım şarkı sını çal",
+      "label": "play_music"
+    },
+    {
+      "id": "16989",
+      "text": "lütfen halitin bana gönderdiği epostaya söyle paraya şimdi acil ihtiyacım var",
+      "label": "email_sendemail"
+    },
+    {
+      "id": "15518",
+      "text": "tweet ile otokoça şikayet gönder",
+      "label": "social_post"
+    },
+    {
+      "id": "16694",
+      "text": "gratis'e giden e-postayı bul ve onu kişi listeme koy",
+      "label": "email_addcontact"
+    },
+    {
+      "id": "12963",
+      "text": "adlinin tanımı nedir",
+      "label": "qa_definition"
+    },
+    {
+      "id": "9924",
+      "text": "bana tarifini söyle",
+      "label": "cooking_recipe"
+    },
+    {
+      "id": "5176",
+      "text": "bu hafta nasıl bir hava beklemeliyim",
+      "label": "weather_query"
+    },
+    {
+      "id": "10525",
+      "text": "araba ödememi takvimimden kaldır",
+      "label": "lists_remove"
+    },
+    {
+      "id": "14029",
+      "text": "amerikan doları ve avro döviz kuru nedir",
+      "label": "qa_currency"
+    },
+    {
+      "id": "6485",
+      "text": "bugün ne seviyorum",
+      "label": "general_quirky"
+    },
+    {
+      "id": "150",
+      "text": "bu şarkıyı seviyorum",
+      "label": "music_likeness"
+    },
+    {
+      "id": "3819",
+      "text": "lütfen şu anki şarkıyı beş yıldız olarak değerlendir",
+      "label": "music_likeness"
+    },
+    {
+      "id": "16624",
+      "text": "hizmet sorunlarım hakkında kırcılara gönderilecek bir epostaya ihtiyacım var",
+      "label": "email_sendemail"
+    },
+    {
+      "id": "9966",
+      "text": "makarna pişirmenin en kolay yolu nedir",
+      "label": "cooking_recipe"
+    },
+    {
+      "id": "7981",
+      "text": "toplantı öncesi bir uyarı gönder",
+      "label": "calendar_set"
+    },
+    {
+      "id": "6477",
+      "text": "beyzbol skorları",
+      "label": "general_quirky"
+    },
+    {
+      "id": "3725",
+      "text": "bugün günlerden ne",
+      "label": "datetime_query"
+    },
+    {
+      "id": "5051",
+      "text": "yeni bir alarm kur",
+      "label": "alarm_set"
+    }
+  ]
+}

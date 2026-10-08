@@ -1,32 +1,43 @@
-# Dataset
+# MASSIVE Turkish v1.0
 
-`python prepare_events.py` downloads the source files and creates `events.csv` and `events.audit.json` locally. They are not committed.
+[Amazon MASSIVE](https://github.com/alexa/massive) contains human-localized virtual
+assistant requests. Turkish was localized from English crowd-written SLURP
+utterances; it is not a collection of Turkish production logs.
+License: **CC BY 4.0**, Amazon.com Inc. See [LICENSE](LICENSE).
+Paper: [FitzGerald et al. 2022](https://arxiv.org/html/2204.08582v2).
 
-## Source
+Archive: https://amazon-massive-nlu-dataset.s3.amazonaws.com/amazon-massive-dataset-1.0.tar.gz
+Pinned SHA256: `7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8`.
+Version 1.0 matches the paper; 1.1 only adds Catalan.
 
-- [rebrowser/gametime-dataset](https://huggingface.co/datasets/rebrowser/gametime-dataset) on Hugging Face, also on [Kaggle](https://www.kaggle.com/datasets/rebrowser/gametime-dataset). Event listings from the Gametime ticket marketplace, published by Rebrowser.
-- License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). Non-commercial course use with attribution.
-- Pinned commit `f24a84e1bedee99bef273332fe705cc7ed1958be`: 30 daily `events/data/*.csv` files, 2026-08-24 to 2026-09-22.
+`python prepare_massive.py` checks the cached/downloaded hash before extracting
+only `1.0/data/tr-TR.jsonl` and `1.0/LICENSE`, using `tarfile` with `filter="data"`.
+Preparation uses only the standard library. Generated JSONL, audit and archive
+cache under data/ are ignored; evidence contains a deliberate audit snapshot.
 
-## Preparation
+| Official partition | Requests | Observed intents |
+|---|---:|---:|
+| train | 11,514 | 60 |
+| dev | 2,033 | 59 (no audio_volume_other) |
+| test | 2,974 | 59 (no cooking_query) |
 
-- Category mapping: `music` → `concert`, `theater` → `theatre`, `comedy` → `stand_up`. Sports and other categories are dropped.
-- Text is the event title. Ticketing notes such as "(21+ Event)", "(Rescheduled from 3/28)", and "(Open Caption)" are removed.
-- 76 Toronto International Film Festival screenings are dropped. Gametime lists them as theater, but they are films.
-- Repeated dates of one show become one row. 15 titles that appear under two categories are dropped.
-- `group_id` is the first listed performer, so one performer's titles stay in one partition.
+The output preserves `id`, `partition`, `intent`, `scenario`, raw `text`, whitespace
+`tokens` and aligned BIO `tags`. There are 60 intents across 18 scenarios and
+55 slot types. `unclear` is not a dataset label. Top train slot counts include
+date 1,797, place_name 1,053, event_name 996, person 861, time 792 and timeofday 234.
 
-Result: **3,506 rows**, 2,831 groups. 2,575 concert, 564 stand-up, 367 theatre.
+Turkish case normalization maps I→ı and İ→i. Tokens retain punctuation and suffixes.
+De-annotating must reproduce the raw text exactly. A slot boundary inside a
+whitespace word fails and is recorded in the audit; the pinned dataset has zero
+such boundaries and zero text mismatches. Similar time expressions can use
+inconsistent span boundaries/types; no labels are corrected or silently expanded.
 
-CSV fields are `id,text,label,group_id,title,source,source_url`. `title` is the original title. `source_url` points to the pinned source file.
+241 normalized texts appear in multiple partitions; 36 normalized texts have
+multiple intents. Keep all official rows so the paper's test remains comparable.
+No performer groups, random resplitting or deduplication. Tiny classes, including
+four cooking_query training requests, explain relaxed class-count checks.
 
-## Known limits
-
-- English and US-centric.
-- Many titles are only a name ("Metallica", "Kevin Hart"). The category then depends on knowing the performer.
-- Labels come from the ticket site and were not reviewed by hand. Gametime's theater category is broad: plays, musicals, ballet, opera, circus, and some orchestra concerts.
-- The classes are imbalanced: 73% concert.
-
-## Request challenge set
-
-`request_challenge.json` has 40 AI-authored Turkish and English requests (CC0, see [LICENSE](LICENSE)). It was written for an earlier version of this project and inspected during development. Here it is a secondary transfer test, not a blind benchmark. It includes an `unclear` label, which the title models cannot predict except when no feature is known.
+The old Gametime data preparation and AI-written challenge are removed. The
+author will collect and label 30–50 real-person requests as a separate transfer
+test; no replacement has been fabricated. The outside-repo inspection copy was
+deleted after verified preparation worked.

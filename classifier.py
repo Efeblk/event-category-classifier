@@ -1,4 +1,4 @@
-"""Text normalization, model definitions, and event category classification."""
+"""Text normalization, model definitions, and intent classification."""
 
 from __future__ import annotations
 
@@ -7,26 +7,83 @@ import unicodedata
 from typing import Any
 
 
-LABELS = ("concert", "theatre", "stand_up")
+LABELS = (
+    "alarm_query",
+    "alarm_remove",
+    "alarm_set",
+    "audio_volume_down",
+    "audio_volume_mute",
+    "audio_volume_other",
+    "audio_volume_up",
+    "calendar_query",
+    "calendar_remove",
+    "calendar_set",
+    "cooking_query",
+    "cooking_recipe",
+    "datetime_convert",
+    "datetime_query",
+    "email_addcontact",
+    "email_query",
+    "email_querycontact",
+    "email_sendemail",
+    "general_greet",
+    "general_joke",
+    "general_quirky",
+    "iot_cleaning",
+    "iot_coffee",
+    "iot_hue_lightchange",
+    "iot_hue_lightdim",
+    "iot_hue_lightoff",
+    "iot_hue_lighton",
+    "iot_hue_lightup",
+    "iot_wemo_off",
+    "iot_wemo_on",
+    "lists_createoradd",
+    "lists_query",
+    "lists_remove",
+    "music_dislikeness",
+    "music_likeness",
+    "music_query",
+    "music_settings",
+    "news_query",
+    "play_audiobook",
+    "play_game",
+    "play_music",
+    "play_podcasts",
+    "play_radio",
+    "qa_currency",
+    "qa_definition",
+    "qa_factoid",
+    "qa_maths",
+    "qa_stock",
+    "recommendation_events",
+    "recommendation_locations",
+    "recommendation_movies",
+    "social_post",
+    "social_query",
+    "takeaway_order",
+    "takeaway_query",
+    "transport_query",
+    "transport_taxi",
+    "transport_ticket",
+    "transport_traffic",
+    "weather_query",
+)
 # Methods may abstain with this label. It is not a training class.
 UNCLEAR = "unclear"
 OUTPUT_LABELS = LABELS + (UNCLEAR,)
-ARTIFACT_TASK = "event_listing_classification"
-DATASET_DOMAIN = "event_listings"
+ARTIFACT_TASK = "intent_classification"
+DATASET_DOMAIN = "massive_tr"
 
 
 _WHITESPACE = re.compile(r"\s+")
 _TURKISH_UPPER_I = str.maketrans({"I": "\u0131", "\u0130": "i"})
-_TURKISH_LETTER = re.compile("[çğıöşüÇĞİÖŞÜ]")
 
 
 def normalize_text(value: object) -> str:
     """Normalize Unicode, Turkish or English case, and whitespace."""
     text = unicodedata.normalize("NFKC", "" if value is None else str(value))
-    if _TURKISH_LETTER.search(text):
-        text = text.translate(_TURKISH_UPPER_I).lower()
-    else:
-        text = text.replace("\u0130", "i").lower()
+    text = text.translate(_TURKISH_UPPER_I).lower()
     return _WHITESPACE.sub(" ", text).strip()
 
 
@@ -101,10 +158,10 @@ def _validated_model(artifact: object) -> Any:
     if not isinstance(artifact, dict) or not required_keys.issubset(artifact):
         raise ValueError("Model artifact has an unsupported schema.")
     if artifact["task"] != ARTIFACT_TASK:
-        raise ValueError("Model artifact task is not event listing classification.")
+        raise ValueError("Model artifact task is not intent classification.")
     if artifact["dataset_domain"] != DATASET_DOMAIN:
-        raise ValueError("Model artifact dataset domain is not event listings.")
-    if set(map(str, artifact["labels"])) != set(LABELS):
+        raise ValueError("Model artifact dataset domain is not MASSIVE Turkish.")
+    if not isinstance(artifact["labels"], (list, tuple)) or len(artifact["labels"]) != len(LABELS) or set(map(str, artifact["labels"])) != set(LABELS):
         raise ValueError("Model artifact does not contain the required labels.")
 
     model = artifact["model"]

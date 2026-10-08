@@ -1,130 +1,407 @@
 {
   "schema_version": 1,
-  "task": "event_listing_classification",
-  "generated_at_utc": "2026-10-06T22:50:15.428394+00:00",
-  "evaluation_scope": "Gametime test-split comparison set",
-  "examples": 36,
-  "provenance": "Sampled from the held-out test split. Gametime categories are the labels.",
+  "task": "intent_classification",
+  "generated_at_utc": "2026-10-07T22:34:59.606004+00:00",
+  "evaluation_scope": "40 MASSIVE tr-TR official test requests",
+  "examples": 40,
+  "provenance": "Uniform sample without replacement, seed 42. Not the full benchmark.",
   "note": "Same inputs for every method. Abstaining with unclear counts as wrong unless unclear is the label.",
-  "data_sha256": "25bd85d962b7ccfa3ff059d37fb61762970eed389a533ec4fc87d79dfa60ce8f",
-  "training_data_sha256": "7d172a60e64f5d1690b38df64f970b28b2dbc0d27405b961954941148fb3f95e",
+  "data_sha256": "e58d86564bf3f8cde6b3649663e3de3993d448ca7e7ea039c9e9191b75299aa6",
+  "training_data_sha256": "9ec7936c9349eaf20950c667f331f8daad26f6169ed9dfad553acef5e0457abd",
   "logistic_regression_model": "logistic_regression_char",
   "jev_model": "jev-1.13.0",
-  "jev_prompt_version": "event-listing-v1",
+  "jev_prompt_version": "massive-tr-intent-v2",
   "jev_requested": false,
   "methods": {
     "parser": {
-      "completed": 36,
-      "total": 36,
+      "completed": 40,
+      "total": 40,
       "failed": 0,
       "not_run": 0,
-      "accuracy": 0.19444444444444445,
-      "macro_f1": 0.29147812971342385,
+      "accuracy": 0.175,
+      "macro_f1": 0.12666666666666665,
       "per_class": {
-        "concert": {
-          "precision": 0.5,
-          "recall": 0.16666666666666666,
-          "f1-score": 0.25,
-          "support": 12.0
-        },
-        "theatre": {
-          "precision": 0.8,
-          "recall": 0.3333333333333333,
-          "f1-score": 0.47058823529411764,
-          "support": 12.0
-        },
-        "stand_up": {
+        "alarm_set": {
           "precision": 1.0,
-          "recall": 0.08333333333333333,
-          "f1-score": 0.15384615384615385,
-          "support": 12.0
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 3.0
+        },
+        "calendar_set": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "cooking_recipe": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "datetime_query": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1-score": 0.6666666666666666,
+          "support": 2.0
+        },
+        "email_addcontact": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "email_sendemail": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "general_joke": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "general_quirky": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "iot_cleaning": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "iot_coffee": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "lists_remove": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "music_likeness": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "music_query": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "music_settings": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "news_query": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "play_music": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "qa_currency": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "qa_definition": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "qa_factoid": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "qa_stock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "recommendation_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "social_post": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "takeaway_order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "takeaway_query": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "weather_query": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.5,
+          "support": 2.0
         },
         "micro avg": {
-          "precision": 0.7,
-          "recall": 0.19444444444444445,
-          "f1-score": 0.30434782608695654,
-          "support": 36.0
+          "precision": 0.875,
+          "recall": 0.175,
+          "f1-score": 0.2916666666666667,
+          "support": 40.0
         },
         "macro avg": {
-          "precision": 0.7666666666666666,
-          "recall": 0.19444444444444445,
-          "f1-score": 0.29147812971342385,
-          "support": 36.0
+          "precision": 0.14,
+          "recall": 0.12,
+          "f1-score": 0.12666666666666665,
+          "support": 40.0
         },
         "weighted avg": {
-          "precision": 0.7666666666666667,
-          "recall": 0.19444444444444445,
-          "f1-score": 0.29147812971342385,
-          "support": 36.0
+          "precision": 0.2,
+          "recall": 0.175,
+          "f1-score": 0.18333333333333332,
+          "support": 40.0
         }
-      }
+      },
+      "coverage": 0.2,
+      "answered_accuracy": 0.875,
+      "overall_accuracy": 0.175,
+      "answered": 8,
+      "correct": 7,
+      "evaluation_status": "evaluated"
     },
     "logistic_regression": {
-      "completed": 36,
-      "total": 36,
+      "completed": 40,
+      "total": 40,
       "failed": 0,
       "not_run": 0,
-      "accuracy": 0.6388888888888888,
-      "macro_f1": 0.6475166410650282,
+      "accuracy": 0.825,
+      "macro_f1": 0.8148571428571428,
       "per_class": {
-        "concert": {
-          "precision": 0.47368421052631576,
-          "recall": 0.75,
-          "f1-score": 0.5806451612903226,
-          "support": 12.0
+        "alarm_set": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 3.0
         },
-        "theatre": {
-          "precision": 0.75,
+        "calendar_set": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "cooking_recipe": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 3.0
+        },
+        "datetime_query": {
+          "precision": 1.0,
           "recall": 0.5,
-          "f1-score": 0.6,
-          "support": 12.0
+          "f1-score": 0.6666666666666666,
+          "support": 2.0
         },
-        "stand_up": {
-          "precision": 0.8888888888888888,
-          "recall": 0.6666666666666666,
-          "f1-score": 0.7619047619047619,
-          "support": 12.0
+        "email_addcontact": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
         },
-        "accuracy": 0.6388888888888888,
+        "email_sendemail": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 3.0
+        },
+        "general_joke": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "general_quirky": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "iot_cleaning": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "iot_coffee": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "lists_remove": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "music_likeness": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1-score": 0.8,
+          "support": 2.0
+        },
+        "music_query": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "music_settings": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "news_query": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 1.0
+        },
+        "play_music": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "qa_currency": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "qa_definition": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "qa_factoid": {
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1-score": 0.5714285714285714,
+          "support": 2.0
+        },
+        "qa_stock": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "recommendation_events": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "social_post": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "takeaway_order": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 1.0
+        },
+        "takeaway_query": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "weather_query": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "micro avg": {
+          "precision": 0.8461538461538461,
+          "recall": 0.825,
+          "f1-score": 0.8354430379746836,
+          "support": 40.0
+        },
         "macro avg": {
-          "precision": 0.7041910331384015,
-          "recall": 0.6388888888888888,
-          "f1-score": 0.6475166410650282,
-          "support": 36.0
+          "precision": 0.8026666666666666,
+          "recall": 0.86,
+          "f1-score": 0.8148571428571428,
+          "support": 40.0
         },
         "weighted avg": {
-          "precision": 0.7041910331384016,
-          "recall": 0.6388888888888888,
-          "f1-score": 0.6475166410650282,
-          "support": 36.0
+          "precision": 0.7783333333333333,
+          "recall": 0.825,
+          "f1-score": 0.7852380952380952,
+          "support": 40.0
         }
-      }
+      },
+      "evaluation_status": "evaluated"
     },
     "jev": {
       "completed": 0,
-      "total": 36,
+      "total": 40,
       "failed": 0,
-      "not_run": 36,
+      "not_run": 40,
       "accuracy": null,
-      "macro_f1": null
+      "macro_f1": null,
+      "evaluation_status": "not evaluated"
     }
   },
   "records": [
     {
-      "text": "Everclear (Concert Only)",
-      "actual": "concert",
+      "text": "facebookta g\u00fczel havan\u0131n tad\u0131n\u0131 \u00e7\u0131kard\u0131\u011f\u0131m\u0131 s\u00f6yleyen yeni bir durum payla\u015f",
+      "actual": "social_post",
       "results": [
         {
           "method": "parser",
           "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.97
+          "label": "weather_query",
+          "elapsed_ms": 0.395
         },
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 4.519
+          "label": "social_post",
+          "elapsed_ms": 14.249
         },
         {
           "method": "jev",
@@ -134,20 +411,43 @@
       ]
     },
     {
-      "text": "Lionel Richie",
-      "actual": "concert",
+      "text": "olly bug\u00fcn biraz h\u00fcz\u00fcnl\u00fc \u015fark\u0131lar dinlemek istiyorum",
+      "actual": "play_music",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "play_music",
+          "elapsed_ms": 0.132
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "play_music",
+          "elapsed_ms": 1.157
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "iyi bir espri nas\u0131l olur",
+      "actual": "general_joke",
       "results": [
         {
           "method": "parser",
           "status": "ok",
           "label": "unclear",
-          "elapsed_ms": 0.038
+          "elapsed_ms": 0.024
         },
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.125
+          "label": "general_joke",
+          "elapsed_ms": 0.978
         },
         {
           "method": "jev",
@@ -157,20 +457,20 @@
       ]
     },
     {
-      "text": "Sing-A-Long Broadway",
-      "actual": "concert",
+      "text": "teknoloji",
+      "actual": "general_quirky",
       "results": [
         {
           "method": "parser",
           "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 0.087
+          "label": "unclear",
+          "elapsed_ms": 0.016
         },
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.312
+          "label": "news_query",
+          "elapsed_ms": 0.894
         },
         {
           "method": "jev",
@@ -180,8 +480,77 @@
       ]
     },
     {
-      "text": "AJ Ghent",
-      "actual": "concert",
+      "text": "ikiye \u00e7eyrek var",
+      "actual": "datetime_query",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.02
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_factoid",
+          "elapsed_ms": 0.9
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "\u015fark\u0131n\u0131n ad\u0131",
+      "actual": "music_query",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.02
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "music_query",
+          "elapsed_ms": 0.884
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "l\u00fctfen ak\u015fam be\u015f i\u00e7in alarm\u0131m\u0131 kur",
+      "actual": "alarm_set",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.08
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.984
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "paket servis i\u00e7in ara",
+      "actual": "takeaway_order",
       "results": [
         {
           "method": "parser",
@@ -192,8 +561,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.175
+          "label": "takeaway_order",
+          "elapsed_ms": 0.899
         },
         {
           "method": "jev",
@@ -203,307 +572,8 @@
       ]
     },
     {
-      "text": "Mannequin Pussy",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.059
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.151
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "The Sword",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.024
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.089
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Bruce Liu",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.035
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.231
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Naples Philharmonic Masterworks - Beethoven and Brahms",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.051
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.124
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Air Supply",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.024
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.985
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Spanish Love Songs",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.029
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.029
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Red Not Chili Peppers",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.029
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.999
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Pixel Grip",
-      "actual": "concert",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.035
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.129
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "St. Louis Symphony Orchestra - Live at The Sheldon: Brass Trio",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.072
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.547
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Cats - The Jellicle Ball",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.045
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.662
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "V-The Ultimate Variety Show",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.044
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.307
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Nashville Ballet - The Nutcracker",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 0.053
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.069
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Spirit of America",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.062
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.019
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Christmas Stampede",
-      "actual": "theatre",
+      "text": "yard\u0131m sadece cemreye g\u00f6nderilecek",
+      "actual": "email_sendemail",
       "results": [
         {
           "method": "parser",
@@ -514,8 +584,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.065
+          "label": "email_sendemail",
+          "elapsed_ms": 1.338
         },
         {
           "method": "jev",
@@ -525,8 +595,31 @@
       ]
     },
     {
-      "text": "Ira Glass",
-      "actual": "theatre",
+      "text": "d\u00fcnyan\u0131n en y\u00fcksek zirvesi hangisidir",
+      "actual": "qa_factoid",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.036
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_factoid",
+          "elapsed_ms": 1.276
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "yemek sipari\u015fi nas\u0131l gidiyor",
+      "actual": "takeaway_query",
       "results": [
         {
           "method": "parser",
@@ -537,8 +630,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.171
+          "label": "takeaway_order",
+          "elapsed_ms": 1.026
         },
         {
           "method": "jev",
@@ -548,146 +641,8 @@
       ]
     },
     {
-      "text": "Matilda The Musical",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 0.038
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.062
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "A Christmas Carol - A New Musical",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 0.04
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.029
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "St. Louis Symphony Orchestra - Live at the Pulitzer: Program 1",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 0.056
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.052
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Friends! The Musical Parody",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 0.039
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.183
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "School of Rock",
-      "actual": "theatre",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.028
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "theatre",
-          "elapsed_ms": 1.028
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "That's Not Me Comedy Tour",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.171
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.183
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Max Amini",
-      "actual": "stand_up",
+      "text": "mehmet ali alabora hangi y\u0131lda oyunculu\u011fa ba\u015flad\u0131",
+      "actual": "qa_factoid",
       "results": [
         {
           "method": "parser",
@@ -698,8 +653,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.493
+          "label": "qa_factoid",
+          "elapsed_ms": 1.084
         },
         {
           "method": "jev",
@@ -709,123 +664,8 @@
       ]
     },
     {
-      "text": "Matt Mathews",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.038
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.17
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Dave Chappelle",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.025
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 0.897
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Comedy Cellar",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.025
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.304
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Psychic Standup with Karen Rontowski",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 0.048
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.079
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Akaash Singh",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.026
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.143
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Kristin Key",
-      "actual": "stand_up",
+      "text": "patates k\u0131zartmak i\u00e7in en iyi f\u0131r\u0131n s\u0131cakl\u0131\u011f\u0131 ne",
+      "actual": "cooking_recipe",
       "results": [
         {
           "method": "parser",
@@ -836,8 +676,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.29
+          "label": "cooking_recipe",
+          "elapsed_ms": 1.026
         },
         {
           "method": "jev",
@@ -847,54 +687,8 @@
       ]
     },
     {
-      "text": "Laugh Factory",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.037
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.436
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Zarna Garg",
-      "actual": "stand_up",
-      "results": [
-        {
-          "method": "parser",
-          "status": "ok",
-          "label": "unclear",
-          "elapsed_ms": 0.026
-        },
-        {
-          "method": "logistic_regression",
-          "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.327
-        },
-        {
-          "method": "jev",
-          "status": "not_requested",
-          "message": "Jev was not requested. No API call was made."
-        }
-      ]
-    },
-    {
-      "text": "Ms Pat",
-      "actual": "stand_up",
+      "text": "c. n. n. den son haberleri duymak istiyorum",
+      "actual": "news_query",
       "results": [
         {
           "method": "parser",
@@ -905,8 +699,8 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "stand_up",
-          "elapsed_ms": 1.328
+          "label": "news_query",
+          "elapsed_ms": 0.969
         },
         {
           "method": "jev",
@@ -916,8 +710,169 @@
       ]
     },
     {
-      "text": "Adam Ray",
-      "actual": "stand_up",
+      "text": "elektrik s\u00fcp\u00fcrgesini ba\u015flat",
+      "actual": "iot_cleaning",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.025
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "iot_cleaning",
+          "elapsed_ms": 0.933
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "sabah alt\u0131 da kahve ba\u015flat",
+      "actual": "iot_coffee",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.025
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "iot_coffee",
+          "elapsed_ms": 0.928
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "l\u00fctfen iki \u015fark\u0131 atla",
+      "actual": "music_settings",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.024
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "music_settings",
+          "elapsed_ms": 0.903
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "g\u00fcne\u015f g\u00f6zl\u00fc\u011f\u00fc almam gerekiyor mu",
+      "actual": "weather_query",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.031
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "weather_query",
+          "elapsed_ms": 1.092
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "\u00e7evremde neler oluyor",
+      "actual": "recommendation_events",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.022
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "recommendation_events",
+          "elapsed_ms": 1.004
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "akbank hisse senedi fiyat\u0131 ne kadar",
+      "actual": "qa_stock",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.031
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_stock",
+          "elapsed_ms": 0.999
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "sabah dokuza alarm kur",
+      "actual": "alarm_set",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.022
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.918
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "k\u0131yamet ne zaman kopacak",
+      "actual": "general_quirky",
       "results": [
         {
           "method": "parser",
@@ -928,8 +883,422 @@
         {
           "method": "logistic_regression",
           "status": "ok",
-          "label": "concert",
-          "elapsed_ms": 1.091
+          "label": "qa_factoid",
+          "elapsed_ms": 0.931
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "ben g\u00fczelden anlar\u0131m \u015fark\u0131 s\u0131n\u0131 \u00e7al",
+      "actual": "play_music",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "play_music",
+          "elapsed_ms": 0.029
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "play_music",
+          "elapsed_ms": 1.052
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "l\u00fctfen halitin bana g\u00f6nderdi\u011fi epostaya s\u00f6yle paraya \u015fimdi acil ihtiyac\u0131m var",
+      "actual": "email_sendemail",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.227
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "email_sendemail",
+          "elapsed_ms": 1.903
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "tweet ile otoko\u00e7a \u015fikayet g\u00f6nder",
+      "actual": "social_post",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.028
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "social_post",
+          "elapsed_ms": 1.077
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "gratis'e giden e-postay\u0131 bul ve onu ki\u015fi listeme koy",
+      "actual": "email_addcontact",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.034
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "email_addcontact",
+          "elapsed_ms": 1.219
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "adlinin tan\u0131m\u0131 nedir",
+      "actual": "qa_definition",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.022
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_definition",
+          "elapsed_ms": 0.964
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "bana tarifini s\u00f6yle",
+      "actual": "cooking_recipe",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.022
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "cooking_recipe",
+          "elapsed_ms": 1.056
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "bu hafta nas\u0131l bir hava beklemeliyim",
+      "actual": "weather_query",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "weather_query",
+          "elapsed_ms": 0.027
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "weather_query",
+          "elapsed_ms": 1.003
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "araba \u00f6dememi takvimimden kald\u0131r",
+      "actual": "lists_remove",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.093
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "calendar_remove",
+          "elapsed_ms": 1.023
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "amerikan dolar\u0131 ve avro d\u00f6viz kuru nedir",
+      "actual": "qa_currency",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.029
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_currency",
+          "elapsed_ms": 1.003
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "bug\u00fcn ne seviyorum",
+      "actual": "general_quirky",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.021
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "music_likeness",
+          "elapsed_ms": 0.897
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "bu \u015fark\u0131y\u0131 seviyorum",
+      "actual": "music_likeness",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.024
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "music_likeness",
+          "elapsed_ms": 0.921
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "l\u00fctfen \u015fu anki \u015fark\u0131y\u0131 be\u015f y\u0131ld\u0131z olarak de\u011ferlendir",
+      "actual": "music_likeness",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.048
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "music_likeness",
+          "elapsed_ms": 1.132
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "hizmet sorunlar\u0131m hakk\u0131nda k\u0131rc\u0131lara g\u00f6nderilecek bir epostaya ihtiyac\u0131m var",
+      "actual": "email_sendemail",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.039
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "email_sendemail",
+          "elapsed_ms": 1.138
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "makarna pi\u015firmenin en kolay yolu nedir",
+      "actual": "cooking_recipe",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.028
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "cooking_recipe",
+          "elapsed_ms": 1.237
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "toplant\u0131 \u00f6ncesi bir uyar\u0131 g\u00f6nder",
+      "actual": "calendar_set",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.085
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "calendar_set",
+          "elapsed_ms": 1.027
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "beyzbol skorlar\u0131",
+      "actual": "general_quirky",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "unclear",
+          "elapsed_ms": 0.021
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "qa_factoid",
+          "elapsed_ms": 0.922
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "bug\u00fcn g\u00fcnlerden ne",
+      "actual": "datetime_query",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "datetime_query",
+          "elapsed_ms": 0.063
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "datetime_query",
+          "elapsed_ms": 1.053
+        },
+        {
+          "method": "jev",
+          "status": "not_requested",
+          "message": "Jev was not requested. No API call was made."
+        }
+      ]
+    },
+    {
+      "text": "yeni bir alarm kur",
+      "actual": "alarm_set",
+      "results": [
+        {
+          "method": "parser",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.021
+        },
+        {
+          "method": "logistic_regression",
+          "status": "ok",
+          "label": "alarm_set",
+          "elapsed_ms": 0.921
         },
         {
           "method": "jev",
@@ -940,10 +1309,10 @@
     }
   ],
   "code_sha256": {
-    "classifier.py": "58356b441e941f0109d0c97223960d6daa794e80ca968ad84b33a56537a0730a",
-    "parser.py": "45a927c32d5736fe99f595542d4adbc85a14d3465404caa6d59e5a71d709c120",
-    "jev.py": "701382a454e04d4624d30fd629efa5aeec97b4ca320e77419dbeddaff41887cc",
-    "method_comparison.py": "f7a63604fe8aa713c0053f7bf121dbfbbe78b63fa35ee986bbe3770d9bf75215",
-    "compare_methods.py": "70d6de0245c5a7a9febbb8999aef5afdc7213f538487f5af8e038e44c421eb6c"
+    "classifier.py": "57820dfe5d044e84d0c053d4bc5ec67626ef6d3eea0bdabccdc5414a782b9ea7",
+    "parser.py": "ee16dde18b93fbcd1e0cf5579674ac49efaf8d766988c77a4a289e462e6d86b7",
+    "jev.py": "3fcc1274477e699e9061c0331c56602e3b5b65cef412df588ac603b7289b7507",
+    "method_comparison.py": "522a49e602514d973b341761d66a1fa4e147282c7be93d1f34d41aade6edd870",
+    "compare_methods.py": "c668a44ff49ac525c96bea8f11ae8bcfb032a923a31fad3bd80a805970dc5995"
   }
 }

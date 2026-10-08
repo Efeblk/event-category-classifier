@@ -1,828 +1,245 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Event category classifier · COE025</title>
-    <style>
-      :root {
-        font-family: system-ui, sans-serif;
-        color: #182c35;
-        background: #f2f5f2;
-        font-synthesis: none;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      [hidden] {
-        display: none !important;
-      }
-      body {
-        margin: 0;
-      }
-      main {
-        max-width: 1040px;
-        margin: auto;
-        padding: 60px 28px;
-      }
-      .eyebrow {
-        font-size: 12px;
-        letter-spacing: 0.14em;
-        font-weight: 700;
-        color: #36695c;
-        text-transform: uppercase;
-      }
-      h1 {
-        font-size: clamp(34px, 5vw, 54px);
-        line-height: 1.08;
-        letter-spacing: -0.04em;
-        margin: 18px 0;
-      }
-      .lead {
-        max-width: 650px;
-        font-size: 18px;
-        line-height: 1.6;
-        color: #4f656b;
-      }
-      .layout {
-        display: grid;
-        grid-template-columns: 1.7fr 1fr;
-        gap: 36px;
-        margin-top: 36px;
-      }
-      .panel {
-        background: white;
-        border: 1px solid #d6dfdb;
-        border-radius: 14px;
-        padding: 28px;
-      }
-      h2 {
-        margin: 0 0 18px;
-        font-size: 21px;
-      }
-      label {
-        display: block;
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 12px;
-      }
-      textarea {
-        width: 100%;
-        min-height: 190px;
-        resize: vertical;
-        border: 1px solid #b6c7c1;
-        border-radius: 8px;
-        padding: 16px;
-        font: 16px/1.6 system-ui;
-        color: inherit;
-      }
-      textarea:focus,
-      button:focus-visible {
-        outline: 3px solid #69aa94;
-        outline-offset: 3px;
-      }
-      button {
-        cursor: pointer;
-        font: 600 15px system-ui;
-      }
-      .primary {
-        color: white;
-        background: #155946;
-        border: 0;
-        border-radius: 8px;
-        padding: 13px 22px;
-        margin-top: 18px;
-      }
-      .primary:disabled {
-        opacity: 0.6;
-        cursor: wait;
-      }
-      .samples {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 14px 0;
-      }
-      .sample {
-        background: #f2f5f2;
-        color: #274d43;
-        border: 1px solid #d6dfdb;
-        border-radius: 6px;
-        padding: 7px 10px;
-        font-size: 12px;
-      }
-      .result {
-        border-top: 1px solid #d6dfdb;
-        margin-top: 24px;
-        padding-top: 20px;
-      }
-      .label {
-        font-size: 30px;
-        font-weight: 650;
-        color: #155946;
-        margin: 0 0 8px;
-      }
-      .muted {
-        color: #607277;
-        font-size: 13px;
-        line-height: 1.65;
-      }
-      ol {
-        padding-left: 22px;
-      }
-      li {
-        margin: 14px 0;
-        font-size: 14px;
-        line-height: 1.6;
-      }
-      .notice {
-        font-size: 13px;
-        line-height: 1.7;
-        margin-top: 32px;
-        color: #607277;
-      }
-      footer {
-        margin-top: 36px;
-        border-top: 1px solid #d6dfdb;
-        padding-top: 18px;
-        color: #607277;
-        font-size: 12px;
-      }
-      .comparison {
-        margin-top: 36px;
-      }
-      .comparison-head {
-        display: flex;
-        align-items: start;
-        justify-content: space-between;
-        gap: 24px;
-      }
-      .comparison-head p {
-        max-width: 690px;
-        margin: 0;
-      }
-      .comparison-status {
-        margin: 22px 0 0;
-      }
-      .retry {
-        color: #155946;
-        background: white;
-        border: 1px solid #88a89e;
-        border-radius: 7px;
-        padding: 8px 13px;
-        margin-top: 12px;
-      }
-      .table-wrap {
-        max-width: 100%;
-        overflow-x: auto;
-        margin-top: 22px;
-        border: 1px solid #d6dfdb;
-        border-radius: 9px;
-      }
-      .model-table {
-        width: 100%;
-        min-width: 760px;
-        border-collapse: collapse;
-        font-size: 14px;
-      }
-      .model-table th,
-      .model-table td {
-        text-align: left;
-        padding: 14px 16px;
-        border-bottom: 1px solid #e2e9e6;
-        vertical-align: top;
-      }
-      .model-table th {
-        background: #f2f5f2;
-        color: #35534b;
-        font-size: 12px;
-        letter-spacing: 0.03em;
-      }
-      .model-table tbody tr:last-child td {
-        border-bottom: 0;
-      }
-      .model-table tbody tr.selected {
-        background: #edf7f2;
-      }
-      .model-name {
-        font-weight: 650;
-        color: #183f34;
-      }
-      .feature {
-        color: #607277;
-        line-height: 1.45;
-        min-width: 220px;
-      }
-      .badge {
-        display: inline-block;
-        margin-left: 8px;
-        padding: 3px 7px;
-        border-radius: 999px;
-        background: #155946;
-        color: white;
-        font-size: 11px;
-        white-space: nowrap;
-      }
-      .number {
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-      }
-      .comparison-notes {
-        margin-top: 18px;
-      }
-      .comparison-notes p {
-        margin: 0;
-      }
-      .method-cards {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 20px;
-      }
-      .method-card {
-        border: 1px solid #d6dfdb;
-        border-radius: 9px;
-        padding: 20px;
-      }
-      .method-card h3 {
-        font-size: 16px;
-        margin: 0 0 14px;
-      }
-      .method-card .label {
-        font-size: 24px;
-      }
-      .method-card p:last-child {
-        margin-bottom: 0;
-      }
-      .jev-option {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 16px 0 0;
-      }
-      .jev-option input {
-        width: 17px;
-        height: 17px;
-      }
-      .method-benchmark {
-        margin-top: 24px;
-      }
-      .score-chart {
-        padding: 24px 12px 12px;
-        min-width: 700px;
-      }
-      .score-chart svg {
-        display: block;
-        width: 100%;
-        height: auto;
-        color: #182c35;
-        font-family: system-ui, sans-serif;
-      }
-      @media (max-width: 740px) {
-        main {
-          padding: 30px 20px;
-        }
-        .layout {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-        .panel {
-          padding: 22px;
-        }
-      }
-      @media (max-width: 600px) {
-        .comparison-head {
-          display: block;
-        }
-        .comparison-notes,
-        .method-cards {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="eyebrow">COE025 · Project 1 · Text classification</div>
-      <h1>What kind of event is this?</h1>
-      <p class="lead">One event title. Three methods. Requests also work, but the model learned from English titles.</p>
-      <div class="layout">
-        <section class="panel" aria-labelledby="input-title">
-          <h2 id="input-title">Enter an event</h2>
-          <form id="form">
-            <label for="description">Event title or request</label>
-            <textarea
-              id="description"
-              maxlength="5000"
-              required
-              placeholder="Elf The Musical"
-            ></textarea>
-            <div class="samples" aria-label="Sample inputs">
-              <button
-                class="sample"
-                type="button"
-                data-sample="Hamilton"
-              >
-                Title only
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Metallica"
-              >
-                Band name
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Kevin Hart"
-              >
-                Comedian name
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Nashville Symphony - Holiday Pops"
-              >
-                Keyword
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Comedy Club Open Mic Night"
-              >
-                Comedy keyword
-              </button>
-              <button
-                class="sample"
-                type="button"
-                data-sample="Konser değil, tiyatro istiyorum."
-              >
-                TR request
-              </button>
-            </div>
-            <label class="jev-option"
-              ><input id="include-jev" type="checkbox" disabled />Include Jev
-              (external API call)</label
-            >
-            <p class="muted" id="jev-status">Checking Jev settings...</p>
-            <button class="primary" id="submit" type="submit">
-              Compare methods
-            </button>
-          </form>
-        </section>
-        <aside class="panel">
-          <h2>Three approaches</h2>
-          <p>
-            <strong>Parser</strong><br /><span class="muted"
-              >Written rules</span
-            >
-          </p>
-          <p>
-            <strong>Logistic Regression</strong><br /><span class="muted"
-              >Learned patterns</span
-            >
-          </p>
-          <p>
-            <strong>Jev</strong><br /><span class="muted"
-              >Pretrained model / optional API</span
-            >
-          </p>
-        </aside>
-      </div>
-      <section
-        class="panel comparison"
-        id="result"
-        role="status"
-        aria-live="polite"
-        hidden
-      ></section>
-      <section class="panel comparison" aria-labelledby="method-title">
-        <h2 id="method-title">Same inputs, three approaches</h2>
-        <p class="muted">Same labeled cases for each method.</p>
-        <div
-          id="method-results"
-          class="method-benchmark muted"
-          role="status"
-          aria-live="polite"
-        >
-          Loading the comparison experiment...
-        </div>
-      </section>
-      <section class="panel comparison" aria-labelledby="comparison-title">
-        <div class="comparison-head">
-          <div>
-            <h2 id="comparison-title">Trust me bro benchmark</h2>
-            <p class="muted">Training experiment / validation macro F1 / higher is better</p>
-          </div>
-        </div>
-        <div
-          class="comparison-status muted"
-          id="comparison-status"
-          role="status"
-          aria-live="polite"
-        >
-          Loading model results...
-        </div>
-        <div class="table-wrap" id="comparison-table-wrap" hidden></div>
-        <div class="comparison-notes" id="comparison-notes" hidden></div>
-      </section>
-      <p class="notice">
-        Public Gametime listings (CC BY-NC 4.0). Labels are the ticket site's
-        categories. Classification only.
-      </p>
-      <footer>COE025 / Local course demo</footer>
-    </main>
-    <script>
-      const input = document.getElementById("description");
-      const result = document.getElementById("result");
-      const submit = document.getElementById("submit");
-      const names = {
-        concert: "Concert / Konser",
-        theatre: "Theatre / Tiyatro",
-        stand_up: "Stand-up",
-        unclear: "Unclear / Belirsiz",
-      };
-      const methodNames = {
-        parser: "Rule-based parser",
-        logistic_regression: "Logistic Regression",
-        jev: "Jev",
-      };
-      const methodDescriptions = {
-        parser: "Written rules.",
-        logistic_regression: "Learned patterns.",
-        jev: "Pretrained model.",
-      };
-      const modelDetails = {
-        dummy_most_frequent: {
-          name: "Majority baseline",
-          feature: "Always predicts the most common training category.",
-        },
-        multinomial_nb_word: {
-          name: "Naive Bayes: words",
-          feature: "Uses weighted single words and adjacent word pairs.",
-        },
-        multinomial_nb_char: {
-          name: "Naive Bayes: characters",
-          feature: "Uses groups of 3 to 5 characters.",
-        },
-        logistic_regression_word: {
-          name: "Logistic Regression: words",
-          feature: "Uses weighted single words and adjacent word pairs.",
-        },
-        logistic_regression_char: {
-          name: "Logistic Regression: characters",
-          feature: "Uses groups of 3 to 5 characters.",
-        },
-        linear_svm_word: {
-          name: "Linear SVM: words",
-          feature: "Uses weighted single words and adjacent word pairs.",
-        },
-        linear_svm_char: {
-          name: "Linear SVM: characters",
-          feature: "Uses groups of 3 to 5 characters.",
-        },
-      };
-      const comparisonStatus = document.getElementById("comparison-status");
-      const comparisonTableWrap = document.getElementById(
-        "comparison-table-wrap",
-      );
-      const comparisonNotes = document.getElementById("comparison-notes");
-      const addCell = (row, tag, text, className) => {
-        const cell = document.createElement(tag);
-        cell.textContent = text;
-        if (className) cell.className = className;
-        row.append(cell);
-        return cell;
-      };
-      const validScore = (value) =>
-        typeof value === "number" &&
-        Number.isFinite(value) &&
-        value >= 0 &&
-        value <= 1;
-      function showComparisonError(message) {
-        comparisonStatus.replaceChildren();
-        comparisonStatus.textContent = message;
-        const retry = document.createElement("button");
-        retry.type = "button";
-        retry.className = "retry";
-        retry.textContent = "Retry";
-        retry.addEventListener("click", loadComparison);
-        comparisonStatus.append(document.createElement("br"), retry);
-        comparisonTableWrap.hidden = true;
-        comparisonNotes.hidden = true;
-      }
-      function renderComparison(payload) {
-        if (
-          !payload ||
-          typeof payload !== "object" ||
-          !payload.models ||
-          typeof payload.models !== "object" ||
-          Array.isArray(payload.models)
-        )
-          throw new Error("Model results have an invalid format.");
-        if (
-          payload.task !== "event_listing_classification" ||
-          payload.evaluation_scope !== "raw_model"
-        )
-          throw new Error(
-            "Model results do not match this event classifier.",
-          );
-        if (payload.selection?.metric !== "validation_macro_f1")
-          throw new Error("Model selection details are invalid.");
-        const rows = Object.entries(payload.models).map(([key, value]) => ({
-          key,
-          value,
-          detail: modelDetails[key],
-        }));
-        if (rows.length === 0)
-          throw new Error("No model results are available.");
-        if (
-          rows.length !== Object.keys(modelDetails).length ||
-          rows.some(
-            (row) =>
-              !row.detail ||
-              !row.value ||
-              !validScore(row.value.validation?.macro_f1) ||
-              !validScore(row.value.test?.accuracy) ||
-              !validScore(row.value.test?.macro_f1),
-          )
-        )
-          throw new Error("Model results are incomplete or invalid.");
-        const selected = payload.selection?.selected_model;
-        if (
-          typeof selected !== "string" ||
-          !rows.some((row) => row.key === selected)
-        )
-          throw new Error("The selected model is missing from the results.");
-        rows.sort(
-          (a, b) => a.value.validation.macro_f1 - b.value.validation.macro_f1,
-        );
-        const chart = document.createElement("div");
-        chart.className = "score-chart";
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 960 430");
-        svg.setAttribute("role", "img");
-        svg.setAttribute("aria-label", "Validation macro F1 by model, sorted from lowest to highest. " +
-          rows.map((row) => row.detail.name + ": " + row.value.validation.macro_f1.toFixed(3) +
-            (row.key === selected ? " (selected)" : "")).join("; "));
-        function draw(tag, attributes, text) {
-          const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
-          Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
-          if (text !== undefined) element.textContent = text;
-          svg.append(element);
-          return element;
-        }
-        const left = 64, right = 916, top = 30, bottom = 330;
-        const x = (index) => left + 44 + index * (right - left - 88) / (rows.length - 1);
-        const y = (value) => bottom - value * (bottom - top);
-        for (let tick = 0; tick <= 5; tick++) {
-          const value = tick / 5;
-          draw("line", { x1: left, x2: right, y1: y(value), y2: y(value),
-            stroke: tick === 0 ? "#182c35" : "#d6dfdb", "stroke-width": tick === 0 ? 1.5 : 1 });
-          draw("text", { x: left - 12, y: y(value) + 5, "text-anchor": "end", "font-size": 15 },
-            Math.round(value * 100) + "%");
-        }
-        draw("polyline", { points: rows.map((row, index) => x(index) + "," + y(row.value.validation.macro_f1)).join(" "),
-          fill: "none", stroke: "#182c35", "stroke-width": 3, "stroke-linejoin": "round" });
-        rows.forEach((row, index) => {
-          const value = row.value.validation.macro_f1;
-          const isSelected = row.key === selected;
-          draw("circle", { cx: x(index), cy: y(value), r: isSelected ? 6 : 4,
-            fill: isSelected ? "#155946" : "#182c35" });
-          draw("text", { x: x(index), y: y(value) - 14, "text-anchor": "middle", "font-size": 14,
-            "font-weight": isSelected ? 700 : 500 }, (value * 100).toFixed(1) + "%");
-          const parts = row.detail.name.split(": ");
-          draw("text", { x: x(index), y: bottom + 28, "text-anchor": "middle", "font-size": 12 }, parts[0]);
-          if (parts[1]) draw("text", { x: x(index), y: bottom + 46, "text-anchor": "middle", "font-size": 12 }, parts[1]);
-          if (isSelected) draw("text", { x: x(index), y: bottom + 65, "text-anchor": "middle", "font-size": 12,
-            fill: "#155946", "font-weight": 700 }, "Selected");
-        });
-        draw("text", { x: left, y: 418, "font-size": 12, fill: "#607277" },
-          "Models sorted by validation score; the line connects separate models, not training progress.");
-        chart.append(svg);
-        comparisonTableWrap.replaceChildren(chart);
-        comparisonTableWrap.hidden = false;
-        const split = payload.split;
-        const datasetRows = payload.dataset?.rows;
-        if (
-          !Number.isInteger(datasetRows) ||
-          !Number.isInteger(split?.train?.rows) ||
-          !Number.isInteger(split?.validation?.rows) ||
-          !Number.isInteger(split?.test?.rows)
-        )
-          throw new Error("Dataset details are incomplete or invalid.");
-        const splitNote = document.createElement("p");
-        splitNote.className = "muted";
-        splitNote.textContent =
-          datasetRows +
-          " public event titles / " +
-          split.train.rows +
-          " train / " +
-          split.validation.rows +
-          " validation / " +
-          split.test.rows +
-          " test. Different dataset from the comparison above.";
-        comparisonNotes.replaceChildren(splitNote);
-        comparisonNotes.hidden = false;
-        comparisonStatus.textContent = "";
-      }
-      async function loadComparison() {
-        comparisonStatus.textContent = "Loading model results...";
-        comparisonTableWrap.hidden = true;
-        comparisonNotes.hidden = true;
-        try {
-          const response = await fetch("/api/results");
-          if (!response.ok) throw new Error("Could not load model results.");
-          const payload = await response.json();
-          renderComparison(payload);
-        } catch (error) {
-          showComparisonError(
-            error instanceof Error
-              ? error.message
-              : "Could not load model results.",
-          );
-        }
-      }
-      async function loadJevStatus() {
-        const checkbox = document.getElementById("include-jev");
-        const status = document.getElementById("jev-status");
-        try {
-          const response = await fetch("/api/comparison-config");
-          if (!response.ok) throw new Error();
-          const config = await response.json();
-          checkbox.disabled = !config.configured || config.remaining_calls <= 0;
-          if (checkbox.disabled) checkbox.checked = false;
-          status.textContent = config.configured
-            ? config.remaining_calls + " API calls left / 1,000 characters max"
-            : "Jev is not configured.";
-        } catch {
-          checkbox.disabled = true;
-          checkbox.checked = false;
-          status.textContent =
-            "Jev settings are unavailable. Both local methods remain available.";
-        }
-      }
-      async function loadMethodResults() {
-        const target = document.getElementById("method-results");
-        try {
-          const response = await fetch("/api/method-results");
-          if (!response.ok)
-            throw new Error("Could not load experiment results.");
-          const payload = await response.json();
-          target.replaceChildren();
-          if (!payload.methods || !payload.examples) {
-            target.textContent = "No saved experiment is available yet.";
-            return;
-          }
-          if (payload.task !== "event_listing_classification")
-            throw new Error("Experiment results do not match this task.");
-          const wrap = document.createElement("div");
-          wrap.className = "table-wrap";
-          const table = document.createElement("table");
-          table.className = "model-table";
-          table.style.minWidth = "560px";
-          const head = document.createElement("thead");
-          const header = document.createElement("tr");
-          ["Method", "Completed", "Accuracy", "Macro F1"].forEach((text) => {
-            const cell = addCell(header, "th", text);
-            cell.scope = "col";
-          });
-          head.append(header);
-          table.append(head);
-          const body = document.createElement("tbody");
-          Object.keys(methodNames).forEach((key) => {
-            const score = payload.methods[key];
-            if (
-              !score ||
-              !Number.isInteger(score.completed) ||
-              !Number.isInteger(score.total)
-            )
-              throw new Error("Experiment results are incomplete.");
-            const complete = score.completed === score.total;
-            const row = document.createElement("tr");
-            addCell(row, "td", methodNames[key], "model-name");
-            addCell(row, "td", score.completed + " / " + score.total, "number");
-            addCell(
-              row,
-              "td",
-              complete && validScore(score.accuracy)
-                ? (score.accuracy * 100).toFixed(1) + "%"
-                : "Not evaluated",
-              "number",
-            );
-            addCell(
-              row,
-              "td",
-              complete && validScore(score.macro_f1)
-                ? score.macro_f1.toFixed(3)
-                : "Not evaluated",
-              "number",
-            );
-            body.append(row);
-          });
-          table.append(body);
-          wrap.append(table);
-          target.append(wrap);
-          const note = document.createElement("p");
-          note.className = "muted";
-          note.textContent =
-            payload.examples +
-            " labeled inputs / Unclear counts as wrong / Jev scores appear after a complete run.";
-          target.append(note);
-        } catch (error) {
-          target.textContent = error.message;
-        }
-      }
-      document.querySelectorAll("[data-sample]").forEach((button) =>
-        button.addEventListener("click", () => {
-          input.value = button.dataset.sample;
-          input.focus();
-        }),
-      );
-      document
-        .getElementById("form")
-        .addEventListener("submit", async (event) => {
-          event.preventDefault();
-          submit.disabled = true;
-          result.hidden = false;
-          result.textContent = "Comparing methods...";
-          const requestText = input.value;
-          try {
-            const response = await fetch("/api/compare", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                text: requestText,
-                include_jev: document.getElementById("include-jev").checked,
-              }),
-            });
-            const payload = await response.json();
-            if (!response.ok)
-              throw new Error(payload.error || "Prediction failed.");
-            if (
-              !Array.isArray(payload.results) ||
-              payload.results.length !== 3 ||
-              Object.keys(methodNames).some(
-                (key) =>
-                  payload.results.filter((row) => row.method === key).length !==
-                  1,
-              )
-            )
-              throw new Error("Comparison results are incomplete.");
-            result.replaceChildren();
-            const heading = document.createElement("h2");
-            heading.textContent = "Same input, three methods";
-            result.append(heading);
-            const quote = document.createElement("p");
-            quote.className = "muted";
-            quote.textContent = requestText;
-            result.append(quote);
-            const cards = document.createElement("div");
-            cards.className = "method-cards";
-            payload.results.forEach((row) => {
-              const card = document.createElement("article");
-              card.className = "method-card";
-              const title = document.createElement("h3");
-              title.textContent = methodNames[row.method];
-              card.append(title);
-              const label = document.createElement("p");
-              label.className = "label";
-              if (row.status === "ok" && !names[row.label])
-                throw new Error("A method returned an invalid category.");
-              label.textContent =
-                row.status === "ok" ? names[row.label] : "Not evaluated";
-              card.append(label);
-              const description = document.createElement("p");
-              description.className = "muted";
-              description.textContent =
-                row.status === "ok"
-                  ? methodDescriptions[row.method]
-                  : row.method === "jev" &&
-                      document.getElementById("include-jev").disabled
-                    ? "Jev is unavailable."
-                    : row.message || "No result is available.";
-              card.append(description);
-              if (Number.isFinite(row.elapsed_ms)) {
-                const timing = document.createElement("p");
-                timing.className = "muted";
-                timing.textContent =
-                  "Request time: " + row.elapsed_ms.toFixed(1) + " ms";
-                card.append(timing);
-              }
-              cards.append(card);
-            });
-            result.append(cards);
-          } catch (error) {
-            result.textContent = error.message;
-          } finally {
-            submit.disabled = false;
-            loadJevStatus();
-          }
-        });
-      loadComparison();
-      loadJevStatus();
-      loadMethodResults();
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turkish request intent classifier</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f6f3; color: #19372e; font: 16px/1.6 system-ui; }
+    main { max-width: 1100px; margin: auto; padding: 45px 24px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.2; }
+    section, article { background: white; border: 1px solid #cfddd4; border-radius: 12px; padding: 24px; margin: 20px 0; }
+    label { display: block; font-weight: 600; }
+    textarea { width: 100%; min-height: 110px; padding: 12px; font: inherit; border: 1px solid #92aea0; border-radius: 6px; }
+    button { cursor: pointer; border: 1px solid #b8cdc0; border-radius: 6px; background: #eaf3ee; padding: 9px 14px; font: inherit; margin: 8px 6px 8px 0; }
+    button[type=submit] { color: white; background: #155946; }
+    button:disabled { opacity: .5; cursor: default; }
+    .samples { display: flex; flex-wrap: wrap; }
+    .samples button { font-size: 13px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .cards article { margin: 0; padding: 18px; min-width: 0; }
+    .intent { font-weight: 700; overflow-wrap: anywhere; }
+    .muted { color: #536c61; font-size: 14px; }
+    .highlight { background: #ffe4a1; border-radius: 3px; padding: 2px 0; }
+    .request { white-space: pre-wrap; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td, th { text-align: left; padding: 8px; border-bottom: 1px solid #d7e2dc; }
+    :focus-visible { outline: 3px solid #458f6b; outline-offset: 2px; }
+    @media (max-width: 700px) {
+      .cards { grid-template-columns: 1fr; }
+      main { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p class="muted">COE025 · Solo Project 1 · MASSIVE tr-TR</p>
+  <h1>What does this request ask for?</h1>
+  <p>60 intents. Written rules, learned patterns, and an optional pretrained model.</p>
+
+  <section>
+    <form id="form">
+      <label for="request">Turkish request</label>
+      <textarea id="request" maxlength="5000" required placeholder="Bir Türkçe istek yazın"></textarea>
+      <div class="samples" id="samples" aria-label="Official dev examples"></div>
+      <p class="muted">Example buttons are human-localized requests from the official dev split.</p>
+      <label><input type="checkbox" id="include-jev" disabled> Include Jev (paid API, one attempt)</label>
+      <p id="jev-status" class="muted">Checking Jev settings…</p>
+      <button type="submit" id="submit">Compare methods</button>
+    </form>
+  </section>
+
+  <section id="result" hidden aria-live="polite"></section>
+
+  <section>
+    <h2>Official intent results</h2>
+    <p class="muted">Selected by dev macro F1. Every model uses train only. The full test has 2,974 requests.</p>
+    <div id="metrics"></div>
+  </section>
+
+  <section>
+    <h2>Same-input comparison</h2>
+    <div id="comparison"></div>
+    <p class="muted">40 sampled test requests. This small sample is separate from the paper benchmark.</p>
+  </section>
+
+  <footer class="muted">Intent classification is the core. Slot filling is an optional extension; it does not search or execute requests. Jev slots are not implemented.</footer>
+</main>
+
+<script>
+// Examples come from the official dev split, never from test.
+const examples = [
+  { text: "yarın sabah altıya alarm kur", intent: "alarm_set", id: "173" },
+  { text: "haftanın hava tahmini nasıl", intent: "weather_query", id: "99" },
+  { text: "bugünün kaçamak günü olarak işaretlenmesi gerekiyor", intent: "calendar_set", id: "6540" },
+  { text: "büyük ev ablukada'dan arayan bulur dinlemek istiyorum", intent: "play_music", id: "67" },
+];
+const methodNames = { parser: "Parser", logistic_regression: "Logistic Regression", jev: "Jev" };
+const request = document.getElementById("request");
+
+// All text goes in through textContent, never innerHTML.
+function el(tag, text, className) {
+  const item = document.createElement(tag);
+  if (text !== undefined) item.textContent = text;
+  if (className) item.className = className;
+  return item;
+}
+
+for (const example of examples) {
+  const button = el("button", example.intent);
+  button.type = "button";
+  button.title = "Dev id " + example.id;
+  button.addEventListener("click", () => {
+    request.value = example.text;
+    request.focus();
+  });
+  document.getElementById("samples").append(button);
+}
+
+// Server offsets count Unicode code points, so split the text the same way.
+function highlighted(text, spans) {
+  const paragraph = el("p", undefined, "request");
+  const characters = Array.from(text);
+  let cursor = 0;
+  for (const span of spans) {
+    paragraph.append(document.createTextNode(characters.slice(cursor, span.start).join("")));
+    const word = el("span", characters.slice(span.start, span.end).join(""), "highlight");
+    word.title = span.type;
+    paragraph.append(word);
+    cursor = span.end;
+  }
+  paragraph.append(document.createTextNode(characters.slice(cursor).join("")));
+  return paragraph;
+}
+
+async function json(url, options) {
+  const response = await fetch(url, options);
+  const payload = await response.json();
+  if (!response.ok) throw new Error(payload.error || "Request failed");
+  return payload;
+}
+
+async function status() {
+  const checkbox = document.getElementById("include-jev");
+  const message = document.getElementById("jev-status");
+  try {
+    const config = await json("/api/comparison-config");
+    checkbox.disabled = !config.configured || config.remaining_calls <= 0;
+    if (checkbox.disabled) checkbox.checked = false;
+    message.textContent = config.configured
+      ? config.remaining_calls + " attempts left; max 1,000 characters"
+      : "Jev is not configured. No API calls are made.";
+  } catch {
+    checkbox.disabled = true;
+    checkbox.checked = false;
+    message.textContent = "Jev settings unavailable.";
+  }
+}
+
+function showIntents(result, rows) {
+  result.replaceChildren(el("h2", "Intent: same input, three methods"));
+  const cards = el("div", undefined, "cards");
+  for (const row of rows) {
+    const card = el("article");
+    const ok = row.status === "ok";
+    card.append(
+      el("h3", methodNames[row.method]),
+      el("p", ok ? row.label : "Not evaluated", "intent"),
+      el("p", ok ? "Request time: " + row.elapsed_ms + " ms" : row.message, "muted"),
+    );
+    cards.append(card);
+  }
+  result.append(cards);
+}
+
+function showSlots(result, text, slots) {
+  if (!slots) {
+    result.append(el("p", "Slot extension unavailable; intent classification is active.", "muted"));
+    return;
+  }
+  result.append(el("h2", "Optional slots"));
+  for (const key of ["parser", "token_model"]) {
+    const row = slots[key];
+    const title = key === "parser" ? "Parser slots" : "Token classifier: " + row.model;
+    const summary = row.spans.length
+      ? row.spans.map(span => span.type + ": " + span.text).join(" · ")
+      : "No slots extracted.";
+    result.append(el("h3", title), el("p", row.model, "muted"), highlighted(text, row.spans), el("p", summary, "muted"));
+  }
+  result.append(el("p", slots.jev.message, "muted"));
+}
+
+document.getElementById("form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = document.getElementById("submit");
+  const result = document.getElementById("result");
+  const text = request.value;
+  button.disabled = true;
+  result.hidden = false;
+  result.textContent = "Comparing…";
+  try {
+    const payload = await json("/api/compare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, include_jev: document.getElementById("include-jev").checked }),
+    });
+    showIntents(result, payload.results);
+    showSlots(result, text, payload.slots);
+  } catch (error) {
+    result.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    status();
+  }
+});
+
+function table(target, headers, rows) {
+  const wrap = el("div", undefined, "table-wrap");
+  const tab = el("table");
+  const head = el("tr");
+  for (const header of headers) head.append(el("th", header));
+  tab.append(head);
+  for (const cells of rows) {
+    const row = el("tr");
+    for (const cell of cells) row.append(el("td", cell));
+    tab.append(row);
+  }
+  wrap.append(tab);
+  target.append(wrap);
+}
+
+const pct = value => typeof value === "number" ? (100 * value).toFixed(2) + "%" : "Not evaluated";
+const f1 = value => typeof value === "number" ? value.toFixed(4) : "Not evaluated";
+
+async function reports() {
+  const metrics = document.getElementById("metrics");
+  try {
+    const p = await json("/api/results");
+    if (p.task !== "intent_classification" || !p.models) throw new Error("Train the MASSIVE models first.");
+    metrics.append(el("p", "Winner: " + p.selection.selected_model + "; demo LR: " + p.selection.logistic_regression_model, "muted"));
+    table(metrics, ["Model", "Dev accuracy", "Dev macro F1", "Test accuracy", "Test macro F1"],
+      Object.entries(p.models).map(([name, m]) =>
+        [name, pct(m.dev.accuracy), f1(m.dev.macro_f1), pct(m.test.accuracy), f1(m.test.macro_f1)]));
+  } catch (error) {
+    metrics.textContent = error.message;
+  }
+
+  const comparison = document.getElementById("comparison");
+  try {
+    const p = await json("/api/method-results");
+    if (!p.methods) throw new Error("Run compare_methods.py to save results.");
+    table(comparison, ["Method", "Accuracy", "Macro F1", "Coverage", "Answered accuracy"],
+      Object.entries(p.methods).map(([name, m]) =>
+        [methodNames[name], pct(m.accuracy), f1(m.macro_f1), pct(m.coverage), pct(m.answered_accuracy)]));
+  } catch (error) {
+    comparison.textContent = error.message;
+  }
+}
+
+status();
+reports();
+</script>
+</body>
 </html>

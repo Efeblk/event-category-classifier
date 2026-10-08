@@ -1,216 +1,118 @@
-import csv
+import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
+from unittest.mock import patch
 
-import train as training
+from classifier import LABELS
+from train import comparison_records, read_data, select_model, split_data, train
 
 
-def make_rows(count=1_200, grouped=False):
-    labels = training.LABELS
+def fixture_rows():
+    """One row per intent in each official partition: 180 rows."""
     rows = []
-    for index in range(count):
-        label = labels[index % len(labels)]
-        group_number = index // 2 if grouped else index
-        rows.append(
-            {
-                "id": f"row-{index:04d}",
-                "text": f"unique event text {index:04d} for {label}",
-                "label": label,
-                "group_id": f"group-{group_number:04d}",
-                "title": f"Event {index}",
-                "source": "fixture",
-                "source_url": f"https://example.test/{index}",
-            }
-        )
+    for i, part in enumerate(("train", "dev", "test")):
+        for j, label in enumerate(LABELS):
+            rows.append({
+                "id": str(i * 60 + j),
+                "text": label.replace("_", " ") + " fixture",
+                "intent": label,
+                "scenario": label.split("_")[0],
+                "partition": part,
+            })
     return rows
 
 
-def write_csv(path, rows):
-    with path.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=training.REQUIRED_COLUMNS)
-        writer.writeheader()
-        writer.writerows(rows)
+def write_rows(path, rows):
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows))
 
 
-class ReadCsvTests(unittest.TestCase):
-    def test_read_csv_accepts_a_valid_minimum_dataset(self):
-        rows = make_rows(count=1_002)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "events.csv"
-            write_csv(path, rows)
+class TrainTests(unittest.TestCase):
+    def test_official_split_and_tiny_class(self):
+        rows = fixture_rows()
+        parts = split_data(rows)
+        self.assertEqual(parts, split_data(rows, 99))
+        self.assertEqual([len(indices) for indices in parts.values()], [60, 60, 60])
+        self.assertEqual(set(sum(parts.values(), [])), set(range(180)))
+        # Test may miss an intent (as cooking_query does); train may not.
+        self.assertEqual(len(split_data(rows[:-1])["test"]), 59)
+        with self.assertRaises(ValueError):
+            split_data(rows[1:])
+        invalid = [dict(row) for row in rows]
+        invalid[0]["partition"] = "other"
+        with self.assertRaises(ValueError):
+            split_data(invalid)
 
-            loaded = training.read_csv(path)
-
-        self.assertEqual(loaded, rows)
-
-    def test_read_csv_allows_an_explicit_small_prototype(self):
-        rows = make_rows(count=40)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "requests.csv"
-            write_csv(path, rows)
-
-            loaded = training.read_csv(path, min_rows=40)
-
-        self.assertEqual(loaded, rows)
-
-    def test_read_csv_rejects_repeated_normalized_text(self):
-        rows = make_rows(count=1_002)
-        rows[1]["text"] = f"  {rows[0]['text']}  "
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "events.csv"
-            write_csv(path, rows)
-
-            with self.assertRaisesRegex(ValueError, "not deduplicated"):
-                training.read_csv(path)
-
-    def test_read_csv_rejects_mixed_labels_in_one_group(self):
-        rows = make_rows(count=1_002)
-        rows[1]["group_id"] = rows[0]["group_id"]
-        self.assertNotEqual(rows[0]["label"], rows[1]["label"])
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "events.csv"
-            write_csv(path, rows)
-
-            with self.assertRaisesRegex(ValueError, "group.*label|label.*group"):
-                training.read_csv(path)
-
-
-class SplitTests(unittest.TestCase):
-    def test_split_is_deterministic_group_disjoint_and_near_60_20_20(self):
-        rows = make_rows(grouped=True)
-
-        first = training.split_data(rows, seed=29)
-        second = training.split_data(rows, seed=29)
-
-        self.assertEqual(first, second)
-        all_indices = [index for indices in first.values() for index in indices]
-        self.assertEqual(len(all_indices), len(rows))
-        self.assertEqual(len(set(all_indices)), len(rows))
-        group_sets = {
-            name: {rows[index]["group_id"] for index in indices}
-            for name, indices in first.items()
-        }
-        self.assertFalse(group_sets["train"] & group_sets["validation"])
-        self.assertFalse(group_sets["train"] & group_sets["test"])
-        self.assertFalse(group_sets["validation"] & group_sets["test"])
-        for name, expected_share in (("train", 0.6), ("validation", 0.2), ("test", 0.2)):
-            self.assertAlmostEqual(len(first[name]) / len(rows), expected_share, delta=0.03)
-            self.assertEqual(
-                {rows[index]["label"] for index in first[name]}, set(training.LABELS)
+    def test_data_validation_preserves_official_duplicates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "data.jsonl"
+            rows = fixture_rows()
+            write_rows(path, rows)
+            self.assertEqual(len(read_data(path, min_rows=1)), 180)
+            with self.assertRaisesRegex(ValueError, "1000"):
+                read_data(path)
+            bad_values = (
+                ("id", rows[0]["id"]),
+                ("intent", "unclear"),
+                ("scenario", "wrong"),
+                ("partition", "validation"),
+                ("text", " "),
             )
+            for key, value in bad_values:
+                with self.subTest(key=key):
+                    bad = [dict(row) for row in rows]
+                    bad[1][key] = value
+                    write_rows(path, bad)
+                    with self.assertRaises(ValueError):
+                        read_data(path, min_rows=1)
 
-
-class FakeModel:
-    def __init__(self, predict_correctly):
-        self.predict_correctly = predict_correctly
-        self.fit_calls = []
-
-    def fit(self, texts, labels):
-        self.fit_calls.append((list(texts), list(labels)))
-        return self
-
-    def predict(self, texts):
-        if not self.predict_correctly:
-            return ["concert"] * len(texts)
-        return [text.split(":", 1)[0] for text in texts]
-
-
-class TrainingFlowTests(unittest.TestCase):
-    def test_selection_uses_validation_and_saved_model_is_not_refit(self):
-        rows = []
-        for part in ("train", "validation", "test"):
-            for label in training.LABELS:
-                index = len(rows)
-                rows.append(
-                    {
-                        "id": str(index),
-                        "text": f"{label}:{part}",
-                        "label": label,
-                        "group_id": f"group-{index}",
-                        "title": "",
-                        "source": "",
-                        "source_url": "",
-                    }
-                )
-        class_count = len(training.LABELS)
-        parts = {
-            "train": list(range(0, class_count)),
-            "validation": list(range(class_count, 2 * class_count)),
-            "test": list(range(2 * class_count, 3 * class_count)),
+    def test_selection_ignores_test(self):
+        evaluations = {
+            "a": {"dev": {"macro_f1": .8}, "test": {"macro_f1": 0}},
+            "b": {"dev": {"macro_f1": .2}, "test": {"macro_f1": 1}},
         }
-        good = FakeModel(predict_correctly=True)
-        bad = FakeModel(predict_correctly=False)
-        models = {"good": good, "bad": bad}
+        self.assertEqual(select_model(evaluations), "a")
 
-        with tempfile.TemporaryDirectory() as directory:
-            source = Path(directory) / "source.csv"
-            source.write_text("fixture", encoding="utf-8")
-            destination = Path(directory) / "model.joblib"
-            with (
-                mock.patch.object(training, "read_csv", return_value=rows) as read_csv,
-                mock.patch.object(training, "split_data", return_value=parts),
-                mock.patch.object(training, "make_models", return_value=models),
-                mock.patch.object(training, "cross_validate", return_value={}),
-                mock.patch.object(training, "_write_reports") as write_reports,
-                mock.patch("joblib.dump") as dump,
-            ):
-                metadata = training.train(source, destination, Path(directory) / "reports")
+    def test_comparison_is_test_only_deterministic(self):
+        rows = fixture_rows()
+        indices = split_data(rows)["test"]
+        records = comparison_records(rows, indices)
+        self.assertEqual(records, comparison_records(rows, indices))
+        self.assertEqual(len(records), 40)
+        self.assertEqual(len({record["id"] for record in records}), 40)
+        self.assertTrue({record["id"] for record in records} <= {rows[i]["id"] for i in indices})
 
-        self.assertEqual(metadata["selection"]["selected_model"], "good")
-        self.assertEqual(metadata["selection"]["fit_split"], "train")
-        self.assertFalse(metadata["selection"]["final_refit"])
-        self.assertEqual(len(good.fit_calls), 1)
-        self.assertEqual(len(bad.fit_calls), 1)
-        self.assertEqual(
-            good.fit_calls[0][0], [row["text"] for row in rows[:class_count]]
-        )
-        read_csv.assert_called_once_with(source, min_rows=training.MIN_ROWS)
-        artifact = dump.call_args.args[0]
-        self.assertIs(artifact["model"], good)
-        self.assertEqual(artifact["model_name"], "good")
-        self.assertEqual(artifact["task"], "event_listing_classification")
-        self.assertEqual(artifact["dataset_domain"], "event_listings")
-        self.assertEqual(artifact["provenance"], "gametime_public")
-        # The fixture has fewer than 1,000 rows, so it is not course-ready.
-        self.assertFalse(artifact["course_dataset_ready"])
-        self.assertEqual(metadata["evaluation_scope"], "raw_model")
-        self.assertFalse(metadata["course_dataset_ready"])
-        write_reports.assert_called_once()
+    def test_flow_fits_train_and_predicts_test_after_selection(self):
+        events = []
 
+        class Model:
+            def fit(self, x, y):
+                events.append(("fit", len(x)))
+                return self
 
-class ComparisonSetTests(unittest.TestCase):
-    def test_comparison_set_is_balanced_deterministic_and_from_test_only(self):
-        rows = make_rows(count=300)
-        test_indices = list(range(0, 300, 2))
+            def predict(self, x):
+                events.append(("predict", len(x)))
+                return list(LABELS)
 
-        first = training.comparison_records(rows, test_indices, seed=5)
-        second = training.comparison_records(rows, list(reversed(test_indices)), seed=5)
+            def set_params(self, **kwargs):
+                return self
 
-        self.assertEqual(first, second)
-        test_ids = {rows[index]["id"] for index in test_indices}
-        self.assertTrue({record["id"] for record in first} <= test_ids)
-        for label in training.LABELS:
-            self.assertEqual(
-                sum(record["label"] == label for record in first),
-                training.COMPARISON_ROWS_PER_CLASS,
-            )
-        # The whole set must fit inside the 50-call Jev limit.
-        self.assertLessEqual(len(first), 50)
+        rows = fixture_rows()
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch("train.read_data", return_value=rows), \
+                patch("train.make_models", return_value={"logistic_regression_word": Model()}), \
+                patch("sklearn.base.clone", side_effect=lambda model: model), \
+                patch("joblib.dump"), \
+                patch("train.plot_confusion"):
+            path = Path(tmp) / "data"
+            path.write_text("fixture")
+            result = train(path, Path(tmp) / "model.joblib", tmp, allow_small_prototype=True)
 
-
-class CrossValidationTests(unittest.TestCase):
-    def test_every_model_gets_grouped_fold_scores(self):
-        rows = make_rows(count=200, grouped=True)
-        results = training.cross_validate(rows, list(range(len(rows))), seed=3)
-
-        self.assertEqual(set(results), set(training.make_models()))
-        for name, result in results.items():
-            with self.subTest(model=name):
-                self.assertEqual(len(result["fold_macro_f1"]), 5)
-                self.assertTrue(0 <= result["macro_f1_mean"] <= 1)
-                self.assertTrue(0 <= result["macro_f1_std"] <= 1)
+        # The balanced and unbalanced candidates fit on train and predict dev,
+        # then both predict test. No fit happens after selection.
+        self.assertEqual(events, [("fit", 60), ("predict", 60)] * 2 + [("predict", 60)] * 2)
+        self.assertEqual(result["selection"]["fit_split"], "train")
+        self.assertFalse(result["selection"]["test_used_for_selection"])
 
 
 if __name__ == "__main__":

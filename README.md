@@ -1,79 +1,88 @@
-# Event category classifier
+# Turkish request intent classifier
 
-A small COE025 NLP project. It classifies event listing titles as `concert`, `theatre`, or `stand_up`.
+Solo COE025 NLP Project 1. The graded core classifies a Turkish request into one
+of **60 MASSIVE intents**, such as `alarm_set`, `weather_query` or `play_music`.
+A removable extension labels whitespace tokens with **BIO slot tags**.
+It classifies and annotates requests; it does not execute them or search events.
 
-The data is public: Gametime ticket listings published by Rebrowser on [Hugging Face](https://huggingface.co/datasets/rebrowser/gametime-dataset) and [Kaggle](https://www.kaggle.com/datasets/rebrowser/gametime-dataset) under CC BY-NC 4.0. The labels are the ticket site's own categories.
-
-The demo compares **Parser**, **Logistic Regression**, and optional **Jev** on the same input.
-
-- Parser uses written rules.
-- Logistic Regression learns from labeled titles using TF-IDF features. TF-IDF converts text into numbers.
-- Jev is a pretrained model accessed through the TypeSafe API.
-
-A method returns `unclear` when it cannot choose. `unclear` is not a training class, and it counts as wrong in scoring.
+MASSIVE v1.0 is public, under **CC BY 4.0** (Amazon.com Inc.). Its Turkish requests
+were localized by humans from English crowd-written SLURP utterances. These are
+human-created benchmark requests, not Turkish production logs or AI-written cases.
+See [the paper](https://arxiv.org/html/2204.08582v2) and [dataset details](data/README.md).
 
 ## Run
 
-Use Python 3.13. Run from this repository:
+Python 3.13, from the repository root:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-lock.txt
-python prepare_events.py
+python prepare_massive.py
 python train.py
+python train_slots.py
 python compare_methods.py
 python app.py
 ```
 
-`prepare_events.py` downloads about 7 MB from Hugging Face at a pinned commit and writes `data/events.csv`. Open [localhost:8011](http://127.0.0.1:8011). On Linux or macOS, activate with `source .venv/bin/activate`.
+On Linux/macOS, activate with `source .venv/bin/activate`. Preparation downloads
+about 39.5 MB, verifies the pinned SHA256, and extracts only tr-TR and LICENSE with
+`tarfile`'s data filter. A verified archive cache skips the download.
+Data, model artifacts, reports and secrets remain ignored. Checked-in `evidence/`
+is a deliberate snapshot for grading, not an input to training.
 
-## Demo requests
+Open [localhost:8011](http://127.0.0.1:8011). Example buttons use official **dev**
+requests. Parser, dev-selected Logistic Regression, and optional Jev receive the
+same text. `unclear` is an abstention, never a training class. Slots are shown
+separately with their actual method name and highlighted source words.
 
-Try these in order to illustrate the methods' strengths and limits. Parser and Logistic Regression outputs below were verified with the current model. Jev outputs are expected, not live-verified; check them before presenting.
+## Evaluation
 
-| Level | Request | Parser | Logistic Regression | Expected Jev |
-|---|---|---|---|---|
-| Easy | Bu akşam bir konsere gitmek istiyorum. | `concert` | `concert` | `concert` |
-| Medium | Bu gece sahnede blues çalan birilerini dinleyelim. | `unclear` | `concert` | `concert` |
-| Hard | Müzik olmasın, mikrofon başında şaka yapan biri olsun. | `unclear` | `unclear` | `stand_up` |
+Official partitions: **11,514 train / 2,033 dev / 2,974 test**. No resplitting or
+removal of duplicate texts. Train contains all 60 intents; dev lacks
+`audio_volume_other`, and test lacks `cooking_query`. Fixed 60-label macro F1
+assigns zero to absent classes. Dev macro F1 selects the intent winner; dev exact
+span F1 selects the slot winner. Every model fits on train alone, never train+dev.
+Test is evaluated after selection; no rules or settings are tuned on test.
 
-The easy request names the category explicitly. The medium request describes a music performance without the Parser's keywords. The hard request describes stand-up indirectly and excludes music. These are selected demo examples, not an accuracy benchmark.
+Intent candidates: majority, Naive Bayes, Logistic Regression and Linear SVM
+with word 1–2 and character 3–5 TF-IDF features. Four additional LR/SVM variants
+check balanced versus unbalanced weights on dev. The winner is character SVM:
+**test accuracy 82.95%, macro F1 0.7898**. The demo uses character LR from a separate
+`artifacts/lr_model.joblib`; the overall winner is `artifacts/model.joblib`.
 
-## Project files
+The paper's Turkish intent reference is **86.3% for XLM-R**, with larger pretrained
+models trained on all 51 locales. Our Turkish-only sparse models are not a
+reproduction of that training setup. [Results and limitations](RESULTS.md) include
+all candidates, Parser coverage, slot results, and the full benchmark table.
 
-| File | Purpose |
-|---|---|
-| `prepare_events.py` | Download the public listings and build the labeled dataset |
-| `classifier.py`, `train.py` | Define, train, and evaluate the local models |
-| `parser.py` | Rule-based category parser |
-| `jev.py` | Optional API client |
-| `method_comparison.py`, `compare_methods.py` | Compare the three methods |
-| `app.py`, `demo.html` | Local browser demo |
-| `tests/` | Tests without network or real API calls |
+## Optional components
 
-Training compares Naive Bayes, Logistic Regression, and Linear SVM, each with word and character features, plus a majority baseline. Titles by the same performer stay in one partition. Validation macro F1 selects the model; test data does not select it. Macro F1 gives each category equal weight.
+Slots: omit `train_slots.py`, use `python app.py --no-slots`, or remove `slots.py`,
+`train_slots.py` and `tests/test_slots.py`. Intent training and comparison still
+work. Slot artifacts/reports are separate. Jev slot extraction is not implemented:
+TypeSafe exposes Choice, Noul and Score, not arbitrary span extraction.
 
-## Optional Jev
+Jev: **not evaluated**. No live calls were made during this rewrite. A future paid
+run requires explicit author approval. Copy `.env.example` to `.env`, set the
+server-only key and `JEV_MAX_CALLS` (default 0, maximum 50), then restart. The demo's
+opt-in or `compare_methods.py --include-jev` makes one attempt per request, with
+no retries. The 40-request comparison leaves ten attempts of slack. Failed
+attempts count in the shared `reports/jev_calls/` ledger; never delete receipts.
+Partial runs have no accuracy score. [TypeSafe Choice](https://docs.typesafe.ai/primitives/choice)
+allows 61 options within the unchanged 8,000-byte request cap.
 
-Copy `.env.example` to `.env`. Set `TYPESAFE_API_KEY` and `JEV_MAX_CALLS` (1-50), then restart the app. The key stays on the server. Never commit `.env`.
-
-Select **Include Jev** in the demo, or run `python compare_methods.py --include-jev` for all 36 comparison titles. Calls can cost money. The browser and script share the limit stored in `reports/jev_calls/`; failed attempts count. There are no retries. Leave the limit at 0 to disable calls. Do not delete receipts to reset the limit.
-
-Jev has not been evaluated live. Missing or failed calls have no accuracy score.
-
-## Data and limits
-
-3,506 unique English titles after cleaning. Many titles are only a performer's name, so the models partly learn names. Gametime labels were not reviewed by hand and contain some noise. See [results](RESULTS.md) and [dataset details](data/README.md).
-
-The 40 Turkish and English requests in `data/request_challenge.json` are a secondary test: does a model trained on titles understand requests? It mostly does not.
-
-This project classifies categories only. It does not search events or extract dates, locations, or budgets. It has no dependency on the original project.
-
-## Tests
+## Tests and author tasks
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-[Presentation outline](PRESENTATION.md) · [TypeSafe API](https://docs.typesafe.ai/api)
+Tests use small fixtures, injected Jev transports and temporary ledgers. CI runs
+this command on Ubuntu/Python 3.13. Two fresh output runs reproduced the evidence
+metrics and predictions; see [reproduction checks](evidence/reproduction_check.json).
+
+The author still needs to collect 30–50 real requests from people, decide on the
+paid Jev comparison, ask the teacher about the slot extension, and update
+`presentation.pptx` using [the 3-minute outline](PRESENTATION.md). The slide file is
+unchanged. Add the author's name and give the teacher GitHub access before presenting.

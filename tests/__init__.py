@@ -1,1 +1,1 @@
-"""Unit tests for the event category classifier."""
+"""Unit tests for MASSIVE Turkish intent classification and optional slots."""

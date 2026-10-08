@@ -10,4 +10,5 @@ reports/
 .env.*
 !.env.example
 !data/README.md
-!data/request_challenge.json
+data/*.jsonl
+data/*.tar.gz
