@@ -165,9 +165,9 @@ Prepare a **1:50 spoken explanation**, rehearse without reading, and use the
 technical questions in [PRESENTATION.md](PRESENTATION.md) to check understanding.
 A high score depends on the teacher's assessment of the actual work and delivery.
 
-The final PPTX export is still pending because the required presentation runtime
-is unavailable here. The updated outline and rehearsal draft are ready; the
-obsolete intent/slot deck was removed from this working tree.
+The author asked not to create a presentation. The existing outline and
+rehearsal draft remain available in PRESENTATION.md. The teacher's PPTX homework
+therefore remains an author task outside this implementation submission work.
 
 The existing repository is public:
 [Efeblk/event-category-classifier](https://github.com/Efeblk/event-category-classifier).
@@ -183,7 +183,7 @@ and evidence described above.
 | Public reuse licenses | MIT scripts and CC BY 4.0 dataset, separately identified |
 | Benchmark and technical explanation | Current dev comparison, frozen historical test and paper references documented |
 | Solo contribution file | Guide prepared; author name, student ID and personal work details pending |
-| PPTX and spoken presentation | Content and 1:50 rehearsal draft prepared; final PPTX export pending |
+| PPTX and spoken presentation | Author task; presentation creation excluded at the author's request |
 | Public GitHub submission URL | Public repository linked above |
 
 The author deferred personal details. Complete the record described in

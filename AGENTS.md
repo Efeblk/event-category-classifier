@@ -25,6 +25,8 @@ preparation/training scripts, detailed README and a truthful contribution file.
 Author name, student ID and the personal contribution record are deferred by the
 user. The user requested the remaining teacher deliverables, including publication
 of the current project to the existing public repository.
+The user subsequently excluded presentation creation. Do not create or export
+a PPTX unless the user requests it again; the existing outline is reference only.
 Do not invent names, contributions or a guaranteed grade.
 
 ## Reproduction
