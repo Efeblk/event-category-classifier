@@ -3,125 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Turkish request intent classifier</title>
+  <meta name="theme-color" content="#f6f2e9">
+  <title>Spot the Manipulation</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #f4f6f3; color: #19372e; font: 16px/1.6 system-ui; }
-    main { max-width: 1100px; margin: auto; padding: 45px 24px; }
-    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.2; }
-    section, article { background: white; border: 1px solid #cfddd4; border-radius: 12px; padding: 24px; margin: 20px 0; }
-    label { display: block; font-weight: 600; }
-    textarea { width: 100%; min-height: 110px; padding: 12px; font: inherit; border: 1px solid #92aea0; border-radius: 6px; }
-    button { cursor: pointer; border: 1px solid #b8cdc0; border-radius: 6px; background: #eaf3ee; padding: 9px 14px; font: inherit; margin: 8px 6px 8px 0; }
-    button[type=submit] { color: white; background: #155946; }
-    button:disabled { opacity: .5; cursor: default; }
-    .samples { display: flex; flex-wrap: wrap; }
-    .samples button { font-size: 13px; }
-    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .cards article { margin: 0; padding: 18px; min-width: 0; }
-    .intent { font-weight: 700; overflow-wrap: anywhere; }
-    .muted { color: #536c61; font-size: 14px; }
-    .highlight { background: #ffe4a1; border-radius: 3px; padding: 2px 0; }
-    .request { white-space: pre-wrap; }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    td, th { text-align: left; padding: 8px; border-bottom: 1px solid #d7e2dc; }
-    :focus-visible { outline: 3px solid #458f6b; outline-offset: 2px; }
-    @media (max-width: 700px) {
-      .cards { grid-template-columns: 1fr; }
-      main { padding: 24px 16px; }
-    }
+    :root { --paper:#f6f2e9; --ink:#262223; --muted:#665f60; --line:#dad2c8; --red:#b7372d; --gold:#f2d885; --card:#fffdf8; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:1180px; margin:auto; padding:28px 32px 54px; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:2px solid var(--ink); font-size:12px; letter-spacing:.11em; text-transform:uppercase; }
+    .mark { background:var(--ink); color:var(--paper); padding:7px 10px; font-weight:800; }
+    .edition { color:var(--muted); text-align:right; }
+    .hero { padding:38px 0 27px; display:grid; grid-template-columns:1.65fr 1fr; align-items:end; gap:38px; }
+    h1 { font:700 clamp(44px,6.2vw,75px)/.98 Georgia,"Times New Roman",serif; letter-spacing:-.05em; margin:0 0 17px; max-width:700px; }
+    h1 span { color:var(--red); }
+    h2 { margin:0 0 14px; font:700 27px/1.2 Georgia,serif; }
+    h3 { margin:0 0 10px; font-size:16px; }
+    p { margin:0 0 13px; }
+    .intro { max-width:630px; font-size:19px; }
+    .scope { border-left:3px solid var(--red); padding:12px 0 12px 20px; color:var(--muted); font-size:14px; }
+    .scope strong { color:var(--ink); }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr); gap:24px; align-items:start; }
+    .panel { background:var(--card); border:1px solid var(--line); padding:26px; }
+    .section-label { font-size:11px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--red); margin-bottom:13px; }
+    label { display:block; font-weight:650; margin-bottom:8px; }
+    textarea,select { width:100%; border:1px solid #a9a098; border-radius:3px; background:white; color:var(--ink); font:inherit; padding:13px; }
+    textarea { min-height:142px; resize:vertical; }
+    #context { min-height:115px; margin-top:10px; }
+    .hint { font-size:12px; color:var(--muted); margin:7px 0 18px; }
+    .counter { float:right; font-variant-numeric:tabular-nums; }
+    details { margin-bottom:20px; }
+    summary { cursor:pointer; font-size:14px; font-weight:650; padding:7px 0; }
+    button { border:1px solid var(--line); background:var(--paper); color:var(--ink); font:600 14px/1.4 system-ui,sans-serif; padding:10px 14px; cursor:pointer; border-radius:3px; }
+    button:hover { border-color:var(--ink); }
+    button:disabled { opacity:.55; cursor:default; }
+    .primary { background:var(--red); color:white; border-color:var(--red); padding:13px 20px; font-size:16px; }
+    .primary:hover { background:#962a24; border-color:#962a24; }
+    .actions { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:20px; }
+    .shortcut { color:var(--muted); font-size:12px; }
+    .provider { border-top:1px solid var(--line); margin-top:20px; padding-top:15px; }
+    .provider label { font-size:13px; font-weight:500; margin-bottom:3px; }
+    .provider input { accent-color:var(--red); }
+    .provider p { font-size:12px; color:var(--muted); margin:0 0 8px; }
+    .sample-list { display:grid; gap:9px; }
+    .sample { text-align:left; background:white; padding:11px 13px; font-weight:400; }
+    .sample strong { display:block; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--red); margin-bottom:4px; }
+    .sample.active { border-color:var(--red); background:#fff7ee; }
+    .muted { color:var(--muted); font-size:14px; }
+    .divider { border:0; border-top:1px solid var(--line); margin:24px 0; }
+    .steps { margin:0; padding-left:20px; color:var(--muted); font-size:14px; }
+    .steps li { padding:4px 0; }
+    #result { margin-top:26px; scroll-margin-top:20px; }
+    .result-header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:10px; }
+    .badge { display:inline-block; padding:5px 9px; border:1px solid var(--line); color:var(--muted); font-size:12px; background:white; }
+    .reveal { border-left:4px solid var(--red); padding:12px 16px; background:#f9eee3; margin:12px 0 18px; }
+    .reveal p { margin:4px 0; font-size:14px; }
+    .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; margin:18px 0; }
+    .prediction { min-width:0; border:1px solid var(--line); background:white; padding:20px; }
+    .prediction .method { text-transform:uppercase; color:var(--muted); font-size:11px; font-weight:750; letter-spacing:.09em; }
+    .technique { font:700 23px/1.15 Georgia,serif; min-height:54px; margin:16px 0 12px; overflow-wrap:anywhere; }
+    .description { font-size:14px; }
+    .features { display:flex; flex-wrap:wrap; gap:5px; margin:8px 0 12px; }
+    .feature { background:#f5efdd; border:1px solid #e6dcc0; padding:3px 7px; font-size:12px; font-family:ui-monospace,monospace; overflow-wrap:anywhere; }
+    .small { font-size:12px; color:var(--muted); }
+    .provider-result { border-top:1px solid var(--line); padding-top:13px; margin-top:5px; font-size:14px; }
+    .source-text { white-space:pre-wrap; overflow-wrap:anywhere; font:18px/1.6 Georgia,serif; padding:16px 19px; border-left:3px solid var(--gold); background:#fff9e8; }
+    .highlight { background:var(--gold); color:var(--ink); }
+    .error { color:#a01f1b; font-weight:600; }
+    .evidence { margin-top:36px; padding-top:25px; border-top:2px solid var(--ink); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    th:first-child,td:first-child { text-align:left; white-space:normal; }
+    th { font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+    tr.winner { background:#f1ead7; font-weight:650; }
+    .glossary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 28px; margin-top:20px; }
+    .glossary article { border-top:1px solid var(--line); padding-top:13px; }
+    .glossary h3 { font:700 17px Georgia,serif; }
+    .glossary p { color:var(--muted); font-size:13px; }
+    footer { border-top:1px solid var(--line); padding-top:19px; margin-top:30px; font-size:12px; color:var(--muted); }
+    :focus-visible { outline:3px solid #3658a5; outline-offset:3px; }
+    [hidden] { display:none !important; }
+    @media(max-width:850px) { .hero,.workspace { grid-template-columns:1fr; } .hero { gap:15px; padding-top:30px; } .scope { max-width:680px; } .cards { grid-template-columns:1fr; } .technique { min-height:0; } }
+    @media(max-width:520px) { main { padding:20px 16px 35px; } .panel { padding:20px; } .edition { font-size:10px; } .glossary { grid-template-columns:1fr; } .shortcut { display:none; } .actions .primary { width:100%; } }
+    @media(prefers-reduced-motion:no-preference) { button { transition:background .12s,border-color .12s; } }
   </style>
 </head>
 <body>
 <main>
-  <p class="muted">COE025 · Solo Project 1 · MASSIVE tr-TR</p>
-  <h1>What does this request ask for?</h1>
-  <p>60 intents. Written rules, learned patterns, and an optional pretrained model.</p>
+  <header class="masthead"><span class="mark">The persuasion lab</span><span class="edition">COE025 / Project 1<br>English · 14 techniques</span></header>
+  <div class="hero">
+    <div><h1>Spot the<br><span>Manipulation.</span></h1><p class="intro">Loaded words. Convenient distractions. False choices. Can three classic models recognize the persuasion technique?</p></div>
+    <p class="scope"><strong>You select the excerpt. The models name the technique.</strong><br>This classifies an English excerpt already selected for analysis. It does not assess whether a claim is true or whether a whole article contains propaganda.</p>
+  </div>
 
-  <section>
-    <form id="form">
-      <label for="request">Turkish request</label>
-      <textarea id="request" maxlength="5000" required placeholder="Bir Türkçe istek yazın"></textarea>
-      <div class="samples" id="samples" aria-label="Official dev examples"></div>
-      <p class="muted">Example buttons are human-localized requests from the official dev split.</p>
-      <label><input type="checkbox" id="include-jev" disabled> Include Jev (paid API, one attempt)</label>
-      <p id="jev-status" class="muted">Checking Jev settings…</p>
-      <button type="submit" id="submit">Compare methods</button>
-    </form>
-  </section>
+  <div class="workspace">
+    <section class="panel" aria-labelledby="input-title">
+      <p class="section-label">01 / Make your call</p><h2 id="input-title">What is the trick?</h2>
+      <form id="form">
+        <label for="request">Selected excerpt</label>
+        <textarea id="request" required placeholder="Choose a real example on the right, or paste an English excerpt." aria-describedby="request-hint"></textarea>
+        <p class="hint" id="request-hint">Classify a phrase or passage, not an entire article. <span class="counter" id="text-count">0 / 5,000</span></p>
+        <details id="context-details"><summary>Add surrounding context (optional)</summary><label for="context" class="small">Surrounding passage</label><textarea id="context" placeholder="Nearby sentences can help disambiguate the excerpt." aria-describedby="context-hint"></textarea><p class="hint" id="context-hint">The models receive the same excerpt and context. <span class="counter" id="context-count">0 / 10,000</span></p></details>
+        <label for="guess">Your guess (optional)</label><select id="guess"><option value="">I will let the models go first</option></select>
+        <div class="actions"><button type="submit" class="primary" id="submit">Reveal the predictions →</button><span class="shortcut">Ctrl / ⌘ + Enter</span></div>
+        <div class="provider"><label><input type="checkbox" id="include-jev" disabled> Also compare Jev · paid API · one attempt</label><p id="jev-status">Checking provider settings…</p></div>
+      </form>
+    </section>
 
-  <section id="result" hidden aria-live="polite"></section>
+    <aside class="panel" aria-labelledby="examples-title"><p class="section-label">Try a real excerpt</p><h2 id="examples-title">You vs. the models</h2><p class="muted">Guess first. Compare predictions. Then see the dataset annotation.</p><div class="sample-list" id="samples" aria-label="Development examples"><p class="muted">Loading dev examples…</p></div><p class="hint" id="sample-source">Examples come from the development split, never the test split.</p><hr class="divider"><h3>Three different ways to learn</h3><ol class="steps"><li><strong>Naive Bayes:</strong> class-specific text statistics.</li><li><strong>Logistic Regression:</strong> learned weighted evidence.</li><li><strong>Linear SVM:</strong> a separating margin.</li></ol><p class="hint">The upgraded Logistic Regression combines words, character fragments and text shape, such as length and punctuation, with wider surrounding context. Each method uses its own best variant selected on dev data.</p></aside>
+  </div>
 
-  <section>
-    <h2>Official intent results</h2>
-    <p class="muted">Selected by dev macro F1. Every model uses train only. The full test has 2,974 requests.</p>
-    <div id="metrics"></div>
-  </section>
+  <section class="panel" id="result" hidden aria-live="polite" aria-atomic="false"></section>
 
-  <section>
-    <h2>Same-input comparison</h2>
-    <div id="comparison"></div>
-    <p class="muted">40 sampled test requests. This small sample is separate from the paper benchmark.</p>
-  </section>
+  <section class="evidence" aria-labelledby="evidence-title"><p class="section-label">02 / Examine the evidence</p><h2 id="evidence-title">Current development results.</h2><p class="muted">Development macro F1 selects the models and treats all 14 labels equally. These scores helped choose the upgrade; <strong>final test evaluation is pending.</strong></p><div id="metrics"><p class="muted">Loading development results…</p></div><details><summary>Same-input sample comparison, including optional Jev</summary><div id="comparison"></div><p class="hint">The default sample contains 40 dev excerpts. It is a method comparison, not a final-test score. A partial provider run has no comparable score.</p></details><details><summary>Historical baseline — previous pipeline</summary><p class="hint">These scores belong to the original pipeline and earlier context settings. They do not evaluate the current upgrade.</p><div id="baseline"></div></details></section>
 
-  <footer class="muted">Intent classification is the core. Slot filling is an optional extension; it does not search or execute requests. Jev slots are not implemented.</footer>
+  <section class="evidence" aria-labelledby="glossary-title"><p class="section-label">03 / Learn the vocabulary</p><h2 id="glossary-title">A field guide to persuasion.</h2><p class="muted">These are the dataset's 14 categories. Some combine several related techniques.</p><details><summary>Explore all 14 techniques</summary><div class="glossary" id="glossary"></div></details></section>
+  <footer>Research demonstration · SemEval-2020 Task 11 technique classification · Three local models trained from scratch · Jev remains optional and is not evaluated unless an authorized run is completed.</footer>
 </main>
-
 <script>
-// Examples come from the official dev split, never from test.
-const examples = [
-  { text: "yarın sabah altıya alarm kur", intent: "alarm_set", id: "173" },
-  { text: "haftanın hava tahmini nasıl", intent: "weather_query", id: "99" },
-  { text: "bugünün kaçamak günü olarak işaretlenmesi gerekiyor", intent: "calendar_set", id: "6540" },
-  { text: "büyük ev ablukada'dan arayan bulur dinlemek istiyorum", intent: "play_music", id: "67" },
-];
-const methodNames = { parser: "Parser", logistic_regression: "Logistic Regression", jev: "Jev" };
+const techniques = {
+  "Appeal_to_Authority": ["Appeal to authority", "Uses an authority's opinion to support a claim instead of establishing the claim itself."],
+  "Appeal_to_fear-prejudice": ["Appeal to fear or prejudice", "Pushes an audience toward a position by invoking a threat or an existing prejudice."],
+  "Bandwagon,Reductio_ad_hitlerum": ["Bandwagon / reductio ad Hitlerum", "Appeals to popularity, or discredits a position by associating it with a notorious person or group."],
+  "Black-and-White_Fallacy": ["Black-and-white fallacy", "Presents a choice as only two alternatives while other possibilities exist."],
+  "Causal_Oversimplification": ["Causal oversimplification", "Reduces a complex outcome to a simple cause while leaving out other relevant factors."],
+  "Doubt": ["Doubt", "Questions credibility or certainty to undermine the target of an argument."],
+  "Exaggeration,Minimisation": ["Exaggeration / minimisation", "Makes something seem more extreme, or less significant, than the argument establishes."],
+  "Flag-Waving": ["Flag-waving", "Links a position to loyalty, patriotism, or identification with a group."],
+  "Loaded_Language": ["Loaded language", "Uses words with strong emotional associations to influence how the audience feels."],
+  "Name_Calling,Labeling": ["Name-calling / labeling", "Attaches a flattering or derogatory label to a person, group, or idea."],
+  "Repetition": ["Repetition", "Repeats the same message to make it more memorable or persuasive."],
+  "Slogans": ["Slogans", "Uses a short, striking phrase to promote a position or group."],
+  "Thought-terminating_Cliches": ["Thought-terminating clichés", "Uses a familiar, simplistic phrase to discourage further discussion or thought."],
+  "Whataboutism,Straw_Men,Red_Herring": ["Whataboutism / straw man / red herring", "Redirects attention, attacks a distorted argument, or introduces an irrelevant issue."],
+};
+const methodNames = { naive_bayes:"Naive Bayes", logistic_regression:"Logistic Regression", linear_svm:"Linear SVM", jev:"Jev" };
 const request = document.getElementById("request");
+const context = document.getElementById("context");
+const guess = document.getElementById("guess");
+let activeExample = null;
+let latestSubmission = 0;
 
-// All text goes in through textContent, never innerHTML.
+// User text and report text only enter the DOM as text nodes.
 function el(tag, text, className) {
   const item = document.createElement(tag);
   if (text !== undefined) item.textContent = text;
   if (className) item.className = className;
   return item;
 }
-
-for (const example of examples) {
-  const button = el("button", example.intent);
-  button.type = "button";
-  button.title = "Dev id " + example.id;
-  button.addEventListener("click", () => {
-    request.value = example.text;
-    request.focus();
-  });
-  document.getElementById("samples").append(button);
+function title(label) { return techniques[label]?.[0] || (label === "unclear" ? "Unclear" : label); }
+function count() {
+  document.getElementById("text-count").textContent = Array.from(request.value).length.toLocaleString("en") + " / 5,000";
+  document.getElementById("context-count").textContent = Array.from(context.value).length.toLocaleString("en") + " / 10,000";
 }
-
-// Server offsets count Unicode code points, so split the text the same way.
-function highlighted(text, spans) {
-  const paragraph = el("p", undefined, "request");
-  const characters = Array.from(text);
-  let cursor = 0;
-  for (const span of spans) {
-    paragraph.append(document.createTextNode(characters.slice(cursor, span.start).join("")));
-    const word = el("span", characters.slice(span.start, span.end).join(""), "highlight");
-    word.title = span.type;
-    paragraph.append(word);
-    cursor = span.end;
-  }
-  paragraph.append(document.createTextNode(characters.slice(cursor).join("")));
-  return paragraph;
+function edited() {
+  activeExample = null;
+  document.querySelectorAll(".sample.active").forEach(button => button.classList.remove("active"));
+  count();
 }
+request.addEventListener("input", edited);
+context.addEventListener("input", edited);
 
+for (const [label, [name, description]] of Object.entries(techniques)) {
+  const option = el("option", name); option.value = label; guess.append(option);
+  const article = el("article"); article.append(el("h3", name), el("p", description));
+  document.getElementById("glossary").append(article);
+}
 async function json(url, options) {
   const response = await fetch(url, options);
   const payload = await response.json();
-  if (!response.ok) throw new Error(payload.error || "Request failed");
+  if (!response.ok) throw new Error(payload.error || "The request failed.");
   return payload;
 }
-
-async function status() {
+async function loadExamples() {
+  const target = document.getElementById("samples");
+  try {
+    const payload = await json("/api/examples");
+    const examples = Array.isArray(payload) ? payload : payload.records;
+    if (!Array.isArray(examples) || !examples.length) throw new Error("Train the models to generate dev examples.");
+    target.replaceChildren();
+    const more = el("details"); const extra = el("div", undefined, "sample-list");
+    more.append(el("summary", "More dev excerpts"), extra);
+    examples.forEach((example, index) => {
+      const button = el("button", undefined, "sample"); button.type = "button";
+      const preview = Array.from(example.text).slice(0, 115).join("") + (Array.from(example.text).length > 115 ? "…" : "");
+      button.append(el("strong", "Excerpt " + String(index + 1).padStart(2, "0")), el("span", preview));
+      button.title = "Dev record " + example.id;
+      button.addEventListener("click", () => {
+        activeExample = example; request.value = example.text; context.value = example.context || ""; guess.value = "";
+        document.getElementById("context-details").open = false;
+        document.querySelectorAll(".sample.active").forEach(item => item.classList.remove("active"));
+        button.classList.add("active"); document.getElementById("result").hidden = true; count(); request.focus();
+      });
+      (index < 6 ? target : extra).append(button);
+    });
+    if (examples.length > 6) target.append(more);
+  } catch (error) { target.replaceChildren(el("p", error.message, "muted")); }
+}
+async function providerStatus() {
   const checkbox = document.getElementById("include-jev");
   const message = document.getElementById("jev-status");
   try {
@@ -129,117 +208,120 @@ async function status() {
     checkbox.disabled = !config.configured || config.remaining_calls <= 0;
     if (checkbox.disabled) checkbox.checked = false;
     message.textContent = config.configured
-      ? config.remaining_calls + " attempts left; max 1,000 characters"
-      : "Jev is not configured. No API calls are made.";
-  } catch {
-    checkbox.disabled = true;
-    checkbox.checked = false;
-    message.textContent = "Jev settings unavailable.";
-  }
+      ? config.remaining_calls + " attempts remaining. Excerpt + context limit: " + config.max_characters.toLocaleString("en") + " characters; provider byte limit also applies."
+      : "Jev is disabled. Local comparison makes no API calls.";
+  } catch { checkbox.disabled = true; checkbox.checked = false; message.textContent = "Provider settings unavailable. Local models remain available."; }
 }
-
-function showIntents(result, rows) {
-  result.replaceChildren(el("h2", "Intent: same input, three methods"));
+function highlightedContext(surrounding, excerpt) {
+  const paragraph = el("p", undefined, "source-text");
+  let needle = excerpt;
+  let offset = surrounding.indexOf(needle);
+  if (offset < 0) { needle = excerpt.replace(/\s+/gu, " ").trim(); offset = surrounding.indexOf(needle); }
+  if (offset < 0) { paragraph.textContent = surrounding; return paragraph; }
+  // Convert the UTF-16 search offset to a Unicode code point offset before slicing.
+  const characters = Array.from(surrounding);
+  const start = Array.from(surrounding.slice(0, offset)).length;
+  const end = start + Array.from(needle).length;
+  paragraph.append(document.createTextNode(characters.slice(0, start).join("")), el("span", characters.slice(start, end).join(""), "highlight"), document.createTextNode(characters.slice(end).join("")));
+  return paragraph;
+}
+function showResult(payload, text, surrounding, selectedGuess, example) {
+  const target = document.getElementById("result");
+  const header = el("div", undefined, "result-header");
+  const local = payload.results.filter(row => row.method !== "jev");
+  const labels = new Set(local.map(row => row.label));
+  header.append(el("h2", "Three methods. Same excerpt."), el("span", labels.size === 1 ? "Local models agree" : "Local models disagree", "badge"));
+  target.replaceChildren(header, el("p", text, "source-text"));
+  if (surrounding.trim()) {
+    const detail = el("details"); detail.append(el("summary", "View the excerpt in its supplied context"), highlightedContext(surrounding, text)); target.append(detail);
+  }
+  if (example && example.text === text && example.context === surrounding) {
+    const reveal = el("div", undefined, "reveal");
+    reveal.append(el("strong", "Dataset annotation: " + title(example.label)));
+    if (selectedGuess) reveal.append(el("p", selectedGuess === example.label ? "Your guess matches the annotation." : "Your guess: " + title(selectedGuess)));
+    reveal.append(el("p", "Dev record " + example.id + ". An annotation is a reference label; it does not establish whether the claim is true."));
+    target.append(reveal);
+  } else if (selectedGuess) target.append(el("p", "Your guess: " + title(selectedGuess) + ". There is no reference annotation for this custom excerpt.", "muted"));
   const cards = el("div", undefined, "cards");
-  for (const row of rows) {
-    const card = el("article");
-    const ok = row.status === "ok";
-    card.append(
-      el("h3", methodNames[row.method]),
-      el("p", ok ? row.label : "Not evaluated", "intent"),
-      el("p", ok ? "Request time: " + row.elapsed_ms + " ms" : row.message, "muted"),
-    );
+  for (const row of local) {
+    const card = el("article", undefined, "prediction");
+    card.append(el("p", methodNames[row.method], "method"), el("h3", title(row.label), "technique"));
+    card.append(el("p", techniques[row.label]?.[1] || "No known word or character features matched. The model abstained instead of assigning a technique.", "description"));
+    if (row.top_features?.length) {
+      card.append(el("p", "Features contributing to this prediction", "small"));
+      const features = el("div", undefined, "features");
+      for (const feature of row.top_features.slice(0, 6)) {
+        const chip = el("span", feature.feature, "feature");
+        chip.title = "Model feature contribution: " + Number(feature.weight).toFixed(4);
+        features.append(chip);
+      }
+      card.append(features, el("p", "These are learned feature contributions, not a real-world justification.", "small"));
+    }
+    card.append(el("p", row.model.replaceAll("_", " ") + " · " + row.elapsed_ms + " ms", "small"));
     cards.append(card);
   }
-  result.append(cards);
+  target.append(cards, el("p", "Why this can be wrong: word patterns can confuse emotional language with name-calling, and repetition or distractions often require wider context. Agreement does not establish correctness.", "muted"));
+  const provider = payload.results.find(row => row.method === "jev");
+  if (provider) target.append(el("p", provider.status === "ok" ? "Jev: " + title(provider.label) : "Jev: " + (provider.message || "Not evaluated."), "provider-result"));
 }
-
-function showSlots(result, text, slots) {
-  if (!slots) {
-    result.append(el("p", "Slot extension unavailable; intent classification is active.", "muted"));
-    return;
-  }
-  result.append(el("h2", "Optional slots"));
-  for (const key of ["parser", "token_model"]) {
-    const row = slots[key];
-    const title = key === "parser" ? "Parser slots" : "Token classifier: " + row.model;
-    const summary = row.spans.length
-      ? row.spans.map(span => span.type + ": " + span.text).join(" · ")
-      : "No slots extracted.";
-    result.append(el("h3", title), el("p", row.model, "muted"), highlighted(text, row.spans), el("p", summary, "muted"));
-  }
-  result.append(el("p", slots.jev.message, "muted"));
-}
-
 document.getElementById("form").addEventListener("submit", async event => {
   event.preventDefault();
   const button = document.getElementById("submit");
-  const result = document.getElementById("result");
+  const target = document.getElementById("result");
   const text = request.value;
-  button.disabled = true;
-  result.hidden = false;
-  result.textContent = "Comparing…";
-  try {
-    const payload = await json("/api/compare", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, include_jev: document.getElementById("include-jev").checked }),
-    });
-    showIntents(result, payload.results);
-    showSlots(result, text, payload.slots);
-  } catch (error) {
-    result.textContent = error.message;
-  } finally {
-    button.disabled = false;
-    status();
+  const surrounding = context.value;
+  const selectedGuess = guess.value;
+  const example = activeExample ? {...activeExample, context:activeExample.context || ""} : null;
+  const submission = ++latestSubmission;
+  target.hidden = false;
+  if (!text.trim() || Array.from(text).length > 5000 || Array.from(surrounding).length > 10000) {
+    target.replaceChildren(el("p", "Enter an excerpt up to 5,000 characters and context up to 10,000 characters.", "error")); return;
   }
+  button.disabled = true; target.replaceChildren(el("p", "Comparing the three local methods…", "muted"));
+  try {
+    const payload = await json("/api/compare", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text,context:surrounding,include_jev:document.getElementById("include-jev").checked}) });
+    if (submission === latestSubmission) { showResult(payload, text, surrounding, selectedGuess, example); target.scrollIntoView({block:"start"}); }
+  } catch (error) { target.replaceChildren(el("p", error.message, "error")); }
+  finally { button.disabled = false; providerStatus(); }
 });
-
-function table(target, headers, rows) {
-  const wrap = el("div", undefined, "table-wrap");
-  const tab = el("table");
-  const head = el("tr");
-  for (const header of headers) head.append(el("th", header));
-  tab.append(head);
-  for (const cells of rows) {
-    const row = el("tr");
-    for (const cell of cells) row.append(el("td", cell));
-    tab.append(row);
-  }
-  wrap.append(tab);
-  target.append(wrap);
+document.getElementById("form").addEventListener("keydown", event => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") { event.preventDefault(); if (!document.getElementById("submit").disabled) document.getElementById("form").requestSubmit(); }
+});
+function table(target, headers, rows, winner) {
+  const wrap = el("div", undefined, "table-wrap"); const tab = el("table"); const head = el("thead"); const tr = el("tr");
+  for (const header of headers) { const th = el("th", header); th.scope = "col"; tr.append(th); }
+  head.append(tr); tab.append(head); const body = el("tbody");
+  for (const cells of rows) { const row = el("tr"); if (cells[0] === winner) row.className = "winner"; for (const cell of cells) row.append(el("td", cell)); body.append(row); }
+  tab.append(body); wrap.append(tab); target.append(wrap);
 }
-
-const pct = value => typeof value === "number" ? (100 * value).toFixed(2) + "%" : "Not evaluated";
+const pct = value => typeof value === "number" ? (value * 100).toFixed(2) + "%" : "Not evaluated";
 const f1 = value => typeof value === "number" ? value.toFixed(4) : "Not evaluated";
-
 async function reports() {
-  const metrics = document.getElementById("metrics");
+  const target = document.getElementById("metrics");
   try {
-    const p = await json("/api/results");
-    if (p.task !== "intent_classification" || !p.models) throw new Error("Train the MASSIVE models first.");
-    metrics.append(el("p", "Winner: " + p.selection.selected_model + "; demo LR: " + p.selection.logistic_regression_model, "muted"));
-    table(metrics, ["Model", "Dev accuracy", "Dev macro F1", "Test accuracy", "Test macro F1"],
-      Object.entries(p.models).map(([name, m]) =>
-        [name, pct(m.dev.accuracy), f1(m.dev.macro_f1), pct(m.test.accuracy), f1(m.test.macro_f1)]));
-  } catch (error) {
-    metrics.textContent = error.message;
-  }
-
+    const payload = await json("/api/results");
+    if (!payload.models || !payload.selection || payload.evaluation?.scope !== "dev_only") throw new Error("Run train.py to generate the current development-only results.");
+    const winner = payload.selection.selected_model;
+    target.replaceChildren(el("p", "Dev-selected winner: " + winner.replaceAll("_", " "), "muted"));
+    if (payload.partitions?.dev) target.append(el("p", "Development set: " + payload.partitions.dev.rows.toLocaleString("en") + " annotated excerpts across " + payload.partitions.dev.articles + " articles. Models fit on train only; test has not been evaluated for this upgrade.", "muted"));
+    table(target, ["Candidate", "Dev accuracy", "Dev micro F1", "Dev macro F1"], Object.entries(payload.models).map(([name, model]) => [name,pct(model.dev.accuracy),f1(model.dev.micro_f1),f1(model.dev.macro_f1)]), winner);
+  } catch (error) { target.replaceChildren(el("p", error.message, "muted")); }
   const comparison = document.getElementById("comparison");
   try {
-    const p = await json("/api/method-results");
-    if (!p.methods) throw new Error("Run compare_methods.py to save results.");
-    table(comparison, ["Method", "Accuracy", "Macro F1", "Coverage", "Answered accuracy"],
-      Object.entries(p.methods).map(([name, m]) =>
-        [methodNames[name], pct(m.accuracy), f1(m.macro_f1), pct(m.coverage), pct(m.answered_accuracy)]));
-  } catch (error) {
-    comparison.textContent = error.message;
-  }
+    const payload = await json("/api/method-results");
+    if (!payload.methods) throw new Error("Run compare_methods.py to save a same-input comparison.");
+    comparison.replaceChildren(el("p", payload.examples + " labeled excerpts · " + payload.partition + " partition · " + payload.evaluation_scope, "muted"));
+    table(comparison,["Method","Accuracy","Macro F1","Completed"],Object.entries(payload.methods).map(([name,row]) => [methodNames[name],pct(row.accuracy),f1(row.macro_f1),row.completed + " / " + row.total]));
+  } catch (error) { comparison.replaceChildren(el("p", error.message, "muted")); }
+  const baseline = document.getElementById("baseline");
+  try {
+    const payload = await json("/api/baseline-results");
+    if (!payload.models) throw new Error("Historical baseline results are unavailable.");
+    baseline.replaceChildren();
+    table(baseline, ["Previous candidate", "Previous dev accuracy", "Previous dev macro F1", "Previous test accuracy", "Previous test macro F1"], Object.entries(payload.models).map(([name, model]) => [name,pct(model.dev?.accuracy),f1(model.dev?.macro_f1),pct(model.test?.accuracy),f1(model.test?.macro_f1)]));
+  } catch (error) { baseline.replaceChildren(el("p", error.message, "muted")); }
 }
-
-status();
-reports();
+count(); loadExamples(); providerStatus(); reports();
 </script>
 </body>
 </html>

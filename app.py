@@ -1,4 +1,6 @@
-"""Serve the trained classifier on localhost for a course demonstration."""
+"""Serve the technique-classification course demo on 127.0.0.1 only."""
+
+from __future__ import annotations
 
 import argparse
 import json
@@ -6,34 +8,55 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 import joblib
-from classifier import ARTIFACT_TASK
+
 from jev import JevClient
-from method_comparison import compare_request
+from method_comparison import compare_request, validate_artifacts
+
 
 ROOT = Path(__file__).resolve().parent
+MAX_BODY_BYTES = 200_000  # Allows 15,000 escaped Unicode code points in JSON.
 
 
-def make_handler(artifact, metrics, jev=None, slot_artifact=None):
+def make_handler(artifacts, metrics, jev=None, reports_dir=None, baseline_path=None):
+    validate_artifacts(artifacts)
+    if any(artifact["provenance"]["evaluation_scope"] != "dev_only" for artifact in artifacts.values()):
+        raise ValueError("This development-only demo requires dev-only artifacts.")
+    reports_dir = Path(reports_dir) if reports_dir is not None else ROOT / "reports"
+    baseline_path = Path(baseline_path) if baseline_path is not None else ROOT / "evidence/baseline/metrics.json"
+
     class Handler(BaseHTTPRequestHandler):
         def respond(self, status, payload, content_type="application/json; charset=utf-8"):
-            body = payload if isinstance(payload, bytes) else json.dumps(payload).encode("utf-8")
+            body = payload if isinstance(payload, bytes) else json.dumps(payload, ensure_ascii=False).encode("utf-8")
             self.send_response(status)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
             self.wfile.write(body)
+
+        def report(self, name, default):
+            return self.read_report(reports_dir / name, default)
+
+        def read_report(self, path, default):
+            try:
+                return json.loads(path.read_text(encoding="utf-8")) if path.exists() else default
+            except (ValueError, OSError):
+                return default
 
         def do_GET(self):
             if self.path == "/":
                 self.respond(200, (ROOT / "demo.html").read_bytes(), "text/html; charset=utf-8")
             elif self.path == "/api/results":
                 self.respond(200, metrics)
+            elif self.path == "/api/baseline-results":
+                self.respond(200, self.read_report(baseline_path, {}))
+            elif self.path == "/api/examples":
+                self.respond(200, self.report("dev_examples.json", {"records": [], "message": "Train first to generate real dev examples."}))
             elif self.path == "/api/comparison-config":
                 self.respond(200, jev.public_status() if jev else {"configured": False, "remaining_calls": 0})
             elif self.path == "/api/method-results":
-                path = ROOT / "reports/method_comparison.json"
-                self.respond(200, json.loads(path.read_text(encoding="utf-8")) if path.exists() else {})
+                self.respond(200, self.report("method_comparison.json", {}))
             else:
                 self.respond(404, {"error": "Page not found."})
 
@@ -42,29 +65,28 @@ def make_handler(artifact, metrics, jev=None, slot_artifact=None):
                 return self.respond(404, {"error": "Page not found."})
             try:
                 length = int(self.headers.get("Content-Length", "0"))
-                if not 0 < length <= 25000:
+                if not 0 < length <= MAX_BODY_BYTES:
                     raise ValueError("Request is too large or empty.")
-                payload = json.loads(self.rfile.read(length))
+                if self.headers.get_content_type() != "application/json":
+                    raise ValueError("Send an application/json request.")
+                payload = json.loads(self.rfile.read(length).decode("utf-8"))
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
-                prediction = compare_request(artifact, payload.get("text"), jev, payload.get("include_jev", False))
-                if slot_artifact is not None:
-                    from slots import display_spans, parser_tags, predict_tags
-                    text = payload["text"]
-                    tokens = text.split()
-                    parser_spans = display_spans(text, parser_tags(tokens))
-                    model_spans = display_spans(text, predict_tags(slot_artifact, [tokens])[0])
-                    prediction["slots"] = {
-                        "parser": {"model": "regex: date, time, timeofday only", "spans": parser_spans},
-                        "token_model": {"model": slot_artifact["model_name"], "spans": model_spans},
-                        "jev": {"message": "Jev slots are not implemented."},
-                    }
+                if set(payload) - {"text", "context", "include_jev"}:
+                    raise ValueError("Only text, context and include_jev fields are supported.")
+                prediction = compare_request(
+                    artifacts,
+                    payload.get("text"),
+                    jev,
+                    payload.get("include_jev", False),
+                    payload.get("context", ""),
+                )
                 self.respond(200, prediction)
             except (ValueError, UnicodeDecodeError) as error:
                 self.respond(400, {"error": str(error)})
 
         def log_message(self, format, *args):
-            # Do not log the submitted text.
+            # Never log bodies, submitted excerpts, context, or provider secrets.
             pass
 
     return Handler
@@ -73,34 +95,19 @@ def make_handler(artifact, metrics, jev=None, slot_artifact=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8011)
-    parser.add_argument("--model", type=Path, default=ROOT / "artifacts/lr_model.joblib")
-    parser.add_argument("--no-slots", action="store_true")
-    parser.add_argument("--slot-model", type=Path, default=ROOT / "artifacts/slot_model.joblib")
+    parser.add_argument("--models", type=Path, default=ROOT / "artifacts/method_models.joblib")
     args = parser.parse_args()
-    # Load only artifacts made locally by train.py. Joblib files can execute code.
-    if not args.model.exists():
-        parser.error("Train first: python train.py")
-    artifact = joblib.load(args.model)
-    if artifact.get("task") != ARTIFACT_TASK:
-        parser.error("Train a MASSIVE intent model first: python train.py")
-    metrics_path = ROOT / "reports/metrics.json"
-    metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
+    if not 1 <= args.port <= 65535:
+        parser.error("Port must be between 1 and 65535.")
     try:
+        # Only load trusted artifacts generated by this repository's train.py.
+        artifacts = validate_artifacts(joblib.load(args.models))
+        metrics_path = ROOT / "reports/metrics.json"
+        metrics = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
         jev = JevClient()
-    except ValueError as error:
-        parser.error(str(error))
-    # Slots are optional. Run with --no-slots if the slot extension was removed.
-    slot_artifact = None
-    if not args.no_slots and args.slot_model.exists():
-        from slots import predict_tags
-        slot_artifact = joblib.load(args.slot_model)
-        try:
-            predict_tags(slot_artifact, [])  # validates the artifact
-        except ValueError as error:
-            parser.error(str(error))
-        if slot_artifact["dataset_sha256"] != artifact["dataset_sha256"]:
-            parser.error("Intent and slot artifacts use different data.")
-    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev, slot_artifact))
+        server = HTTPServer(("127.0.0.1", args.port), make_handler(artifacts, metrics, jev))
+    except (ValueError, OSError) as error:
+        parser.error(f"{error} Run python prepare_data.py and python train.py first.")
     print(f"Open http://127.0.0.1:{args.port}", flush=True)
     try:
         server.serve_forever()

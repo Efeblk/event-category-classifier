@@ -1,14 +1,152 @@
 {
+  "schema_version": 1,
+  "task": "persuasion_technique_classification",
+  "seed": 42,
+  "fresh_temporary_pipeline": true,
+  "paid_calls": 0,
+  "evaluation_scope": "dev_only",
   "checks": {
-    "data/massive_tr.jsonl": true,
-    "data/massive_tr.audit.json": true,
-    "metrics.json": true,
-    "slot_metrics.json": true,
-    "comparison_set.json": true,
-    "errors.csv": true,
-    "slot_errors.csv": true,
-    "confusion_matrix.png": true,
-    "method_comparison.json (without time fields)": true
+    "cleaned_files": {
+      "techniques.jsonl": {
+        "original_sha256": "d907201500e7985e48190aea288d9eb485d4fd0f44a488ce307d652c966aefdd",
+        "fresh_sha256": "d907201500e7985e48190aea288d9eb485d4fd0f44a488ce307d652c966aefdd",
+        "bytes_equal": true
+      },
+      "audit.json": {
+        "original_sha256": "df5b3f9b958705a5c5870204aecdf26189bd2c59d3ec39868070a262db2d5d6a",
+        "fresh_sha256": "df5b3f9b958705a5c5870204aecdf26189bd2c59d3ec39868070a262db2d5d6a",
+        "bytes_equal": true
+      },
+      "splits.json": {
+        "original_sha256": "025084e595fd59c008c7d743789a3ad90767eb30feafe3814d4e490dbeb8f901",
+        "fresh_sha256": "025084e595fd59c008c7d743789a3ad90767eb30feafe3814d4e490dbeb8f901",
+        "bytes_equal": true
+      },
+      "development.jsonl": {
+        "original_sha256": "845d68ca41d7c705e85d0f28e7e30794e38cc86c5c9cb7577230fd7b7d7f8029",
+        "fresh_sha256": "845d68ca41d7c705e85d0f28e7e30794e38cc86c5c9cb7577230fd7b7d7f8029",
+        "bytes_equal": true
+      },
+      "development_audit.json": {
+        "original_sha256": "669819b9f2e6388f750e63f3650b9620b8a332be36f8f589d5a29cef556a4de4",
+        "fresh_sha256": "669819b9f2e6388f750e63f3650b9620b8a332be36f8f589d5a29cef556a4de4",
+        "bytes_equal": true
+      }
+    },
+    "reports": {
+      "metrics.json": {
+        "original_sha256": "b782524d8310b26e85ba8ff60f56734e8084222189220fb95324ca56444781c7",
+        "fresh_sha256": "b782524d8310b26e85ba8ff60f56734e8084222189220fb95324ca56444781c7",
+        "bytes_equal": true
+      },
+      "dev_examples.json": {
+        "original_sha256": "0480f133e994038fd2619fab66b3de808608f1f088b350812bf14dfd45f57dce",
+        "fresh_sha256": "0480f133e994038fd2619fab66b3de808608f1f088b350812bf14dfd45f57dce",
+        "bytes_equal": true
+      },
+      "comparison_set.json": {
+        "original_sha256": "6485ecf3bb2ea80c9d0617e22d2f13f46467836f85e0fc62614d3be9a15271c5",
+        "fresh_sha256": "6485ecf3bb2ea80c9d0617e22d2f13f46467836f85e0fc62614d3be9a15271c5",
+        "bytes_equal": true
+      },
+      "predictions.json": {
+        "original_sha256": "b02d1e4197b880e7a9db5e02ad9468daaf13f40756edf677d393ae894f6df4d1",
+        "fresh_sha256": "b02d1e4197b880e7a9db5e02ad9468daaf13f40756edf677d393ae894f6df4d1",
+        "bytes_equal": true
+      }
+    },
+    "candidate_predictions": {
+      "dummy_most_frequent": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "linear_svm_char": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "linear_svm_word": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "linear_svm_word_context": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "logistic_regression_char": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "logistic_regression_hybrid_structure": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "logistic_regression_word": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "logistic_regression_word_context": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "multinomial_nb_char": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      },
+      "multinomial_nb_word": {
+        "equal": true,
+        "dev_prediction_count": 1048
+      }
+    },
+    "saved_artifacts": {
+      "model.joblib": {
+        "model.joblib": {
+          "model_name": "logistic_regression_hybrid_structure",
+          "metadata_equal": true,
+          "dev_predictions_equal": true,
+          "dev_prediction_count": 1048,
+          "original_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0",
+          "fresh_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0"
+        }
+      },
+      "lr_model.joblib": {
+        "lr_model.joblib": {
+          "model_name": "logistic_regression_hybrid_structure",
+          "metadata_equal": true,
+          "dev_predictions_equal": true,
+          "dev_prediction_count": 1048,
+          "original_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0",
+          "fresh_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0"
+        }
+      },
+      "method_models.joblib": {
+        "linear_svm": {
+          "model_name": "linear_svm_word_context",
+          "metadata_equal": true,
+          "dev_predictions_equal": true,
+          "dev_prediction_count": 1048,
+          "original_predictions_sha256": "a14377cdba6f81f87be5d721a74da4fc1d8b0f462a8b81bf3690c6a5e7229783",
+          "fresh_predictions_sha256": "a14377cdba6f81f87be5d721a74da4fc1d8b0f462a8b81bf3690c6a5e7229783"
+        },
+        "logistic_regression": {
+          "model_name": "logistic_regression_hybrid_structure",
+          "metadata_equal": true,
+          "dev_predictions_equal": true,
+          "dev_prediction_count": 1048,
+          "original_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0",
+          "fresh_predictions_sha256": "2313ba9e08347cd2761c10b62a2aed96de1ca47953892aeaf720e3774765b4b0"
+        },
+        "naive_bayes": {
+          "model_name": "multinomial_nb_char",
+          "metadata_equal": true,
+          "dev_predictions_equal": true,
+          "dev_prediction_count": 1048,
+          "original_predictions_sha256": "2e803d8ff4e8f347e614a4bb4cec747a8630106eff7d9f99f02012b99d8da104",
+          "fresh_predictions_sha256": "2e803d8ff4e8f347e614a4bb4cec747a8630106eff7d9f99f02012b99d8da104"
+        }
+      }
+    }
   },
-  "note": "Fresh output directories, seed 42, pinned archive cache. Comparison timestamps and elapsed milliseconds excluded; all predictions, metrics, hashes and statuses match."
+  "passed": true,
+  "comparison": "Exact preserved and development cleaned/report bytes, every candidate's dev predictions, and saved model metadata/dev predictions.",
+  "source_archive_sha256": "fd2d2c358d42b2e326e7f6f148007b384f0a0ffac5ab6db21e3889313a8516bb"
 }

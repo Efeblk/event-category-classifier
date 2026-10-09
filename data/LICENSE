@@ -1,4 +1,12 @@
-Copyright Amazon.com Inc. or its affiliates.
+PTC-SemEval20 corpus (SemEval-2020 Task 11)
+Creators: Giovanni Da San Martino, Alberto Barrón-Cedeño, Henning Wachsmuth,
+Rostislav Petrov and Preslav Nakov.
+Source: https://zenodo.org/records/3952415
+License declared by source metadata: Creative Commons Attribution 4.0 International.
+Original raw articles and annotations are preserved. Changes to derived data:
+annotation extraction, Unicode whitespace normalization, one exact duplicate
+annotation removed, and reproducible custom article-grouped partitions.
+See SOURCE.md for citation and scope.
 
 Attribution 4.0 International
 

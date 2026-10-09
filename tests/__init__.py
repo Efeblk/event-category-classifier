@@ -1,1 +1,1 @@
-"""Unit tests for MASSIVE Turkish intent classification and optional slots."""
+"""Unit tests for persuasion classification, preparation and local comparison."""

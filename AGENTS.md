@@ -2,128 +2,108 @@
 
 Read [README.md](README.md) first.
 
-## Project and course context
+## Current scope
 
-Solo COE025 Natural Language Processing Project 1: Text Classification (Fall
-25–26, Asst. Prof. Yiğit Bekir Kaya). Core: classify human-localized MASSIVE tr-TR
-requests into 60 intents. Slots are a removable token-classification extension.
-No event search, request execution, frontend framework, or product integration.
-Bi’ Plan / event_recommender is out of scope: import no code, data or settings.
+Solo COE025 NLP Project 1: **Spot the Manipulation**. Classify a provided English
+news excerpt, with optional surrounding context, into the 14 SemEval-2020 Task 11
+persuasion techniques. The user selected this replacement for the former Turkish
+intent project. MASSIVE, token slots, event search and unrelated applications are
+out of scope. Do not restore their files, numbers or requirements.
 
-Course: at least Naive Bayes and one other taught method, a public licensed
-1000+ example dataset, benchmark comparison. GitHub repo due before the Week 4
-presentation: 3 minutes plus 2 minutes Q&A. Solo by teacher arrangement; add no
-team names. Rubric: technological depth 40%, originality 10%, presentation 50%.
-Prefer simple, explainable TF-IDF, n-grams, NB, LR and SVM. No new dependencies,
-services or neural models unless requested.
+Use plain Python modules, standard library, scikit-learn, matplotlib and joblib;
+no new dependencies, neural training or services without a user request. Use
+unittest, UTF-8 and LF. Keep functions explainable and readable ValueError messages.
 
-Status: NB/LR/SVM word and character models, majority, official splits, accuracy
-and macro F1, per-intent metrics, scenario confusion, error analysis and paper
-benchmark are met. MASSIVE v1.0 is public CC BY 4.0 with 16,521 requests.
-The optional slot extension has NB/LR/SVM, BIO repair and exact span metrics.
-Jev remains a core pretrained comparison method but is **not evaluated**.
+## Latest teacher rubric
 
-## Commands and reproduction
+Overall: presentation 50%, implementation 50%. Presentation: technical explanation
+50%, fluency 25%, pace 25%; questions may adjust technical depth. Rehearse to
+1:50, without reading. Implementation: correctness 20%, data novelty 30%, task
+novelty 30%, rigor 20%. Publish a concise public GitHub repo and submit its URL
+with the PPTX. Include raw and cleaned data, their license and source attribution,
+preparation/training scripts, detailed README and a truthful contribution file.
+Author name, student ID and the personal contribution record are deferred by the
+user. The user requested the remaining teacher deliverables, including publication
+of the current project to the existing public repository.
+Do not invent names, contributions or a guaranteed grade.
 
-Python 3.13; standard library, scikit-learn, matplotlib, joblib. Use the lock file.
-Run every command from the repo root. Generated data/artifacts/reports and .env
-are ignored; copy selected reports into evidence deliberately, never commit them
-in their generated locations.
+## Reproduction
+
+Run commands from the repository root, Python 3.13:
 
 ```powershell
 python -m pip install -r requirements-lock.txt
-python prepare_massive.py
+python prepare_data.py
 python train.py
-python train_slots.py                 # optional extension
-python compare_methods.py            # no paid calls
-python app.py                        # 127.0.0.1:8011 only
-python app.py --no-slots
+python compare_methods.py
+python reproduce.py
+python app.py
 python -m unittest discover -s tests -v
 ```
 
-Seed 42, official 11,514 train / 2,033 dev / 2,974 test. Selected character SVM:
-dev accuracy/F1 83.42%/0.8112; test 82.95%/0.7898. Demo character LR test
-79.15%/0.7534. Slot LR dev F1 0.6586, test 0.6370, joint exact match 52.86%.
-40-request sample: Parser 7/40, LR 33/40, Jev not evaluated. Two fresh output
-runs match; timestamps/request milliseconds are not deterministic.
+Keep generated model artifacts, reports, private builds and secrets ignored.
+Raw selected article/annotation files and cleaned examples are deliberately public
+under data/. Copy only final report snapshots into evidence/.
 
-## Layout
+## Data and evaluation invariants
 
-| Path | Role |
-|---|---|
-| prepare_massive.py | Verified pinned archive, only Turkish JSONL/license extraction, BIO alignment and audit; sklearn-free |
-| classifier.py | 60 LABELS, normalization, seven candidate definitions, artifact validator, classification |
-| train.py | Official split validation, dev weighting checks/selection, frozen test evaluation, reports |
-| parser.py | Conservative train-derived seven-intent rules, coverage and answered accuracy |
-| jev.py | Optional paid Jev Choice client, server secrets, durable attempt ledger and validation |
-| method_comparison.py / compare_methods.py | Same original input across Parser, selected LR, optional Jev; fixed 40-case sample |
-| slots.py / train_slots.py | Removable token models, BIO repair, exact spans, separate artifact/reports |
-| app.py / demo.html | Loopback HTTP demo, dev examples, safe text and optional highlights |
-| evidence/ | Deliberate report/audit/reproduction snapshots for graders |
-| RESULTS.md / PRESENTATION.md | Evidence-aligned results and 3-minute solo talk |
-| tests/ | unittest fixtures without prepared data, trained artifacts or live Jev |
+- Pin and verify the original Zenodo archive SHA256 before reading or extracting.
+  Extract whitelisted regular files only with tarfile filter="data". Keep original
+  UTF-8 article bytes; offsets count Unicode code points, not bytes.
+- classifier.LABELS is the fixed 14-technique source of truth. `unclear` is an
+  inference abstention, never a training class. English lowercasing applies here.
+- Use only the original archive's labeled training articles. Official dev has
+  spans but no technique labels; this archive has no official labeled test data.
+  Our article-grouped train/dev/test split is a new, explicitly documented protocol.
+  Published official scores are contextual references, not directly comparable.
+- Preserve every different technique annotation, including repeated boundaries
+  with different labels. Remove exact duplicate annotation records only with an
+  audit. Validate text, labels, IDs, bounds and context before fitting.
+- Seed 42. Keep articles and identical complete inputs in one partition. Fit all
+  TF-IDF vocabularies and classifiers on train alone. Require all 14 labels in
+  train; dev/test may lack a label. MIN_ROWS=1000 and an explicit small-prototype
+  flag remain. The original nine-candidate test benchmark is frozen under
+  evidence/baseline/. The current upgrade is development-only: read
+  data/cleaned/development.jsonl, which contains train/dev and wider context
+  (1,000 source characters on either side). Never score the upgrade on the old
+  test after using its error analysis; a fresh final evaluation is pending.
+  Select models by dev macro F1 and leave every current test metric null.
+- Report accuracy, micro F1, fixed-14-label macro F1, per-class precision/recall,
+  confusion and failures. Examples shown by the demo come from dev, not test.
+- Artifacts declare task=persuasion_technique_classification and
+  dataset_domain=ptc_semeval2020, schema version 2, labels and provenance.
+  evaluation_scope/context_margin must be dev_only/1000 for the upgrade or
+  historical_baseline/350 for the explicit original baseline profile. Validators and
+  training schemas agree. Joblib is trusted-only. model.joblib is the overall
+  dev winner; method_models.joblib contains dev-selected NB/LR/SVM artifacts.
+- The upgrade adds one explainable LR candidate: separate excerpt words,
+  context words, excerpt characters and 22 scaled text-shape counts. Fit every
+  vectorizer and scaler on train only. Numeric features alone must not suppress
+  the demo's unknown-vocabulary abstention. Keep the original three cleaned
+  benchmark files unchanged; development files are separate.
+- No claim of automatic whole-article detection, truth checking, causal feature
+  explanations, hand-reviewed project data or original scraping. The corpus's
+  creators already cleaned it; describe our measured transformations honestly.
 
-## Invariants
+## Jev, secrets and demo
 
-- Keep the pinned MASSIVE v1.0 URL/SHA256. Verify before reading/extracting; extract
-  only tr-TR.jsonl and LICENSE as regular files, with tarfile filter="data".
-- classifier.LABELS is the fixed 60-intent source of truth, checked against data.
-  OUTPUT_LABELS adds unclear, never a training class. Keep Jev criteria consistent.
-- Preserve official partitions and every row, including duplicates. Require all
-  intents in train and non-empty dev/test. Dev lacks audio_volume_other; test lacks
-  cooking_query. Fixed 60-label macro F1 includes zero for absent classes. Do not
-  reinstate performer groups, deduplication or a minimum per-class split size.
-- Keep MIN_ROWS=1000 and the explicit small-prototype flag in train.py. Validate
-  ids, text, labels, scenario and partition. Audit cross-partition/mixed-label texts.
-- Intent selection uses dev macro F1; slot selection uses dev exact-span micro F1.
-  Fit every candidate on train alone, never train+dev. Test is scored once per
-  candidate after selection in each reproducibility run. Never tune on test.
-- Write Parser intent/slot rules from train only. Keep Parser and learned outputs
-  independent. Zero fitted TF-IDF features return unclear with unknown_terms.
-- ARTIFACT_TASK=intent_classification, DATASET_DOMAIN=massive_tr. Validator and
-  train artifact schemas must agree. model.joblib is the overall winner;
-  lr_model.joblib is dev-selected LR for the demo/comparison. Joblib is trusted-only.
-- Slot artifacts/reports stay separate. Core must work after deleting slots.py,
-  train_slots.py and tests/test_slots.py. No mandatory core import of slots.
-- BIO tags align 1:1 to whitespace tokens. Reject text mismatches/inside-word
-  boundaries and audit them; preserve official suffixes/annotation inconsistencies.
-  Repair I-x after O or another type as B-x. Score exact type and token boundaries.
-- Quote paper reference numbers, not reproduced results. Paper full training uses
-  all 51 locales and pretraining; ours uses Turkish only. Compare complete official
-  Turkish test, never the 40-case sample as the paper benchmark. Report accuracy
-  next to macro F1. No hand-reviewed or production-data claim for MASSIVE.
+Jev remains an optional pretrained comparison, **not evaluated**. No live calls
+while implementing; later paid calls require explicit user authorization.
+JEV_MAX_CALLS defaults to 0, range 0-50. Each attempted call exclusively reserves
+reports/jev_calls/NNN.json. Failures count, no retries, never delete receipts to
+reset a budget. Keep the pinned model, 3,000-character combined input limit and
+8,000-byte payload cap. Preflight every sample before any paid attempt. Tests use
+injected transport and temporary ledgers, never real receipts or provider calls.
+Incomplete provider comparisons have null accuracy and F1.
 
-## Jev, secrets, code and tests
+Keys stay server-side in ignored .env, never in logs, responses or receipts.
+app.py binds only 127.0.0.1 and never logs request bodies. Demo text uses
+textContent/createTextNode, never innerHTML. For offsets use Array.from(text).
 
-Jev must remain. No live calls during planned implementation; later calls need
-explicit user authorization. JEV_MAX_CALLS defaults to 0, range 0–50. Each attempt
-exclusively reserves reports/jev_calls/NNN.json. Failures count, no retries, and
-never delete receipts to reset a budget. Keep the 8,000-byte cap and pinned model.
-Tests use injected transport and temporary ledgers, never live network or the
-real receipts directory. Partial provider runs have null accuracy.
+## Collaboration and verification
 
-The key stays server-side in ignored .env; do not return, log, or store it in
-receipts. app.py never logs request bodies and binds only to 127.0.0.1. Demo builds
-text with textContent/createTextNode and highlights with createElement spans;
-never use innerHTML. Python offsets are code points; JS highlighting must use
-Array.from(text), so emoji do not shift boundaries.
-
-Match plain modules and short functions; type hints in classifier/train. Raise
-readable ValueError, surfaced as CLI errors or HTTP 400. Turkish-aware case
-normalization always maps I→ı / İ→i; Parser regexes use diacritic-stripped ASCII.
-Use LF/UTF-8. Add dependencies only when asked; pin both requirements files.
+The user explicitly requested subagents and cross-development. Divide file
+ownership, then have agents review another component. Run the full unittest
+suite, actual preparation/training, reproduction comparison and browser checks.
 Update README, RESULTS, PRESENTATION and data/README when behavior/numbers change.
-
-Use unittest, not pytest. CI runs the lock file and suite on Ubuntu/Python 3.13.
-Test data validation, official splits, dev-only selection, artifact validation,
-Parser changes, Jev budgets and response validation. Slot tests are removable.
-
-## Open author items
-
-- Collect and label 30–50 real-person requests as a separate transfer test.
-- Decide on an approved paid Jev run of the fixed 40 comparison requests.
-- Ask the teacher whether the slot extension fits Project 1. If rejected, remove
-  its files/tests and slot slide; core classification remains intact.
-- Update presentation.pptx manually from PRESENTATION.md; this rewrite did not
-  edit it. Add author name and arrange teacher GitHub access before presentation.
-- Local CI-equivalent tests passed; no remote CI run was triggered here.
+Keep grade-related limitations visible and author tasks separate from measured work.

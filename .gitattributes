@@ -1,3 +1,8 @@
 * text=auto eol=lf
-*.png binary
+
+# Preserve the original archive's raw source bytes, including newline style.
+data/raw/** -text -whitespace
+
+# Office decks and evidence images are binary artifacts.
 *.pptx binary
+*.png binary
