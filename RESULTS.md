@@ -114,6 +114,9 @@ The CLI rejects test samples for current dev-only artifacts.
 The SVM demo score was previously 21/40. Requiring excerpt vocabulary changed
 one context-only prediction to abstention. The forced-choice development
 benchmark above is unchanged, including the selected LR's 57.35% accuracy.
+Generated comparison samples now verify their declared data/code hashes, seed,
+scope and context margin before any prediction/provider setup. Untagged external
+dev samples remain allowed but are marked `sample_provenance_verified=false`.
 
 ## Human-input robustness
 
@@ -171,6 +174,9 @@ all five cleaned files, four reports, ten candidate dev prediction arrays and
 saved-model metadata/dev predictions. See
 [evidence/reproduction_check.json](evidence/reproduction_check.json).
 Comparison timestamps and request milliseconds are not deterministic.
+Training provenance also hashes the shared strict JSON parser. Offline input
+checks reject ambiguous JSON and malformed Unicode before fitting; input-policy
+changes leave the preserved corpus and model features unchanged.
 
 The original three cleaned benchmark files are byte-for-byte unchanged. Separate
 development files reconstruct only train/dev sources with wider contexts.

@@ -79,6 +79,52 @@ class MethodComparisonTests(unittest.TestCase):
         self.assertEqual(unconfigured["results"][-1]["status"], "not_configured")
         self.assertNotIn("label", unconfigured["results"][-1])
 
+    def test_comparison_json_rejects_encoding_and_duplicate_gold_before_loading_models(self):
+        dataset = {"partition": "dev", "records": [
+            {"id": "fixture", "text": "loaded language", "label": LABELS[8]},
+        ]}
+        encoded = json.dumps(dataset)
+        duplicate = encoded.replace('"label": ', '"label": "Doubt", "label": ')
+        with tempfile.TemporaryDirectory() as directory:
+            data_path = Path(directory, "cases.json")
+            for payload in (encoded.encode("utf-16"), encoded.encode("utf-32"),
+                            duplicate.encode("utf-8"), b'{"extra":NaN}', b'{"extra":1e999}'):
+                data_path.write_bytes(payload)
+                with self.subTest(payload=payload[:24]), \
+                     patch("compare_methods.joblib.load") as load, \
+                     patch("compare_methods.JevClient") as provider, \
+                     self.assertRaisesRegex(ValueError, "unambiguous UTF-8 JSON"):
+                    evaluate(Path("unused.joblib"), data_path, Path(directory, "result.json"), True)
+                load.assert_not_called()
+                provider.assert_not_called()
+
+    def test_declared_comparison_provenance_must_match_before_prediction_or_provider(self):
+        expected = {"training_data_sha256": "a" * 64, "training_code_sha256": "b" * 64,
+                    "training_seed": 42, "model_evaluation_scope": "dev_only", "context_margin": 1000}
+        dataset = {**expected, "partition": "dev", "records": [
+            {"id": "fixture", "text": "loaded language", "label": LABELS[8]},
+        ]}
+        with tempfile.TemporaryDirectory() as directory:
+            data_path = Path(directory, "cases.json")
+            bad_cases = [{**dataset, key: "stale" if "sha256" in key else 999}
+                         for key in expected]
+            bad_cases += [{key: value for key, value in dataset.items() if key != "training_seed"},
+                          {**dataset, "training_seed": True}, {**dataset, "context_margin": 1000.0}]
+            for case in bad_cases:
+                data_path.write_text(json.dumps(case), encoding="utf-8")
+                with self.subTest(metadata={k: case.get(k) for k in expected}), \
+                     patch("compare_methods.joblib.load", return_value=self.artifacts), \
+                     patch("compare_methods.JevClient") as provider, \
+                     patch("compare_methods.compare_request") as predict, \
+                     self.assertRaisesRegex(ValueError, "sample provenance"):
+                    evaluate(Path("unused.joblib"), data_path, Path(directory, "result.json"), True)
+                provider.assert_not_called()
+                predict.assert_not_called()
+            data_path.write_text(json.dumps(dataset), encoding="utf-8")
+            with patch("compare_methods.joblib.load", return_value=self.artifacts):
+                result = evaluate(Path("unused.joblib"), data_path, Path(directory, "result.json"))
+            self.assertTrue(result["sample_provenance_verified"])
+
     def test_invalid_fields_are_rejected_before_any_provider_attempt(self):
         jev = Mock()
         for text in (None, " ", "x" * 5001, ["text"]):

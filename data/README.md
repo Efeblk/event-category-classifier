@@ -52,6 +52,13 @@ directly so platform newline conversion cannot shift offsets. The `text` field
 is the exact original substring and is never rewritten.
 
 The derived `clean_text` collapses Unicode whitespace to single ASCII spaces.
+Offline training validates JSONL with the shared strict UTF-8 parser before
+fitting: duplicate fields, nonfinite values, malformed strings and unsupported
+ASCII controls fail. It preserves valid C1 source characters: wider-context row
+`765913191:3422:3432:Repetition` has two U+009D characters in its training context.
+This explicit source-reader allowance changes no strings, offsets or model
+features. Interactive/API inputs continue to reject those controls. JSONL lines
+are separated as bytes, preserving U+2028/U+2029 inside valid JSON strings.
 In the original `techniques.jsonl` benchmark, `context` includes the excerpt and
 up to 350 original characters on either side, with the same whitespace
 normalization and a 1,500-character cap. Negation,

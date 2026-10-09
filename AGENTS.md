@@ -107,6 +107,11 @@ Incomplete provider comparisons have null accuracy and F1.
 Keys stay server-side in ignored .env, never in logs, responses or receipts.
 app.py binds only 127.0.0.1 and never logs request bodies. Demo text uses
 textContent/createTextNode, never innerHTML. For offsets use Array.from(text).
+Use the shared strict UTF-8 JSON parser for HTTP and offline inputs. Validate
+generated comparison sample provenance before provider setup. The trainer alone
+allows original C1 source characters (two U+009D in one training context); leave
+corpus strings unchanged and keep API/inference validation strict. Body uploads
+have a five-second total deadline; concurrent requests keep the local demo responsive.
 
 ## Collaboration and verification
 

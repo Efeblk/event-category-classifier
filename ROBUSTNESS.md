@@ -45,8 +45,10 @@ eligible for a fresh final evaluation.
 | Editing while a request was pending could show the old result or annotation | Edits/selections invalidate the request generation; late successes/errors cannot overwrite current state |
 | Example tooltip exposed its technique through the record ID before guessing | Tooltips use display numbers; annotation appears after comparison |
 | Invalid Unicode or hidden-only text reached inference | Shared Python/API validation rejects surrogates, unsupported controls and format/mark-only inputs; genuine emoji and combining text remain supported |
-| Duplicate JSON fields, nonfinite numbers or ambiguous HTTP bodies were accepted | Strict UTF-8 JSON, unique fields, fixed byte lengths/content type, nesting checks and a five-second read timeout |
+| Duplicate JSON fields, nonfinite numbers or ambiguous HTTP bodies were accepted | Shared strict UTF-8 JSON, unique fields, fixed byte lengths/content type and nesting checks |
+| A client trickling bytes restarted the socket timeout and blocked other requests | A five-second total body deadline and concurrent loopback request handling |
 | Cached examples/scores from another model run could appear current | Data/code hashes, seed, scope, context margin and selected models must match |
+| Offline inputs bypassed API JSON/Unicode checks; stale comparison sample tags were ignored | Validate training strings/JSON before fitting and check every declared sample provenance field before provider setup |
 
 Input text and warnings render through text nodes. Literal HTML is displayed
 without execution. Limits and highlights count Unicode code points, including
@@ -81,10 +83,18 @@ neutral detector would need representative labeled data and separate evaluation.
 
 ## Verification
 
-The full **79-test** unittest suite covers input/API/model regressions using fixtures and
+The full **89-test** unittest suite covers input/API/model regressions using fixtures and
 injected provider responses. Browser checks cover stale success/error responses,
 button recovery, answer concealment, literal HTML, emoji/whitespace highlighting,
-Unicode limits, guesses, keyboard submission and a 375-pixel viewport. Actual
+Unicode limits, guesses, keyboard submission and a 375-pixel viewport.
+HTTP tests also cover continuously dripped uploads and simultaneous requests
+while another connection has incomplete headers. Actual
 preparation/training and a fresh temporary reproduction pass; the original three
 cleaned benchmark files remain unchanged. The selected model still has **57.35%
 dev accuracy / 0.3957 macro F1**. A fresh labeled final test remains pending.
+
+The source corpus contains two UTF-8 U+009D C1 characters in one training context.
+Source-file validation preserves C1 text without rewriting corpus strings,
+features or offsets; surrogates, unsupported ASCII controls and hidden-only
+strings still fail. Interactive/API validation continues to reject C1 controls.
+See [data/README.md](data/README.md) for the precise source record.

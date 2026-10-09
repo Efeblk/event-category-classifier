@@ -98,6 +98,8 @@ not verify their truth.
 - **What happens with unknown text?** Each demo model abstains if fitted excerpt
   lexical channels are zero. Context and numeric counts cannot bypass this guard.
   Neutral English can still receive a label; there is no neutral training class.
+  Offline JSON/Unicode checks run before fitting; generated comparison samples
+  must match the model run. See [ROBUSTNESS.md](ROBUSTNESS.md) for regression probes.
 - **What remains difficult?** Bandwagon has zero dev F1 on eight examples.
   More accuracy does not mean all techniques are solved.
 - **Did you use Jev?** The optional pinned, budgeted adapter remains. No paid
