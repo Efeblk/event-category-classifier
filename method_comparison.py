@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from typing import Any
 
-from classifier import _validated_model, classify_request
+from classifier import _validated_model, classify_request, validate_unicode_text
 
 
 METHODS = ("naive_bayes", "logistic_regression", "linear_svm")
@@ -19,6 +19,8 @@ def validate_input(text: object, context: object = "", include_jev: object = Fal
         raise ValueError("Enter an excerpt with 1 to 5,000 characters.")
     if not isinstance(context, str) or len(context) > MAX_CONTEXT_LENGTH:
         raise ValueError("Context must be text with at most 10,000 characters.")
+    validate_unicode_text(text, "Excerpt")
+    validate_unicode_text(context, "Context")
     if type(include_jev) is not bool:
         raise ValueError("include_jev must be true or false.")
 
@@ -81,5 +83,10 @@ def compare_request(
         "results": results,
         "models": {method: models[method]["model_name"] for method in METHODS},
         "scope": "Technique classification of a selected English excerpt with optional context. "
+                 "Models trained on annotated technique fragments do not detect neutral text or language. "
                  "This does not assess truth or detect propaganda throughout a whole article.",
+        "warnings": (["The models were trained with surrounding context. A short excerpt alone can be harder to classify."]
+                     if not context.strip() else []) +
+                    (["This excerpt contains no letters. A technique prediction for numbers or symbols can be unreliable."]
+                     if not any(character.isalpha() for character in text) else []),
     }

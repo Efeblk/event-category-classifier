@@ -38,6 +38,7 @@ python -m pip install -r requirements-lock.txt
 python prepare_data.py
 python train.py
 python compare_methods.py
+python stress_test.py
 python reproduce.py
 python app.py
 python -m unittest discover -s tests -v
@@ -80,12 +81,17 @@ under data/. Copy only final report snapshots into evidence/.
   dev winner; method_models.joblib contains dev-selected NB/LR/SVM artifacts.
 - The upgrade adds one explainable LR candidate: separate excerpt words,
   context words, excerpt characters and 22 scaled text-shape counts. Fit every
-  vectorizer and scaler on train only. Numeric features alone must not suppress
-  the demo's unknown-vocabulary abstention. Keep the original three cleaned
+  vectorizer and scaler on train only. Context vocabulary or numeric features
+  alone must not suppress the demo's unknown-excerpt abstention. Keep the original three cleaned
   benchmark files unchanged; development files are separate.
 - No claim of automatic whole-article detection, truth checking, causal feature
   explanations, hand-reviewed project data or original scraping. The corpus's
   creators already cleaned it; describe our measured transformations honestly.
+- stress_test.py uses only unlabeled official dev articles/template from the
+  verified archive. It never fits models, invents technique gold, uses old project
+  test rows or calls Jev. Keep original human sources separate from generated
+  variants/controls. Exclude no-op variants from changed-pair fractions. These
+  examined sources are not a fresh final test; accuracy remains null.
 
 ## Jev, secrets and demo
 

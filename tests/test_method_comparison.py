@@ -121,6 +121,8 @@ class MethodComparisonTests(unittest.TestCase):
     def test_http_returns_four_methods_actual_examples_and_private_configuration(self):
         with tempfile.TemporaryDirectory() as directory:
             examples = {"partition": "dev", "records": [{"id": "dev-1", "text": "loaded language", "context": "", "label": LABELS[8]}]}
+            examples.update(training_data_sha256="a" * 64, training_code_sha256="b" * 64,
+                            training_seed=42, model_evaluation_scope="dev_only", context_margin=1000)
             Path(directory, "dev_examples.json").write_text(json.dumps(examples), encoding="utf-8")
             client = JevClient({"TYPESAFE_API_KEY": "private-test-key", "JEV_MAX_CALLS": "0"}, directory, Mock())
             with running_server(self.artifacts, directory, client) as base:
@@ -227,7 +229,8 @@ class MethodComparisonTests(unittest.TestCase):
             client.classify.assert_not_called()
 
     def test_current_dev_results_and_historical_test_results_stay_separate(self):
-        current = {"evaluation": {"scope": "dev_only"}, "models": {"upgraded": {"dev": {"accuracy": 0.57}, "test": None}}}
+        from tests.test_http_robustness import matching_metrics
+        current = matching_metrics(self.artifacts)
         historical = {"models": {"previous": {"dev": {"accuracy": 0.49}, "test": {"accuracy": 0.47}}}}
         with tempfile.TemporaryDirectory() as directory:
             baseline_path = Path(directory, "baseline.json")
@@ -236,7 +239,7 @@ class MethodComparisonTests(unittest.TestCase):
                 with urlopen(base + "/api/results", timeout=2) as handle:
                     actual = json.load(handle)
                 self.assertEqual(actual, current)
-                self.assertIsNone(actual["models"]["upgraded"]["test"])
+                self.assertIsNone(actual["models"][self.artifacts["logistic_regression"]["model_name"]]["test"])
                 with urlopen(base + "/api/baseline-results", timeout=2) as handle:
                     self.assertEqual(json.load(handle), historical)
 

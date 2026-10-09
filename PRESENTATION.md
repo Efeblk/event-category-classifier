@@ -95,8 +95,9 @@ not verify their truth.
   [Task paper](https://aclanthology.org/2020.semeval-1.186/).
 - **What are feature chips?** Positive weighted contributions to the class score.
   NB uses log-likelihood differences from its class mean. They show associations.
-- **What happens with unknown text?** Each demo model abstains if fitted lexical
-  channels are zero. Numeric counts alone cannot bypass this guard.
+- **What happens with unknown text?** Each demo model abstains if fitted excerpt
+  lexical channels are zero. Context and numeric counts cannot bypass this guard.
+  Neutral English can still receive a label; there is no neutral training class.
 - **What remains difficult?** Bandwagon has zero dev F1 on eight examples.
   More accuracy does not mean all techniques are solved.
 - **Did you use Jev?** The optional pinned, budgeted adapter remains. No paid
@@ -110,10 +111,11 @@ Current dev numbers trace to [evidence/metrics.json](evidence/metrics.json);
 old test results live under [evidence/baseline/](evidence/baseline/README.md).
 
 Final PPTX text/tables must remain editable with CC BY 4.0 attribution in notes.
-**No final PPTX has been exported:** the required presentation runtime is
-unavailable here. The obsolete intent/slot presentation was removed; its prior
-version remains in Git.
+**No final PPTX has been exported:** presentation creation is excluded at the
+author's request. This file remains reference material only.
 
-Author identity, truthful contribution filename, public GitHub publication and
-submission are deferred at the author's request. Do not invent names or team
+The implementation is public at
+[Efeblk/event-category-classifier](https://github.com/Efeblk/event-category-classifier).
+Author identity, truthful contribution filename and final homework submission
+remain author tasks. Do not invent names or team
 contributions. Keep development and historical test numbers clearly separated.

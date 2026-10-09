@@ -1,15 +1,18 @@
 {
   "schema_version": 1,
   "task": "persuasion_technique_classification",
-  "generated_at_utc": "2026-10-09T01:01:23.657237+00:00",
+  "generated_at_utc": "2026-10-09T10:00:13.093154+00:00",
   "evaluation_scope": "40 dev persuasion annotations",
   "partition": "dev",
   "model_evaluation_scope": "dev_only",
   "examples": 40,
   "provenance": "Uniform dev sample without replacement, seed 42; same input/context for every method. Development is selection data, not an independent new test.",
   "note": "Same original excerpt and context for every method. Macro F1 uses all 14 labels. Abstentions count as errors. Sample partition: dev. A development sample does not measure final-test generalization.",
-  "data_sha256": "6485ecf3bb2ea80c9d0617e22d2f13f46467836f85e0fc62614d3be9a15271c5",
+  "data_sha256": "d221da9415c03a7224256b9e951528a1b0deb52ac509a38cf68631a830ece9b0",
   "training_data_sha256": "845d68ca41d7c705e85d0f28e7e30794e38cc86c5c9cb7577230fd7b7d7f8029",
+  "training_code_sha256": "777013d8174189e591d5d647289a4d06253fbc49edace33da192f1beb9292705",
+  "training_seed": 42,
+  "context_margin": 1000,
   "method_models": {
     "naive_bayes": "multinomial_nb_char",
     "logistic_regression": "logistic_regression_hybrid_structure",
@@ -256,8 +259,8 @@
       "total": 40,
       "failed": 0,
       "not_run": 0,
-      "accuracy": 0.525,
-      "macro_f1": 0.27185592185592183,
+      "accuracy": 0.5,
+      "macro_f1": 0.2728479853479853,
       "evaluation_status": "evaluated",
       "per_class": {
         "Appeal_to_Authority": {
@@ -309,9 +312,9 @@
           "support": 4.0
         },
         "Loaded_Language": {
-          "precision": 0.55,
-          "recall": 0.6875,
-          "f1-score": 0.6111111111111112,
+          "precision": 0.625,
+          "recall": 0.625,
+          "f1-score": 0.625,
           "support": 16.0
         },
         "Name_Calling,Labeling": {
@@ -344,17 +347,22 @@
           "f1-score": 0.0,
           "support": 0.0
         },
-        "accuracy": 0.525,
+        "micro avg": {
+          "precision": 0.5555555555555556,
+          "recall": 0.5,
+          "f1-score": 0.5263157894736842,
+          "support": 40.0
+        },
         "macro avg": {
-          "precision": 0.31607142857142856,
-          "recall": 0.2883928571428571,
-          "f1-score": 0.27185592185592183,
+          "precision": 0.32142857142857145,
+          "recall": 0.2839285714285714,
+          "f1-score": 0.2728479853479853,
           "support": 40.0
         },
         "weighted avg": {
-          "precision": 0.529375,
-          "recall": 0.525,
-          "f1-score": 0.4921367521367522,
+          "precision": 0.559375,
+          "recall": 0.5,
+          "f1-score": 0.4976923076923077,
           "support": 40.0
         }
       }
@@ -431,7 +439,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 18.812
+          "elapsed_ms": 25.335
         },
         {
           "label": "Doubt",
@@ -488,7 +496,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 56.664
+          "elapsed_ms": 63.977
         },
         {
           "label": "Exaggeration,Minimisation",
@@ -529,7 +537,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 41.253
+          "elapsed_ms": 63.625
         },
         {
           "status": "not_requested",
@@ -599,7 +607,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.446
+          "elapsed_ms": 13.182
         },
         {
           "label": "Doubt",
@@ -656,7 +664,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 68.672
+          "elapsed_ms": 94.587
         },
         {
           "label": "Loaded_Language",
@@ -697,7 +705,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 58.108
+          "elapsed_ms": 82.043
         },
         {
           "status": "not_requested",
@@ -767,7 +775,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 14.658
+          "elapsed_ms": 11.169
         },
         {
           "label": "Doubt",
@@ -824,7 +832,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 78.656
+          "elapsed_ms": 79.684
         },
         {
           "label": "Loaded_Language",
@@ -865,7 +873,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 47.91
+          "elapsed_ms": 64.323
         },
         {
           "status": "not_requested",
@@ -931,7 +939,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 10.496
+          "elapsed_ms": 11.587
         },
         {
           "label": "Repetition",
@@ -988,48 +996,15 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 85.126
+          "elapsed_ms": 138.729
         },
         {
-          "label": "Loaded_Language",
-          "top_features": [
-            {
-              "feature": "context: trump",
-              "weight": 0.015421
-            },
-            {
-              "feature": "context: president trump",
-              "weight": 0.009678
-            },
-            {
-              "feature": "context: easier",
-              "weight": 0.007683
-            },
-            {
-              "feature": "context: just",
-              "weight": 0.00609
-            },
-            {
-              "feature": "context: is just",
-              "weight": 0.006
-            },
-            {
-              "feature": "context: email",
-              "weight": 0.004314
-            },
-            {
-              "feature": "context: than obama",
-              "weight": 0.003987
-            },
-            {
-              "feature": "context: kind of",
-              "weight": 0.003499
-            }
-          ],
+          "label": "unclear",
+          "reason": "unknown_terms",
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 71.84
+          "elapsed_ms": 48.143
         },
         {
           "status": "not_requested",
@@ -1099,7 +1074,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.015
+          "elapsed_ms": 10.824
         },
         {
           "label": "Flag-Waving",
@@ -1156,7 +1131,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 54.756
+          "elapsed_ms": 90.822
         },
         {
           "label": "Flag-Waving",
@@ -1197,7 +1172,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 44.926
+          "elapsed_ms": 74.023
         },
         {
           "status": "not_requested",
@@ -1267,7 +1242,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.43
+          "elapsed_ms": 12.436
         },
         {
           "label": "Loaded_Language",
@@ -1324,7 +1299,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 76.324
+          "elapsed_ms": 111.466
         },
         {
           "label": "Loaded_Language",
@@ -1365,7 +1340,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 38.609
+          "elapsed_ms": 70.704
         },
         {
           "status": "not_requested",
@@ -1435,7 +1410,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.143
+          "elapsed_ms": 11.176
         },
         {
           "label": "Loaded_Language",
@@ -1492,7 +1467,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 52.232
+          "elapsed_ms": 84.298
         },
         {
           "label": "Loaded_Language",
@@ -1533,7 +1508,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 40.503
+          "elapsed_ms": 96.517
         },
         {
           "status": "not_requested",
@@ -1603,7 +1578,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.924
+          "elapsed_ms": 14.139
         },
         {
           "label": "Name_Calling,Labeling",
@@ -1660,7 +1635,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 54.497
+          "elapsed_ms": 105.631
         },
         {
           "label": "Loaded_Language",
@@ -1701,7 +1676,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 44.267
+          "elapsed_ms": 80.272
         },
         {
           "status": "not_requested",
@@ -1771,7 +1746,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.887
+          "elapsed_ms": 16.286
         },
         {
           "label": "Doubt",
@@ -1828,7 +1803,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 58.232
+          "elapsed_ms": 93.85
         },
         {
           "label": "Causal_Oversimplification",
@@ -1869,7 +1844,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 45.633
+          "elapsed_ms": 73.317
         },
         {
           "status": "not_requested",
@@ -1939,7 +1914,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 10.821
+          "elapsed_ms": 13.359
         },
         {
           "label": "Doubt",
@@ -1996,7 +1971,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 57.627
+          "elapsed_ms": 87.825
         },
         {
           "label": "Slogans",
@@ -2037,7 +2012,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 39.544
+          "elapsed_ms": 78.15
         },
         {
           "status": "not_requested",
@@ -2107,7 +2082,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.161
+          "elapsed_ms": 14.191
         },
         {
           "label": "Causal_Oversimplification",
@@ -2164,7 +2139,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 54.466
+          "elapsed_ms": 110.553
         },
         {
           "label": "Causal_Oversimplification",
@@ -2205,7 +2180,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 44.909
+          "elapsed_ms": 89.798
         },
         {
           "status": "not_requested",
@@ -2275,7 +2250,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.76
+          "elapsed_ms": 14.602
         },
         {
           "label": "Loaded_Language",
@@ -2332,7 +2307,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 56.517
+          "elapsed_ms": 115.578
         },
         {
           "label": "Loaded_Language",
@@ -2373,7 +2348,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 51.043
+          "elapsed_ms": 103.414
         },
         {
           "status": "not_requested",
@@ -2443,7 +2418,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.329
+          "elapsed_ms": 14.375
         },
         {
           "label": "Exaggeration,Minimisation",
@@ -2500,7 +2475,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 73.073
+          "elapsed_ms": 96.179
         },
         {
           "label": "Doubt",
@@ -2541,7 +2516,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 51.003
+          "elapsed_ms": 101.655
         },
         {
           "status": "not_requested",
@@ -2611,7 +2586,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.59
+          "elapsed_ms": 16.339
         },
         {
           "label": "Name_Calling,Labeling",
@@ -2668,7 +2643,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 107.745
+          "elapsed_ms": 108.421
         },
         {
           "label": "Name_Calling,Labeling",
@@ -2709,7 +2684,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 74.434
+          "elapsed_ms": 85.786
         },
         {
           "status": "not_requested",
@@ -2779,7 +2754,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.779
+          "elapsed_ms": 13.676
         },
         {
           "label": "Name_Calling,Labeling",
@@ -2836,7 +2811,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 89.129
+          "elapsed_ms": 95.184
         },
         {
           "label": "Name_Calling,Labeling",
@@ -2877,7 +2852,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 62.492
+          "elapsed_ms": 86.556
         },
         {
           "status": "not_requested",
@@ -2947,7 +2922,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.428
+          "elapsed_ms": 16.141
         },
         {
           "label": "Name_Calling,Labeling",
@@ -3004,7 +2979,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 83.857
+          "elapsed_ms": 106.895
         },
         {
           "label": "Name_Calling,Labeling",
@@ -3045,7 +3020,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 56.12
+          "elapsed_ms": 70.064
         },
         {
           "status": "not_requested",
@@ -3115,7 +3090,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 9.062
+          "elapsed_ms": 14.487
         },
         {
           "label": "Loaded_Language",
@@ -3172,7 +3147,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 66.56
+          "elapsed_ms": 80.626
         },
         {
           "label": "Doubt",
@@ -3213,7 +3188,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 59.168
+          "elapsed_ms": 79.405
         },
         {
           "status": "not_requested",
@@ -3283,7 +3258,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 11.515
+          "elapsed_ms": 12.55
         },
         {
           "label": "Slogans",
@@ -3340,7 +3315,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 69.667
+          "elapsed_ms": 100.19
         },
         {
           "label": "Loaded_Language",
@@ -3381,7 +3356,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 46.916
+          "elapsed_ms": 87.434
         },
         {
           "status": "not_requested",
@@ -3443,7 +3418,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 11.33
+          "elapsed_ms": 14.613
         },
         {
           "label": "Flag-Waving",
@@ -3500,7 +3475,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 68.544
+          "elapsed_ms": 142.903
         },
         {
           "label": "Flag-Waving",
@@ -3541,7 +3516,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 54.394
+          "elapsed_ms": 80.002
         },
         {
           "status": "not_requested",
@@ -3611,7 +3586,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 10.481
+          "elapsed_ms": 16.079
         },
         {
           "label": "Name_Calling,Labeling",
@@ -3668,7 +3643,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 60.853
+          "elapsed_ms": 127.711
         },
         {
           "label": "Name_Calling,Labeling",
@@ -3709,7 +3684,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 46.076
+          "elapsed_ms": 73.267
         },
         {
           "status": "not_requested",
@@ -3779,7 +3754,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.677
+          "elapsed_ms": 13.769
         },
         {
           "label": "Loaded_Language",
@@ -3836,7 +3811,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 71.769
+          "elapsed_ms": 103.704
         },
         {
           "label": "Loaded_Language",
@@ -3877,7 +3852,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 52.353
+          "elapsed_ms": 88.698
         },
         {
           "status": "not_requested",
@@ -3947,7 +3922,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 10.107
+          "elapsed_ms": 14.72
         },
         {
           "label": "Loaded_Language",
@@ -4004,48 +3979,15 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 130.699
+          "elapsed_ms": 160.218
         },
         {
-          "label": "Loaded_Language",
-          "top_features": [
-            {
-              "feature": "context: clinton",
-              "weight": 0.028469
-            },
-            {
-              "feature": "context: fbi",
-              "weight": 0.013927
-            },
-            {
-              "feature": "context: the clinton",
-              "weight": 0.008886
-            },
-            {
-              "feature": "context: against russian",
-              "weight": 0.008076
-            },
-            {
-              "feature": "context: hillary clinton",
-              "weight": 0.007318
-            },
-            {
-              "feature": "context: informant who",
-              "weight": 0.007216
-            },
-            {
-              "feature": "context: the fbi",
-              "weight": 0.007015
-            },
-            {
-              "feature": "context: attempted to",
-              "weight": 0.00697
-            }
-          ],
+          "label": "unclear",
+          "reason": "unknown_terms",
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 95.985
+          "elapsed_ms": 49.674
         },
         {
           "status": "not_requested",
@@ -4115,7 +4057,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.181
+          "elapsed_ms": 14.173
         },
         {
           "label": "Flag-Waving",
@@ -4172,7 +4114,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 77.724
+          "elapsed_ms": 87.029
         },
         {
           "label": "Flag-Waving",
@@ -4213,7 +4155,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 55.011
+          "elapsed_ms": 67.86
         },
         {
           "status": "not_requested",
@@ -4283,7 +4225,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 10.371
+          "elapsed_ms": 13.282
         },
         {
           "label": "Name_Calling,Labeling",
@@ -4340,7 +4282,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 67.851
+          "elapsed_ms": 81.109
         },
         {
           "label": "Name_Calling,Labeling",
@@ -4381,7 +4323,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 55.842
+          "elapsed_ms": 65.647
         },
         {
           "status": "not_requested",
@@ -4451,7 +4393,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.671
+          "elapsed_ms": 12.923
         },
         {
           "label": "Loaded_Language",
@@ -4508,7 +4450,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 75.991
+          "elapsed_ms": 77.503
         },
         {
           "label": "Loaded_Language",
@@ -4549,7 +4491,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 53.307
+          "elapsed_ms": 68.725
         },
         {
           "status": "not_requested",
@@ -4619,7 +4561,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.818
+          "elapsed_ms": 14.496
         },
         {
           "label": "Loaded_Language",
@@ -4676,48 +4618,15 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 110.996
+          "elapsed_ms": 136.334
         },
         {
-          "label": "Loaded_Language",
-          "top_features": [
-            {
-              "feature": "context: trump",
-              "weight": 0.017271
-            },
-            {
-              "feature": "context: conservative",
-              "weight": 0.006997
-            },
-            {
-              "feature": "context: open",
-              "weight": 0.006181
-            },
-            {
-              "feature": "context: lands",
-              "weight": 0.006067
-            },
-            {
-              "feature": "context: rather",
-              "weight": 0.005995
-            },
-            {
-              "feature": "context: is the",
-              "weight": 0.005412
-            },
-            {
-              "feature": "context: mr",
-              "weight": 0.00525
-            },
-            {
-              "feature": "context: personality",
-              "weight": 0.005239
-            }
-          ],
+          "label": "unclear",
+          "reason": "unknown_terms",
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 94.393
+          "elapsed_ms": 58.31
         },
         {
           "status": "not_requested",
@@ -4779,7 +4688,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.541
+          "elapsed_ms": 16.141
         },
         {
           "label": "Loaded_Language",
@@ -4836,7 +4745,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 72.064
+          "elapsed_ms": 85.317
         },
         {
           "label": "Name_Calling,Labeling",
@@ -4877,7 +4786,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 53.648
+          "elapsed_ms": 73.977
         },
         {
           "status": "not_requested",
@@ -4947,7 +4856,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.551
+          "elapsed_ms": 13.867
         },
         {
           "label": "Loaded_Language",
@@ -5004,7 +4913,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 68.207
+          "elapsed_ms": 90.565
         },
         {
           "label": "Loaded_Language",
@@ -5045,7 +4954,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 55.667
+          "elapsed_ms": 96.333
         },
         {
           "status": "not_requested",
@@ -5115,7 +5024,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.998
+          "elapsed_ms": 15.643
         },
         {
           "label": "Appeal_to_fear-prejudice",
@@ -5172,7 +5081,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 72.935
+          "elapsed_ms": 100.359
         },
         {
           "label": "Appeal_to_fear-prejudice",
@@ -5213,7 +5122,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 56.461
+          "elapsed_ms": 83.609
         },
         {
           "status": "not_requested",
@@ -5283,7 +5192,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 11.648
+          "elapsed_ms": 13.554
         },
         {
           "label": "Name_Calling,Labeling",
@@ -5340,7 +5249,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 73.925
+          "elapsed_ms": 117.592
         },
         {
           "label": "Name_Calling,Labeling",
@@ -5381,7 +5290,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 63.286
+          "elapsed_ms": 73.143
         },
         {
           "status": "not_requested",
@@ -5451,7 +5360,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.71
+          "elapsed_ms": 14.727
         },
         {
           "label": "Name_Calling,Labeling",
@@ -5508,7 +5417,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 91.358
+          "elapsed_ms": 98.819
         },
         {
           "label": "Loaded_Language",
@@ -5549,7 +5458,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 65.599
+          "elapsed_ms": 79.085
         },
         {
           "status": "not_requested",
@@ -5619,7 +5528,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.67
+          "elapsed_ms": 13.653
         },
         {
           "label": "Loaded_Language",
@@ -5676,7 +5585,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 78.498
+          "elapsed_ms": 92.319
         },
         {
           "label": "Loaded_Language",
@@ -5717,7 +5626,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 62.376
+          "elapsed_ms": 82.321
         },
         {
           "status": "not_requested",
@@ -5787,7 +5696,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.842
+          "elapsed_ms": 14.506
         },
         {
           "label": "Loaded_Language",
@@ -5844,7 +5753,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 70.403
+          "elapsed_ms": 93.639
         },
         {
           "label": "Loaded_Language",
@@ -5885,7 +5794,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 56.979
+          "elapsed_ms": 78.931
         },
         {
           "status": "not_requested",
@@ -5955,7 +5864,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.206
+          "elapsed_ms": 14.254
         },
         {
           "label": "Repetition",
@@ -6012,48 +5921,15 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 111.975
+          "elapsed_ms": 128.035
         },
         {
-          "label": "Loaded_Language",
-          "top_features": [
-            {
-              "feature": "context: mccarrick",
-              "weight": 0.01243
-            },
-            {
-              "feature": "context: what about",
-              "weight": 0.008664
-            },
-            {
-              "feature": "context: francis",
-              "weight": 0.008635
-            },
-            {
-              "feature": "context: in rome",
-              "weight": 0.008576
-            },
-            {
-              "feature": "context: the past",
-              "weight": 0.00784
-            },
-            {
-              "feature": "context: mind",
-              "weight": 0.006835
-            },
-            {
-              "feature": "context: congregation",
-              "weight": 0.006544
-            },
-            {
-              "feature": "context: rome",
-              "weight": 0.006478
-            }
-          ],
+          "label": "unclear",
+          "reason": "unknown_terms",
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 95.623
+          "elapsed_ms": 54.051
         },
         {
           "status": "not_requested",
@@ -6123,7 +5999,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.185
+          "elapsed_ms": 15.41
         },
         {
           "label": "Causal_Oversimplification",
@@ -6180,7 +6056,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 76.175
+          "elapsed_ms": 89.474
         },
         {
           "label": "Appeal_to_Authority",
@@ -6221,7 +6097,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 55.77
+          "elapsed_ms": 74.464
         },
         {
           "status": "not_requested",
@@ -6291,7 +6167,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.626
+          "elapsed_ms": 14.31
         },
         {
           "label": "Flag-Waving",
@@ -6348,7 +6224,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 72.756
+          "elapsed_ms": 90.838
         },
         {
           "label": "Flag-Waving",
@@ -6389,7 +6265,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 57.33
+          "elapsed_ms": 74.414
         },
         {
           "status": "not_requested",
@@ -6459,7 +6335,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 11.867
+          "elapsed_ms": 13.553
         },
         {
           "label": "Name_Calling,Labeling",
@@ -6516,7 +6392,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 71.982
+          "elapsed_ms": 85.967
         },
         {
           "label": "Name_Calling,Labeling",
@@ -6557,7 +6433,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 50.963
+          "elapsed_ms": 87.785
         },
         {
           "status": "not_requested",
@@ -6627,7 +6503,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 12.445
+          "elapsed_ms": 14.241
         },
         {
           "label": "Name_Calling,Labeling",
@@ -6684,7 +6560,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 76.002
+          "elapsed_ms": 91.923
         },
         {
           "label": "Loaded_Language",
@@ -6725,7 +6601,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 69.723
+          "elapsed_ms": 75.929
         },
         {
           "status": "not_requested",
@@ -6795,7 +6671,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.874
+          "elapsed_ms": 14.914
         },
         {
           "label": "Name_Calling,Labeling",
@@ -6852,7 +6728,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 78.922
+          "elapsed_ms": 91.647
         },
         {
           "label": "Loaded_Language",
@@ -6893,7 +6769,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 83.699
+          "elapsed_ms": 107.67
         },
         {
           "status": "not_requested",
@@ -6963,7 +6839,7 @@
           "method": "naive_bayes",
           "model": "multinomial_nb_char",
           "status": "ok",
-          "elapsed_ms": 13.577
+          "elapsed_ms": 16.356
         },
         {
           "label": "Repetition",
@@ -7020,7 +6896,7 @@
           "method": "logistic_regression",
           "model": "logistic_regression_hybrid_structure",
           "status": "ok",
-          "elapsed_ms": 79.182
+          "elapsed_ms": 99.813
         },
         {
           "label": "Loaded_Language",
@@ -7061,7 +6937,7 @@
           "method": "linear_svm",
           "model": "linear_svm_word_context",
           "status": "ok",
-          "elapsed_ms": 58.159
+          "elapsed_ms": 77.5
         },
         {
           "status": "not_requested",
@@ -7072,9 +6948,9 @@
     }
   ],
   "code_sha256": {
-    "classifier.py": "ea14d16145809a72da885c2d6e4f64fa3ef1f86b777074dce2f84bd19fcdc99f",
+    "classifier.py": "4b682605a5df99ba220978a958a135a6c9a614ec8baa6b56177523013556f6db",
     "jev.py": "c3b8b03a19e956d6a5612f8437a224e700babe56bd6dca4cc77accf0c8bb536b",
-    "method_comparison.py": "511be72c1851f93538caee51d3a555b9a5b0c2d17218b59a61fe8950a51a1c55",
-    "compare_methods.py": "bd2b98b6cc9c5679d4a33fde015b173e59b20666fb1a2df3ba0ffe3ad4a0fe0e"
+    "method_comparison.py": "487842a00db684d99a81fe08b587f290793a69407018ade1b39218b488615507",
+    "compare_methods.py": "d8c2ea86196a633b9cca371e68295c0b55d3604d3a398fa1ee08dc5972473fe0"
   }
 }

@@ -93,7 +93,7 @@
   <header class="masthead"><span class="mark">The persuasion lab</span><span class="edition">COE025 / Project 1<br>English · 14 techniques</span></header>
   <div class="hero">
     <div><h1>Spot the<br><span>Manipulation.</span></h1><p class="intro">Loaded words. Convenient distractions. False choices. Can three classic models recognize the persuasion technique?</p></div>
-    <p class="scope"><strong>You select the excerpt. The models name the technique.</strong><br>This classifies an English excerpt already selected for analysis. It does not assess whether a claim is true or whether a whole article contains propaganda.</p>
+    <p class="scope"><strong>You select the English excerpt. The models name the technique.</strong><br>This classifies an excerpt already selected for analysis. There is no neutral-text training class, so ordinary text can still receive a technique label. It does not assess truth or detect propaganda throughout an article.</p>
   </div>
 
   <div class="workspace">
@@ -156,13 +156,23 @@ function count() {
   document.getElementById("text-count").textContent = Array.from(request.value).length.toLocaleString("en") + " / 5,000";
   document.getElementById("context-count").textContent = Array.from(context.value).length.toLocaleString("en") + " / 10,000";
 }
+function invalidateResult() {
+  latestSubmission += 1;
+  const result = document.getElementById("result");
+  result.hidden = true;
+  result.replaceChildren();
+  document.getElementById("submit").disabled = false;
+}
 function edited() {
   activeExample = null;
   document.querySelectorAll(".sample.active").forEach(button => button.classList.remove("active"));
+  invalidateResult();
   count();
 }
 request.addEventListener("input", edited);
 context.addEventListener("input", edited);
+guess.addEventListener("change", invalidateResult);
+document.getElementById("include-jev").addEventListener("change", invalidateResult);
 
 for (const [label, [name, description]] of Object.entries(techniques)) {
   const option = el("option", name); option.value = label; guess.append(option);
@@ -188,12 +198,13 @@ async function loadExamples() {
       const button = el("button", undefined, "sample"); button.type = "button";
       const preview = Array.from(example.text).slice(0, 115).join("") + (Array.from(example.text).length > 115 ? "…" : "");
       button.append(el("strong", "Excerpt " + String(index + 1).padStart(2, "0")), el("span", preview));
-      button.title = "Dev record " + example.id;
+      button.title = "Development excerpt " + (index + 1) + "; annotation revealed after comparison.";
       button.addEventListener("click", () => {
+        invalidateResult();
         activeExample = example; request.value = example.text; context.value = example.context || ""; guess.value = "";
         document.getElementById("context-details").open = false;
         document.querySelectorAll(".sample.active").forEach(item => item.classList.remove("active"));
-        button.classList.add("active"); document.getElementById("result").hidden = true; count(); request.focus();
+        button.classList.add("active"); count(); request.focus();
       });
       (index < 6 ? target : extra).append(button);
     });
@@ -235,6 +246,10 @@ function showResult(payload, text, surrounding, selectedGuess, example) {
   if (surrounding.trim()) {
     const detail = el("details"); detail.append(el("summary", "View the excerpt in its supplied context"), highlightedContext(surrounding, text)); target.append(detail);
   }
+  for (const warning of payload.warnings || []) {
+    if (typeof warning === "string") target.append(el("p", warning, "muted"));
+  }
+  target.append(el("p", "These classifiers assume a technique-bearing English news fragment. They have no neutral-text class or language detector, so ordinary, unrelated or non-English text can still receive a false positive label.", "muted"));
   if (example && example.text === text && example.context === surrounding) {
     const reveal = el("div", undefined, "reveal");
     reveal.append(el("strong", "Dataset annotation: " + title(example.label)));
@@ -246,7 +261,7 @@ function showResult(payload, text, surrounding, selectedGuess, example) {
   for (const row of local) {
     const card = el("article", undefined, "prediction");
     card.append(el("p", methodNames[row.method], "method"), el("h3", title(row.label), "technique"));
-    card.append(el("p", techniques[row.label]?.[1] || "No known word or character features matched. The model abstained instead of assigning a technique.", "description"));
+    card.append(el("p", techniques[row.label]?.[1] || "No fitted word or character features matched the selected excerpt. The model abstained instead of assigning a technique.", "description"));
     if (row.top_features?.length) {
       card.append(el("p", "Features contributing to this prediction", "small"));
       const features = el("div", undefined, "features");
@@ -281,8 +296,8 @@ document.getElementById("form").addEventListener("submit", async event => {
   try {
     const payload = await json("/api/compare", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text,context:surrounding,include_jev:document.getElementById("include-jev").checked}) });
     if (submission === latestSubmission) { showResult(payload, text, surrounding, selectedGuess, example); target.scrollIntoView({block:"start"}); }
-  } catch (error) { target.replaceChildren(el("p", error.message, "error")); }
-  finally { button.disabled = false; providerStatus(); }
+  } catch (error) { if (submission === latestSubmission) target.replaceChildren(el("p", error.message, "error")); }
+  finally { if (submission === latestSubmission) button.disabled = false; providerStatus(); }
 });
 document.getElementById("form").addEventListener("keydown", event => {
   if ((event.ctrlKey || event.metaKey) && event.key === "Enter") { event.preventDefault(); if (!document.getElementById("submit").disabled) document.getElementById("form").requestSubmit(); }

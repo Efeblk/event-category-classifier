@@ -65,6 +65,21 @@ def model_input(text: object, context: object = "") -> dict[str, str]:
     return {"text": "" if text is None else str(text), "context": "" if context is None else str(context)}
 
 
+def validate_unicode_text(value: str, field: str) -> None:
+    """Allow ordinary Unicode and line breaks, but reject invalid/hidden inputs."""
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError as error:
+        raise ValueError(f"{field} contains an invalid Unicode character.") from error
+    if any(unicodedata.category(character) == "Cc" and character not in "\t\r\n"
+           for character in value):
+        raise ValueError(f"{field} contains an unsupported control character.")
+    if value and not any(not character.isspace() and unicodedata.category(character)[0] not in ("C", "M")
+                         for character in value):
+        if value.strip():
+            raise ValueError(f"{field} must contain visible text.")
+
+
 def extract_spans(records: list[dict[str, str]]) -> list[str]:
     """Top-level picklable transformer for the excerpt feature channel."""
     return [record["text"] for record in records]
@@ -213,16 +228,16 @@ def _feature_names(features: Any) -> list[str]:
     return [f"span: {name}" for name in features.named_steps["tfidf"].get_feature_names_out()]
 
 
-def _has_lexical_features(transformer: Any, matrix: Any) -> bool:
-    """Numeric shape features alone do not establish known vocabulary."""
+def _has_excerpt_features(transformer: Any, matrix: Any) -> bool:
+    """Context and numeric shape cannot substitute for known excerpt terms."""
     if not hasattr(transformer, "transformer_list"):
         return matrix.nnz > 0
     offset = 0
-    for _, channel in transformer.transformer_list:
+    for name, channel in transformer.transformer_list:
         lexical = "tfidf" in channel.named_steps
         vectorizer = channel.named_steps["tfidf" if lexical else "dict"]
         count = len(vectorizer.get_feature_names_out())
-        if lexical and matrix[:, offset:offset + count].nnz:
+        if lexical and name in ("span", "span_word", "span_char") and matrix[:, offset:offset + count].nnz:
             return True
         offset += count
     return False
@@ -247,12 +262,16 @@ def _top_features(model: Any, features: Any, label: str) -> list[dict[str, objec
 
 def classify_request(artifact: object, text: object, context: object = "") -> dict[str, object]:
     """Classify a supplied excerpt; this does not locate spans or verify claims."""
-    if not normalize_text(text):
+    if not isinstance(text, str) or not normalize_text(text):
         raise ValueError("Prediction excerpt must contain non-whitespace characters.")
+    if not isinstance(context, str):
+        raise ValueError("Prediction context must be text.")
+    validate_unicode_text(text, "Excerpt")
+    validate_unicode_text(context, "Context")
     model = _validated_model(artifact)
     record = model_input(text, context)
     features = model.named_steps["features"].transform([record])
-    if not _has_lexical_features(model.named_steps["features"], features):
+    if not _has_excerpt_features(model.named_steps["features"], features):
         return {"label": UNCLEAR, "reason": "unknown_terms"}
     label = str(model.predict([record])[0])
     if label not in LABELS:

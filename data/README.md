@@ -22,6 +22,15 @@ The checksum is checked **before opening the tar archive**. Only regular
 training article/technique-annotation files and the source README are extracted
 with `tarfile`'s `filter="data"`. No dev templates or unrelated files are used.
 
+Separately, `python stress_test.py` reads only whitelisted regular official dev
+articles and their unlabeled TC span template from the same checksum-verified
+archive. It extracts no files and modifies no training or cleaned data. One
+seeded span from each of 25 distinct articles supplies the behavioral probe.
+Original fragments, bounded normalized contexts, Unicode offsets, archive/member
+hashes and CC BY 4.0 attribution are retained in evidence/robustness.json.
+The spans have no technique gold; no labels, accuracy or new training examples
+are inferred from model outputs. See [../ROBUSTNESS.md](../ROBUSTNESS.md).
+
 | Path | Purpose |
 |---|---|
 | `raw/articles/article<ID>.txt` | All 371 original training articles, byte-for-byte copies |

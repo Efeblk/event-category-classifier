@@ -104,6 +104,27 @@ are selected from development data without filtering by correct predictions.
 `compare_methods.py` now uses a fixed 40-case **dev** sample solely for a same-input
 comparison. The original test benchmark remains separately labeled in the demo.
 
+## Human-input robustness
+
+`python stress_test.py` samples one original excerpt from each of 25 separate
+human-written official dev news articles in the verified archive. None of these
+articles trained the models. It records 25 originals, 175 generated variant
+cases and six synthetic controls. Twenty-three apostrophe variants make no
+change; label-change fractions exclude those no-op pairs. This is a behavioral
+probe with **no technique gold labels and no accuracy score**, not a user study
+or a fresh final test. See [ROBUSTNESS.md](ROBUSTNESS.md) for findings and sources.
+
+The demo now requires vocabulary coverage in the **excerpt itself** before
+assigning a technique; context or numeric counts cannot bypass abstention.
+It clears results when inputs change and ignores late responses. Input checks
+reject malformed Unicode/JSON and incomplete HTTP bodies before prediction.
+Cached examples and scores must match the loaded model run.
+
+Neutral English and non-English text can still receive technique labels because
+there is no neutral-text training class or language detector. The interface
+states this limit and warns when context is missing or the excerpt has no letters.
+Typos, capitalization and context changes can also change model predictions.
+
 ## Repository map
 
 | Path | Purpose |
@@ -114,6 +135,7 @@ comparison. The original test benchmark remains separately labeled in the demo.
 | `reproduce.py` | Fresh temporary preparation/training; exact cleaned/report/prediction and saved-artifact checks |
 | `method_comparison.py` | Same excerpt/context passed independently to NB, LR, SVM and optional Jev |
 | `compare_methods.py` | Reproducible comparison report; optional paid calls require explicit opt-in |
+| `stress_test.py` | Deterministic unlabeled news probes, perturbations and synthetic abstention controls; no fitting or paid calls |
 | `jev.py` | Retained optional pretrained comparator, server secrets, response validation and durable attempt budget |
 | `app.py` / `demo.html` | Local HTTP API and accessible guess-before-reveal demo |
 | `data/raw/` | Original article text and annotation files, retained byte-for-byte |
@@ -126,6 +148,7 @@ comparison. The original test benchmark remains separately labeled in the demo.
 | `requirements.txt`, `requirements-lock.txt` | Direct dependencies and fully pinned reproduction environment |
 | `LICENSE` | MIT license for project scripts; the dataset retains its separate CC BY 4.0 terms |
 | `RESULTS.md` / `PRESENTATION.md` | Measured findings and a 1:50 solo presentation outline |
+| `ROBUSTNESS.md` | Fixed input/UI gaps, behavioral sensitivities and source attribution |
 | `AGENTS.md` | Current scope and engineering invariants |
 | `contributions/` | Guide for the required truthful solo contribution record; personal file pending |
 
@@ -148,6 +171,7 @@ Partial provider runs have null scores. See the
 ```powershell
 python -m unittest discover -s tests -v
 python reproduce.py
+python stress_test.py
 ```
 
 Tests use small fixtures, local HTTP servers, temporary ledgers and injected
@@ -156,7 +180,7 @@ The demo inserts user text through textContent/createTextNode and does not log
 request bodies. Displayed feature weights describe model contributions rather
 than a human explanation or a calibrated guarantee of correctness.
 
-The current local verification passes **60 tests**. A fresh temporary rebuild
+The current local verification passes **79 tests**. A fresh temporary rebuild
 matches all five cleaned files, four reports, ten candidate dev prediction arrays
 and saved-model metadata/dev predictions. These checks make no provider calls.
 
@@ -176,7 +200,7 @@ and evidence described above.
 
 | Teacher requirement | Current status |
 |---|---|
-| Working implementation and training scripts | Complete locally; 60 tests and fresh reproduction pass |
+| Working implementation and training scripts | Complete locally; 79 tests and fresh reproduction pass |
 | Detailed README with folder/script purpose | Complete |
 | Preprocessing script and documentation | Complete in prepare_data.py and data/README.md |
 | Raw and cleaned datasets | Included with source attribution and preparation audits |

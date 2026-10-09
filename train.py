@@ -336,8 +336,14 @@ def train(
             for name, candidate_predictions in predictions.items()
         },
     })
-    write_json(directory / "dev_examples.json", {"partition": "dev", "selection": "seeded one example per available label; no prediction filtering", "records": dev_records(rows, parts["dev"], seed)})
+    report_provenance = {
+        "training_data_sha256": digest, "training_code_sha256": code_digest,
+        "training_seed": seed, "model_evaluation_scope": evaluation_scope,
+        "context_margin": context_margin,
+    }
+    write_json(directory / "dev_examples.json", {**report_provenance, "partition": "dev", "selection": "seeded one example per available label; no prediction filtering", "records": dev_records(rows, parts["dev"], seed)})
     write_json(directory / "comparison_set.json", {
+        **report_provenance,
         "name": f"40 {evaluation_partition} persuasion annotations", "partition": evaluation_partition,
         "provenance": f"Uniform {evaluation_partition} sample without replacement, seed {seed}; same input/context for every method. Development is selection data, not an independent new test.",
         "records": comparison_records(rows, parts[evaluation_partition], seed, evaluation_partition),

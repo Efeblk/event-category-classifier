@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from classifier import (
     ARTIFACT_TASK, ARTIFACT_VERSION, DATASET_DOMAIN, LABELS, LABEL_DESCRIPTIONS,
@@ -79,9 +80,11 @@ class ModelTests(unittest.TestCase):
     def test_context_is_an_independent_feature_channel(self):
         artifact = fixture_artifact("logistic_regression_word_context")
         self.assertEqual(classify_request(artifact, "qxzv"), {"label": "unclear", "reason": "unknown_terms"})
-        prediction = classify_request(artifact, "qxzv", "Context for loaded language")
+        self.assertEqual(classify_request(artifact, "qxzv", "Context for loaded language"),
+                         {"label": "unclear", "reason": "unknown_terms"})
+        prediction = classify_request(artifact, "example", "Context for loaded language")
         self.assertIn(prediction["label"], LABELS)
-        self.assertTrue(all(feature["feature"].startswith("context:") for feature in prediction["top_features"]))
+        self.assertTrue(any(feature["feature"].startswith("context:") for feature in prediction["top_features"]))
 
     def test_svm_does_not_invent_probabilities(self):
         prediction = classify_request(fixture_artifact("linear_svm_word"), "loaded language example")
@@ -113,7 +116,43 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(classify_request(artifact, "\U0001f995"), {"label": "unclear", "reason": "unknown_terms"})
         names = _feature_names(artifact["model"].named_steps["features"])
         self.assertIn("structure: uppercase_fraction", names)
-        self.assertIn(classify_request(artifact, "\U0001f995", "loaded language example")["label"], LABELS)
+        self.assertEqual(classify_request(artifact, "\U0001f995", "loaded language example"),
+                         {"label": "unclear", "reason": "unknown_terms"})
+
+    def test_context_cannot_supply_missing_excerpt_vocabulary(self):
+        for name in ("logistic_regression_word_context", "linear_svm_word_context",
+                     "logistic_regression_hybrid_structure"):
+            with self.subTest(model=name):
+                artifact = fixture_artifact(name)
+                self.assertGreater(artifact["model"].named_steps["features"].transform(
+                    [model_input("qxzv", "loaded language example")]).nnz, 0)
+                self.assertEqual(classify_request(artifact, "qxzv", "loaded language example"),
+                                 {"label": "unclear", "reason": "unknown_terms"})
+                self.assertIn(classify_request(artifact, "loaded language example", "loaded language example")["label"], LABELS)
+
+    def test_prediction_requires_string_excerpt_and_context(self):
+        artifact = fixture_artifact()
+        for text, context in ((123, ""), (None, ""), ("example", []), ("example", None)):
+            with self.subTest(text=text, context=context), self.assertRaises(ValueError):
+                classify_request(artifact, text, context)
+
+    def test_direct_prediction_validates_unicode_without_changing_valid_text(self):
+        artifact = fixture_artifact("logistic_regression_hybrid_structure")
+        invalid = ("loaded\x00 language", "loaded language\ud800", "\udfff", "\u200b\u200d", "\u034f\ufe0f")
+        for text in invalid:
+            with self.subTest(excerpt=ascii(text)), self.assertRaises(ValueError):
+                classify_request(artifact, text, "Context for loaded language")
+        for context in invalid:
+            with self.subTest(context=ascii(context)), self.assertRaises(ValueError):
+                classify_request(artifact, "loaded language example", context)
+        text = "loaded language example cafe\u0301 \U0001f468\u200d\U0001f469 \u2600\ufe0f\n\ttext!"
+        context = "Context for loaded language. More\r\ncontext \u200bhere."
+        original = model_input(text, context)
+        features = artifact["model"].named_steps["features"]
+        with patch.object(features, "transform", wraps=features.transform) as transformed:
+            self.assertIn(classify_request(artifact, text, context)["label"], LABELS)
+        self.assertTrue(transformed.called)
+        self.assertTrue(all(call.args[0] == [original] for call in transformed.call_args_list))
 
 
 if __name__ == "__main__":

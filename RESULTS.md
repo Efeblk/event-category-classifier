@@ -62,8 +62,9 @@ balanced class weights and max_iter=5000. There are no new dependencies,
 pretrained embeddings or neural models. See [classifier.py](classifier.py).
 
 The benchmark makes a forced choice for each annotation. Demo methods abstain
-independently if all fitted **lexical** channels are zero, even if numeric text
-features are present. Probabilities are not calibrated correctness guarantees.
+independently if all fitted **excerpt lexical** channels are zero. Context
+vocabulary and numeric counts cannot bypass this guard. Probabilities are not
+calibrated correctness guarantees.
 Displayed contributions describe associations in the class score, not causes.
 
 ## Development errors
@@ -102,13 +103,38 @@ independent final evaluation.
 |---|---:|---:|
 | Character NB | 20 | 50.0% |
 | Hybrid LR | 21 | 52.5% |
-| Wider-context SVM | 21 | 52.5% |
+| Wider-context SVM | 20 | 50.0% |
 | Jev | - | **Not evaluated; zero attempts** |
 
 Per-case predictions and fixed-14-label macro F1 are in
 [evidence/method_comparison.json](evidence/method_comparison.json).
 Demo examples also come from dev without filtering by correct predictions.
 The CLI rejects test samples for current dev-only artifacts.
+
+The SVM demo score was previously 21/40. Requiring excerpt vocabulary changed
+one context-only prediction to abstention. The forced-choice development
+benchmark above is unchanged, including the selected LR's 57.35% accuracy.
+
+## Human-input robustness
+
+[ROBUSTNESS.md](ROBUSTNESS.md) documents 25 original human-written news excerpts
+from separate official dev articles, 175 generated variant cases and six
+synthetic controls. These sources have no technique gold; accuracy stays null.
+Twenty-three variant cases are unchanged inputs and are excluded from changed-pair
+denominators. This leaves 152 actually modified pairs across seven diagnostics.
+
+All three models keep their labels under added whitespace on 25 pairs. One typo
+changes NB/LR/SVM labels in 3/6/8 of 25 pairs. Removing context changes LR in
+6/25 and SVM in 2/25. Uppercasing changes hybrid LR in 7/25; adding an emoji changes
+it in 4/25. Its shape features depend on case and length, so lexical normalization
+does not imply invariant scores. These are sensitivities, not gold-labeled errors.
+Only two excerpts contain apostrophes; no change among two pairs is weak evidence.
+
+Unknown and emoji-only excerpts with familiar context now abstain in all three
+models. Ordinary conversation, Turkish written in Latin characters, digits and
+ellipsis remain problematic. No neutral class, language detector or calibrated
+rejection model has been trained. The demo states this limitation and gives
+input-specific warnings rather than claiming to have solved those cases.
 
 ## Frozen historical baseline
 

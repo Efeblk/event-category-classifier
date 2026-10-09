@@ -31,6 +31,14 @@ only those groups assigned to train/dev, as documented in README.md and
 cleaned/development_audit.json. Original benchmark files remain unchanged.
 No annotation labels are invented, relabeled or translated.
 
+`../evidence/robustness.json` also contains 25 original excerpts and normalized
+surrounding contexts from separate official dev news articles in this same
+release. `../stress_test.py` records each archive member, Unicode offsets and
+original article SHA256. Those source articles are not part of our training
+split and lack technique gold labels. Their excerpts/contexts retain the same
+CC BY 4.0 attribution and license. Generated perturbations are explicitly
+identified derivatives; the six synthetic controls are project-written text.
+
 The source article annotations can overlap and identical spans can have different
 technique labels. We retain those labels as separate multiclass records, as in
 the official technique-classification task. Official benchmark scoring matches
