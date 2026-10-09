@@ -120,6 +120,13 @@ It clears results when inputs change and ignores late responses. Input checks
 reject malformed Unicode/JSON and incomplete HTTP bodies before prediction.
 Cached examples and scores must match the loaded model run.
 
+Training JSONL and comparison JSON use the same strict UTF-8 parser as the API.
+Duplicate fields, nonfinite values and invalid strings fail before fitting or
+provider setup. Generated comparison samples must match the model provenance;
+fully untagged external dev samples are explicitly marked unverified.
+The local server handles requests concurrently and gives body uploads a total
+five-second deadline, so trickling bytes cannot block the whole demo.
+
 Neutral English and non-English text can still receive technique labels because
 there is no neutral-text training class or language detector. The interface
 states this limit and warns when context is missing or the excerpt has no letters.
@@ -134,6 +141,7 @@ Typos, capitalization and context changes can also change model predictions.
 | `train.py` | Train-only fitting and dev-only selection/reports; explicit historical baseline profile |
 | `reproduce.py` | Fresh temporary preparation/training; exact cleaned/report/prediction and saved-artifact checks |
 | `method_comparison.py` | Same excerpt/context passed independently to NB, LR, SVM and optional Jev |
+| `json_validation.py` | Shared strict UTF-8 JSON decoding for HTTP, training JSONL and comparison samples |
 | `compare_methods.py` | Reproducible comparison report; optional paid calls require explicit opt-in |
 | `stress_test.py` | Deterministic unlabeled news probes, perturbations and synthetic abstention controls; no fitting or paid calls |
 | `jev.py` | Retained optional pretrained comparator, server secrets, response validation and durable attempt budget |
@@ -180,7 +188,7 @@ The demo inserts user text through textContent/createTextNode and does not log
 request bodies. Displayed feature weights describe model contributions rather
 than a human explanation or a calibrated guarantee of correctness.
 
-The current local verification passes **79 tests**. A fresh temporary rebuild
+The current local verification passes **89 tests**. A fresh temporary rebuild
 matches all five cleaned files, four reports, ten candidate dev prediction arrays
 and saved-model metadata/dev predictions. These checks make no provider calls.
 
@@ -200,7 +208,7 @@ and evidence described above.
 
 | Teacher requirement | Current status |
 |---|---|
-| Working implementation and training scripts | Complete locally; 79 tests and fresh reproduction pass |
+| Working implementation and training scripts | Complete locally; 89 tests and fresh reproduction pass |
 | Detailed README with folder/script purpose | Complete |
 | Preprocessing script and documentation | Complete in prepare_data.py and data/README.md |
 | Raw and cleaned datasets | Included with source attribution and preparation audits |

@@ -14,6 +14,7 @@ from sklearn.metrics import accuracy_score, classification_report, f1_score
 
 from classifier import LABELS
 from jev import JevClient, PROMPT_VERSION
+from json_validation import strict_json
 from method_comparison import METHODS, compare_request, validate_artifacts, validate_input
 
 
@@ -33,6 +34,24 @@ def _records(dataset: object) -> list[dict[str, Any]]:
     return records
 
 
+def _validate_sample_provenance(dataset: dict[str, Any], artifact: dict[str, Any]) -> bool:
+    """Check generated-sample metadata; untagged external samples stay explicit."""
+    expected = {
+        "training_data_sha256": artifact["dataset_sha256"],
+        "training_code_sha256": artifact["code_sha256"],
+        "training_seed": artifact["seed"],
+        "model_evaluation_scope": artifact["provenance"]["evaluation_scope"],
+        "context_margin": artifact["provenance"]["context_margin"],
+    }
+    if not set(expected).intersection(dataset):
+        return False
+    if (type(dataset.get("training_seed")) is not int
+            or type(dataset.get("context_margin")) is not int
+            or any(dataset.get(key) != value for key, value in expected.items())):
+        raise ValueError("Comparison sample provenance does not match the models; regenerate it with train.py.")
+    return True
+
+
 def evaluate(
     models_path: Path,
     data_path: Path,
@@ -43,9 +62,9 @@ def evaluate(
         raise ValueError("include_jev must be true or false.")
     source = data_path.read_bytes()
     try:
-        dataset = json.loads(source)
-    except (UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise ValueError("Evaluation data must be valid UTF-8 JSON.") from error
+        dataset = strict_json(source)
+    except ValueError as error:
+        raise ValueError(f"Evaluation data must be unambiguous UTF-8 JSON: {error}") from error
     records = _records(dataset)
     partition = dataset.get("partition", "unspecified")
     if not isinstance(partition, str) or not partition.strip():
@@ -55,6 +74,7 @@ def evaluate(
     first = artifacts[METHODS[0]]
     if first["provenance"]["evaluation_scope"] == "dev_only" and partition != "dev":
         raise ValueError("Development-only artifacts require a dev sample; final test evaluation is pending.")
+    sample_provenance_verified = _validate_sample_provenance(dataset, first)
     jev = JevClient()
     if include_jev:
         # Validate the complete provider payload of every case before reserving an attempt.
@@ -68,6 +88,7 @@ def evaluate(
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "evaluation_scope": dataset.get("name", "unnamed_comparison_sample"),
         "partition": partition,
+        "sample_provenance_verified": sample_provenance_verified,
         "model_evaluation_scope": first["provenance"]["evaluation_scope"],
         "examples": len(records),
         "provenance": dataset.get("provenance", "Unspecified evaluation provenance."),
@@ -88,7 +109,7 @@ def evaluate(
         "records": [],
         "code_sha256": {
             name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-            for name in ("classifier.py", "jev.py", "method_comparison.py", "compare_methods.py")
+            for name in ("classifier.py", "jev.py", "json_validation.py", "method_comparison.py", "compare_methods.py")
         },
     }
     for record in records:

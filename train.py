@@ -13,8 +13,9 @@ from typing import Any
 
 from classifier import (
     ARTIFACT_TASK, ARTIFACT_VERSION, DATASET_DOMAIN, LABELS,
-    make_models, model_input, normalize_text,
+    make_models, model_input, normalize_text, validate_unicode_text,
 )
+from json_validation import strict_json
 
 
 MIN_ROWS = 1000
@@ -47,11 +48,11 @@ def read_data(path: str | Path, min_rows: int = MIN_ROWS, profile: str = "develo
     if not source.is_file():
         raise ValueError(f"Data file does not exist: {path}")
     rows = []
-    for number, line in enumerate(source.read_text(encoding="utf-8").splitlines(), 1):
+    for number, line in enumerate(source.read_bytes().splitlines(), 1):
         try:
-            rows.append(json.loads(line))
-        except json.JSONDecodeError as error:
-            raise ValueError(f"Invalid JSON on data line {number}.") from error
+            rows.append(strict_json(line))
+        except ValueError as error:
+            raise ValueError(f"Invalid JSON on data line {number}: {error}") from error
     if len(rows) < min_rows:
         raise ValueError(f"Need at least {min_rows} rows. Found {len(rows)}.")
     required = {"id", "article_id", "text", "context", "label", "start", "end", "partition", "source_partition"}
@@ -69,6 +70,9 @@ def read_data(path: str | Path, min_rows: int = MIN_ROWS, profile: str = "develo
         for field in ("text", "context"):
             if not isinstance(row[field], str) or not normalize_text(row[field]):
                 raise ValueError(f"Every row needs non-empty {field}.")
+            # The pinned corpus includes two U+009D controls in one context.
+            # Preserve source strings/features; inference retains the strict default.
+            validate_unicode_text(row[field], f"Row {number} {field}", allow_c1_controls=True)
         if row["label"] not in LABELS:
             raise ValueError("Unsupported persuasion technique label.")
         if row["source_partition"] != "official_train":
@@ -216,7 +220,7 @@ def plot_confusion(actual: list[str], predicted: list[str], path: Path, partitio
 
 def _code_hashes() -> tuple[str, dict[str, str]]:
     directory = Path(__file__).resolve().parent
-    names = ("classifier.py", "train.py", "prepare_data.py")
+    names = ("classifier.py", "train.py", "prepare_data.py", "json_validation.py")
     payload = b""
     hashes = {}
     for name in names:

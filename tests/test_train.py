@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from classifier import LABELS
+from classifier import LABELS, validate_unicode_text
 from train import (
     _code_hashes, comparison_records, dev_records, duplicate_audit, read_data, scores,
     select_model, split_data, train,
@@ -32,10 +32,10 @@ def write_rows(path, rows):
 
 
 class TrainTests(unittest.TestCase):
-    def test_code_provenance_includes_preparation(self):
+    def test_code_provenance_includes_preparation_and_json_validation(self):
         digest, script_hashes = _code_hashes()
         self.assertEqual(len(digest), 64)
-        self.assertEqual(set(script_hashes), {"classifier.py", "train.py", "prepare_data.py"})
+        self.assertEqual(set(script_hashes), {"classifier.py", "train.py", "prepare_data.py", "json_validation.py"})
 
     def test_grouped_split_allows_absent_dev_test_classes(self):
         rows = fixture_rows()
@@ -96,6 +96,82 @@ class TrainTests(unittest.TestCase):
         }
         self.assertEqual(select_model(evaluations), "a")
         self.assertEqual(select_model(evaluations, ["b"]), "b")
+
+    def test_training_rejects_invalid_unicode_before_creating_models(self):
+        invalid_values = ("\ud800", "words\udfff", "words\x00", "words\x1b", "\u200b", "\ufe0f")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "development.jsonl"
+            for field in ("text", "context"):
+                for value in invalid_values:
+                    with self.subTest(field=field, value=ascii(value)):
+                        rows = fixture_rows("development")
+                        rows[0][field] = value
+                        if field == "text":
+                            rows[0]["end"] = rows[0]["start"] + len(value)
+                        write_rows(path, rows)
+                        location = "data line 1" if any(0xD800 <= ord(character) <= 0xDFFF for character in value) else "Row 1 " + field
+                        with patch("train.make_models") as candidates, self.assertRaisesRegex(ValueError, location):
+                            train(path, Path(directory) / "model.joblib", directory, allow_small_prototype=True)
+                        candidates.assert_not_called()
+
+    def test_training_rejects_ambiguous_or_nonfinite_json_before_fitting(self):
+        rows = fixture_rows("development")
+        source = "".join(json.dumps(row) + "\n" for row in rows)
+        first_row = json.dumps(rows[0])
+        malformed = (
+            first_row[:-1] + ', "label": "Doubt"}',
+            first_row[:-1] + ', "weight": NaN}',
+            first_row[:-1] + ', "weight": Infinity}',
+            first_row[:-1] + ', "weight": 1e999}',
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "development.jsonl"
+            for first in malformed:
+                with self.subTest(first=first[-40:]):
+                    path.write_text(first + "\n" + source[len(first_row) + 1:], encoding="utf-8")
+                    with patch("train.make_models") as candidates, self.assertRaisesRegex(ValueError, "data line 1"):
+                        train(path, Path(directory) / "model.joblib", directory, allow_small_prototype=True)
+                    candidates.assert_not_called()
+
+    def test_training_requires_utf8_jsonl_and_keeps_unicode_line_separators(self):
+        rows = fixture_rows("development")
+        rows[0]["context"] += "\u2028more\u2029context"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "development.jsonl"
+            content = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
+            for encoding in ("utf-16", "utf-32"):
+                with self.subTest(encoding=encoding):
+                    path.write_bytes(content.encode(encoding))
+                    with self.assertRaisesRegex(ValueError, "data line 1"):
+                        read_data(path, min_rows=1)
+            path.write_bytes(content.encode("utf-8"))
+            self.assertEqual(read_data(path, min_rows=1)[0]["context"], rows[0]["context"])
+
+    def test_training_preserves_visible_unicode_and_line_breaks(self):
+        text = "Human cafe\u0301 \U0001f468\u200d\U0001f469 \u2600\ufe0f\r\n\twords!"
+        context = "Nearby\r\ncontext with \u200bvisible words."
+        rows = fixture_rows("development")
+        rows[0].update(text=text, context=context, end=rows[0]["start"] + len(text))
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "development.jsonl"
+            write_rows(path, rows)
+            prepared = read_data(path, min_rows=1)
+        self.assertEqual(prepared[0]["text"], text)
+        self.assertEqual(prepared[0]["context"], context)
+
+    def test_training_preserves_source_c1_controls_but_inference_remains_strict(self):
+        rows = fixture_rows("development")
+        rows[0]["context"] = "Original source \u009dquoted words\u009d remain unchanged."
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "development.jsonl"
+            write_rows(path, rows)
+            prepared = read_data(path, min_rows=1)
+        self.assertEqual(prepared[0]["context"], rows[0]["context"])
+        with self.assertRaisesRegex(ValueError, "unsupported control"):
+            validate_unicode_text(rows[0]["context"], "Context")
+        for value in ("source\x00", "source\x1b", "\u009d"):
+            with self.subTest(value=ascii(value)), self.assertRaises(ValueError):
+                validate_unicode_text(value, "Source", allow_c1_controls=True)
 
     def test_fixed_macro_f1_counts_absent_classes_as_zero(self):
         result = scores([LABELS[0]], [LABELS[0]])

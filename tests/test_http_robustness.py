@@ -8,11 +8,10 @@ import tempfile
 import threading
 import unittest
 from contextlib import contextmanager, redirect_stderr
-from http.server import HTTPServer
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from app import MAX_BODY_BYTES, make_handler, validate_metrics
+from app import MAX_BODY_BYTES, ThreadingHTTPServer, make_handler, validate_metrics
 from classifier import ARTIFACT_TASK, ARTIFACT_VERSION, DATASET_DOMAIN, LABELS, make_models, model_input
 from method_comparison import METHODS
 
@@ -35,9 +34,10 @@ def matching_metrics(artifacts):
 
 
 @contextmanager
-def server_for(artifacts, reports, metrics=None, jev=None):
+def server_for(artifacts, reports, metrics=None, jev=None, handler=None):
     errors = io.StringIO()
-    server = HTTPServer(("127.0.0.1", 0), make_handler(artifacts, metrics or {}, jev, reports))
+    handler = handler or make_handler(artifacts, metrics or {}, jev, reports)
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     worker = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": 0.01}, daemon=True)
     with redirect_stderr(errors):
         worker.start()
@@ -51,6 +51,18 @@ def server_for(artifacts, reports, metrics=None, jev=None):
         raise AssertionError("The local HTTP server emitted an unhandled exception.")
 
 
+def read_response(connection):
+    raw = b""
+    while True:
+        part = connection.recv(65536)
+        if not part:
+            break
+        raw += part
+    head, payload = raw.split(b"\r\n\r\n", 1)
+    status = int(head.split(b" ", 2)[1])
+    return status, json.loads(payload)
+
+
 def exchange(address, body=b"", headers=None, path="/api/compare", method="POST", finish=True):
     if headers is None:
         headers = [("Content-Type", "application/json"), ("Content-Length", str(len(body)))]
@@ -60,15 +72,7 @@ def exchange(address, body=b"", headers=None, path="/api/compare", method="POST"
         connection.sendall(wire)
         if finish:
             connection.shutdown(socket.SHUT_WR)
-        raw = b""
-        while True:
-            part = connection.recv(65536)
-            if not part:
-                break
-            raw += part
-    head, payload = raw.split(b"\r\n\r\n", 1)
-    status = int(head.split(b" ", 2)[1])
-    return status, json.loads(payload)
+        return read_response(connection)
 
 
 class HttpRobustnessTests(unittest.TestCase):
@@ -104,6 +108,79 @@ class HttpRobustnessTests(unittest.TestCase):
             self.assertEqual(status, 400)
             self.assertIn("timed out", payload["error"])
             self.assertEqual(exchange(address, body)[0], 200)
+
+    def test_body_deadline_does_not_restart_for_each_received_chunk(self):
+        handler = object.__new__(make_handler(self.artifacts, {}))
+        handler.connection = Mock()
+        handler.rfile = Mock()
+        handler.rfile.read1.side_effect = [b'{"text":', b'"loaded ', b'language"}']
+        # Each chunk takes less than the inactivity timeout, but the combined
+        # upload exceeds it. A fake clock makes the deadline assertion exact.
+        with patch("app.REQUEST_READ_TIMEOUT_SECONDS", 1.0), \
+                patch("app.time.monotonic", side_effect=[0, 0, 0.4, 0.4, 0.8, 0.8, 1.2]):
+            with self.assertRaises(TimeoutError):
+                handler.read_body(26)
+        timeouts = [call.args[0] for call in handler.connection.settimeout.call_args_list]
+        self.assertAlmostEqual(timeouts[0], 1.0)
+        self.assertAlmostEqual(timeouts[1], 0.6)
+        self.assertAlmostEqual(timeouts[2], 0.2)
+        self.assertEqual(timeouts[-1], 1.0)
+
+    def test_dripped_body_times_out_before_prediction_and_next_request_succeeds(self):
+        body = b'{"text":"loaded language"}'
+        stopped = threading.Event()
+        with tempfile.TemporaryDirectory() as directory, patch("app.REQUEST_READ_TIMEOUT_SECONDS", 0.4), \
+                server_for(self.artifacts, directory) as address, \
+                patch("app.compare_request", return_value={"results": []}) as compare:
+            with socket.create_connection(address, timeout=2) as connection:
+                header = ("POST /api/compare HTTP/1.1\r\nHost: localhost\r\n"
+                          "Content-Type: application/json\r\n"
+                          f"Content-Length: {len(body)}\r\n\r\n").encode("ascii")
+                connection.sendall(header)
+
+                def drip():
+                    try:
+                        for byte in body:
+                            if stopped.is_set():
+                                break
+                            connection.sendall(bytes([byte]))
+                            if stopped.wait(0.03):
+                                break
+                    except OSError:
+                        pass  # The server closes an upload rejected at its deadline.
+
+                sender = threading.Thread(target=drip, daemon=True)
+                sender.start()
+                try:
+                    status, payload = read_response(connection)
+                finally:
+                    stopped.set()
+                    sender.join(timeout=2)
+            self.assertEqual(status, 400)
+            self.assertIn("timed out", payload["error"])
+            compare.assert_not_called()
+            self.assertEqual(exchange(address, body)[0], 200)
+            compare.assert_called_once()
+
+    def test_incomplete_headers_do_not_block_another_request(self):
+        accepted = threading.Event()
+        original = make_handler(self.artifacts, {})
+
+        class ObservedHandler(original):
+            def setup(self):
+                super().setup()
+                accepted.set()
+
+        with tempfile.TemporaryDirectory() as directory, patch("app.REQUEST_READ_TIMEOUT_SECONDS", 2.0), \
+                server_for(self.artifacts, directory, handler=ObservedHandler) as address:
+            with socket.create_connection(address, timeout=2) as pending:
+                pending.sendall(b"POST /api/compare HTTP/1.1\r\nHost: localhost\r\n")
+                self.assertTrue(accepted.wait(1), "The server never accepted the pending request.")
+                # Keep the first connection incomplete until the GET has returned.
+                # A serial server cannot respond before its two-second timeout.
+                with socket.create_connection(address, timeout=1) as normal:
+                    normal.sendall(b"GET /api/results HTTP/1.1\r\nHost: localhost\r\n\r\n")
+                    self.assertEqual(read_response(normal), (200, {}))
 
     def test_ambiguous_lengths_transfer_encoding_and_content_types_are_rejected(self):
         body = b'{"text":"loaded language"}'
@@ -149,7 +226,8 @@ class HttpRobustnessTests(unittest.TestCase):
 
     def test_controls_and_invisible_only_inputs_fail_before_prediction_or_provider(self):
         cases = [{"text": "loaded\x00 language"}, {"text": "\u200b\ufeff\u202e"},
-                 {"text": "loaded language", "context": "bad\x08context"}]
+                 {"text": "loaded language", "context": "bad\x08context"},
+                 {"text": "loaded language", "context": "Source \u009dquoted words\u009d"}]
         jev = Mock()
         with tempfile.TemporaryDirectory() as directory, server_for(self.artifacts, directory, jev=jev) as address, \
                 patch("method_comparison.classify_request") as predict:

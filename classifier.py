@@ -65,13 +65,14 @@ def model_input(text: object, context: object = "") -> dict[str, str]:
     return {"text": "" if text is None else str(text), "context": "" if context is None else str(context)}
 
 
-def validate_unicode_text(value: str, field: str) -> None:
-    """Allow ordinary Unicode and line breaks, but reject invalid/hidden inputs."""
+def validate_unicode_text(value: str, field: str, *, allow_c1_controls: bool = False) -> None:
+    """Reject invalid/hidden inputs; trusted corpus readers may preserve C1 text."""
     try:
         value.encode("utf-8")
     except UnicodeEncodeError as error:
         raise ValueError(f"{field} contains an invalid Unicode character.") from error
     if any(unicodedata.category(character) == "Cc" and character not in "\t\r\n"
+           and not (allow_c1_controls and "\u0080" <= character <= "\u009f")
            for character in value):
         raise ValueError(f"{field} contains an unsupported control character.")
     if value and not any(not character.isspace() and unicodedata.category(character)[0] not in ("C", "M")

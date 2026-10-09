@@ -6,12 +6,14 @@ import argparse
 import json
 import math
 import re
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import joblib
 
 from jev import JevClient
+from json_validation import strict_json
 from classifier import ARTIFACT_TASK, ARTIFACT_VERSION, DATASET_DOMAIN, LABELS
 from method_comparison import METHODS, compare_request, validate_artifacts, validate_input
 
@@ -19,48 +21,6 @@ from method_comparison import METHODS, compare_request, validate_artifacts, vali
 ROOT = Path(__file__).resolve().parent
 MAX_BODY_BYTES = 200_000  # Allows 15,000 escaped Unicode code points in JSON.
 REQUEST_READ_TIMEOUT_SECONDS = 5.0
-
-
-def strict_json(raw):
-    """Reject ambiguous JSON and values that cannot be sent as valid UTF-8."""
-    def object_members(pairs):
-        result = {}
-        for key, value in pairs:
-            if key in result:
-                raise ValueError("JSON object fields must be unique.")
-            result[key] = value
-        return result
-
-    def finite_number(value):
-        number = float(value)
-        if not math.isfinite(number):
-            raise ValueError("JSON numbers must be finite.")
-        return number
-
-    def invalid_constant(value):
-        raise ValueError("JSON numbers must be finite.")
-
-    def check_strings(value):
-        if isinstance(value, str):
-            value.encode("utf-8")
-        elif isinstance(value, dict):
-            for key, item in value.items():
-                check_strings(key)
-                check_strings(item)
-        elif isinstance(value, list):
-            for item in value:
-                check_strings(item)
-
-    try:
-        value = json.loads(raw.decode("utf-8") if isinstance(raw, bytes) else raw,
-                           object_pairs_hook=object_members, parse_float=finite_number,
-                           parse_constant=invalid_constant)
-        check_strings(value)
-        return value
-    except UnicodeError as error:
-        raise ValueError("JSON must contain valid UTF-8 text, without unpaired surrogates.") from error
-    except RecursionError as error:
-        raise ValueError("JSON nesting is too deep.") from error
 
 
 def valid_score(value):
@@ -178,6 +138,30 @@ def make_handler(artifacts, metrics, jev=None, reports_dir=None, baseline_path=N
             super().setup()
             self.connection.settimeout(REQUEST_READ_TIMEOUT_SECONDS)
 
+        def read_body(self, length):
+            """Bound total upload time even when a client keeps sending bytes."""
+            deadline = time.monotonic() + REQUEST_READ_TIMEOUT_SECONDS
+            body = bytearray()
+            try:
+                while len(body) < length:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError("Request body deadline expired.")
+                    self.connection.settimeout(remaining)
+                    # read1 makes at most one socket read, so frequent small chunks
+                    # cannot restart the overall deadline inside BufferedReader.read.
+                    chunk = self.rfile.read1(min(length - len(body), 65536))
+                    if time.monotonic() >= deadline:
+                        raise TimeoutError("Request body deadline expired.")
+                    if not chunk:
+                        break
+                    body.extend(chunk)
+            finally:
+                self.connection.settimeout(REQUEST_READ_TIMEOUT_SECONDS)
+            if len(body) != length:
+                raise ValueError("Request body length does not match Content-Length.")
+            return bytes(body)
+
         def respond(self, status, payload, content_type="application/json; charset=utf-8"):
             body = payload if isinstance(payload, bytes) else json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
             try:
@@ -237,9 +221,7 @@ def make_handler(artifacts, metrics, jev=None, reports_dir=None, baseline_path=N
                 charset = self.headers.get_content_charset("utf-8")
                 if charset.replace("-", "").lower() != "utf8":
                     raise ValueError("JSON requests must use UTF-8.")
-                body = self.rfile.read(length)
-                if len(body) != length:
-                    raise ValueError("Request body length does not match Content-Length.")
+                body = self.read_body(length)
                 payload = strict_json(body)
                 if not isinstance(payload, dict):
                     raise ValueError("Request must be a JSON object.")
@@ -280,7 +262,9 @@ def main():
         metrics_path = ROOT / "reports/metrics.json"
         metrics = strict_json(metrics_path.read_bytes()) if metrics_path.exists() else {}
         jev = JevClient()
-        server = HTTPServer(("127.0.0.1", args.port), make_handler(artifacts, metrics, jev))
+        # Daemon request threads keep the demo responsive during slow uploads or
+        # incomplete headers, without waiting for those clients at shutdown.
+        server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(artifacts, metrics, jev))
     except (ValueError, OSError) as error:
         parser.error(f"{error} Run python prepare_data.py and python train.py first.")
     print(f"Open http://127.0.0.1:{args.port}", flush=True)
