@@ -2,13 +2,9 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
-data/*.csv
-data/*.json
 artifacts/
 reports/
 .env
 .env.*
 !.env.example
-!data/README.md
-data/*.jsonl
-data/*.tar.gz
+data/user_requests/

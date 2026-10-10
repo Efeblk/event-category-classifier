@@ -1,88 +1,139 @@
-# Turkish request intent classifier
+# Slot filling for event-search requests
 
-Solo COE025 NLP Project 1. The graded core classifies a Turkish request into one
-of **60 MASSIVE intents**, such as `alarm_set`, `weather_query` or `play_music`.
-A removable extension labels whitespace tokens with **BIO slot tags**.
-It classifies and annotates requests; it does not execute them or search events.
+COE025 Natural Language Processing, Project 1: Text Classification.
+Solo project by İsmet Efe Balık (see `contributions/`).
 
-MASSIVE v1.0 is public, under **CC BY 4.0** (Amazon.com Inc.). Its Turkish requests
-were localized by humans from English crowd-written SLURP utterances. These are
-human-created benchmark requests, not Turkish production logs or AI-written cases.
-See [the paper](https://arxiv.org/html/2204.08582v2) and [dataset details](data/README.md).
+A user types a request like *"wanna catch the lakers game w my dad tmrw"*. The task is to
+classify every word as part of a **city**, a **date**, an **event name**, or nothing (BIO
+tags), then read off the slots: event = `lakers`, date = `tmrw`. This is word-level text
+classification (slot filling), which is not one of the lecture-slide tasks.
 
-## Run
+The goal is robustness: models trained on clean assistant data must also work on messy,
+lowercase, typo-filled requests.
 
-Python 3.13, from the repository root:
+## Data
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+| Set | Source | Licence | Train / dev / test sentences |
+|---|---|---|---|
+| SGD Events | Google Schema-Guided Dialogue, user turns of the Events services | CC BY-SA 4.0 | 5,586 / 626 / 784 |
+| MASSIVE en-US | Amazon MASSIVE, rows with date, place or event slots | CC BY 4.0 | 2,607 / 488 / 633 |
+| Messy test | 50 casual requests with slang and typos (AI-drafted, checked and corrected by hand) | MIT | test only |
+
+The preprocessing scripts download the raw data, map the slots to `city` / `date` /
+`event_name`, convert character spans to BIO tags, remove duplicates, and drop dev/test
+sentences that also appear in an earlier split. Counts and dropped rows are in
+`data/clean/stats.json` and `data/clean/massive_stats.json`. Licence details are in
+`data/LICENSE.md`.
+
+Training sets for the experiments: **A** SGD, **B** SGD + MASSIVE, **C** SGD + typo copies,
+**D** SGD + MASSIVE + typo copies (each word of 4+ letters gets one random letter edit with probability 0.15).
+
+## Methods
+
+- **Dictionary baseline**: tags any span it saw in training (longest match).
+- **Naive Bayes, Logistic Regression, Linear SVM**: one prediction per word from hand-made
+  features (the word, its prefixes and suffixes, its shape, neighbouring words).
+- **BERT, RoBERTa, BERTweet**: fine-tuned pre-trained transformers (`bert-base-uncased`,
+  `roberta-base`, `vinai/bertweet-base`), trained on set D for 4 epochs.
+- **Jev** (TypeSafe, optional, paid): answers what word tagging cannot, namely the event type
+  and the number of tickets ("with my girlfriend" means two).
+
+Every setting is chosen on the dev sets (SGD dev + MASSIVE dev); each test set is scored once.
+The metric is exact-span F1.
+
+## Results
+
+Span F1. All rows are trained on set D. Single run with seed 42.
+
+| Model | Chosen on dev | SGD test | MASSIVE test | Messy test | Messy event names |
+|---|---|---|---|---|---|
+| Dictionary | longest match | 0.72 | 0.76 | 0.58 | 0.00 |
+| Naive Bayes | alpha = 1.0 | 0.66 | 0.58 | 0.55 | 0.40 |
+| Logistic Regression | C = 10 | 0.88 | 0.84 | 0.62 | 0.18 |
+| Linear SVM | C = 0.1 | 0.87 | 0.84 | 0.67 | 0.19 |
+| BERT | epoch 3 | 0.97 | 0.91 | 0.71 | 0.40 |
+| RoBERTa | epoch 3 | 0.98 | 0.91 | 0.75 | 0.46 |
+| **BERTweet** | epoch 2 | **0.98** | 0.90 | **0.78** | **0.69** |
+
+Main findings:
+
+1. **Every model loses accuracy on messy requests.** The classic models find cities well but
+   miss casual dates ("tmrw") and lowercase event names ("taylor swift").
+2. **Mixing MASSIVE and typo copies into training helps the classic models on messy text**
+   (Linear SVM: 0.52 on set A, 0.67 on set D).
+3. **BERTweet, pre-trained on tweets, handles messy text best.** It had the best dev score of
+   the three transformers, so it is the main model. Its event-name F1 on messy requests is
+   0.69 against 0.19 for Linear SVM.
+4. **More data of the same kind barely helps**: Linear SVM trained on 10% of SGD already
+   reaches 0.90 test F1, and on all of it 0.92.
+
+Limitations: one seed; the messy test set has only 50 requests, so differences of a few
+points are within noise; the messy requests were drafted with AI help.
+
+Full numbers, per-slot scores and the learning curve are in `results/`.
+
+## Folders and scripts
+
+| Path | What it is |
+|---|---|
+| `prepare_sgd.py` | Downloads SGD, keeps Events dialogues, writes `data/raw/sgd/` and `data/clean/{train,dev,test}.jsonl` |
+| `prepare_massive.py` | Downloads MASSIVE en-US, maps slots, writes `data/raw/massive/` and `data/clean/massive_*.jsonl` |
+| `slots.py` | Shared helpers: reading data, BIO tags, span F1, word features, typo copies, dictionary baseline |
+| `train_classic.py` | Trains and compares the dictionary, Naive Bayes, Logistic Regression and Linear SVM on sets A–D; learning curve |
+| `train_bert.py` | Fine-tunes one transformer (`--model`) on set D (needs a CUDA GPU) |
+| `jev.py` | Jev client with a hard call limit and a receipt for every call |
+| `extract.py` | Loads the trained models, tags a request, and lists the follow-up questions an assistant would ask |
+| `app.py`, `demo.html` | Local demo: compares all models side by side on any request, and shows the results as charts |
+| `data/raw/` | Downloaded data with its licence files |
+| `data/clean/` | BIO-tagged training, dev and test data, plus statistics |
+| `data/messy/` | The 50-request messy test set |
+| `results/` | Scores of every model (JSON), written by the training scripts |
+| `tests/` | Unit tests (no network or GPU needed) |
+| `contributions/` | Contribution statement |
+
+## How to run
+
+Python 3.13.
+
+```bash
 python -m pip install -r requirements-lock.txt
+python prepare_sgd.py          # uses data/raw if present, otherwise downloads
 python prepare_massive.py
-python train.py
-python train_slots.py
-python compare_methods.py
+python train_classic.py        # about 5 minutes on a CPU
+python -m unittest discover -s tests
+```
+
+Transformers (CUDA GPU; about 2 minutes each on an RTX 4070 SUPER):
+
+```bash
+python -m pip install --index-url https://download.pytorch.org/whl/cu128 torch==2.11.0
+python -m pip install -r requirements-gpu.txt
+python train_bert.py --model bert-base-uncased
+python train_bert.py --model roberta-base
+python train_bert.py --model vinai/bertweet-base
+```
+
+Demo (http://127.0.0.1:8000). Jev is only called when `.env` has a `TYPESAFE_API_KEY` and a
+`JEV_MAX_CALLS` above 0 (see `.env.example`):
+
+```bash
 python app.py
 ```
 
-On Linux/macOS, activate with `source .venv/bin/activate`. Preparation downloads
-about 39.5 MB, verifies the pinned SHA256, and extracts only tr-TR and LICENSE with
-`tarfile`'s data filter. A verified archive cache skips the download.
-Data, model artifacts, reports and secrets remain ignored. Checked-in `evidence/`
-is a deliberate snapshot for grading, not an input to training.
+## How to check the results
 
-Open [localhost:8011](http://127.0.0.1:8011). Example buttons use official **dev**
-requests. Parser, dev-selected Logistic Regression, and optional Jev receive the
-same text. `unclear` is an abstention, never a training class. Slots are shown
-separately with their actual method name and highlighted source words.
+Each claim above can be checked without a GPU:
 
-## Evaluation
+| Claim | Where to look |
+|---|---|
+| Rubric items | Preprocessing: `prepare_*.py`. Training: `train_*.py`. Raw and clean data: `data/`. Licence: `LICENSE`. Contributions: `contributions/` |
+| Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
+| No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
+| No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json` |
+| Table numbers | `results/classic_results.json` (rows for set D) and `results/{bert,roberta,bertweet}_results.json` |
+| Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
+| Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 
-Official partitions: **11,514 train / 2,033 dev / 2,974 test**. No resplitting or
-removal of duplicate texts. Train contains all 60 intents; dev lacks
-`audio_volume_other`, and test lacks `cooking_query`. Fixed 60-label macro F1
-assigns zero to absent classes. Dev macro F1 selects the intent winner; dev exact
-span F1 selects the slot winner. Every model fits on train alone, never train+dev.
-Test is evaluated after selection; no rules or settings are tuned on test.
+## Licence
 
-Intent candidates: majority, Naive Bayes, Logistic Regression and Linear SVM
-with word 1–2 and character 3–5 TF-IDF features. Four additional LR/SVM variants
-check balanced versus unbalanced weights on dev. The winner is character SVM:
-**test accuracy 82.95%, macro F1 0.7898**. The demo uses character LR from a separate
-`artifacts/lr_model.joblib`; the overall winner is `artifacts/model.joblib`.
-
-The paper's Turkish intent reference is **86.3% for XLM-R**, with larger pretrained
-models trained on all 51 locales. Our Turkish-only sparse models are not a
-reproduction of that training setup. [Results and limitations](RESULTS.md) include
-all candidates, Parser coverage, slot results, and the full benchmark table.
-
-## Optional components
-
-Slots: omit `train_slots.py`, use `python app.py --no-slots`, or remove `slots.py`,
-`train_slots.py` and `tests/test_slots.py`. Intent training and comparison still
-work. Slot artifacts/reports are separate. Jev slot extraction is not implemented:
-TypeSafe exposes Choice, Noul and Score, not arbitrary span extraction.
-
-Jev: **not evaluated**. No live calls were made during this rewrite. A future paid
-run requires explicit author approval. Copy `.env.example` to `.env`, set the
-server-only key and `JEV_MAX_CALLS` (default 0, maximum 50), then restart. The demo's
-opt-in or `compare_methods.py --include-jev` makes one attempt per request, with
-no retries. The 40-request comparison leaves ten attempts of slack. Failed
-attempts count in the shared `reports/jev_calls/` ledger; never delete receipts.
-Partial runs have no accuracy score. [TypeSafe Choice](https://docs.typesafe.ai/primitives/choice)
-allows 61 options within the unchanged 8,000-byte request cap.
-
-## Tests and author tasks
-
-```powershell
-python -m unittest discover -s tests -v
-```
-
-Tests use small fixtures, injected Jev transports and temporary ledgers. CI runs
-this command on Ubuntu/Python 3.13. Two fresh output runs reproduced the evidence
-metrics and predictions; see [reproduction checks](evidence/reproduction_check.json).
-
-The author still needs to collect 30–50 real requests from people, decide on the
-paid Jev comparison, ask the teacher about the slot extension, and update
-`presentation.pptx` using [the 3-minute outline](PRESENTATION.md). The slide file is
-unchanged. Add the author's name and give the teacher GitHub access before presenting.
+Code: MIT (`LICENSE`). Data keeps its source licences (`data/LICENSE.md`).

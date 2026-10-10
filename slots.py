@@ -1,247 +1,250 @@
-"""Optional whitespace-token slot classifiers and exact span metrics."""
+"""Shared helpers for slot tagging: JSONL and BIO tags, token features, typo noise, cleaning, span scoring and the
+dictionary tagger."""
 
-from __future__ import annotations
-
+import json
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 
-from classifier import normalize_text
-from parser import ascii_text
+import numpy as np
+from sklearn.feature_extraction import DictVectorizer
+
+BOUNDARY = "<BOUNDARY>"
+TOKEN = re.compile(r"\w+|[^\w\s]")
 
 
-HIGHLIGHT_SLOTS = ("date", "time", "timeofday", "place_name", "event_name", "artist_name", "person")
-PARSER_SLOT_TYPES = ("date", "time", "timeofday")
+def read_jsonl(path):
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(line) for line in f.read().split("\n") if line.strip()]
 
 
-def token_features(tokens: list[str], index: int) -> dict:
-    """Describe one token by itself, its prefixes and suffixes, and its neighbours."""
-    word = normalize_text(tokens[index])
-    features = {
-        "word": word,
-        "number": any(char.isdigit() for char in word),
-        "capital": tokens[index][:1].isupper(),
-        "apostrophe": "'" in word or "’" in word,
-        "start": index == 0,
-        "end": index == len(tokens) - 1,
+def write_lines(path, lines):
+    """Write lines as UTF-8 with LF endings, one newline after each line."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.writelines(line + "\n" for line in lines)
+
+
+def bio_tags(text, spans):
+    """Tag each token with B-/I-/O from (start, end, slot) spans. Return None on overlapping spans."""
+    tokens, tags, started = [], [], set()
+    for match in re.finditer(TOKEN, text):
+        hits = [s for s in spans if match.start() < s[1] and match.end() > s[0]]
+        if len(hits) > 1:
+            return None
+        tokens.append(match.group())
+        if not hits:
+            tags.append("O")
+            continue
+        span = hits[0]
+        tags.append(f"{'I' if span in started else 'B'}-{span[2]}")
+        started.add(span)
+    return tokens, tags
+
+
+def dedupe(rows):
+    """Keep the first row for each lowercased text; return (kept, number dropped)."""
+    seen, kept = set(), []
+    for row in rows:
+        key = row["text"].lower()
+        if key not in seen:
+            seen.add(key)
+            kept.append(row)
+    return kept, len(rows) - len(kept)
+
+
+def drop_leaks(rows, banned):
+    """Drop rows whose lowercased text is in banned; return (kept, number dropped)."""
+    kept = [r for r in rows if r["text"].lower() not in banned]
+    return kept, len(rows) - len(kept)
+
+
+def clean_split(rows, earlier):
+    """Dedupe one split, then drop texts already kept in the earlier splits (train, then dev).
+
+    Return (kept, duplicates dropped, leaked rows dropped). The first split passes earlier=[].
+    """
+    rows, duplicates = dedupe(rows)
+    if not earlier:
+        return rows, duplicates, 0
+    rows, leakage = drop_leaks(rows, {r["text"].lower() for split in earlier for r in split})
+    return rows, duplicates, leakage
+
+
+def slot_counts(rows):
+    """Number of spans per slot type in a split, sorted by slot name."""
+    return dict(sorted(Counter(tag[2:] for r in rows for tag in r["tags"] if tag.startswith("B-")).items()))
+
+
+def describe(tokens, tags):
+    return "; ".join(f"{kind}: {' '.join(tokens[s:e])}" for kind, s, e in sorted(spans(tags), key=lambda x: x[1]))
+
+
+def word_shape(word):
+    """Map letters to X/x and digits to d, collapsing runs: 'Yankees' -> 'Xx', '2026' -> 'd'."""
+    chars = ["X" if c.isupper() else "x" if c.islower() else "d" if c.isdigit() else c for c in word]
+    return "".join(c for i, c in enumerate(chars) if i == 0 or c != chars[i - 1] or c not in "Xxd")
+
+
+def token_features(tokens, i):
+    """Feature dict for tokens[i]: word, affixes, shape, capitalisation and neighbouring words."""
+    word = tokens[i]
+    lower = word.lower()
+    n = len(tokens)
+    feats = {
+        "word": lower,
+        "is_title": word.istitle(),
+        "is_upper": word.isupper(),
+        "has_digit": any(c.isdigit() for c in word),
+        "is_first": i == 0,
+        "is_last": i == n - 1,
+        "shape": word_shape(word),
     }
-    for size in (3, 4, 5):
-        features[f"prefix{size}"] = word[:size]
-    # Turkish suffixes carry case and tense, so word endings are strong features.
     for size in (2, 3, 4):
-        features[f"suffix{size}"] = word[-size:]
+        feats[f"prefix{size}"] = lower[:size]
+        feats[f"suffix{size}"] = lower[-size:]
     for offset in (-2, -1, 1, 2):
-        neighbor = index + offset
-        if 0 <= neighbor < len(tokens):
-            features[f"word{offset:+}"] = normalize_text(tokens[neighbor])
-        else:
-            features[f"word{offset:+}"] = "<BOUNDARY>"
-    return features
+        j = i + offset
+        feats[f"word{offset:+d}"] = tokens[j].lower() if 0 <= j < n else BOUNDARY
+    for offset in (-1, 1):
+        j = i + offset
+        feats[f"is_title{offset:+d}"] = tokens[j].istitle() if 0 <= j < n else False
+    return feats
 
 
-def repair_bio(tags: list[str]) -> list[str]:
-    """An I-type after O or after a different type starts a new B-type span."""
-    repaired = []
-    previous = None
-    for tag in tags:
-        if tag == "O":
-            previous = None
-        else:
-            if not re.fullmatch(r"[BI]-[a-z_]+", tag):
-                raise ValueError("Invalid BIO tag.")
-            kind = tag[2:]
-            if tag.startswith("I-") and previous != kind:
-                tag = "B-" + kind
-            previous = kind
-        repaired.append(tag)
-    return repaired
+def featurize(rows):
+    """Token feature dicts for every token of every row, one list per row."""
+    return [[token_features(r["tokens"], i) for i in range(len(r["tokens"]))] for r in rows]
 
 
-def spans(tags: list[str]) -> set[tuple[str, int, int]]:
-    """Return (type, start token, exclusive end token) for each span."""
-    result = set()
-    start, kind = None, None
-    for index, tag in enumerate(repair_bio(tags) + ["O"]):
-        if tag == "O" or tag.startswith("B-"):
-            if kind is not None:
-                result.add((kind, start, index))
-            if tag == "O":
-                start, kind = None, None
+def add_typos(tokens, rng, rate):
+    """Return a noisy copy of tokens: each letter-only token of length >= 4 gets one edit with probability rate.
+
+    The edit deletes a letter, doubles a letter, or swaps two neighbouring letters that do not include the first
+    letter. Tags are unchanged, so the caller keeps the original tag sequence.
+    """
+    noisy = []
+    for word in tokens:
+        if len(word) >= 4 and word.isalpha() and rng.random() < rate:
+            op = rng.choice(["delete", "double", "swap"])
+            if op == "delete":
+                i = rng.randrange(len(word))
+                word = word[:i] + word[i + 1:]
+            elif op == "double":
+                i = rng.randrange(len(word))
+                word = word[:i + 1] + word[i] + word[i + 1:]
             else:
-                start, kind = index, tag[2:]
-    return result
+                i = rng.randrange(1, len(word) - 1)
+                word = word[:i] + word[i + 1] + word[i] + word[i + 2:]
+        noisy.append(word)
+    return noisy
 
 
-def _prf(true_positive: int, predicted: int, gold: int) -> dict:
+def repair_bio(tags):
+    """Turn an I-x that follows O or a different type into B-x."""
+    fixed = []
+    for tag in tags:
+        if tag.startswith("I-"):
+            kind = tag[2:]
+            previous = fixed[-1] if fixed else "O"
+            if previous == "O" or previous[2:] != kind:
+                tag = "B-" + kind
+        fixed.append(tag)
+    return fixed
+
+
+def spans(tags):
+    """Return the set of (type, start, end) spans in a BIO tag sequence, end exclusive."""
+    found = set()
+    current = None
+    for i, tag in enumerate(repair_bio(tags) + ["O"]):
+        if tag == "O" or tag.startswith("B-"):
+            if current is not None:
+                found.add((current[0], current[1], i))
+            current = (tag[2:], i) if tag != "O" else None
+    return found
+
+
+def slot_f1(scores, slot):
+    """Test F1 of one slot as a 3-decimal string, or "-" when the slot never occurs."""
+    return f"{scores['slots'][slot]['f1']:.3f}" if slot in scores["slots"] else "-"
+
+
+def prf(tp, fp, fn):
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1}
+
+
+def span_scores(gold_list, pred_list):
+    """Micro P/R/F1 and per-slot P/R/F1/support over exact spans, plus the share of sentences matched exactly."""
+    counts = defaultdict(lambda: [0, 0, 0])  # slot -> [tp, fp, fn]
+    exact = 0
+    for gold_tags, pred_tags in zip(gold_list, pred_list):
+        gold, pred = spans(gold_tags), spans(pred_tags)
+        exact += gold == pred
+        for span in gold & pred:
+            counts[span[0]][0] += 1
+        for span in pred - gold:
+            counts[span[0]][1] += 1
+        for span in gold - pred:
+            counts[span[0]][2] += 1
+    slots = {slot: {**prf(*c), "support": c[0] + c[2]} for slot, c in sorted(counts.items())}
+    totals = [sum(c[i] for c in counts.values()) for i in range(3)]
     return {
-        "precision": true_positive / predicted if predicted else 0.0,
-        "recall": true_positive / gold if gold else 0.0,
-        "f1": 2 * true_positive / (predicted + gold) if predicted + gold else 0.0,
-        "true_positive": true_positive,
-        "predicted": predicted,
-        "gold": gold,
+        **prf(*totals),
+        "sentence_exact": exact / len(gold_list) if gold_list else 0.0,
+        "slots": slots,
     }
 
 
-def slot_scores(actual: list[list[str]], predicted: list[list[str]], allowed_types=None) -> dict:
-    """Micro span F1: a span counts only with the exact type and token boundaries."""
-    if len(actual) != len(predicted):
-        raise ValueError("Different sentence counts.")
-    gold, guesses, correct = Counter(), Counter(), Counter()
-    errors = Counter()
-    for truth, guess in zip(actual, predicted):
-        if len(truth) != len(guess):
-            raise ValueError("Different token counts.")
-        gold_spans, guess_spans = spans(truth), spans(guess)
-        if allowed_types is not None:
-            gold_spans = {span for span in gold_spans if span[0] in allowed_types}
-            guess_spans = {span for span in guess_spans if span[0] in allowed_types}
-        gold.update(span[0] for span in gold_spans)
-        guesses.update(span[0] for span in guess_spans)
-        correct.update(span[0] for span in gold_spans & guess_spans)
-        errors.update(classify_errors(gold_spans - guess_spans, guess_spans - gold_spans))
-
-    kinds = sorted(set(gold) | set(guesses))
-    return {
-        **_prf(sum(correct.values()), sum(guesses.values()), sum(gold.values())),
-        "per_slot": {kind: _prf(correct[kind], guesses[kind], gold[kind]) for kind in kinds},
-        "errors": {key: errors[key] for key in ("boundary", "type_confusion", "missed", "spurious")},
-    }
+def to_int32(X):
+    """LinearSVC rejects int64 sparse indices, which DictVectorizer produces."""
+    X = X.tocsr()
+    X.indices = X.indices.astype(np.int32)
+    X.indptr = X.indptr.astype(np.int32)
+    return X
 
 
-def classify_errors(missed: set, spurious: set) -> Counter:
-    """Pair wrong spans: same boundaries means a type error, same type and overlap a boundary error."""
-    missed, spurious = set(missed), set(spurious)
-    counts = Counter()
-    for gold in sorted(missed):
-        same_boundaries = sorted(guess for guess in spurious if gold[1:] == guess[1:])
-        if same_boundaries:
-            counts["type_confusion"] += 1
-            missed.remove(gold)
-            spurious.remove(same_boundaries[0])
-    for gold in sorted(missed):
-        overlapping = sorted(
-            guess for guess in spurious
-            if gold[0] == guess[0] and max(gold[1], guess[1]) < min(gold[2], guess[2])
-        )
-        if overlapping:
-            counts["boundary"] += 1
-            missed.remove(gold)
-            spurious.remove(overlapping[0])
-    counts["missed"] += len(missed)
-    counts["spurious"] += len(spurious)
-    return counts
+def fit_vectorizer(feats):
+    """Fit a DictVectorizer on flat per-token features and return (vectorizer, matrix)."""
+    vec = DictVectorizer()
+    return vec, to_int32(vec.fit_transform([x for seq in feats for x in seq]))
 
 
-def exact_match(actual_intents, predicted_intents, actual_tags, predicted_tags) -> float:
-    """Share of sentences with the right intent and exactly the right slots."""
-    lengths = {len(values) for values in (actual_intents, predicted_intents, actual_tags, predicted_tags)}
-    if len(lengths) != 1:
-        raise ValueError("Different sentence counts.")
-    if not actual_intents:
-        return 0.0
-    matches = sum(
-        gold_intent == intent and spans(gold) == spans(guess)
-        for gold_intent, intent, gold, guess in zip(actual_intents, predicted_intents, actual_tags, predicted_tags)
-    )
-    return matches / len(actual_intents)
+def predict(vec, model, feats):
+    """BIO tags per sentence from a fitted vectorizer and estimator; one list of tags per sentence."""
+    flat = [x for seq in feats for x in seq]
+    labels = [str(x) for x in model.predict(to_int32(vec.transform(flat)))]
+    out, pos = [], 0
+    for sent in feats:
+        out.append(labels[pos:pos + len(sent)])
+        pos += len(sent)
+    return out
 
 
-def make_slot_models(seed: int = 42) -> dict:
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.naive_bayes import BernoulliNB, MultinomialNB
-    from sklearn.svm import LinearSVC
+class DictionaryTagger:
+    """Memorise each span text -> its most common slot type; tag longest matches left to right."""
 
-    return {
-        "all_O": None,  # majority baseline: every token is outside a slot
-        "multinomial_nb": MultinomialNB(),
-        "bernoulli_nb": BernoulliNB(),
-        "logistic_regression": LogisticRegression(max_iter=300, random_state=seed),
-        "linear_svm": LinearSVC(random_state=seed),
-    }
+    def __init__(self, rows):
+        votes = defaultdict(Counter)
+        for r in rows:
+            for kind, start, end in spans(r["tags"]):
+                votes[tuple(w.lower() for w in r["tokens"][start:end])][kind] += 1
+        self.best = {key: c.most_common(1)[0][0] for key, c in votes.items()}
+        self.lengths = sorted({len(k) for k in self.best}, reverse=True)
 
-
-def compact_indices(matrix):
-    """LinearSVC needs 32-bit sparse indices; our matrix is far below that limit."""
-    if max(matrix.shape, default=0) >= 2**31 or matrix.nnz >= 2**31:
-        raise ValueError("Slot feature matrix exceeds 32-bit sparse index limits.")
-    matrix.indices = matrix.indices.astype("int32")
-    matrix.indptr = matrix.indptr.astype("int32")
-    return matrix
-
-
-def predict_tags(artifact: dict, sentences: list[list[str]]) -> list[list[str]]:
-    """Tag every token of every sentence, then repair invalid BIO sequences."""
-    if (
-        not isinstance(artifact, dict)
-        or artifact.get("task") != "slot_token_classification"
-        or artifact.get("dataset_domain") != "massive_tr"
-    ):
-        raise ValueError("Incompatible slot artifact.")
-    if not {"vectorizer", "model", "tags"}.issubset(artifact):
-        raise ValueError("Incomplete slot artifact.")
-    model = artifact["model"]
-    if model is not None and set(map(str, model.classes_)) != set(artifact["tags"]):
-        raise ValueError("Slot artifact tags do not match model.")
-
-    features = [token_features(tokens, i) for tokens in sentences for i in range(len(tokens))]
-    if not features:
-        return [[] for _ in sentences]
-    if model is None:
-        predictions = ["O"] * len(features)
-    else:
-        matrix = compact_indices(artifact["vectorizer"].transform(features))
-        predictions = [str(tag) for tag in model.predict(matrix)]
-
-    result = []
-    offset = 0
-    for tokens in sentences:
-        result.append(repair_bio(predictions[offset:offset + len(tokens)]))
-        offset += len(tokens)
-    return result
-
-
-# Regex rules written from train only. They cover just three slot types.
-DATE = r"(?:bu\s+(?:hafta|yil|ay)|(?:bugun|yarin|pazartesi|sali|carsamba|persembe|cuma|cumartesi|pazar)[a-z']*)"
-CLOCK = (
-    r"(?:\d+(?::\d+)?(?:'(?:te|ta|de|da))?"
-    r"|birde|ikide|ucte|dortte|beste|altida|yedide|sekizde|dokuzda|onda"
-    r"|bire|ikiye|uce|dorde|bese|altiya|yediye|sekize|dokuza|ona)"
-)
-TIMEOFDAY = r"(?:bu\s+gece|ogleden\s+sonra|sabah|aksam|gece|oglen)"
-
-
-def parser_tags(tokens: list[str]) -> list[str]:
-    words = [ascii_text(token) for token in tokens]
-    text = " ".join(words)
-    boundaries = []
-    offset = 0
-    for word in words:
-        boundaries.append((offset, offset + len(word)))
-        offset += len(word) + 1
-
-    tags = ["O"] * len(tokens)
-    # Times go first, so a daypart inside a time ("aksam dokuzda") stays part of it.
-    time_pattern = rf"(?:{TIMEOFDAY}\s+)?{CLOCK}"
-    for kind, pattern in (("time", time_pattern), ("date", DATE), ("timeofday", TIMEOFDAY)):
-        for match in re.finditer(rf"(?<!\S){pattern}(?!\S)", text):
-            indices = [i for i, (start, end) in enumerate(boundaries) if match.start() <= start and end <= match.end()]
-            if indices and all(tags[i] == "O" for i in indices):
-                for n, i in enumerate(indices):
-                    tags[i] = ("B-" if n == 0 else "I-") + kind
-    return tags
-
-
-def display_spans(text: str, tags: list[str]) -> list[dict]:
-    """Map token spans back to character offsets in the original text."""
-    tokens = list(re.finditer(r"\S+", text))
-    if len(tokens) != len(tags):
-        raise ValueError("Different token counts.")
-    return [
-        {
-            "type": kind,
-            "start": tokens[start].start(),
-            "end": tokens[end - 1].end(),
-            "text": text[tokens[start].start():tokens[end - 1].end()],
-        }
-        for kind, start, end in sorted(spans(tags), key=lambda span: span[1])
-    ]
+    def tag(self, tokens):
+        words = [t.lower() for t in tokens]
+        tags = ["O"] * len(words)
+        i = 0
+        while i < len(words):
+            for n in self.lengths:
+                kind = self.best.get(tuple(words[i:i + n])) if i + n <= len(words) else None
+                if kind:
+                    tags[i:i + n] = [f"B-{kind}"] + [f"I-{kind}"] * (n - 1)
+                    i += n
+                    break
+            else:
+                i += 1
+        return tags

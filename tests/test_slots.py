@@ -1,133 +1,138 @@
-import json
-import threading
+"""Tests for slots.py: BIO conversion and cleaning, span scoring, typo noise, features and the dictionary tagger.
+
+Standard library plus scikit-learn only, no network and no GPU.
+"""
+
+import random
 import unittest
-from http.server import HTTPServer
-from urllib.request import Request, urlopen
 
-from prepare_massive import parse_annotation
-from slots import (
-    compact_indices,
-    display_spans,
-    exact_match,
-    make_slot_models,
-    parser_tags,
-    predict_tags,
-    repair_bio,
-    slot_scores,
-    spans,
-    token_features,
-)
+from sklearn.svm import LinearSVC
+
+from slots import (DictionaryTagger, add_typos, bio_tags, clean_split, dedupe, drop_leaks, featurize,
+                   fit_vectorizer, predict, repair_bio, slot_counts, span_scores, spans, token_features)
 
 
-def slot_artifact(model=None, vectorizer=None, tags=("O",), name="all_O"):
-    return {
-        "task": "slot_token_classification",
-        "dataset_domain": "massive_tr",
-        "model_name": name,
-        "model": model,
-        "vectorizer": vectorizer,
-        "tags": sorted(tags),
-    }
+class BioTagsTest(unittest.TestCase):
+    def test_single_token_span(self):
+        tokens, tags = bio_tags("Book a table in Paris tonight", [(16, 21, "city")])
+        self.assertEqual(tokens, ["Book", "a", "table", "in", "Paris", "tonight"])
+        self.assertEqual(tags, ["O", "O", "O", "O", "B-city", "O"])
+
+    def test_multi_token_span_gets_begin_then_inside(self):
+        _, tags = bio_tags("Book a table in New York tonight", [(16, 24, "city")])
+        self.assertEqual(tags[4:6], ["B-city", "I-city"])
+
+    def test_overlapping_spans_return_none(self):
+        self.assertIsNone(bio_tags("Book a table in New York tonight", [(16, 24, "city"), (16, 19, "date")]))
 
 
-class SlotTests(unittest.TestCase):
-    def test_bio_alignment(self):
-        tokens, tags = parse_annotation("yarın saat beşte gel", "[date : yarın] saat [time : beşte] gel")
-        self.assertEqual(len(tokens), len(tags))
-        self.assertEqual(spans(tags), {("date", 0, 1), ("time", 2, 3)})
+class CleaningTest(unittest.TestCase):
+    ROWS = [{"id": "1", "text": "Lakers tonight"}, {"id": "2", "text": "lakers TONIGHT"}, {"id": "3", "text": "Other"}]
 
-    def test_repair_and_adjacent_spans(self):
-        self.assertEqual(
-            repair_bio(["I-date", "I-date", "I-time", "O", "I-time"]),
-            ["B-date", "I-date", "B-time", "O", "B-time"],
-        )
-        self.assertEqual(spans(["B-date", "B-date"]), {("date", 0, 1), ("date", 1, 2)})
-        with self.assertRaises(ValueError):
-            repair_bio(["X-date"])
+    def test_dedupe_keeps_first_lowercased_text(self):
+        kept, dropped = dedupe(self.ROWS)
+        self.assertEqual([r["id"] for r in kept], ["1", "3"])
+        self.assertEqual(dropped, 1)
 
-    def test_exact_span_f1_and_error_types(self):
-        actual = [["B-date", "I-date", "B-time"]]
-        predicted = [["B-date", "O", "B-date"]]
-        result = slot_scores(actual, predicted)
-        self.assertEqual(result["f1"], 0)
-        self.assertEqual(result["errors"], {"boundary": 1, "type_confusion": 1, "missed": 0, "spurious": 0})
-        self.assertEqual(slot_scores(actual, actual)["f1"], 1)
-        self.assertEqual(slot_scores([["O"]], [["O"]])["f1"], 0)
+    def test_drop_leaks_removes_banned_lowercased_texts(self):
+        kept, dropped = drop_leaks(self.ROWS, {"other"})
+        self.assertEqual([r["id"] for r in kept], ["1", "2"])
+        self.assertEqual(dropped, 1)
 
-        result = slot_scores([["B-date", "B-time"]], [["B-date", "O"]])
-        self.assertEqual(result["precision"], 1)
-        self.assertEqual(result["recall"], .5)
-        self.assertAlmostEqual(result["f1"], 2 / 3)
 
-    def test_parser_scope_and_exact_match(self):
-        self.assertEqual(slot_scores([["B-date", "B-person"]], [["B-date", "O"]], ["date"])["f1"], 1)
-        self.assertEqual(exact_match(["a"], ["b"], [["O"]], [["O"]]), 0)
-        self.assertEqual(exact_match(["a"], ["a"], [["B-date"]], [["I-date"]]), 1)
-        for text in ("yarın akşam dokuzda gel", "bugün saat 5'te gel"):
-            with self.subTest(text=text):
-                tags = parser_tags(text.split())
-                self.assertIn("B-date", tags)
-                self.assertIn("B-time", tags)
+class RepairBioTest(unittest.TestCase):
+    def test_orphan_and_type_switch_inside_becomes_begin(self):
+        tags = ["I-city", "I-city", "B-date", "I-city", "O", "I-date"]
+        self.assertEqual(repair_bio(tags), ["B-city", "I-city", "B-date", "B-city", "O", "B-date"])
 
-    def test_features_and_offsets(self):
-        features = token_features(["İstanbul'da", "5", "gel"], 0)
-        self.assertEqual(features["word"], "istanbul'da")
-        self.assertEqual(features["prefix3"], "ist")
-        self.assertEqual(features["suffix2"], "da")
-        self.assertTrue(features["start"])
-        self.assertTrue(features["capital"])
-        self.assertTrue(features["apostrophe"])
-        self.assertEqual(features["word+2"], "gel")
-        self.assertEqual(features["word-1"], "<BOUNDARY>")
-        self.assertTrue(token_features(["5"], 0)["number"])
-        self.assertEqual(
-            display_spans("  yarın  gel", ["B-date", "O"]),
-            [{"type": "date", "start": 2, "end": 7, "text": "yarın"}],
-        )
 
-    def test_candidates_fit_real_sparse_features(self):
-        from sklearn.feature_extraction import DictVectorizer
+class SpansTest(unittest.TestCase):
+    def test_spans_are_type_start_end_exclusive(self):
+        tags = ["B-city", "I-city", "O", "B-date"]
+        self.assertEqual(spans(tags), {("city", 0, 2), ("date", 3, 4)})
 
-        tokens = ["yarın", "gel", "saat", "beşte"]
-        tags = ["B-date", "O", "O", "B-time"]
-        vectorizer = DictVectorizer()
-        x = compact_indices(vectorizer.fit_transform([token_features(tokens, i) for i in range(4)]))
-        self.assertEqual(str(x.indices.dtype), "int32")
-        for name, model in make_slot_models().items():
-            with self.subTest(model=name):
-                if model is not None:
-                    model.fit(x, tags)
-                artifact = slot_artifact(model, vectorizer, set(tags), name)
-                prediction = predict_tags(artifact, [tokens])[0]
-                self.assertEqual(len(prediction), 4)
-                self.assertEqual(prediction, repair_bio(prediction))
+    def test_orphan_inside_tag_starts_a_span(self):
+        self.assertEqual(spans(["I-date", "I-date"]), {("date", 0, 2)})
 
-    def test_http_optional_slots_preserve_text(self):
-        from app import make_handler
-        from tests.test_models import fixture_artifact
 
-        server = HTTPServer(("127.0.0.1", 0), make_handler(fixture_artifact(), {}, slot_artifact=slot_artifact()))
-        worker = threading.Thread(target=server.serve_forever, kwargs={"poll_interval": .01}, daemon=True)
-        worker.start()
-        try:
-            text = "  yarın saat 5'te gel"
-            request = Request(
-                f"http://127.0.0.1:{server.server_port}/api/compare",
-                data=json.dumps({"text": text}).encode(),
-            )
-            with urlopen(request, timeout=2) as handle:
-                result = json.load(handle)
-            self.assertEqual(result["slots"]["token_model"]["spans"], [])
-            for span in result["slots"]["parser"]["spans"]:
-                self.assertEqual(text[span["start"]:span["end"]], span["text"])
-        finally:
-            server.shutdown()
-            server.server_close()
-            worker.join(timeout=2)
+class SpanScoresTest(unittest.TestCase):
+    def test_exact_match_scores_one(self):
+        scores = span_scores([["B-city", "O"]], [["B-city", "O"]])
+        self.assertEqual(scores["f1"], 1.0)
+        self.assertEqual(scores["sentence_exact"], 1.0)
+        self.assertEqual(scores["slots"]["city"]["support"], 1)
 
-    def test_slot_artifact_validation(self):
-        with self.assertRaises(ValueError):
-            predict_tags({}, [["hi"]])
+    def test_wrong_type_is_a_miss_and_a_false_alarm(self):
+        scores = span_scores([["B-city", "O"]], [["B-date", "O"]])
+        self.assertEqual(scores["f1"], 0.0)
+        self.assertEqual(scores["slots"]["city"]["recall"], 0.0)
+        self.assertEqual(scores["slots"]["date"]["precision"], 0.0)
+
+
+class AddTyposTest(unittest.TestCase):
+    TOKENS = ["hello", "world", "go", "Taylor", "swift", "!"]
+
+    def test_same_seed_gives_same_noise(self):
+        self.assertEqual(add_typos(self.TOKENS, random.Random(7), 1.0), add_typos(self.TOKENS, random.Random(7), 1.0))
+
+    def test_zero_rate_changes_nothing(self):
+        self.assertEqual(add_typos(self.TOKENS, random.Random(7), 0.0), self.TOKENS)
+
+    def test_short_and_non_alphabetic_tokens_are_kept(self):
+        noisy = add_typos(self.TOKENS, random.Random(3), 1.0)
+        self.assertEqual(noisy[2], "go")
+        self.assertEqual(noisy[5], "!")
+
+
+class FeatureTest(unittest.TestCase):
+    def test_features_use_word_shape_affixes_and_neighbours(self):
+        feats = token_features(["Yankees", "game", "2026"], 0)
+        self.assertEqual(feats["word"], "yankees")
+        self.assertEqual(feats["shape"], "Xx")
+        self.assertEqual(feats["suffix3"], "ees")
+        self.assertTrue(feats["is_title"])
+        self.assertEqual(feats["word+1"], "game")
+        self.assertEqual(feats["word-1"], "<BOUNDARY>")
+
+    def test_featurize_gives_one_dict_per_token(self):
+        feats = featurize([{"tokens": ["a", "b"]}, {"tokens": ["c"]}])
+        self.assertEqual([len(sentence) for sentence in feats], [2, 1])
+
+    def test_predict_returns_one_tag_list_per_sentence(self):
+        rows = [{"tokens": ["Paris", "tonight"], "tags": ["B-city", "O"]},
+                {"tokens": ["Lakers", "game"], "tags": ["B-event_name", "I-event_name"]}]
+        feats = featurize(rows)
+        vec, X = fit_vectorizer(feats)
+        model = LinearSVC(C=1).fit(X, [t for r in rows for t in r["tags"]])
+        out = predict(vec, model, feats)
+        self.assertEqual([len(sentence) for sentence in out], [2, 2])
+
+
+class DictionaryTaggerTest(unittest.TestCase):
+    def test_longest_remembered_span_wins(self):
+        rows = [{"tokens": ["New", "York", "tonight"], "tags": ["B-city", "I-city", "O"]},
+                {"tokens": ["New", "Year"], "tags": ["B-date", "I-date"]}]
+        tagger = DictionaryTagger(rows)
+        self.assertEqual(tagger.tag(["see", "new", "york", "tonight"]), ["O", "B-city", "I-city", "O"])
+        self.assertEqual(tagger.tag(["new", "year"]), ["B-date", "I-date"])
+
+
+class CleanSplitTest(unittest.TestCase):
+    TRAIN = [{"text": "Book Paris", "tokens": [], "tags": []}]
+    DEV = [{"text": "book PARIS", "tokens": [], "tags": []}, {"text": "New York", "tokens": [], "tags": []}]
+
+    def test_first_split_only_dedupes(self):
+        kept, duplicates, leakage = clean_split(self.TRAIN + self.TRAIN, [])
+        self.assertEqual((len(kept), duplicates, leakage), (1, 1, 0))
+
+    def test_later_split_drops_texts_seen_earlier(self):
+        kept, duplicates, leakage = clean_split(self.DEV, [self.TRAIN])
+        self.assertEqual([r["text"] for r in kept], ["New York"])
+        self.assertEqual((duplicates, leakage), (0, 1))
+
+    def test_slot_counts_are_sorted_by_slot(self):
+        rows = [{"tags": ["B-date", "I-date", "B-city"]}, {"tags": ["B-city", "O"]}]
+        self.assertEqual(slot_counts(rows), {"city": 2, "date": 1})
 
 
 if __name__ == "__main__":
