@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Project author
+Copyright (c) 2026 Efeblk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-The dataset is separately licensed under CC BY 4.0. See data/LICENSE and
-its attribution in data/SOURCE.md. This software license does not relicense
-the source news articles or dataset annotations.
+Datasets under data/ keep their own licences; see data/LICENSE.md.

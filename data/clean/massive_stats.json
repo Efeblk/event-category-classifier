@@ -1,0 +1,44 @@
+{
+  "train": {
+    "raw_rows": 11514,
+    "rows": 2607,
+    "mismatch": 0,
+    "empty_dropped": 8898,
+    "duplicates_dropped": 9,
+    "leakage_dropped": 0,
+    "conflicts": 0,
+    "spans": {
+      "city": 1077,
+      "date": 1814,
+      "event_name": 35
+    }
+  },
+  "dev": {
+    "raw_rows": 2033,
+    "rows": 488,
+    "mismatch": 0,
+    "empty_dropped": 1540,
+    "duplicates_dropped": 2,
+    "leakage_dropped": 3,
+    "conflicts": 0,
+    "spans": {
+      "city": 207,
+      "date": 336,
+      "event_name": 7
+    }
+  },
+  "test": {
+    "raw_rows": 2974,
+    "rows": 633,
+    "mismatch": 0,
+    "empty_dropped": 2332,
+    "duplicates_dropped": 2,
+    "leakage_dropped": 7,
+    "conflicts": 0,
+    "spans": {
+      "city": 274,
+      "date": 412,
+      "event_name": 12
+    }
+  }
+}

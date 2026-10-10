@@ -1,225 +1,139 @@
-# Spot the Manipulation
+# Slot filling for event-search requests
 
-Solo COE025 Natural Language Processing Project 1. Given a **selected English
-news excerpt** and optional surrounding context, classify its persuasion technique:
-loaded language, name-calling, fear appeals, slogans, false dilemmas and nine other
-categories. The graded core compares **Naive Bayes, Logistic Regression and
-Linear SVM**, with a majority baseline.
+COE025 Natural Language Processing, Project 1: Text Classification.
+Solo project by İsmet Efe Balık (see `contributions/`).
 
-This is technique classification of a provided fragment. It does not locate new
-propaganda spans, check whether a claim is true, or establish a writer's intention.
-The entertaining demo lets you guess the technique before revealing independent
-model predictions. It is a course experiment, not a moderation or fact-checking tool.
+A user types a request like *"wanna catch the lakers game w my dad tmrw"*. The task is to
+classify every word as part of a **city**, a **date**, an **event name**, or nothing (BIO
+tags), then read off the slots: event = `lakers`, date = `tmrw`. This is word-level text
+classification (slot filling), which is not one of the lecture-slide tasks.
 
-## Run locally
+The goal is robustness: models trained on clean assistant data must also work on messy,
+lowercase, typo-filled requests.
 
-Use Python 3.13 and run every command from the repository root:
+## Data
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+| Set | Source | Licence | Train / dev / test sentences |
+|---|---|---|---|
+| SGD Events | Google Schema-Guided Dialogue, user turns of the Events services | CC BY-SA 4.0 | 5,586 / 626 / 784 |
+| MASSIVE en-US | Amazon MASSIVE, rows with date, place or event slots | CC BY 4.0 | 2,607 / 488 / 633 |
+| Messy test | 50 casual requests with slang and typos (AI-drafted, checked and corrected by hand) | MIT | test only |
+
+The preprocessing scripts download the raw data, map the slots to `city` / `date` /
+`event_name`, convert character spans to BIO tags, remove duplicates, and drop dev/test
+sentences that also appear in an earlier split. Counts and dropped rows are in
+`data/clean/stats.json` and `data/clean/massive_stats.json`. Licence details are in
+`data/LICENSE.md`.
+
+Training sets for the experiments: **A** SGD, **B** SGD + MASSIVE, **C** SGD + typo copies,
+**D** SGD + MASSIVE + typo copies (each word of 4+ letters gets one random letter edit with probability 0.15).
+
+## Methods
+
+- **Dictionary baseline**: tags any span it saw in training (longest match).
+- **Naive Bayes, Logistic Regression, Linear SVM**: one prediction per word from hand-made
+  features (the word, its prefixes and suffixes, its shape, neighbouring words).
+- **BERT, RoBERTa, BERTweet**: fine-tuned pre-trained transformers (`bert-base-uncased`,
+  `roberta-base`, `vinai/bertweet-base`), trained on set D for 4 epochs.
+- **Jev** (TypeSafe, optional, paid): answers what word tagging cannot, namely the event type
+  and the number of tickets ("with my girlfriend" means two).
+
+Every setting is chosen on the dev sets (SGD dev + MASSIVE dev); each test set is scored once.
+The metric is exact-span F1.
+
+## Results
+
+Span F1. All rows are trained on set D. Single run with seed 42.
+
+| Model | Chosen on dev | SGD test | MASSIVE test | Messy test | Messy event names |
+|---|---|---|---|---|---|
+| Dictionary | longest match | 0.72 | 0.76 | 0.58 | 0.00 |
+| Naive Bayes | alpha = 1.0 | 0.66 | 0.58 | 0.55 | 0.40 |
+| Logistic Regression | C = 10 | 0.88 | 0.84 | 0.62 | 0.18 |
+| Linear SVM | C = 0.1 | 0.87 | 0.84 | 0.67 | 0.19 |
+| BERT | epoch 3 | 0.97 | 0.91 | 0.71 | 0.40 |
+| RoBERTa | epoch 3 | 0.98 | 0.91 | 0.75 | 0.46 |
+| **BERTweet** | epoch 2 | **0.98** | 0.90 | **0.78** | **0.69** |
+
+Main findings:
+
+1. **Every model loses accuracy on messy requests.** The classic models find cities well but
+   miss casual dates ("tmrw") and lowercase event names ("taylor swift").
+2. **Mixing MASSIVE and typo copies into training helps the classic models on messy text**
+   (Linear SVM: 0.52 on set A, 0.67 on set D).
+3. **BERTweet, pre-trained on tweets, handles messy text best.** It had the best dev score of
+   the three transformers, so it is the main model. Its event-name F1 on messy requests is
+   0.69 against 0.19 for Linear SVM.
+4. **More data of the same kind barely helps**: Linear SVM trained on 10% of SGD already
+   reaches 0.90 test F1, and on all of it 0.92.
+
+Limitations: one seed; the messy test set has only 50 requests, so differences of a few
+points are within noise; the messy requests were drafted with AI help.
+
+Full numbers, per-slot scores and the learning curve are in `results/`.
+
+## Folders and scripts
+
+| Path | What it is |
+|---|---|
+| `prepare_sgd.py` | Downloads SGD, keeps Events dialogues, writes `data/raw/sgd/` and `data/clean/{train,dev,test}.jsonl` |
+| `prepare_massive.py` | Downloads MASSIVE en-US, maps slots, writes `data/raw/massive/` and `data/clean/massive_*.jsonl` |
+| `slots.py` | Shared helpers: reading data, BIO tags, span F1, word features, typo copies, dictionary baseline |
+| `train_classic.py` | Trains and compares the dictionary, Naive Bayes, Logistic Regression and Linear SVM on sets A–D; learning curve |
+| `train_bert.py` | Fine-tunes one transformer (`--model`) on set D (needs a CUDA GPU) |
+| `jev.py` | Jev client with a hard call limit and a receipt for every call |
+| `extract.py` | Loads the trained models, tags a request, and lists the follow-up questions an assistant would ask |
+| `app.py`, `demo.html` | Local demo: compares all models side by side on any request, and shows the results as charts |
+| `data/raw/` | Downloaded data with its licence files |
+| `data/clean/` | BIO-tagged training, dev and test data, plus statistics |
+| `data/messy/` | The 50-request messy test set |
+| `results/` | Scores of every model (JSON), written by the training scripts |
+| `tests/` | Unit tests (no network or GPU needed) |
+| `contributions/` | Contribution statement |
+
+## How to run
+
+Python 3.13.
+
+```bash
 python -m pip install -r requirements-lock.txt
-python prepare_data.py
-python train.py
-python compare_methods.py
+python prepare_sgd.py          # uses data/raw if present, otherwise downloads
+python prepare_massive.py
+python train_classic.py        # about 5 minutes on a CPU
+python -m unittest discover -s tests
+```
+
+Transformers (CUDA GPU; about 2 minutes each on an RTX 4070 SUPER):
+
+```bash
+python -m pip install --index-url https://download.pytorch.org/whl/cu128 torch==2.11.0
+python -m pip install -r requirements-gpu.txt
+python train_bert.py --model bert-base-uncased
+python train_bert.py --model roberta-base
+python train_bert.py --model vinai/bertweet-base
+```
+
+Demo (http://127.0.0.1:8000). Jev is only called when `.env` has a `TYPESAFE_API_KEY` and a
+`JEV_MAX_CALLS` above 0 (see `.env.example`):
+
+```bash
 python app.py
 ```
 
-On Linux/macOS activate with `source .venv/bin/activate`. Open
-[127.0.0.1:8011](http://127.0.0.1:8011). The server binds only to loopback.
-No frontend build step, neural model training or paid API is required.
+## How to check the results
 
-Preparation verifies the pinned original archive before extracting selected
-regular files. Public raw and cleaned data are deliberately included under
-`data/`; rerunning the script reconstructs the same examples and partitions.
-Model artifacts, generated reports, the download cache and local credentials are
-ignored. Load joblib artifacts only if you created or otherwise trust them.
+Each claim above can be checked without a GPU:
 
-## Data and preprocessing
-
-The [original SemEval-2020 Task 11 dataset](https://zenodo.org/records/3952415)
-is licensed under **CC BY 4.0**. The selected release has 371 original labeled
-training articles and 6,129 annotation rows. Our preparation removes one identical
-annotation record and reconstructs **6,128 examples**, preserving every different
-technique annotation. Fourteen articles have no annotated fragments; they remain
-in the raw corpus but produce no invented negative examples.
-
-The pipeline checks article IDs, the fixed 14 technique names, Unicode character
-boundaries and exact original substrings. It preserves raw article bytes and
-excerpt text, creates a whitespace-normalized representation and bounded context,
-and records duplicates, conflicting labels and all transformations. See
-[data/README.md](data/README.md), [source attribution](data/SOURCE.md), the
-[dataset license](data/LICENSE), and `data/cleaned/audit.json`.
-
-The creators already curated and corrected this corpus. We do not claim to have
-scraped it or performed their cleaning. Our documented preparation is not a
-promise of a particular data-novelty mark.
-
-## Training and evaluation
-
-The archive lacks official development/test technique gold labels. We create a
-**custom article-grouped split of the labeled official training corpus**. Seed 42
-assigns approximately 65/15/20% of article groups to train/dev/test:
-
-| Partition | Annotation examples | Articles with annotations |
-|---|---:|---:|
-| Train | 3,795 | 231 |
-| Development | 1,048 | 54 |
-| Test | 1,285 | 72 |
-
-Articles and identical excerpt/context inputs cannot cross partitions. Short
-phrases can recur in different articles with different contexts; this is audited
-and limits claims about independence. This is not a held-out publisher evaluation.
-
-The original nine-candidate benchmark is preserved under
-`evidence/baseline/`. Its error analysis motivated a simple upgrade: LR combines
-excerpt words, character patterns, wider context and 22 text-shape counts.
-These include length, punctuation, capitalization and exact phrase repetition.
-No dependency or neural model was added.
-
-**The current pipeline is development-only.** `prepare_data.py` additionally
-reconstructs `development.jsonl` from only the existing train/dev articles, with
-up to 1,000 source characters on each side. Original benchmark files and
-partitions remain unchanged. `python train.py` compares ten candidates, fitting
-every vocabulary, scaler and classifier on **train alone**. Development macro
-F1 selects the overall model and the best variant for each method.
-
-The upgrade reaches **57.35% dev accuracy / 0.3957 macro F1**, compared with
-**49.24% / 0.3324** for the original selected model on dev. These are development
-results, not an increase in test accuracy. Because the old test errors informed
-the upgrade, a fresh final evaluation is pending. Current test metrics stay null.
-To reproduce the historical nine-candidate protocol separately, run
-`python train.py --profile baseline`; its outputs go to `reports/baseline/` and
-`artifacts/baseline/` by default.
-
-Report accuracy, micro F1 and macro F1 over the fixed 14 labels, along with
-per-class precision/recall, a confusion matrix and errors. Some fragments have
-more than one annotated technique; those annotation rows remain in the same
-partition. Our ordinary annotation-row scoring differs from the competition's
-matching procedure for repeated spans. Published competition scores are
-**contextual references**, not a direct comparison with our custom test.
-
-[RESULTS.md](RESULTS.md) records measured results and limitations. Demo examples
-are selected from development data without filtering by correct predictions.
-`compare_methods.py` now uses a fixed 40-case **dev** sample solely for a same-input
-comparison. The original test benchmark remains separately labeled in the demo.
-
-## Human-input robustness
-
-`python stress_test.py` samples one original excerpt from each of 25 separate
-human-written official dev news articles in the verified archive. None of these
-articles trained the models. It records 25 originals, 175 generated variant
-cases and six synthetic controls. Twenty-three apostrophe variants make no
-change; label-change fractions exclude those no-op pairs. This is a behavioral
-probe with **no technique gold labels and no accuracy score**, not a user study
-or a fresh final test. See [ROBUSTNESS.md](ROBUSTNESS.md) for findings and sources.
-
-The demo now requires vocabulary coverage in the **excerpt itself** before
-assigning a technique; context or numeric counts cannot bypass abstention.
-It clears results when inputs change and ignores late responses. Input checks
-reject malformed Unicode/JSON and incomplete HTTP bodies before prediction.
-Cached examples and scores must match the loaded model run.
-
-Training JSONL and comparison JSON use the same strict UTF-8 parser as the API.
-Duplicate fields, nonfinite values and invalid strings fail before fitting or
-provider setup. Generated comparison samples must match the model provenance;
-fully untagged external dev samples are explicitly marked unverified.
-The local server handles requests concurrently and gives body uploads a total
-five-second deadline, so trickling bytes cannot block the whole demo.
-
-Neutral English and non-English text can still receive technique labels because
-there is no neutral-text training class or language detector. The interface
-states this limit and warns when context is missing or the excerpt has no letters.
-Typos, capitalization and context changes can also change model predictions.
-
-## Repository map
-
-| Path | Purpose |
+| Claim | Where to look |
 |---|---|
-| `prepare_data.py` | Verified download, safe extraction, span reconstruction, cleaning audit and grouped split |
-| `classifier.py` | Fixed label definitions, English normalization, feature/model candidates, artifact validation and predictions |
-| `train.py` | Train-only fitting and dev-only selection/reports; explicit historical baseline profile |
-| `reproduce.py` | Fresh temporary preparation/training; exact cleaned/report/prediction and saved-artifact checks |
-| `method_comparison.py` | Same excerpt/context passed independently to NB, LR, SVM and optional Jev |
-| `json_validation.py` | Shared strict UTF-8 JSON decoding for HTTP, training JSONL and comparison samples |
-| `compare_methods.py` | Reproducible comparison report; optional paid calls require explicit opt-in |
-| `stress_test.py` | Deterministic unlabeled news probes, perturbations and synthetic abstention controls; no fitting or paid calls |
-| `jev.py` | Retained optional pretrained comparator, server secrets, response validation and durable attempt budget |
-| `app.py` / `demo.html` | Local HTTP API and accessible guess-before-reveal demo |
-| `data/raw/` | Original article text and annotation files, retained byte-for-byte |
-| `data/cleaned/` | Original benchmark plus separate wider-context train/dev examples and audits |
-| `data/README.md`, `data/SOURCE.md`, `data/LICENSE` | Preparation decisions, provenance, attribution and dataset reuse terms |
-| `evidence/` | Current dev snapshots and separately frozen `baseline/` test benchmark |
-| `tests/` | unittest fixtures for preparation, selection, artifacts, API and disabled/injected Jev |
-| `.github/workflows/tests.yml` | Ubuntu/Python 3.13 lock-file installation and unittest suite |
-| `.gitattributes` | LF source/documentation checkout and byte-preserving raw dataset files |
-| `requirements.txt`, `requirements-lock.txt` | Direct dependencies and fully pinned reproduction environment |
-| `LICENSE` | MIT license for project scripts; the dataset retains its separate CC BY 4.0 terms |
-| `RESULTS.md` / `PRESENTATION.md` | Measured findings and a 1:50 solo presentation outline |
-| `ROBUSTNESS.md` | Fixed input/UI gaps, behavioral sensitivities and source attribution |
-| `AGENTS.md` | Current scope and engineering invariants |
-| `contributions/` | Guide for the required truthful solo contribution record; personal file pending |
+| Rubric items | Preprocessing: `prepare_*.py`. Training: `train_*.py`. Raw and clean data: `data/`. Licence: `LICENSE`. Contributions: `contributions/` |
+| Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
+| No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
+| No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json` |
+| Table numbers | `results/classic_results.json` (rows for set D) and `results/{bert,roberta,bertweet}_results.json` |
+| Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
+| Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 
-## Optional Jev comparison
+## Licence
 
-Jev is retained as a pretrained comparison and **has not been evaluated**.
-Default `JEV_MAX_CALLS=0` disables calls. Later paid evaluation requires explicit
-author authorization. No paid calls are made by training, tests or the default demo.
-
-Copy `.env.example` to ignored `.env`; keep the key server-side. The pinned model
-is `jev-1.13.0`, and the budget ranges from 0 to 50 shared attempts. Each attempt
-reserves `reports/jev_calls/NNN.json` exclusively. Failures count; there are no
-retries, and deleting receipts must not be used to reset the budget. Inputs are
-limited to 3,000 combined excerpt/context characters and an 8,000-byte payload.
-Partial provider runs have null scores. See the
-[TypeSafe Choice documentation](https://docs.typesafe.ai/primitives/choice).
-
-## Checks and submission
-
-```powershell
-python -m unittest discover -s tests -v
-python reproduce.py
-python stress_test.py
-```
-
-Tests use small fixtures, local HTTP servers, temporary ledgers and injected
-provider responses. They require neither prepared datasets nor trained artifacts.
-The demo inserts user text through textContent/createTextNode and does not log
-request bodies. Displayed feature weights describe model contributions rather
-than a human explanation or a calibrated guarantee of correctness.
-
-The current local verification passes **89 tests**. A fresh temporary rebuild
-matches all five cleaned files, four reports, ten candidate dev prediction arrays
-and saved-model metadata/dev predictions. These checks make no provider calls.
-
-The latest rubric assigns half the grade to presentation and half to implementation.
-Prepare a **1:50 spoken explanation**, rehearse without reading, and use the
-technical questions in [PRESENTATION.md](PRESENTATION.md) to check understanding.
-A high score depends on the teacher's assessment of the actual work and delivery.
-
-The author asked not to create a presentation. The existing outline and
-rehearsal draft remain available in PRESENTATION.md. The teacher's PPTX homework
-therefore remains an author task outside this implementation submission work.
-
-The existing repository is public:
-[Efeblk/event-category-classifier](https://github.com/Efeblk/event-category-classifier).
-The public project includes the implementation, raw and cleaned data, licensing
-and evidence described above.
-
-| Teacher requirement | Current status |
-|---|---|
-| Working implementation and training scripts | Complete locally; 89 tests and fresh reproduction pass |
-| Detailed README with folder/script purpose | Complete |
-| Preprocessing script and documentation | Complete in prepare_data.py and data/README.md |
-| Raw and cleaned datasets | Included with source attribution and preparation audits |
-| Public reuse licenses | MIT scripts and CC BY 4.0 dataset, separately identified |
-| Benchmark and technical explanation | Current dev comparison, frozen historical test and paper references documented |
-| Solo contribution file | Guide prepared; author name, student ID and personal work details pending |
-| PPTX and spoken presentation | Author task; presentation creation excluded at the author's request |
-| Public GitHub submission URL | Public repository linked above |
-
-The author deferred personal details. Complete the record described in
-[contributions/README.md](contributions/README.md), add the real author name to
-the final PPTX, then submit that PPTX and the public repository URL. Rehearse
-without reading. Do not invent a team, claim agent-written changes as unaided
-work or label paper reference scores as measured project results.
+Code: MIT (`LICENSE`). Data keeps its source licences (`data/LICENSE.md`).

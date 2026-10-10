@@ -1,273 +1,266 @@
-"""Serve the technique-classification course demo on 127.0.0.1 only."""
+"""Local demo for the event request extractor, served from demo.html.
 
-from __future__ import annotations
+The Try it tab sends one request to POST /api/compare, which runs every slot tagger and shows each model's slot
+highlights side by side, with an optional Jev check. The Results tab draws charts from GET /api/results, which
+summarises the JSON files in results/ and the stats in data/ (missing files are left out).
+
+Usage: python app.py [--port 8000] [--no-jev] [--log] [--log-path FILE]
+The server listens on 127.0.0.1 only. The models load once at start and run under one GPU lock. Requests must come
+from no origin or from this server's own origin, and GET and POST requests must name this server in the Host header
+(127.0.0.1:PORT or localhost:PORT). Request logging is off unless --log is given. With --log, each compare call
+appends one JSON line to data/user_requests/requests.jsonl (or --log-path).
+Standard library only; torch loads through extract.load_models.
+"""
 
 import argparse
 import json
-import math
-import re
-import time
+import sys
+import threading
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-import joblib
-
+import extract
 from jev import JevClient
-from json_validation import strict_json
-from classifier import ARTIFACT_TASK, ARTIFACT_VERSION, DATASET_DOMAIN, LABELS
-from method_comparison import METHODS, compare_request, validate_artifacts, validate_input
-
 
 ROOT = Path(__file__).resolve().parent
-MAX_BODY_BYTES = 200_000  # Allows 15,000 escaped Unicode code points in JSON.
-REQUEST_READ_TIMEOUT_SECONDS = 5.0
+PAGE = ROOT / "demo.html"
+DEFAULT_LOG_PATH = ROOT / "data" / "user_requests" / "requests.jsonl"
+LOG_LOCK = threading.Lock()
+MAX_TEXT_CHARACTERS = 1000
+MAX_BODY_BYTES = 16_384
+MODEL_NAMES = {"dictionary baseline": "Dictionary", "MultinomialNB": "Naive Bayes",
+               "LogisticRegression": "Logistic Regression", "LinearSVC": "Linear SVM"}
 
 
-def valid_score(value):
-    return type(value) in (int, float) and 0 <= value <= 1 and math.isfinite(value)
+class RequestError(Exception):
+    def __init__(self, status, message):
+        super().__init__(message)
+        self.status = status
+        self.message = message
 
 
-def validate_metrics(metrics, artifacts):
-    """Do not display scores from a missing, partial or different training run."""
-    if metrics == {}:
-        return metrics
-    first = artifacts[METHODS[0]]
-    if not isinstance(metrics, dict):
-        raise ValueError("Current metrics must be a JSON object.")
+def check_origin(origin, server_origin):
+    """Accept requests without an Origin header or with this server's own origin."""
+    return origin is None or origin == server_origin
+
+
+def check_host(host, port):
+    """Accept only a Host header that names this server, which blocks DNS rebinding from other sites."""
+    return host in {f"127.0.0.1:{port}", f"localhost:{port}"}
+
+
+def parse_compare_body(raw):
+    """Return (text, use_jev) from a JSON request body, or raise RequestError."""
+    if len(raw) > MAX_BODY_BYTES:
+        raise RequestError(413, "Request body is too large.")
     try:
-        json.dumps(metrics, ensure_ascii=False, allow_nan=False).encode("utf-8")
-    except (TypeError, ValueError, RecursionError) as error:
-        raise ValueError("Current metrics must contain finite values and valid UTF-8 JSON.") from error
-    expected = {"schema_version": ARTIFACT_VERSION, "task": ARTIFACT_TASK,
-                "dataset_domain": DATASET_DOMAIN, "seed": first["seed"],
-                "code_sha256": first["code_sha256"]}
-    if (type(metrics.get("seed")) is not int or type(metrics.get("schema_version")) is not int
-            or any(metrics.get(key) != value for key, value in expected.items())):
-        raise ValueError("Current metrics do not match the loaded model run; rerun train.py.")
-    dataset, evaluation, selection = (metrics.get(key) for key in ("dataset", "evaluation", "selection"))
-    models = metrics.get("models")
-    method_models = {method: artifacts[method]["model_name"] for method in METHODS}
-    if not isinstance(dataset, dict) or dataset.get("sha256") != first["dataset_sha256"]:
-        raise ValueError("Current metrics do not match the loaded training data; rerun train.py.")
-    if (not isinstance(evaluation, dict) or evaluation.get("scope") != "dev_only"
-            or evaluation.get("partition") != "dev" or evaluation.get("context_margin") != 1000
-            or evaluation.get("labels") != list(LABELS)
-            or evaluation.get("test_predictions_per_candidate") != 0
-            or evaluation.get("independent_new_test_evaluation") is not False):
-        raise ValueError("Current metrics must identify the development-only evaluation.")
-    if (not isinstance(selection, dict) or selection.get("method_models") != method_models
-            or selection.get("fit_split") != "train" or selection.get("metric") != "dev_macro_f1"
-            or selection.get("test_used_for_selection") is not False):
-        raise ValueError("Current metrics select different models than the loaded artifacts; rerun train.py.")
-    if not isinstance(models, dict) or not models or not set(method_models.values()).issubset(models):
-        raise ValueError("Current metrics need every loaded model's development scores.")
-    if not isinstance(selection.get("selected_model"), str) or selection["selected_model"] not in models:
-        raise ValueError("Current metrics need scores for the selected overall model.")
-    for result in models.values():
-        if not isinstance(result, dict) or result.get("test", "missing") is not None:
-            raise ValueError("Current metrics must leave all test scores null.")
-        dev = result.get("dev")
-        if not isinstance(dev, dict) or not all(valid_score(dev.get(key)) for key in ("accuracy", "micro_f1", "macro_f1")):
-            raise ValueError("Current metrics need finite development scores between zero and one.")
-    return metrics
+        data = json.loads(raw.decode("utf-8"))
+    except ValueError as error:
+        raise RequestError(400, "Body must be UTF-8 JSON.") from error
+    if not isinstance(data, dict) or not isinstance(data.get("text"), str):
+        raise RequestError(400, 'Body must be an object with a "text" string.')
+    use_jev = data.get("use_jev", False)
+    if not isinstance(use_jev, bool):
+        raise RequestError(400, '"use_jev" must be true or false.')
+    if len(data["text"]) > MAX_TEXT_CHARACTERS:
+        raise RequestError(413, f"Text is longer than {MAX_TEXT_CHARACTERS} characters.")
+    return data["text"], use_jev
 
 
-def validate_report_provenance(report, artifacts):
-    first = artifacts[METHODS[0]]
-    expected = {"training_data_sha256": first["dataset_sha256"],
-                "training_code_sha256": first["code_sha256"], "training_seed": first["seed"],
-                "model_evaluation_scope": "dev_only", "context_margin": 1000}
-    if not isinstance(report, dict) or type(report.get("training_seed")) is not int or any(report.get(key) != value for key, value in expected.items()):
-        raise ValueError("Cached report does not match the loaded development model run.")
+def jev_remaining(jev):
+    """Calls left in the shared budget: receipt numbers 001 to JEV_MAX_CALLS that are still free."""
+    return sum(not (jev.ledger_dir / f"{index:03d}.json").exists() for index in range(1, jev.max_calls + 1))
 
 
-def validate_examples(report, artifacts):
-    validate_report_provenance(report, artifacts)
-    if not isinstance(report, dict) or report.get("partition") != "dev" or not isinstance(report.get("records"), list):
-        raise ValueError("Demo examples must identify the development partition.")
-    ids = set()
-    for row in report["records"]:
-        if not isinstance(row, dict) or row.get("label") not in LABELS:
-            raise ValueError("Demo examples need supported technique labels.")
-        identifier = row.get("id")
-        if not isinstance(identifier, str) or not identifier.strip() or identifier in ids:
-            raise ValueError("Demo examples need unique, non-empty string IDs.")
-        ids.add(identifier)
-        validate_input(row.get("text"), row.get("context", ""))
-    return report
+def append_log(path, record):
+    """Append one JSON line to the request log; a lock keeps concurrent requests from interleaving."""
+    line = json.dumps(record, ensure_ascii=False) + "\n"
+    with LOG_LOCK:
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "a", encoding="utf-8", newline="\n") as file:
+            file.write(line)
 
 
-def validate_method_report(report, artifacts):
-    if report == {}:
-        return report
-    validate_report_provenance(report, artifacts)
-    first = artifacts[METHODS[0]]
-    if (not isinstance(report, dict) or report.get("task") != ARTIFACT_TASK
-            or report.get("partition") != "dev" or report.get("model_evaluation_scope") != "dev_only"
-            or report.get("training_data_sha256") != first["dataset_sha256"]
-            or report.get("method_models") != {method: artifacts[method]["model_name"] for method in METHODS}
-            or report.get("labels") != list(LABELS)):
-        raise ValueError("Method comparison report does not match the loaded development models.")
-    count, methods = report.get("examples"), report.get("methods")
-    if type(count) is not int or count <= 0:
-        raise ValueError("Method comparison report needs a positive example count.")
-    if not isinstance(methods, dict) or set(methods) != {*METHODS, "jev"}:
-        raise ValueError("Method comparison report needs all four method entries.")
-    for result in methods.values():
-        if not isinstance(result, dict):
-            raise ValueError("Method comparison scores must be JSON objects.")
-        if type(result.get("completed")) is not int or not 0 <= result["completed"] <= count or result.get("total") != count:
-            raise ValueError("Method comparison report has invalid completion counts.")
-        complete = result["completed"] == count
-        for key in ("accuracy", "macro_f1"):
-            if (complete and not valid_score(result.get(key))) or (not complete and result.get(key) is not None):
-                raise ValueError("Method comparison scores need complete, finite evaluations or null values.")
-    return report
+def jev_summary(jev_result):
+    """Jev fields worth keeping in the log: the answers when Jev was ok, otherwise just the status."""
+    if jev_result.get("status") == "ok":
+        return {"status": "ok", "event_type": jev_result["event_type"], "tickets": jev_result["tickets"]}
+    return {"status": jev_result.get("status")}
 
 
-def make_handler(artifacts, metrics, jev=None, reports_dir=None, baseline_path=None):
-    validate_artifacts(artifacts)
-    if any(artifact["provenance"]["evaluation_scope"] != "dev_only" for artifact in artifacts.values()):
-        raise ValueError("This development-only demo requires dev-only artifacts.")
-    validate_metrics(metrics, artifacts)
-    reports_dir = Path(reports_dir) if reports_dir is not None else ROOT / "reports"
-    baseline_path = Path(baseline_path) if baseline_path is not None else ROOT / "evidence/baseline/metrics.json"
-
-    class Handler(BaseHTTPRequestHandler):
-        def setup(self):
-            super().setup()
-            self.connection.settimeout(REQUEST_READ_TIMEOUT_SECONDS)
-
-        def read_body(self, length):
-            """Bound total upload time even when a client keeps sending bytes."""
-            deadline = time.monotonic() + REQUEST_READ_TIMEOUT_SECONDS
-            body = bytearray()
-            try:
-                while len(body) < length:
-                    remaining = deadline - time.monotonic()
-                    if remaining <= 0:
-                        raise TimeoutError("Request body deadline expired.")
-                    self.connection.settimeout(remaining)
-                    # read1 makes at most one socket read, so frequent small chunks
-                    # cannot restart the overall deadline inside BufferedReader.read.
-                    chunk = self.rfile.read1(min(length - len(body), 65536))
-                    if time.monotonic() >= deadline:
-                        raise TimeoutError("Request body deadline expired.")
-                    if not chunk:
-                        break
-                    body.extend(chunk)
-            finally:
-                self.connection.settimeout(REQUEST_READ_TIMEOUT_SECONDS)
-            if len(body) != length:
-                raise ValueError("Request body length does not match Content-Length.")
-            return bytes(body)
-
-        def respond(self, status, payload, content_type="application/json; charset=utf-8"):
-            body = payload if isinstance(payload, bytes) else json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8")
-            try:
-                self.send_response(status)
-                self.send_header("Content-Type", content_type)
-                self.send_header("Content-Length", str(len(body)))
-                self.send_header("Cache-Control", "no-store")
-                self.send_header("X-Content-Type-Options", "nosniff")
-                self.end_headers()
-                self.wfile.write(body)
-            except OSError:
-                pass  # A disconnected browser must not produce a request-body log.
-
-        def report(self, name, default):
-            return self.read_report(reports_dir / name, default)
-
-        def read_report(self, path, default, validator=None):
-            try:
-                report = strict_json(path.read_bytes()) if path.exists() else default
-                return validator(report) if validator else report
-            except (ValueError, OSError):
-                return default
-
-        def do_GET(self):
-            if self.path == "/":
-                self.respond(200, (ROOT / "demo.html").read_bytes(), "text/html; charset=utf-8")
-            elif self.path == "/api/results":
-                self.respond(200, metrics)
-            elif self.path == "/api/baseline-results":
-                self.respond(200, self.read_report(baseline_path, {}))
-            elif self.path == "/api/examples":
-                default = {"partition": "dev", "records": [], "message": "Train first to generate valid dev examples."}
-                self.respond(200, self.read_report(reports_dir / "dev_examples.json", default,
-                                                  lambda report: validate_examples(report, artifacts)))
-            elif self.path == "/api/comparison-config":
-                self.respond(200, jev.public_status() if jev else {"configured": False, "remaining_calls": 0})
-            elif self.path == "/api/method-results":
-                self.respond(200, self.read_report(reports_dir / "method_comparison.json", {},
-                                                  lambda report: validate_method_report(report, artifacts)))
-            else:
-                self.respond(404, {"error": "Page not found."})
-
-        def do_POST(self):
-            if self.path != "/api/compare":
-                return self.respond(404, {"error": "Page not found."})
-            try:
-                lengths = self.headers.get_all("Content-Length", [])
-                if len(lengths) != 1 or not re.fullmatch(r"[0-9]+", lengths[0].strip(" \t")):
-                    raise ValueError("Send exactly one valid Content-Length header.")
-                if self.headers.get_all("Transfer-Encoding"):
-                    raise ValueError("Transfer-Encoding is not supported; send a fixed-length JSON body.")
-                length = int(lengths[0])
-                if not 0 < length <= MAX_BODY_BYTES:
-                    raise ValueError("Request is too large or empty.")
-                if len(self.headers.get_all("Content-Type", [])) != 1 or self.headers.get_content_type() != "application/json":
-                    raise ValueError("Send an application/json request.")
-                charset = self.headers.get_content_charset("utf-8")
-                if charset.replace("-", "").lower() != "utf8":
-                    raise ValueError("JSON requests must use UTF-8.")
-                body = self.read_body(length)
-                payload = strict_json(body)
-                if not isinstance(payload, dict):
-                    raise ValueError("Request must be a JSON object.")
-                if set(payload) - {"text", "context", "include_jev"}:
-                    raise ValueError("Only text, context and include_jev fields are supported.")
-                prediction = compare_request(
-                    artifacts,
-                    payload.get("text"),
-                    jev,
-                    payload.get("include_jev", False),
-                    payload.get("context", ""),
-                )
-                self.respond(200, prediction)
-            except TimeoutError:
-                self.respond(400, {"error": "Request body timed out before it was complete."})
-            except ValueError as error:
-                self.respond(400, {"error": str(error)})
-            except ConnectionError:
-                self.close_connection = True  # The browser disconnected while uploading.
-
-        def log_message(self, format, *args):
-            # Never log bodies, submitted excerpts, context, or provider secrets.
-            pass
-
-    return Handler
+def build_log_record(result, now):
+    """One request-log entry: the BERTweet slots, every model's slots and the Jev summary. now is timezone-aware."""
+    bertweet = next((row for row in result["models"] if row["key"] == "bertweet"), {})
+    return {"time_utc": now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "text": result["text"], "endpoint": "compare",
+            "slots": bertweet.get("slots"), "spans": bertweet.get("spans"),
+            "follow_ups": bertweet.get("follow_ups", []),
+            "models": {row["key"]: row["slots"] for row in result["models"]},
+            "jev": jev_summary(result["jev"])}
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--port", type=int, default=8011)
-    parser.add_argument("--models", type=Path, default=ROOT / "artifacts/method_models.joblib")
-    args = parser.parse_args()
-    if not 1 <= args.port <= 65535:
-        parser.error("Port must be between 1 and 65535.")
-    try:
-        # Only load trusted artifacts generated by this repository's train.py.
-        artifacts = validate_artifacts(joblib.load(args.models))
-        metrics_path = ROOT / "reports/metrics.json"
-        metrics = strict_json(metrics_path.read_bytes()) if metrics_path.exists() else {}
-        jev = JevClient()
-        # Daemon request threads keep the demo responsive during slow uploads or
-        # incomplete headers, without waiting for those clients at shutdown.
-        server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(artifacts, metrics, jev))
-    except (ValueError, OSError) as error:
-        parser.error(f"{error} Run python prepare_data.py and python train.py first.")
-    print(f"Open http://127.0.0.1:{args.port}", flush=True)
+def read_json(path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def count_lines(path):
+    return sum(1 for line in path.read_text(encoding="utf-8").split("\n") if line.strip())
+
+
+def f1_summary(scores):
+    """SGD, MASSIVE and messy F1 plus the messy per-slot F1 from one set of span scores."""
+    return {"sgd_f1": scores["SGD test"]["f1"], "massive_f1": scores["MASSIVE test"]["f1"],
+            "messy_f1": scores["messy"]["f1"],
+            "messy_slots": {slot: info["f1"] for slot, info in scores["messy"]["slots"].items()}}
+
+
+def build_results(root=ROOT, logged=None):
+    """Everything the Results tab shows, from the files that exist. Missing files are left out of the result.
+
+    logged is the number of requests in the request log, or None when logging is off.
+    """
+    results_dir, data = Path(root) / "results", Path(root) / "data"
+    out = {}
+    stats = {key: read_json(data / "clean" / name)
+             for key, name in (("sgd", "stats.json"), ("massive", "massive_stats.json"))}
+    stats = {key: value for key, value in stats.items() if value is not None}
+    if stats:
+        out["stats"] = stats
+    messy = data / "messy" / "messy_test.jsonl"
+    if messy.exists():
+        out["messy_test_rows"] = count_lines(messy)
+    if logged is not None:
+        out["user_requests"] = logged
+
+    classic = read_json(results_dir / "classic_results.json")
+    if classic is not None:
+        out["seed"] = classic["seed"]
+        out["classic"] = [{"training_set": r["training_set"], "model": r["model"],
+                           "name": MODEL_NAMES.get(r["model"], r["model"]), "setting": r["setting"],
+                           "dev_f1": r["dev_f1"], **f1_summary(r["scores"])} for r in classic["results"]]
+        out["learning_curve"] = classic["learning_curve"]["points"]
+
+    transformers = []
+    for key, name in extract.TRANSFORMER_MODELS:
+        found = read_json(results_dir / f"{key}_results.json")
+        if found is not None:
+            transformers.append({"key": key, "name": name, "model": found["model"], **f1_summary(found["test"])})
+    if transformers:
+        out["transformers"] = transformers
+    return out
+
+
+def compare_text(text, use_jev, jev, models, notes, lock):
+    """Every model on text. Jev is asked at most once here and its answer is shared by all rows."""
+    jev_result = extract.jev_check(text, jev if use_jev else None)
+    with lock:
+        rows = extract.compare(text, models, jev_result)
+    return {"text": text, "jev": jev_result, "models": rows, "notes": notes}
+
+
+class DemoServer(ThreadingHTTPServer):
+    daemon_threads = True
+    allow_reuse_address = False
+
+    def __init__(self, port, models, notes, jev, log_path):
+        super().__init__(("127.0.0.1", port), Handler)
+        self.models, self.notes, self.jev, self.log_path = models, notes, jev, log_path
+        self.gpu_lock = threading.Lock()
+        # Counted once at start; each saved request adds one, so GET /api/results never rereads the log.
+        self.logged = count_lines(Path(log_path)) if log_path is not None and Path(log_path).exists() else 0
+
+    @property
+    def origin(self):
+        return f"http://127.0.0.1:{self.server_address[1]}"
+
+    def status(self):
+        configured = self.jev is not None and self.jev.configured
+        return {"jev_configured": configured, "jev_off": self.jev is None,
+                "jev_remaining": jev_remaining(self.jev) if configured else None,
+                "request_log": self.log_path is not None}
+
+    def log(self, record):
+        if self.log_path is None:
+            return
+        try:
+            append_log(self.log_path, record)
+        except OSError as error:
+            print(f"Request log not saved: {error}", file=sys.stderr, flush=True)
+            return
+        with LOG_LOCK:
+            self.logged += 1
+
+
+class Handler(BaseHTTPRequestHandler):
+    server: DemoServer
+
+    def host_allowed(self):
+        return check_host(self.headers.get("Host"), self.server.server_address[1])
+
+    def do_GET(self):
+        if not self.host_allowed():
+            return self._json(403, {"error": "Unexpected Host header."})
+        if self.path == "/":
+            self._send(200, "text/html; charset=utf-8", PAGE.read_bytes())
+        elif self.path == "/api/status":
+            self._json(200, self.server.status())
+        elif self.path == "/api/results":
+            logged = self.server.logged if self.server.log_path is not None else None
+            self._json(200, build_results(ROOT, logged))
+        else:
+            self._json(404, {"error": "Not found."})
+
+    def do_POST(self):
+        if not self.host_allowed():
+            return self._json(403, {"error": "Unexpected Host header."})
+        if not check_origin(self.headers.get("Origin"), self.server.origin):
+            return self._json(403, {"error": "Cross-origin requests are not allowed."})
+        if self.path != "/api/compare":
+            return self._json(404, {"error": "Not found."})
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0:
+            return self._json(400, {"error": "Invalid Content-Length."})
+        try:
+            text, use_jev = parse_compare_body(self.rfile.read(min(length, MAX_BODY_BYTES + 1)))
+        except RequestError as error:
+            return self._json(error.status, {"error": error.message})
+        result = compare_text(text, use_jev, self.server.jev, self.server.models, self.server.notes,
+                              self.server.gpu_lock)
+        self.server.log(build_log_record(result, datetime.now(timezone.utc)))
+        self._json(200, result)
+
+    def _json(self, status, payload):
+        self._send(status, "application/json; charset=utf-8", json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+
+    def _send(self, status, content_type, body):
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--port", type=int, default=8000, help="port on 127.0.0.1")
+    parser.add_argument("--no-jev", action="store_true", help="never call Jev")
+    parser.add_argument("--log", action="store_true", help="save each compare request to the request log")
+    parser.add_argument("--log-path", type=Path, default=DEFAULT_LOG_PATH,
+                        help="request log file (JSON lines), used with --log")
+    args = parser.parse_args(argv)
+
+    models, notes = extract.load_models()
+    for note in notes:
+        print(note, flush=True)
+    jev = None if args.no_jev else JevClient()
+    server = DemoServer(args.port, models, notes, jev, args.log_path if args.log else None)
+    print(f"ready on {server.origin}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
