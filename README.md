@@ -13,13 +13,26 @@ lowercase, typo-filled requests.
 
 ## Data
 
+This project builds its own dataset of **messy event requests** (slang, lowercase, typos, emojis), the kind of text
+real users type and public datasets lack, and uses two public datasets of clean assistant requests as the base.
+
+**Own dataset: 2,267 messy requests**, written for this project, tagged with city / date / event_name and cleaned by
+an included script:
+
+| Part | How it was made | Rows | Use |
+|---|---|---|---|
+| AI-written requests | Written with their slots by Claude Haiku (2,400 rows in `data/synthetic/`); `prepare_synthetic.py` checks that every slot is in the text on word boundaries, drops duplicates and drops the 443 rows that name an event of a test set | 1,957 (942 of them in training set E, all for the data curve) | train |
+| Messy test | Drafted by AI, checked and corrected by hand | 50 | test |
+| Codex test | Written by a different AI agent (OpenAI Codex), checked by hand (9 of the first 60 and 3 of the other 200 labels fixed) | 260 (60 + 200 more for the data curve) | test |
+
+Licence: MIT (`data/LICENSE.md`).
+
+**Base datasets: clean requests**, downloaded and converted by `prepare_sgd.py` and `prepare_massive.py`:
+
 | Set | Source | Licence | Train / dev / test sentences |
 |---|---|---|---|
 | SGD Events | Google Schema-Guided Dialogue, user turns of the Events services | CC BY-SA 4.0 | 5,586 / 626 / 784 |
 | MASSIVE en-US | Amazon MASSIVE, rows with date, place or event slots | CC BY 4.0 | 2,607 / 488 / 633 |
-| Messy test | 50 casual requests with slang and typos (AI-drafted, checked and corrected by hand) | MIT | test only |
-| Synthetic | 942 messy requests written by an AI model (Claude Haiku); 1,400 more for the data curve | MIT | train only |
-| Codex test | 60 requests written by a different AI agent (OpenAI Codex), checked by hand; 200 more for the data curve | MIT | test only |
 
 The preprocessing scripts download the raw data, map the slots to `city` / `date` /
 `event_name`, convert character spans to BIO tags, remove duplicates, and drop dev/test
