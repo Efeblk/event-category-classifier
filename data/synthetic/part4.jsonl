@@ -1,0 +1,250 @@
+{"text": "next weekend sf 2 tix nine inch nails", "spans": [["date", "next weekend"], ["city", "sf"], ["event_name", "nine inch nails"]]}
+{"text": "for 2 tonight atlanta", "spans": [["date", "tonight"], ["city", "atlanta"]]}
+{"text": "magic show near me", "spans": []}
+{"text": "gig whats on this weekend Seattle", "spans": [["date", "this weekend"], ["city", "Seattle"]]}
+{"text": "john mulaney philly game the 14th edm", "spans": [["event_name", "john mulaney"], ["city", "philly"], ["date", "the 14th"]]}
+{"text": "saturday hamilotn", "spans": [["date", "saturday"], ["event_name", "hamilotn"]]}
+{"text": "concert live houston", "spans": [["city", "houston"]]}
+{"text": "this summer 2 tix game Bangkok", "spans": [["date", "this summer"], ["city", "Bangkok"]]}
+{"text": "this friday bayern munich kpop", "spans": [["date", "this friday"], ["event_name", "bayern munich"]]}
+{"text": "i want buy ticket for billie eilish concert in paris", "spans": [["event_name", "billie eilish"], ["city", "paris"]]}
+{"text": "in june mancchester", "spans": [["date", "in june"], ["city", "mancchester"]]}
+{"text": "which concert is there in chicago", "spans": [["city", "chicago"]]}
+{"text": "comedy packers austin feest", "spans": [["event_name", "packers"], ["city", "austin"]]}
+{"text": "the 30th hasan minhaj budapest pls", "spans": [["date", "the 30th"], ["event_name", "hasan minhaj"], ["city", "budapest"]]}
+{"text": "theater show", "spans": []}
+{"text": "i am looking for jazz concert in la", "spans": [["city", "la"]]}
+{"text": "porto the 14th real madrid", "spans": [["city", "porto"], ["date", "the 14th"], ["event_name", "real madrid"]]}
+{"text": "packers kpop ankara", "spans": [["event_name", "packers"], ["city", "ankara"]]}
+{"text": "Knicks tomorrow Portland", "spans": [["event_name", "Knicks"], ["date", "tomorrow"], ["city", "Portland"]]}
+{"text": "next weekend sow", "spans": [["date", "next weekend"]]}
+{"text": "tonight muse new york", "spans": [["date", "tonight"], ["event_name", "muse"], ["city", "new york"]]}
+{"text": "primavera sound this weekend", "spans": [["event_name", "primavera sound"], ["date", "this weekend"]]}
+{"text": "dalas the 22nd any", "spans": [["city", "dalas"], ["date", "the 22nd"]]}
+{"text": "Wicked end of the motnh", "spans": [["event_name", "Wicked"], ["date", "end of the motnh"]]}
+{"text": "is psg vs marseille playing in porto this wknd", "spans": [["event_name", "psg vs marseille"], ["city", "porto"], ["date", "this wknd"]]}
+{"text": "match saturday beyonce", "spans": [["date", "saturday"], ["event_name", "beyonce"]]}
+{"text": "bangkok 2 tix ticket", "spans": [["city", "bangkok"]]}
+{"text": "kendrrick lamar best", "spans": [["event_name", "kendrrick lamar"]]}
+{"text": "live shows amsterdam bjork", "spans": [["city", "amsterdam"], ["event_name", "bjork"]]}
+{"text": "hamburg sohw rosalia match may 2nd", "spans": [["city", "hamburg"], ["event_name", "rosalia"], ["date", "may 2nd"]]}
+{"text": "Wicked", "spans": [["event_name", "Wicked"]]}
+{"text": "kpop new years eve", "spans": [["date", "new years eve"]]}
+{"text": "nyc juventus in june tickets", "spans": [["city", "nyc"], ["event_name", "juventus"], ["date", "in june"]]}
+{"text": "tonight cirque du soleil izmir", "spans": [["date", "tonight"], ["event_name", "cirque du soleil"], ["city", "izmir"]]}
+{"text": "hasan minhaj the 22nd", "spans": [["event_name", "hasan minhaj"], ["date", "the 22nd"]]}
+{"text": "Psg next tues Valencia", "spans": [["event_name", "Psg"], ["date", "next tues"], ["city", "Valencia"]]}
+{"text": "mamma mia vip next tues", "spans": [["event_name", "mamma mia"], ["date", "next tues"]]}
+{"text": "indie gigs", "spans": []}
+{"text": "seeoul", "spans": [["city", "seeoul"]]}
+{"text": "this summer", "spans": [["date", "this summer"]]}
+{"text": "this weekend berlin beyonce", "spans": [["date", "this weekend"], ["city", "berlin"], ["event_name", "beyonce"]]}
+{"text": "march valencia show", "spans": [["date", "march"], ["city", "valencia"]]}
+{"text": "where yankees is performing in cairo at sunday", "spans": [["event_name", "yankees"], ["city", "cairo"], ["date", "sunday"]]}
+{"text": "this wknd Lisbon match", "spans": [["date", "this wknd"], ["city", "Lisbon"]]}
+{"text": "edinburgh this month tix tame impala", "spans": [["city", "edinburgh"], ["date", "this month"], ["event_name", "tame impala"]]}
+{"text": "kacey musgraves lyon tmrw", "spans": [["event_name", "kacey musgraves"], ["city", "lyon"], ["date", "tmrw"]]}
+{"text": "comedy show near me", "spans": []}
+{"text": "next thursday bjork paris", "spans": [["date", "next thursday"], ["event_name", "bjork"], ["city", "paris"]]}
+{"text": "best the 22nd events", "spans": [["date", "the 22nd"]]}
+{"text": "real madrid", "spans": [["event_name", "real madrid"]]}
+{"text": "which concert is there in los angeles at saturday", "spans": [["city", "los angeles"], ["date", "saturday"]]}
+{"text": "rock in rio whats on miami", "spans": [["event_name", "rock in rio"], ["city", "miami"]]}
+{"text": "free concerts near me", "spans": []}
+{"text": "this summer ali wong taipei shows", "spans": [["date", "this summer"], ["event_name", "ali wong"], ["city", "taipei"]]}
+{"text": "any the lion king", "spans": [["event_name", "the lion king"]]}
+{"text": "opera tix", "spans": []}
+{"text": "i want go to yankees vs red sox in vienna next weekend", "spans": [["event_name", "yankees vs red sox"], ["city", "vienna"], ["date", "next weekend"]]}
+{"text": "jazz nigghts near me", "spans": []}
+{"text": "free concert near me", "spans": []}
+{"text": "dec 5", "spans": [["date", "dec 5"]]}
+{"text": "oslo for 2 good", "spans": [["city", "oslo"]]}
+{"text": "the 22nd chhelsea", "spans": [["date", "the 22nd"], ["event_name", "chhelsea"]]}
+{"text": "i want go to packers concert please", "spans": [["event_name", "packers"]]}
+{"text": "events best seoul interr milan", "spans": [["city", "seoul"], ["event_name", "interr milan"]]}
+{"text": "the 22nd yankees vs red sox", "spans": [["date", "the 22nd"], ["event_name", "yankees vs red sox"]]}
+{"text": "porto xmas for two drake", "spans": [["city", "porto"], ["date", "xmas"], ["event_name", "drake"]]}
+{"text": "afropunk austin", "spans": [["event_name", "afropunk"], ["city", "austin"]]}
+{"text": "psg vs marsielle ankara tues", "spans": [["event_name", "psg vs marsielle"], ["city", "ankara"], ["date", "tues"]]}
+{"text": "vip tonight", "spans": [["date", "tonight"]]}
+{"text": "which comedy show is there in hamburg next thursday", "spans": [["city", "hamburg"], ["date", "next thursday"]]}
+{"text": "tomorrow dc", "spans": [["date", "tomorrow"], ["city", "dc"]]}
+{"text": "next fri chicago gorillaz", "spans": [["date", "next fri"], ["city", "chicago"], ["event_name", "gorillaz"]]}
+{"text": "Bonnaroo whats on Tkyo", "spans": [["event_name", "Bonnaroo"], ["city", "Tkyo"]]}
+{"text": "match moulin rouge", "spans": [["event_name", "moulin rouge"]]}
+{"text": "which comedy show is there in nyc tmrw", "spans": [["city", "nyc"], ["date", "tmrw"]]}
+{"text": "eddm fest", "spans": []}
+{"text": "i want go to nct 127 in lisbon", "spans": [["event_name", "nct 127"], ["city", "lisbon"]]}
+{"text": "in june brusssels live metallica", "spans": [["date", "in june"], ["city", "brusssels"], ["event_name", "metallica"]]}
+{"text": "amsterdam next thursday", "spans": [["city", "amsterdam"], ["date", "next thursday"]]}
+{"text": "which lana del rey concert is there in istanbul the 14th", "spans": [["event_name", "lana del rey"], ["city", "istanbul"], ["date", "the 14th"]]}
+{"text": "san francisco the 14th good", "spans": [["city", "san francisco"], ["date", "the 14th"]]}
+{"text": "pls Aurora tomorrow Atl", "spans": [["event_name", "Aurora"], ["date", "tomorrow"], ["city", "Atl"]]}
+{"text": "is primavera sound playing in glasgow on the 9th", "spans": [["event_name", "primavera sound"], ["city", "glasgow"], ["date", "on the 9th"]]}
+{"text": "comedy hozier goood", "spans": [["event_name", "hozier"]]}
+{"text": "where yankees vs red sox is performing in berlin at this friday", "spans": [["event_name", "yankees vs red sox"], ["city", "berlin"], ["date", "this friday"]]}
+{"text": "march hozer", "spans": [["date", "march"], ["event_name", "hozer"]]}
+{"text": "live miami the weeknd", "spans": [["city", "miami"], ["event_name", "the weeknd"]]}
+{"text": "dublin musicaals", "spans": [["city", "dublin"]]}
+{"text": "where can i see tame impala in edinburgh", "spans": [["event_name", "tame impala"], ["city", "edinburgh"]]}
+{"text": "in 2 weeks tmorrowland", "spans": [["date", "in 2 weeks"], ["event_name", "tmorrowland"]]}
+{"text": "which comedy show is there in nola this friday", "spans": [["city", "nola"], ["date", "this friday"]]}
+{"text": "Fka twigs Munich kpop", "spans": [["event_name", "Fka twigs"], ["city", "Munich"]]}
+{"text": "Szziget this friday", "spans": [["event_name", "Szziget"], ["date", "this friday"]]}
+{"text": "in 2 weeks Chhi-town Tomorrowland", "spans": [["date", "in 2 weeks"], ["city", "Chhi-town"], ["event_name", "Tomorrowland"]]}
+{"text": "lyon for two rock werchter may 2nd events", "spans": [["city", "lyon"], ["event_name", "rock werchter"], ["date", "may 2nd"]]}
+{"text": "dua lpa vegas next thursday", "spans": [["event_name", "dua lpa"], ["city", "vegas"], ["date", "next thursday"]]}
+{"text": "tonight tickets tickets", "spans": [["date", "tonight"]]}
+{"text": "i want go to galatasaray fenerbahce derby tues", "spans": [["event_name", "galatasaray fenerbahce derby"], ["date", "tues"]]}
+{"text": "live fenerbache match", "spans": [["event_name", "fenerbache"]]}
+{"text": "lollaplooza march", "spans": [["event_name", "lollaplooza"], ["date", "march"]]}
+{"text": "what theater shows is there end of the month", "spans": [["date", "end of the month"]]}
+{"text": "tmrw seoul shows", "spans": [["date", "tmrw"], ["city", "seoul"]]}
+{"text": "hozier game events tonite", "spans": [["event_name", "hozier"], ["date", "tonite"]]}
+{"text": "the weeknd atlanta tonight shhow", "spans": [["event_name", "the weeknd"], ["city", "atlanta"], ["date", "tonight"]]}
+{"text": "Psg good", "spans": [["event_name", "Psg"]]}
+{"text": "chi-town lvie", "spans": [["city", "chi-town"]]}
+{"text": "where can i find iron maiden tickets", "spans": [["event_name", "iron maiden"]]}
+{"text": "warriors", "spans": [["event_name", "warriors"]]}
+{"text": "liverpool next weekend", "spans": [["event_name", "liverpool"], ["date", "next weekend"]]}
+{"text": "is john mayer playing in singapore march 3rd", "spans": [["event_name", "john mayer"], ["city", "singapore"], ["date", "march 3rd"]]}
+{"text": "oaka john mulaney", "spans": [["city", "oaka"], ["event_name", "john mulaney"]]}
+{"text": "good musicals", "spans": []}
+{"text": "best new years eve dc auorra", "spans": [["date", "new years eve"], ["city", "dc"], ["event_name", "auorra"]]}
+{"text": "in june vegas nct 217 tix", "spans": [["date", "in june"], ["city", "vegas"], ["event_name", "nct 217"]]}
+{"text": "swan lake is coming to dubai, which day", "spans": [["event_name", "swan lake"], ["city", "dubai"]]}
+{"text": "lisobn", "spans": [["city", "lisobn"]]}
+{"text": "cheap new years eve", "spans": [["date", "new years eve"]]}
+{"text": "what events i can see in stockholm", "spans": [["city", "stockholm"]]}
+{"text": "i want buy arctic monkeys ticket for taipei may 2nd", "spans": [["event_name", "arctic monkeys"], ["city", "taipei"], ["date", "may 2nd"]]}
+{"text": "lakers", "spans": [["event_name", "lakers"]]}
+{"text": "i want buy radiohead ticket for dublin saturday", "spans": [["event_name", "radiohead"], ["city", "dublin"], ["date", "saturday"]]}
+{"text": "list sonar", "spans": [["event_name", "sonar"]]}
+{"text": "tmrw muse whats on", "spans": [["date", "tmrw"], ["event_name", "muse"]]}
+{"text": "sydney hadestown this weekend kpop comedy", "spans": [["city", "sydney"], ["event_name", "hadestown"], ["date", "this weekend"]]}
+{"text": "for 2 forr 2 march 3rd stockholm", "spans": [["date", "march 3rd"], ["city", "stockholm"]]}
+{"text": "which concert is stray kids having may 2nd", "spans": [["event_name", "stray kids"], ["date", "may 2nd"]]}
+{"text": "rierdance the 14th", "spans": [["event_name", "rierdance"], ["date", "the 14th"]]}
+{"text": "Cairo tickets next weekend Cubs", "spans": [["city", "Cairo"], ["date", "next weekend"], ["event_name", "Cubs"]]}
+{"text": "gig next monday", "spans": [["date", "next monday"]]}
+{"text": "where i can go for musicals in london", "spans": [["city", "london"]]}
+{"text": "mlian hasan minhaj", "spans": [["city", "mlian"], ["event_name", "hasan minhaj"]]}
+{"text": "xmas boston pls maple leafs", "spans": [["date", "xmas"], ["city", "boston"], ["event_name", "maple leafs"]]}
+{"text": "austin tickets metallica", "spans": [["city", "austin"], ["event_name", "metallica"]]}
+{"text": "live music near me", "spans": []}
+{"text": "pls concert rock werchter barcelnoa new years eve", "spans": [["event_name", "rock werchter"], ["city", "barcelnoa"], ["date", "new years eve"]]}
+{"text": "electric daisy carnival sydney tonigght", "spans": [["event_name", "electric daisy carnival"], ["city", "sydney"], ["date", "tonigght"]]}
+{"text": "nine inch nails lsit", "spans": [["event_name", "nine inch nails"]]}
+{"text": "hong kong", "spans": [["city", "hong kong"]]}
+{"text": "Athens", "spans": [["city", "Athens"]]}
+{"text": "i want go to the cure the 30th", "spans": [["event_name", "the cure"], ["date", "the 30th"]]}
+{"text": "whats on comedy the weekend mumbai rosalia", "spans": [["date", "the weekend"], ["city", "mumbai"], ["event_name", "rosalia"]]}
+{"text": "nyc", "spans": [["city", "nyc"]]}
+{"text": "football mmatch", "spans": []}
+{"text": "match Metallica Sf", "spans": [["event_name", "Metallica"], ["city", "Sf"]]}
+{"text": "is les miserables going to play any show soon", "spans": [["event_name", "les miserables"]]}
+{"text": "rent new years eve budapest", "spans": [["event_name", "rent"], ["date", "new years eve"], ["city", "budapest"]]}
+{"text": "la the 30th", "spans": [["city", "la"], ["date", "the 30th"]]}
+{"text": "magic show nar me", "spans": []}
+{"text": "istanbul march 3rd kacey musgraves pls", "spans": [["city", "istanbul"], ["date", "march 3rd"], ["event_name", "kacey musgraves"]]}
+{"text": "any festival is happening tonight", "spans": [["date", "tonight"]]}
+{"text": "chelsea", "spans": [["event_name", "chelsea"]]}
+{"text": "this sunday vienna best", "spans": [["date", "this sunday"], ["city", "vienna"]]}
+{"text": "is there any festival in singapore tmrw", "spans": [["city", "singapore"], ["date", "tmrw"]]}
+{"text": "Bulls Chi-town", "spans": [["event_name", "Bulls"], ["city", "Chi-town"]]}
+{"text": "wed", "spans": [["date", "wed"]]}
+{"text": "this wekend", "spans": [["date", "this wekend"]]}
+{"text": "kpop concert near me", "spans": []}
+{"text": "live this sat Los angeles Phoebe bridgers", "spans": [["date", "this sat"], ["city", "Los angeles"], ["event_name", "Phoebe bridgers"]]}
+{"text": "cheap atlaanta psg on the 9th list", "spans": [["city", "atlaanta"], ["event_name", "psg"], ["date", "on the 9th"]]}
+{"text": "the book of mormon macrh", "spans": [["event_name", "the book of mormon"], ["date", "macrh"]]}
+{"text": "football atch", "spans": []}
+{"text": "red sox", "spans": [["event_name", "red sox"]]}
+{"text": "is wicked playing in vegas in 2 weeks", "spans": [["event_name", "wicked"], ["city", "vegas"], ["date", "in 2 weeks"]]}
+{"text": "houston edm next thursday", "spans": [["city", "houston"], ["date", "next thursday"]]}
+{"text": "berlin psg vs marseille any", "spans": [["city", "berlin"], ["event_name", "psg vs marseille"]]}
+{"text": "neww orleans cats may 2nd", "spans": [["city", "neww orleans"], ["event_name", "cats"], ["date", "may 2nd"]]}
+{"text": "gig ediinburgh tues", "spans": [["city", "ediinburgh"], ["date", "tues"]]}
+{"text": "i want buy ticket for lakers concert in amsterdam", "spans": [["event_name", "lakers"], ["city", "amsterdam"]]}
+{"text": "where the nutcracker is performing in new york at halloween", "spans": [["event_name", "the nutcracker"], ["city", "new york"], ["date", "halloween"]]}
+{"text": "where i can go for musicals in houston", "spans": [["city", "houston"]]}
+{"text": "i want go to drake in izmir", "spans": [["event_name", "drake"], ["city", "izmir"]]}
+{"text": "any izmir", "spans": [["city", "izmir"]]}
+{"text": "Seatttle", "spans": [["city", "Seatttle"]]}
+{"text": "is knicks playing in hamburg sunday", "spans": [["event_name", "knicks"], ["city", "hamburg"], ["date", "sunday"]]}
+{"text": "good tonite", "spans": [["date", "tonite"]]}
+{"text": "march 3rd", "spans": [["date", "march 3rd"]]}
+{"text": "i want go to drake in oslo", "spans": [["event_name", "drake"], ["city", "oslo"]]}
+{"text": "tokyo", "spans": [["city", "tokyo"]]}
+{"text": "saturday taylor swift", "spans": [["date", "saturday"], ["event_name", "taylor swift"]]}
+{"text": "new years eve best the flyers", "spans": [["date", "new years eve"], ["event_name", "the flyers"]]}
+{"text": "football match", "spans": []}
+{"text": "liverpool the 22nd san diego", "spans": [["event_name", "liverpool"], ["date", "the 22nd"], ["city", "san diego"]]}
+{"text": "i want go to bonnaroo the 14th", "spans": [["event_name", "bonnaroo"], ["date", "the 14th"]]}
+{"text": "noola", "spans": [["city", "noola"]]}
+{"text": "cheap cocnerts", "spans": []}
+{"text": "Stray kids next sat Ankara", "spans": [["event_name", "Stray kids"], ["date", "next sat"], ["city", "Ankara"]]}
+{"text": "The book of mormon Las vegas", "spans": [["event_name", "The book of mormon"], ["city", "Las vegas"]]}
+{"text": "fest next sat game london olivia rodrigo", "spans": [["date", "next sat"], ["city", "london"], ["event_name", "olivia rodrigo"]]}
+{"text": "i want buy ticket for the weeknd concert in chicago", "spans": [["event_name", "the weeknd"], ["city", "chicago"]]}
+{"text": "seattle fest", "spans": [["city", "seattle"]]}
+{"text": "coldplay concert", "spans": [["event_name", "coldplay"]]}
+{"text": "saturday ticket", "spans": [["date", "saturday"]]}
+{"text": "yankees this friday mumbai", "spans": [["event_name", "yankees"], ["date", "this friday"], ["city", "mumbai"]]}
+{"text": "i am looking for jazz concert in copenhagen", "spans": [["city", "copenhagen"]]}
+{"text": "budapest bonnroo", "spans": [["city", "budapest"], ["event_name", "bonnroo"]]}
+{"text": "free concertss near me", "spans": []}
+{"text": "on th 9th istanbul", "spans": [["date", "on th 9th"], ["city", "istanbul"]]}
+{"text": "pearl jam paris sat", "spans": [["event_name", "pearl jam"], ["city", "paris"], ["date", "sat"]]}
+{"text": "rome", "spans": [["city", "rome"]]}
+{"text": "i want go to 49ers in cairo fri", "spans": [["event_name", "49ers"], ["city", "cairo"], ["date", "fri"]]}
+{"text": "tix dublin", "spans": [["city", "dublin"]]}
+{"text": "fka twigs march 3rd", "spans": [["event_name", "fka twigs"], ["date", "march 3rd"]]}
+{"text": "bangkok buning man tmrw", "spans": [["city", "bangkok"], ["event_name", "buning man"], ["date", "tmrw"]]}
+{"text": "i want buy ticket for stray kids", "spans": [["event_name", "stray kids"]]}
+{"text": "nine inch nails", "spans": [["event_name", "nine inch nails"]]}
+{"text": "Singapore", "spans": [["city", "Singapore"]]}
+{"text": "nate bargatze this chrisstmas", "spans": [["event_name", "nate bargatze"], ["date", "this chrisstmas"]]}
+{"text": "hamilton in 2 weeks fest sf", "spans": [["event_name", "hamilton"], ["date", "in 2 weeks"], ["city", "sf"]]}
+{"text": "i want go to john mulaney concert please", "spans": [["event_name", "john mulaney"]]}
+{"text": "2 tix mitski dc best", "spans": [["event_name", "mitski"], ["city", "dc"]]}
+{"text": "next thursday Las vegas", "spans": [["date", "next thursday"], ["city", "Las vegas"]]}
+{"text": "valencia", "spans": [["city", "valencia"]]}
+{"text": "lon", "spans": [["city", "lon"]]}
+{"text": "idnie gigs", "spans": []}
+{"text": "end of the month", "spans": [["date", "end of the month"]]}
+{"text": "new orleans phoebe bridgers", "spans": [["city", "new orleans"], ["event_name", "phoebe bridgers"]]}
+{"text": "the 14th Glaasgow", "spans": [["date", "the 14th"], ["city", "Glaasgow"]]}
+{"text": "end of the month Oslo", "spans": [["date", "end of the month"], ["city", "Oslo"]]}
+{"text": "i want buy lorde ticket for cologne next month", "spans": [["event_name", "lorde"], ["city", "cologne"], ["date", "next month"]]}
+{"text": "this friday ticket", "spans": [["date", "this friday"]]}
+{"text": "brsusels", "spans": [["city", "brsusels"]]}
+{"text": "list tihs weekend", "spans": [["date", "tihs weekend"]]}
+{"text": "kacey musgraves beest", "spans": [["event_name", "kacey musgraves"]]}
+{"text": "what theater shows is there next thursday", "spans": [["date", "next thursday"]]}
+{"text": "indie ggis", "spans": []}
+{"text": "rap cnocert", "spans": []}
+{"text": "which concert is there in boston at the 22nd", "spans": [["city", "boston"], ["date", "the 22nd"]]}
+{"text": "haimlton ticket", "spans": [["event_name", "haimlton"]]}
+{"text": "Mets Mexico city saturday", "spans": [["event_name", "Mets"], ["city", "Mexico city"], ["date", "saturday"]]}
+{"text": "the national next sat", "spans": [["event_name", "the national"], ["date", "next sat"]]}
+{"text": "ticket miami burning man kpop", "spans": [["city", "miami"], ["event_name", "burning man"]]}
+{"text": "gorillaz ticket lvie sunday", "spans": [["event_name", "gorillaz"], ["date", "sunday"]]}
+{"text": "toronto jazz good", "spans": [["city", "toronto"]]}
+{"text": "celtics show the 22nd 2 tix la", "spans": [["event_name", "celtics"], ["date", "the 22nd"], ["city", "la"]]}
+{"text": "tues pls cats", "spans": [["date", "tues"], ["event_name", "cats"]]}
+{"text": "is primavera sound playing in toronto next thursday", "spans": [["event_name", "primavera sound"], ["city", "toronto"], ["date", "next thursday"]]}
+{"text": "cats this sat glasgow game", "spans": [["event_name", "cats"], ["date", "this sat"], ["city", "glasgow"]]}
+{"text": "is moulin rouge having show in naples", "spans": [["event_name", "moulin rouge"], ["city", "naples"]]}
+{"text": "cheap concerts", "spans": []}
+{"text": "mamma mia is coming to warsaw, which day", "spans": [["event_name", "mamma mia"], ["city", "warsaw"]]}
+{"text": "oper tix", "spans": []}
+{"text": "i want see celtics this summer please", "spans": [["event_name", "celtics"], ["date", "this summer"]]}
+{"text": "may 2nd sohw", "spans": [["date", "may 2nd"]]}
+{"text": "rock concerts near me", "spans": []}
+{"text": "jazz hsow", "spans": []}
+{"text": "fr 2 march", "spans": [["date", "march"]]}
+{"text": "taipei for 2 jazz", "spans": [["city", "taipei"]]}
+{"text": "bad bunny brussles", "spans": [["event_name", "bad bunny"], ["city", "brussles"]]}
+{"text": "whats on 49rs for two", "spans": [["event_name", "49rs"]]}
+{"text": "dave chappelle whatss on london gig", "spans": [["event_name", "dave chappelle"], ["city", "london"]]}

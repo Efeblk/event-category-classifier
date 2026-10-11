@@ -135,7 +135,7 @@ class LoadModelsTest(unittest.TestCase):
             models, notes = extract.load_models(classic_dir=empty, artifacts_dir=empty)
         self.assertEqual(models, [])
         self.assertEqual(len(notes), len(extract.CLASSIC_MODELS) + len(extract.TRANSFORMER_MODELS))
-        self.assertIn("BERTweet skipped", notes[-1])
+        self.assertTrue(any("BERTweet skipped" in note for note in notes))
 
     def test_transformers_are_skipped_with_a_note_when_no_gpu_is_available(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -145,7 +145,7 @@ class LoadModelsTest(unittest.TestCase):
             with mock.patch.object(extract, "transformer_problem", return_value="no CUDA GPU is available"):
                 models, notes = extract.load_models(classic_dir=tmp, artifacts_dir=tmp)
         self.assertEqual(models, [])
-        self.assertEqual(notes[-3:], [f"{name} skipped: no CUDA GPU is available"
+        self.assertEqual(notes[-len(extract.TRANSFORMER_MODELS):], [f"{name} skipped: no CUDA GPU is available"
                                       for _, name in extract.TRANSFORMER_MODELS])
 
     def test_dictionary_tagger_data_becomes_a_tag_function(self):

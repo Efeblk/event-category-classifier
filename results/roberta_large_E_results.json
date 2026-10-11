@@ -1,0 +1,163 @@
+{
+  "model": "roberta-large",
+  "labels": [
+    "O",
+    "B-city",
+    "I-city",
+    "B-date",
+    "I-date",
+    "B-event_name",
+    "I-event_name"
+  ],
+  "seed": 42,
+  "hyperparameters": {
+    "lr": 3e-05,
+    "weight_decay": 0.01,
+    "batch": 32,
+    "max_epochs": 4,
+    "warmup": 0.1,
+    "max_len": 128,
+    "grad_clip": 1.0,
+    "precision": "bf16 autocast"
+  },
+  "train_sentences": 17328,
+  "dev_sentences": 1114,
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 0.16673596266217228,
+      "dev_f1": 0.9587706146926537
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.024503091996710927,
+      "dev_f1": 0.9631010063361909
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.011051332869423499,
+      "dev_f1": 0.9661399548532731
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.004826704616111431,
+      "dev_f1": 0.9669172932330827
+    }
+  ],
+  "chosen_epoch": 4,
+  "dev_f1_chosen": 0.9669172932330827,
+  "test": {
+    "SGD test": {
+      "precision": 0.9823182711198428,
+      "recall": 0.9852216748768473,
+      "f1": 0.983767830791933,
+      "sentence_exact": 0.9757653061224489,
+      "slots": {
+        "city": {
+          "precision": 0.9826589595375722,
+          "recall": 0.9922178988326849,
+          "f1": 0.9874152952565343,
+          "support": 514
+        },
+        "date": {
+          "precision": 0.9949367088607595,
+          "recall": 0.9949367088607595,
+          "f1": 0.9949367088607595,
+          "support": 395
+        },
+        "event_name": {
+          "precision": 0.9326923076923077,
+          "recall": 0.9150943396226415,
+          "f1": 0.9238095238095239,
+          "support": 106
+        }
+      }
+    },
+    "MASSIVE test": {
+      "precision": 0.9097320169252469,
+      "recall": 0.9240687679083095,
+      "f1": 0.9168443496801706,
+      "sentence_exact": 0.8846761453396524,
+      "slots": {
+        "city": {
+          "precision": 0.9051094890510949,
+          "recall": 0.9051094890510949,
+          "f1": 0.9051094890510949,
+          "support": 274
+        },
+        "date": {
+          "precision": 0.9196217494089834,
+          "recall": 0.9441747572815534,
+          "f1": 0.9317365269461078,
+          "support": 412
+        },
+        "event_name": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6666666666666666,
+          "f1": 0.6666666666666666,
+          "support": 12
+        }
+      }
+    },
+    "messy": {
+      "precision": 0.9431818181818182,
+      "recall": 0.9120879120879121,
+      "f1": 0.9273743016759776,
+      "sentence_exact": 0.86,
+      "slots": {
+        "city": {
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "f1": 0.9714285714285714,
+          "support": 36
+        },
+        "date": {
+          "precision": 0.8857142857142857,
+          "recall": 0.8378378378378378,
+          "f1": 0.8611111111111112,
+          "support": 37
+        },
+        "event_name": {
+          "precision": 0.9473684210526315,
+          "recall": 1.0,
+          "f1": 0.972972972972973,
+          "support": 18
+        }
+      }
+    },
+    "codex": {
+      "precision": 0.9057971014492754,
+      "recall": 0.9191176470588235,
+      "f1": 0.9124087591240877,
+      "sentence_exact": 0.75,
+      "slots": {
+        "city": {
+          "precision": 0.9090909090909091,
+          "recall": 0.9615384615384616,
+          "f1": 0.9345794392523366,
+          "support": 52
+        },
+        "date": {
+          "precision": 0.9347826086956522,
+          "recall": 0.8775510204081632,
+          "f1": 0.9052631578947369,
+          "support": 49
+        },
+        "event_name": {
+          "precision": 0.8648648648648649,
+          "recall": 0.9142857142857143,
+          "f1": 0.888888888888889,
+          "support": 35
+        }
+      }
+    }
+  },
+  "train_seconds": 301.41416610000033,
+  "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+  "versions": {
+    "python": "3.13.3",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "transformers": "5.19.0"
+  }
+}

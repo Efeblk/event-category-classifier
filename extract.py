@@ -30,7 +30,8 @@ SLOT_NAMES = ("city", "date", "event_name")
 # Classic models in display order as (file stem, display name, family); transformers as (artifact dir, display name).
 CLASSIC_MODELS = (("dictionary", "Dictionary", "baseline"), ("naive_bayes", "Naive Bayes", "classic"),
                   ("logistic_regression", "Logistic Regression", "classic"), ("linear_svm", "Linear SVM", "classic"))
-TRANSFORMER_MODELS = (("bert", "BERT"), ("roberta", "RoBERTa"), ("bertweet", "BERTweet"))
+TRANSFORMER_MODELS = (("bert", "BERT"), ("roberta", "RoBERTa"), ("bertweet", "BERTweet"),
+                      ("bertweet_E", "BERTweet + AI-written data"))
 LoadedModel = namedtuple("LoadedModel", "key name family tag")
 
 

@@ -228,6 +228,23 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual(out["seed"], CLASSIC_RESULTS["seed"])
         self.assertNotIn("best_messy", out)
 
+    def test_distillation_shows_the_alpha_with_the_best_dev_f1(self):
+        def run(dev, messy, alpha=None):
+            return {**BERT, "dev_f1_chosen": dev, "distillation": {"alpha": alpha} if alpha else None,
+                    "test": {**BERT["test"], "messy": {"f1": messy, "slots": {}}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            results = Path(tmp) / "results"
+            write_json(results / "bert_mini_8ep_E_results.json", run(0.95, 0.80))
+            write_json(results / "bert_mini_8ep_E_kd0.3_results.json", run(0.96, 0.70, 0.3))
+            write_json(results / "bert_mini_8ep_E_kd0.5_results.json", run(0.94, 0.90, 0.5))
+            groups = app.build_results(Path(tmp), logged=None)["distillation"]
+
+        self.assertEqual(len(groups), 1)
+        gold, soft = groups[0]["rows"]
+        self.assertEqual((gold["soft"], gold["messy_f1"]), (False, 0.80))
+        self.assertEqual((soft["soft"], soft["messy_f1"], soft["dev_f1"]), (True, 0.70, 0.96))
+        self.assertTrue(soft["name"].endswith("α 0.3"))
+
     def test_request_count_is_left_out_when_logging_is_off(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_json(Path(tmp) / "results" / "classic_results.json", CLASSIC_RESULTS)
@@ -256,7 +273,8 @@ class PageTest(unittest.TestCase):
 
     def test_page_has_no_best_of_all_headline(self):
         self.assertFalse("Best messy F1" in PAGE)
-        self.assertTrue("Messy-test F1 (BERTweet)" in PAGE)
+        self.assertTrue('"Messy-test F1 (" + bertweet.name' in PAGE)
+        self.assertIn("same training data, both chosen on dev", PAGE)
 
     def test_page_only_calls_the_three_api_routes(self):
         self.assertEqual(sorted(set(re.findall(r'fetch\("(/api/[a-z]+)"', PAGE))),

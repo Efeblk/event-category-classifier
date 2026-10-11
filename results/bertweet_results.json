@@ -124,9 +124,35 @@
           "support": 18
         }
       }
+    },
+    "codex": {
+      "precision": 0.8604651162790697,
+      "recall": 0.8161764705882353,
+      "f1": 0.8377358490566038,
+      "sentence_exact": 0.6,
+      "slots": {
+        "city": {
+          "precision": 0.8947368421052632,
+          "recall": 0.9807692307692307,
+          "f1": 0.9357798165137614,
+          "support": 52
+        },
+        "date": {
+          "precision": 0.7727272727272727,
+          "recall": 0.6938775510204082,
+          "f1": 0.7311827956989247,
+          "support": 49
+        },
+        "event_name": {
+          "precision": 0.9285714285714286,
+          "recall": 0.7428571428571429,
+          "f1": 0.8253968253968255,
+          "support": 35
+        }
+      }
     }
   },
-  "train_seconds": 121.02975980000338,
+  "train_seconds": 124.20216320000009,
   "gpu": "NVIDIA GeForce RTX 4070 SUPER",
   "versions": {
     "python": "3.13.3",

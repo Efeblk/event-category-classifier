@@ -139,6 +139,20 @@ def add_typos(tokens, rng, rate):
     return noisy
 
 
+SLANG = {"tomorrow": "tmrw", "tonight": "tonite", "today": "2day", "weekend": "wknd", "next": "nxt", "you": "u",
+         "are": "r", "for": "4", "please": "pls", "with": "w", "what": "wat", "going": "goin", "something": "smth",
+         "people": "ppl", "thanks": "thx"}
+
+
+def messy_copy(tokens, rng, slang_rate=0.5, typo_rate=0.15):
+    """Return a chat-style copy of tokens: lowercased, common words swapped for slang (SLANG) with probability
+    slang_rate, then typo noise from add_typos. The token count stays the same, so the original tags still apply.
+    """
+    words = [w.lower() for w in tokens]
+    words = [SLANG[w] if w in SLANG and rng.random() < slang_rate else w for w in words]
+    return add_typos(words, rng, typo_rate)
+
+
 def repair_bio(tags):
     """Turn an I-x that follows O or a different type into B-x."""
     fixed = []

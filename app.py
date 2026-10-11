@@ -31,6 +31,21 @@ MAX_TEXT_CHARACTERS = 1000
 MAX_BODY_BYTES = 16_384
 MODEL_NAMES = {"dictionary baseline": "Dictionary", "MultinomialNB": "Naive Bayes",
                "LogisticRegression": "Logistic Regression", "LinearSVC": "Linear SVM"}
+# Distillation chart: (heading, short name, [(results key, row name)]). A key ending in _kd stands for all <key><alpha> runs; the
+# one with the best dev F1 is shown, so alpha is chosen on dev like every other setting.
+DISTILLATION = (
+    ("Same size: BERTweet learns from RoBERTa-large", "BERTweet", (
+        ("roberta_large_E", "RoBERTa-large (teacher, 355M)"),
+        ("bertweet_E", "BERTweet, gold labels (135M)"),
+        ("bertweet_E_kd", "BERTweet, + soft labels"))),
+    ("12× smaller: BERT-mini learns from BERTweet", "BERT-mini", (
+        ("bertweet_E", "BERTweet (teacher, 135M)"),
+        ("bert_mini_8ep_E", "BERT-mini, gold labels (11M)"),
+        ("bert_mini_8ep_E_kd", "BERT-mini, + soft labels"))),
+    ("12× smaller, plus 9k messy copies (set F)", "BERT-mini + copies", (
+        ("bert_mini_8ep_F", "BERT-mini, gold labels"),
+        ("bert_mini_8ep_F_kd", "BERT-mini, + soft labels"))),
+)
 
 
 class RequestError(Exception):
@@ -109,10 +124,34 @@ def count_lines(path):
 
 
 def f1_summary(scores):
-    """SGD, MASSIVE and messy F1 plus the messy per-slot F1 from one set of span scores."""
+    """SGD, MASSIVE, messy and Codex F1 plus the messy per-slot F1 from one set of span scores."""
     return {"sgd_f1": scores["SGD test"]["f1"], "massive_f1": scores["MASSIVE test"]["f1"],
-            "messy_f1": scores["messy"]["f1"],
+            "messy_f1": scores["messy"]["f1"], "codex_f1": scores.get("codex", {}).get("f1"),
             "messy_slots": {slot: info["f1"] for slot, info in scores["messy"]["slots"].items()}}
+
+
+def distillation_run(results_dir, key):
+    """The results of one run; for a key ending in _kd, the alpha run with the best dev F1. None if missing."""
+    if not key.endswith("_kd"):
+        return read_json(results_dir / f"{key}_results.json")
+    runs = [read_json(path) for path in sorted(results_dir.glob(f"{key}*_results.json"))]
+    return max(runs, key=lambda run: run["dev_f1_chosen"], default=None)
+
+
+def build_distillation(results_dir):
+    """Groups of rows for the distillation chart; rows whose results are missing are left out."""
+    groups = []
+    for heading, short, rows in DISTILLATION:
+        found = []
+        for key, name in rows:
+            run = distillation_run(results_dir, key)
+            if run is not None:
+                alpha = (run.get("distillation") or {}).get("alpha")
+                found.append({"name": name + (f", α {alpha}" if alpha is not None else ""), "soft": alpha is not None,
+                              "dev_f1": run["dev_f1_chosen"], **f1_summary(run["test"])})
+        if found:
+            groups.append({"heading": heading, "short": short, "rows": found})
+    return groups
 
 
 def build_results(root=ROOT, logged=None):
@@ -130,6 +169,9 @@ def build_results(root=ROOT, logged=None):
     messy = data / "messy" / "messy_test.jsonl"
     if messy.exists():
         out["messy_test_rows"] = count_lines(messy)
+    codex = data / "codex" / "codex_test.jsonl"
+    if codex.exists():
+        out["codex_test_rows"] = count_lines(codex)
     if logged is not None:
         out["user_requests"] = logged
 
@@ -148,6 +190,9 @@ def build_results(root=ROOT, logged=None):
             transformers.append({"key": key, "name": name, "model": found["model"], **f1_summary(found["test"])})
     if transformers:
         out["transformers"] = transformers
+    distillation = build_distillation(results_dir)
+    if distillation:
+        out["distillation"] = distillation
     return out
 
 

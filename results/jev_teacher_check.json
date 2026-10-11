@@ -1,0 +1,185 @@
+{
+  "sentences": 300,
+  "errors": 0,
+  "calibration": {
+    "words": 3293,
+    "mean_p_gold": 0.9107,
+    "word_accuracy_argmax": 0.9399,
+    "mean_top_prob": 0.946
+  },
+  "by_group": {
+    "all": {
+      "sentences": 300,
+      "jev": {
+        "precision": 0.7380281690140845,
+        "recall": 0.7158469945355191,
+        "f1": 0.7267683772538143,
+        "sentence_exact": 0.62,
+        "slots": {
+          "city": {
+            "precision": 0.8543046357615894,
+            "recall": 0.7206703910614525,
+            "f1": 0.7818181818181819,
+            "support": 179
+          },
+          "date": {
+            "precision": 0.6187845303867403,
+            "recall": 0.691358024691358,
+            "f1": 0.6530612244897959,
+            "support": 162
+          },
+          "event_name": {
+            "precision": 0.9130434782608695,
+            "recall": 0.84,
+            "f1": 0.8749999999999999,
+            "support": 25
+          }
+        }
+      },
+      "bertweet": {
+        "precision": 0.9566395663956639,
+        "recall": 0.9644808743169399,
+        "f1": 0.9605442176870748,
+        "sentence_exact": 0.9433333333333334,
+        "slots": {
+          "city": {
+            "precision": 0.9560439560439561,
+            "recall": 0.9720670391061452,
+            "f1": 0.96398891966759,
+            "support": 179
+          },
+          "date": {
+            "precision": 0.9573170731707317,
+            "recall": 0.9691358024691358,
+            "f1": 0.9631901840490797,
+            "support": 162
+          },
+          "event_name": {
+            "precision": 0.9565217391304348,
+            "recall": 0.88,
+            "f1": 0.9166666666666666,
+            "support": 25
+          }
+        }
+      }
+    },
+    "dev": {
+      "sentences": 150,
+      "jev": {
+        "precision": 0.7289719626168224,
+        "recall": 0.8125,
+        "f1": 0.7684729064039408,
+        "sentence_exact": 0.6933333333333334,
+        "slots": {
+          "city": {
+            "precision": 0.8584070796460177,
+            "recall": 0.8660714285714286,
+            "f1": 0.8622222222222222,
+            "support": 112
+          },
+          "date": {
+            "precision": 0.4810126582278481,
+            "recall": 0.6440677966101694,
+            "f1": 0.5507246376811594,
+            "support": 59
+          },
+          "event_name": {
+            "precision": 0.9545454545454546,
+            "recall": 1.0,
+            "f1": 0.9767441860465117,
+            "support": 21
+          }
+        }
+      },
+      "bertweet": {
+        "precision": 0.9896373056994818,
+        "recall": 0.9947916666666666,
+        "f1": 0.9922077922077923,
+        "sentence_exact": 0.9866666666666667,
+        "slots": {
+          "city": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 112
+          },
+          "date": {
+            "precision": 0.9830508474576272,
+            "recall": 0.9830508474576272,
+            "f1": 0.9830508474576272,
+            "support": 59
+          },
+          "event_name": {
+            "precision": 0.9545454545454546,
+            "recall": 1.0,
+            "f1": 0.9767441860465117,
+            "support": 21
+          }
+        }
+      }
+    },
+    "massive_dev": {
+      "sentences": 150,
+      "jev": {
+        "precision": 0.75177304964539,
+        "recall": 0.6091954022988506,
+        "f1": 0.673015873015873,
+        "sentence_exact": 0.5466666666666666,
+        "slots": {
+          "city": {
+            "precision": 0.8421052631578947,
+            "recall": 0.47761194029850745,
+            "f1": 0.6095238095238095,
+            "support": 67
+          },
+          "date": {
+            "precision": 0.7254901960784313,
+            "recall": 0.7184466019417476,
+            "f1": 0.7219512195121951,
+            "support": 103
+          },
+          "event_name": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 4
+          }
+        }
+      },
+      "bertweet": {
+        "precision": 0.9204545454545454,
+        "recall": 0.9310344827586207,
+        "f1": 0.9257142857142858,
+        "sentence_exact": 0.9,
+        "slots": {
+          "city": {
+            "precision": 0.8857142857142857,
+            "recall": 0.9253731343283582,
+            "f1": 0.9051094890510949,
+            "support": 67
+          },
+          "date": {
+            "precision": 0.9428571428571428,
+            "recall": 0.9611650485436893,
+            "f1": 0.951923076923077,
+            "support": 103
+          },
+          "event_name": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1": 0.4,
+            "support": 4
+          }
+        }
+      }
+    }
+  },
+  "ledger_usage": {
+    "attempts": 310,
+    "results": 310,
+    "results_with_usage": 310,
+    "input_tokens": 966885,
+    "output_tokens": 250207,
+    "estimated_input_cost_usd": 0.040609
+  }
+}
