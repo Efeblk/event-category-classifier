@@ -153,6 +153,9 @@ Main findings:
    Codex test (0.94 vs 0.90): neighbouring layers already work together. 16-bit storage cost
    nothing; 8-bit costs 0.03–0.07 on messy text, so it is not worth it here. The word table
    (49M of BERTweet's 135M parameters) is why cutting layers alone shrinks the model only 1.5×.
+   Between the two 16-bit versions we keep all 12 layers: the 6-layer model is 1.8× faster on the
+   GPU (3.3 vs 5.9 ms per request, batch size 1) but less reliable, with one seed at 0.91 messy F1
+   where 12 layers never went below 0.94.
 9. **About 500 AI-written requests are enough.** The data curve below adds the first N rows of a
    1,957-row pool of AI-written requests to set D (3 seeds per point). On all 260 Codex requests,
    F1 rises from 0.85 to 0.93 by 500 rows and then stays flat (0.92–0.93 up to 1,957), so more of
@@ -189,7 +192,7 @@ Full numbers, per-slot scores and the learning curve are in `results/`.
 | `train_classic.py` | Trains and compares the dictionary, Naive Bayes, Logistic Regression and Linear SVM on sets A–E; learning curve |
 | `train_bert.py` | Fine-tunes one transformer (`--model`) on set D, E or F (`--train-set`), optionally distilled from a trained teacher (`--teacher`, `--alpha`); needs a CUDA GPU |
 | `jev.py` | Jev client with a hard call limit and a receipt for every call |
-| `quantize.py` | Stores trained transformers as 16-bit floats and 8-bit integers and rescores them; writes `results/quantized_results.json` |
+| `quantize.py` | Stores trained transformers as 16-bit floats and 8-bit integers, rescores them and times one request at a time; writes `results/quantized_results.json` |
 | `jev_soft_labels.py` | Asks Jev for the tag probabilities of every word (paid; capped with `--max-calls`) and scores them against BERTweet |
 | `extract.py` | Loads the trained models, tags a request, and lists the follow-up questions an assistant would ask |
 | `app.py`, `demo.html` | Local demo: runs the parser, the Linear SVM, BERTweet_E and its 6-layer version (all trained on set E) side by side on any request, marks the words no model saw in training, shows the filled slots, Jev's answer and the follow-up questions, and shows all results as charts |
@@ -240,7 +243,7 @@ Shrinking (also with `--alpha 0.3` / `0.5` / `0.7`, and `--keep-layers 0,3,6,9` 
 ```bash
 python train_bert.py --model vinai/bertweet-base --train-set E --init-from artifacts/bertweet_E \
     --keep-layers 0,2,4,6,8,10 --teacher artifacts/bertweet_E --alpha 0.7 --tag bertweet_6L
-python quantize.py artifacts/bertweet_E artifacts/bertweet_6L_E_kd0.7 artifacts/bertweet_4L_bottom_E_kd0.3
+python quantize.py artifacts/bertweet_E artifacts/bertweet_6L_E_kd0.7 artifacts/bertweet_4L_bottom_E_kd0.3 \n    artifacts/bertweet_E_seed1 artifacts/bertweet_E_seed2 artifacts/bertweet_6L_E_kd0.7_seed1 artifacts/bertweet_6L_E_kd0.7_seed2
 ```
 
 Demo (http://127.0.0.1:8000). Jev is only called when `.env` has a `TYPESAFE_API_KEY` and a
@@ -260,7 +263,7 @@ Each claim above can be checked without a GPU:
 | Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
 | No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
 | No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json`. Synthetic rows that mention messy-test event names are dropped (`data/clean/synthetic_stats.json`) |
-| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores per precision); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run; data curve: `results/bertweet_syn<N>[_seed<n>]_results.json` (`codex_all` = all 260 Codex requests), pool sizes in `data/clean/synthetic_pool_stats.json` |
+| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores and ms per request per precision, including the seed 1 and 2 runs of the 12- and 6-layer models); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run; data curve: `results/bertweet_syn<N>[_seed<n>]_results.json` (`codex_all` = all 260 Codex requests), pool sizes in `data/clean/synthetic_pool_stats.json` |
 | Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
 | Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 

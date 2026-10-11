@@ -24,6 +24,7 @@ from pathlib import Path
 
 import extract
 from jev import JevClient
+from slots import read_jsonl
 
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "demo.html"
@@ -44,7 +45,8 @@ DISTILLATION = (
         ("bertweet_E", "BERTweet (teacher, 135M)"),
         ("bert_mini_8ep_E", "BERT-mini, gold labels (11M)"),
         ("bert_mini_8ep_E_kd", "BERT-mini, + soft labels"))),
-    ("12× smaller, plus 9k messy copies (set F)", "BERT-mini + copies", (
+    ("12× smaller, plus 9k messy copies (set F): BERT-mini learns from BERTweet", "BERT-mini + copies", (
+        ("bertweet_E", "BERTweet (teacher, 135M)"),
         ("bert_mini_8ep_F", "BERT-mini, gold labels"),
         ("bert_mini_8ep_F_kd", "BERT-mini, + soft labels"))),
 )
@@ -125,10 +127,33 @@ def count_lines(path):
     return sum(1 for line in path.read_text(encoding="utf-8").split("\n") if line.strip())
 
 
+# Data section: (name, file under data/, test file or None, id of the example row, what the source is, where its
+# tags come from). Typo copies have no file of their own: they are made from SGD and MASSIVE by
+# train_classic.typo_copy.
+DATA_SOURCES = (
+    ("SGD Events (Google)", "clean/train.jsonl", "clean/test.jsonl", "61_00000:2",
+     "Clean requests to a virtual assistant",
+     "Google's annotators marked each slot by its character positions"),
+    ("MASSIVE (Amazon)", "clean/massive_train.jsonl", "clean/massive_test.jsonl", "massive:3802",
+     "Short assistant commands; only dates and places, mostly not about events",
+     "Amazon's annotators marked slots in brackets, like [date : tomorrow]"),
+    ("Typo copies", None, None, "61_00000:2:typo", "A copy of every SGD and MASSIVE sentence with random letter typos",
+     "Copied from the original sentence: typos change letters, not words"),
+    ("AI-written requests (Claude Haiku)", "clean/synthetic_train.jsonl", None, "synthetic:part1:115",
+     "Casual, messy requests: slang, lowercase, emojis",
+     "Haiku wrote each request with its slots; the script checks every slot is in the text and drops rows "
+     "naming a test event"),
+    ("Messy test", None, "messy/messy_test.jsonl", "messy:02", "Drafted by AI, checked by hand; never trained on",
+     "Drafted by AI, then checked and corrected by hand"),
+    ("Codex test", None, "codex/codex_test.jsonl", "codex:21", "Written by a different AI, checked by hand",
+     "Written by OpenAI Codex, checked by hand (9 of 60 labels fixed)"),
+)
 # Shrinking chart: names for the models in results/quantized_results.json, in the order they are shown.
 SHRINK_NAMES = {"bertweet_E": "BERTweet, all 12 layers", "bertweet_6L_E_kd0.7": "BERTweet, 6 layers",
                 "bertweet_4L_bottom_E_kd0.3": "BERTweet, bottom 4 layers"}
 PRECISION_NAMES = {"float32": "32-bit", "float16": "16-bit", "int8": "8-bit"}
+# Section 5.1: the two 16-bit versions compared over every seed in quantized_results.json.
+PICK_NAMES = {"bertweet_E": "12 layers", "bertweet_6L_E_kd0.7": "6 layers"}
 
 
 def f1_summary(scores):
@@ -175,6 +200,21 @@ def build_shrinking(results_dir):
     return groups
 
 
+def build_pick(results_dir):
+    """The 16-bit 12- and 6-layer BERTweet over seeds (key or key_seed<n>): size, median ms per request and each
+    seed's messy and Codex F1. Models with no 16-bit rows are left out."""
+    runs = read_json(results_dir / "quantized_results.json") or []
+    out = []
+    for key, name in PICK_NAMES.items():
+        rows = [r for r in runs if r["precision"] == "float16" and re.fullmatch(re.escape(key) + r"(_seed\d+)?",
+                                                                                r["model"])]
+        if rows:
+            out.append({"name": name, "megabytes": rows[0]["megabytes"],
+                        "ms_per_request": statistics.median(r["ms_per_request"] for r in rows),
+                        "messy": [r["f1"]["messy"] for r in rows], "codex": [r["f1"]["codex"] for r in rows]})
+    return out
+
+
 def build_data_curve(results_dir):
     """Points of the data curve (train_bert.py --synthetic N): per N, the mean and standard deviation over seeds of
     messy and Codex (all 260) F1, from bertweet_syn<N>[_seed<n>]_results.json."""
@@ -193,6 +233,44 @@ def build_data_curve(results_dir):
     return points
 
 
+def example_view(row):
+    """Text and character spans of one data row, for highlighting. Rows whose tokens no longer match their text
+    (typo copies) are shown as the tokens joined by spaces."""
+    text = row["text"] if extract.TOKEN.findall(row["text"]) == row["tokens"] else " ".join(row["tokens"])
+    return {"text": text, "spans": extract.extract_spans(text, lambda tokens: row["tags"])}
+
+
+def build_data(data):
+    """Sources of the Data section with sentence counts and one example each; missing files are left out."""
+    sources = []
+    for name, train_file, test_file, example_id, note, labels in DATA_SOURCES:
+        train = read_jsonl_rows(data / train_file) if train_file else None
+        test = read_jsonl_rows(data / test_file) if test_file else None
+        if name == "Typo copies":
+            sgd = read_jsonl_rows(data / "clean" / "train.jsonl")
+            massive = read_jsonl_rows(data / "clean" / "massive_train.jsonl")
+            if sgd is None or massive is None:
+                continue
+            from train_classic import typo_copy
+            train = typo_copy(sgd)
+            train_count = len(sgd) + len(massive)
+        elif train is None and test is None:
+            continue
+        else:
+            train_count = len(train) if train is not None else 0
+        rows = train if train is not None else test
+        example = next((r for r in rows if r["id"] == example_id), None)
+        sources.append({"name": name, "note": note, "labels": labels, "train": train_count,
+                        "test": len(test) if test is not None else 0,
+                        "example": example_view(example) if example else None})
+    return sources
+
+
+def read_jsonl_rows(path):
+    """The rows of a JSON-lines file, or None when it does not exist."""
+    return read_jsonl(path) if path.exists() else None
+
+
 def build_results(root=ROOT, logged=None):
     """Everything the Results tab shows, from the files that exist. Missing files are left out of the result.
 
@@ -200,17 +278,12 @@ def build_results(root=ROOT, logged=None):
     """
     results_dir, data = Path(root) / "results", Path(root) / "data"
     out = {}
-    stats = {key: read_json(data / "clean" / name)
-             for key, name in (("sgd", "stats.json"), ("massive", "massive_stats.json"))}
-    stats = {key: value for key, value in stats.items() if value is not None}
-    if stats:
-        out["stats"] = stats
-    messy = data / "messy" / "messy_test.jsonl"
-    if messy.exists():
-        out["messy_test_rows"] = count_lines(messy)
-    codex = data / "codex" / "codex_test.jsonl"
-    if codex.exists():
-        out["codex_test_rows"] = count_lines(codex)
+    sources = build_data(data)
+    if sources:
+        out["data"] = sources
+    synthetic = read_json(data / "clean" / "synthetic_stats.json")
+    if synthetic is not None:
+        out["synthetic_stats"] = {key: synthetic[key] for key in ("rows_in", "dropped_test_event_names", "rows_out")}
     if logged is not None:
         out["user_requests"] = logged
 
@@ -220,7 +293,6 @@ def build_results(root=ROOT, logged=None):
         out["classic"] = [{"training_set": r["training_set"], "model": r["model"],
                            "name": MODEL_NAMES.get(r["model"], r["model"]), "setting": r["setting"],
                            "dev_f1": r["dev_f1"], **f1_summary(r["scores"])} for r in classic["results"]]
-        out["learning_curve"] = classic["learning_curve"]["points"]
 
     transformers = []
     for key, name in extract.TRANSFORMER_MODELS:
@@ -235,6 +307,15 @@ def build_results(root=ROOT, logged=None):
     shrinking = build_shrinking(results_dir)
     if shrinking:
         out["shrinking"] = shrinking
+    jev = read_json(results_dir / "jev_teacher_check.json")
+    if jev is not None:
+        scores = jev["by_group"]["all"]
+        out["jev_teacher"] = {"sentences": scores["sentences"], "jev_f1": scores["jev"]["f1"],
+                              "bertweet_f1": scores["bertweet"]["f1"], "calls": jev["ledger_usage"]["attempts"],
+                              "cost_usd": jev["ledger_usage"]["estimated_input_cost_usd"]}
+    pick = build_pick(results_dir)
+    if pick:
+        out["pick"] = pick
     curve = build_data_curve(results_dir)
     if curve:
         out["data_curve"] = curve

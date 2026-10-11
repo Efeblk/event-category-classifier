@@ -3,7 +3,8 @@
 For each model directory (from train_bert.py) it scores three versions on the same dev and test sets as train_bert:
 32-bit floats (as trained), 16-bit floats, and 8-bit integers (PyTorch dynamic quantization of the linear layers and
 the word embeddings). Size is the bytes of the saved weights. 32- and 16-bit run on the GPU, 8-bit on the CPU, which is
-where PyTorch's int8 kernels run. Writes results/quantized_results.json.
+where PyTorch's int8 kernels run. Speed is the median time to tag one messy-test request at a time (batch size 1),
+over 200 requests after 10 warm-up runs, on the same device as the scores. Writes results/quantized_results.json.
 
 Usage: python quantize.py artifacts/bertweet_E artifacts/bertweet_6L_E_kd0.7 artifacts/bertweet_4L_bottom_E_kd0.3
 (BERTweet-based models; int8 BERT-mini fails in PyTorch's quantized embedding).
@@ -12,6 +13,8 @@ Usage: python quantize.py artifacts/bertweet_E artifacts/bertweet_6L_E_kd0.7 art
 import argparse
 import io
 import json
+import statistics
+import time
 from pathlib import Path
 
 import torch
@@ -51,6 +54,20 @@ def predict(model, examples, pad_id, device):
     return tags
 
 
+@torch.no_grad()
+def latency_ms(model, examples, device, runs=200, warmup=10):
+    """Median milliseconds to tag one request, cycling through examples one at a time."""
+    model.eval()
+    times = []
+    for i in range(warmup + runs):
+        ids = torch.tensor([examples[i % len(examples)]["ids"]], device=device)
+        start = time.perf_counter()
+        model(input_ids=ids, attention_mask=torch.ones_like(ids)).logits.argmax(-1).cpu()
+        if i >= warmup:
+            times.append((time.perf_counter() - start) * 1000)
+    return statistics.median(times)
+
+
 def int8(model):
     """Dynamic int8 quantization: linear layers get int8 weights with one scale per output row (one scale per layer
     collapsed the scores on the onednn engine), embeddings int8 weights with float scales."""
@@ -81,9 +98,10 @@ def main():
                                         predict(model, examples[name], tokenizer.pad_token_id, device))
                       for name, rows in sets.items()}
             entry = {"model": path.name, "precision": precision, "parameters": parameters,
-                     "megabytes": weight_bytes(model) / 1e6, "f1": {name: s["f1"] for name, s in scores.items()}}
+                     "megabytes": weight_bytes(model) / 1e6,
+                     "ms_per_request": latency_ms(model, examples["messy"], device), "f1": {name: s["f1"] for name, s in scores.items()}}
             out.append(entry)
-            print(f"{path.name:28} {precision:8} {entry['megabytes']:7.1f} MB  " +
+            print(f"{path.name:28} {precision:8} {entry['megabytes']:7.1f} MB  {entry['ms_per_request']:6.1f} ms  " +
                   "  ".join(f"{name} {s['f1']:.3f}" for name, s in scores.items()), flush=True)
         del model
         torch.cuda.empty_cache()

@@ -4,6 +4,7 @@
     "precision": "float32",
     "parameters": 134314759,
     "megabytes": 537.340977,
+    "ms_per_request": 5.899600000702776,
     "f1": {
       "dev": 0.9662162162162162,
       "SGD test": 0.9822834645669292,
@@ -17,6 +18,7 @@
     "precision": "float16",
     "parameters": 134314759,
     "megabytes": 268.711473,
+    "ms_per_request": 6.143999999039806,
     "f1": {
       "dev": 0.9662162162162162,
       "SGD test": 0.9822834645669292,
@@ -30,6 +32,7 @@
     "precision": "int8",
     "parameters": 134314759,
     "megabytes": 136.696157,
+    "ms_per_request": 14.500599998427788,
     "f1": {
       "dev": 0.9435935748972731,
       "SGD test": 0.9590931493346476,
@@ -43,6 +46,7 @@
     "precision": "float32",
     "parameters": 91787527,
     "megabytes": 367.192369,
+    "ms_per_request": 3.643949999968754,
     "f1": {
       "dev": 0.9640179910044978,
       "SGD test": 0.9808353808353808,
@@ -56,6 +60,7 @@
     "precision": "float16",
     "parameters": 91787527,
     "megabytes": 183.617329,
+    "ms_per_request": 3.4200499976577703,
     "f1": {
       "dev": 0.9640179910044978,
       "SGD test": 0.9808353808353808,
@@ -69,6 +74,7 @@
     "precision": "int8",
     "parameters": 91787527,
     "megabytes": 93.240189,
+    "ms_per_request": 7.2181499999715015,
     "f1": {
       "dev": 0.9544256120527308,
       "SGD test": 0.9621249385145106,
@@ -82,6 +88,7 @@
     "precision": "float32",
     "parameters": 77611783,
     "megabytes": 310.476238,
+    "ms_per_request": 2.5841999995463993,
     "f1": {
       "dev": 0.9651293588301463,
       "SGD test": 0.9623839765510503,
@@ -95,6 +102,7 @@
     "precision": "float16",
     "parameters": 77611783,
     "megabytes": 155.252686,
+    "ms_per_request": 2.3777999995218124,
     "f1": {
       "dev": 0.9651293588301463,
       "SGD test": 0.9623839765510503,
@@ -108,12 +116,181 @@
     "precision": "int8",
     "parameters": 77611783,
     "megabytes": 78.754909,
+    "ms_per_request": 4.838749995542457,
     "f1": {
       "dev": 0.955871353777113,
       "SGD test": 0.9544341009309161,
       "MASSIVE test": 0.8850820842255532,
       "messy": 0.8715083798882681,
       "codex": 0.9191176470588235
+    }
+  },
+  {
+    "model": "bertweet_E_seed1",
+    "precision": "float32",
+    "parameters": 134314759,
+    "megabytes": 537.340977,
+    "ms_per_request": 5.926199995883508,
+    "f1": {
+      "dev": 0.9641914813418772,
+      "SGD test": 0.9842209072978304,
+      "MASSIVE test": 0.9194244604316546,
+      "messy": 0.9392265193370165,
+      "codex": 0.9489051094890512
+    }
+  },
+  {
+    "model": "bertweet_E_seed1",
+    "precision": "float16",
+    "parameters": 134314759,
+    "megabytes": 268.711473,
+    "ms_per_request": 5.939749997196486,
+    "f1": {
+      "dev": 0.9641914813418772,
+      "SGD test": 0.9842209072978304,
+      "MASSIVE test": 0.9194244604316546,
+      "messy": 0.9392265193370165,
+      "codex": 0.9489051094890512
+    }
+  },
+  {
+    "model": "bertweet_E_seed1",
+    "precision": "int8",
+    "parameters": 134314759,
+    "megabytes": 136.696157,
+    "ms_per_request": 14.373050002177479,
+    "f1": {
+      "dev": 0.9327387588257153,
+      "SGD test": 0.9578431372549019,
+      "MASSIVE test": 0.8549511854951186,
+      "messy": 0.8666666666666666,
+      "codex": 0.8962962962962964
+    }
+  },
+  {
+    "model": "bertweet_E_seed2",
+    "precision": "float32",
+    "parameters": 134314759,
+    "megabytes": 537.340977,
+    "ms_per_request": 5.9324499998183455,
+    "f1": {
+      "dev": 0.9666291713535808,
+      "SGD test": 0.9818181818181818,
+      "MASSIVE test": 0.9123055162659123,
+      "messy": 0.9456521739130435,
+      "codex": 0.9247311827956989
+    }
+  },
+  {
+    "model": "bertweet_E_seed2",
+    "precision": "float16",
+    "parameters": 134314759,
+    "megabytes": 268.711473,
+    "ms_per_request": 5.896400001802249,
+    "f1": {
+      "dev": 0.9666291713535808,
+      "SGD test": 0.9818181818181818,
+      "MASSIVE test": 0.9123055162659123,
+      "messy": 0.9456521739130435,
+      "codex": 0.9247311827956989
+    }
+  },
+  {
+    "model": "bertweet_E_seed2",
+    "precision": "int8",
+    "parameters": 134314759,
+    "megabytes": 136.696157,
+    "ms_per_request": 14.401450000150362,
+    "f1": {
+      "dev": 0.9333333333333333,
+      "SGD test": 0.9623839765510503,
+      "MASSIVE test": 0.8563497571131158,
+      "messy": 0.8852459016393442,
+      "codex": 0.8736462093862816
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed1",
+    "precision": "float32",
+    "parameters": 91787527,
+    "megabytes": 367.192369,
+    "ms_per_request": 3.4765500022331253,
+    "f1": {
+      "dev": 0.9642991356632845,
+      "SGD test": 0.975921375921376,
+      "MASSIVE test": 0.9040114613180515,
+      "messy": 0.9120879120879121,
+      "codex": 0.9338235294117647
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed1",
+    "precision": "float16",
+    "parameters": 91787527,
+    "megabytes": 183.617329,
+    "ms_per_request": 3.3130000010714866,
+    "f1": {
+      "dev": 0.9642991356632845,
+      "SGD test": 0.975921375921376,
+      "MASSIVE test": 0.9040114613180515,
+      "messy": 0.9120879120879121,
+      "codex": 0.9338235294117647
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed1",
+    "precision": "int8",
+    "parameters": 91787527,
+    "megabytes": 93.240189,
+    "ms_per_request": 7.1858000010252,
+    "f1": {
+      "dev": 0.9471299093655589,
+      "SGD test": 0.9660600098376784,
+      "MASSIVE test": 0.8867786705624544,
+      "messy": 0.8926553672316384,
+      "codex": 0.887218045112782
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed2",
+    "precision": "float32",
+    "parameters": 91787527,
+    "megabytes": 367.192369,
+    "ms_per_request": 3.33899999895948,
+    "f1": {
+      "dev": 0.9617691154422787,
+      "SGD test": 0.9774730656219391,
+      "MASSIVE test": 0.9010676156583629,
+      "messy": 0.9508196721311475,
+      "codex": 0.9270072992700731
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed2",
+    "precision": "float16",
+    "parameters": 91787527,
+    "megabytes": 183.617329,
+    "ms_per_request": 3.1909999997878913,
+    "f1": {
+      "dev": 0.9617691154422787,
+      "SGD test": 0.9764936336924585,
+      "MASSIVE test": 0.9010676156583629,
+      "messy": 0.945054945054945,
+      "codex": 0.9270072992700731
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7_seed2",
+    "precision": "int8",
+    "parameters": 91787527,
+    "megabytes": 93.240189,
+    "ms_per_request": 7.005150000622962,
+    "f1": {
+      "dev": 0.9582235604064735,
+      "SGD test": 0.9572901325478645,
+      "MASSIVE test": 0.8864786695589298,
+      "messy": 0.898876404494382,
+      "codex": 0.8698884758364311
     }
   }
 ]
