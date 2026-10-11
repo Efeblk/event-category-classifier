@@ -63,6 +63,14 @@ def set_e_rows():
     return set_d_rows() + load("synthetic_train")
 
 
+def synthetic_pool():
+    """The data-curve pool from prepare_synthetic.py (parts 1-8, decontaminated against every test set), shuffled in
+    a fixed order so that the first N rows of a bigger N always include those of a smaller N."""
+    rows = load("synthetic_pool_train")
+    random.Random(SEED).shuffle(rows)
+    return rows
+
+
 def set_f_rows():
     """Training set F (train_bert.py only): set E plus a messy_copy of every SGD, MASSIVE and synthetic row."""
     rng = random.Random(SEED)

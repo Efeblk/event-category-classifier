@@ -14,6 +14,8 @@ Standard library only; torch loads through extract.load_models.
 
 import argparse
 import json
+import re
+import statistics
 import sys
 import threading
 from datetime import datetime, timezone
@@ -173,6 +175,24 @@ def build_shrinking(results_dir):
     return groups
 
 
+def build_data_curve(results_dir):
+    """Points of the data curve (train_bert.py --synthetic N): per N, the mean and standard deviation over seeds of
+    messy and Codex (all 260) F1, from bertweet_syn<N>[_seed<n>]_results.json."""
+    by_n = {}
+    for path in results_dir.glob("bertweet_syn*_results.json"):
+        n = int(re.match(r"bertweet_syn(\d+)", path.name).group(1))
+        by_n.setdefault(n, []).append(read_json(path)["test"])
+    points = []
+    for n in sorted(by_n):
+        point = {"rows": n, "runs": len(by_n[n])}
+        for name, key in (("messy", "messy"), ("codex_all", "codex")):
+            values = [test[name]["f1"] for test in by_n[n] if name in test]
+            point[key + "_mean"] = statistics.mean(values) if values else None
+            point[key + "_sd"] = statistics.stdev(values) if len(values) > 1 else 0.0
+        points.append(point)
+    return points
+
+
 def build_results(root=ROOT, logged=None):
     """Everything the Results tab shows, from the files that exist. Missing files are left out of the result.
 
@@ -215,6 +235,9 @@ def build_results(root=ROOT, logged=None):
     shrinking = build_shrinking(results_dir)
     if shrinking:
         out["shrinking"] = shrinking
+    curve = build_data_curve(results_dir)
+    if curve:
+        out["data_curve"] = curve
     return out
 
 

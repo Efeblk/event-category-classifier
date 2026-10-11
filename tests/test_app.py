@@ -259,6 +259,22 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual([r["name"] for r in groups[0]["rows"]], ["32-bit, 367 MB", "8-bit, 93 MB"])
         self.assertEqual(groups[0]["rows"][1]["messy_f1"], 0.9)
 
+    def test_data_curve_averages_seeds_per_size(self):
+        def run(messy, codex):
+            return {"test": {"messy": {"f1": messy}, "codex_all": {"f1": codex}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            results = Path(tmp) / "results"
+            write_json(results / "bertweet_syn0_results.json", run(0.8, 0.82))
+            write_json(results / "bertweet_syn0_seed1_results.json", run(0.7, 0.84))
+            write_json(results / "bertweet_syn250_results.json", run(0.9, 0.9))
+            curve = app.build_results(Path(tmp), logged=None)["data_curve"]
+
+        self.assertEqual([(p["rows"], p["runs"]) for p in curve], [(0, 2), (250, 1)])
+        self.assertAlmostEqual(curve[0]["messy_mean"], 0.75)
+        self.assertAlmostEqual(curve[0]["codex_mean"], 0.83)
+        self.assertGreater(curve[0]["messy_sd"], 0)
+        self.assertEqual(curve[1]["codex_sd"], 0.0)
+
     def test_request_count_is_left_out_when_logging_is_off(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_json(Path(tmp) / "results" / "classic_results.json", CLASSIC_RESULTS)

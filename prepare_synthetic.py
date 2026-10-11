@@ -1,10 +1,14 @@
-"""Convert the LLM-written synthetic utterances in data/synthetic/part*.jsonl to BIO-tagged rows for training set E.
+"""Convert the LLM-written synthetic utterances in data/synthetic/part*.jsonl to BIO-tagged rows.
 
 Each input line is {"text", "spans": [[slot, substring], ...]}. Every substring is located left to right, after the end
-of the previous span, and must sit on token boundaries. Rows whose text contains an event_name span of the messy test
-set are dropped (decontamination), as are rows whose text equals a messy test text and duplicate texts.
+of the previous span, and must sit on token boundaries. Rows whose text contains an event_name span of a test set are
+dropped (decontamination), as are rows whose text equals a test text and duplicate texts.
 
-Output: data/clean/synthetic_train.jsonl and data/clean/synthetic_stats.json.
+Two outputs:
+- Training set E: parts 1-4, decontaminated against the messy test set. data/clean/synthetic_train.jsonl and
+  synthetic_stats.json.
+- The pool for the data curve (train_bert.py --synthetic N): parts 1-8, decontaminated against the messy test set and
+  every Codex test file. data/clean/synthetic_pool_train.jsonl and synthetic_pool_stats.json.
 """
 
 import json
@@ -15,13 +19,19 @@ from slots import TOKEN, bio_tags, dedupe, drop_leaks, read_jsonl, slot_counts, 
 
 ROOT = Path(__file__).resolve().parent
 PARTS = ("part1", "part2", "part3", "part4")
+POOL_PARTS = PARTS + ("part5", "part6", "part7", "part8")
 
 
 def locate(text, substring, after):
-    """Return (start, end) of the first occurrence of substring at or after position after."""
+    """Return (start, end) of the first occurrence of substring at or after position after that starts and ends on
+    token boundaries, so "la" is not found inside "playing"."""
+    starts = {m.start() for m in re.finditer(TOKEN, text)}
+    ends = {m.end() for m in re.finditer(TOKEN, text)}
     start = text.find(substring, after) if substring else -1
+    while start >= 0 and not (start in starts and start + len(substring) in ends):
+        start = text.find(substring, start + 1)
     if start < 0:
-        raise ValueError(f"span {substring!r} not found in {text!r} after position {after}")
+        raise ValueError(f"span {substring!r} not found as whole tokens in {text!r} after position {after}")
     return start, start + len(substring)
 
 
@@ -53,9 +63,9 @@ def read_part(path):
     return rows
 
 
-def messy_event_names(messy_rows):
-    """Lowercased token tuples of every event_name span in the messy test set."""
-    return {tuple(w.lower() for w in r["tokens"][s:e]) for r in messy_rows for kind, s, e in spans(r["tags"])
+def test_event_names(test_rows):
+    """Lowercased token tuples of every event_name span in the test rows."""
+    return {tuple(w.lower() for w in r["tokens"][s:e]) for r in test_rows for kind, s, e in spans(r["tags"])
             if kind == "event_name"}
 
 
@@ -66,36 +76,42 @@ def has_phrase(tokens, phrase):
     return any(tuple(words[i:i + n]) == phrase for i in range(len(words) - n + 1))
 
 
-def decontaminate(rows, messy_rows):
-    """Drop rows containing a messy event name, then rows whose lowercased text equals a messy text.
+def decontaminate(rows, test_rows):
+    """Drop rows containing a test event name, then rows whose lowercased text equals a test text.
 
-    Return (kept, dropped for event names, dropped for messy text).
+    Return (kept, dropped for event names, dropped for test text).
     """
-    names = messy_event_names(messy_rows)
+    names = test_event_names(test_rows)
     kept = [r for r in rows if not any(has_phrase(r["tokens"], name) for name in names)]
     by_name = len(rows) - len(kept)
-    kept, by_text = drop_leaks(kept, {r["text"].lower() for r in messy_rows})
+    kept, by_text = drop_leaks(kept, {r["text"].lower() for r in test_rows})
     return kept, by_name, by_text
 
 
-def main():
-    rows = [row for part in PARTS for row in read_part(ROOT / "data" / "synthetic" / f"{part}.jsonl")]
-    messy = read_jsonl(ROOT / "data" / "messy" / "messy_test.jsonl")
-
-    kept, by_name, by_text = decontaminate(rows, messy)
+def build(parts, test_rows, name):
+    """Read the parts, decontaminate against test_rows, dedupe, and write data/clean/<name>_train.jsonl and
+    <name>_stats.json. Return the stats."""
+    rows = [row for part in parts for row in read_part(ROOT / "data" / "synthetic" / f"{part}.jsonl")]
+    kept, by_name, by_text = decontaminate(rows, test_rows)
     kept, duplicates = dedupe(kept)
     stats = {
         "rows_in": len(rows),
-        "dropped_messy_event_names": by_name,
-        "dropped_messy_text": by_text,
+        "dropped_test_event_names": by_name,
+        "dropped_test_text": by_text,
         "duplicates_dropped": duplicates,
         "rows_out": len(kept),
         "spans": slot_counts(kept),
     }
-    write_lines(ROOT / "data" / "clean" / "synthetic_train.jsonl",
-                [json.dumps(r, ensure_ascii=False) for r in kept])
-    write_lines(ROOT / "data" / "clean" / "synthetic_stats.json", [json.dumps(stats, indent=2, ensure_ascii=False)])
-    print(json.dumps(stats, indent=2, ensure_ascii=False))
+    write_lines(ROOT / "data" / "clean" / f"{name}_train.jsonl", [json.dumps(r, ensure_ascii=False) for r in kept])
+    write_lines(ROOT / "data" / "clean" / f"{name}_stats.json", [json.dumps(stats, indent=2, ensure_ascii=False)])
+    return stats
+
+
+def main():
+    messy = read_jsonl(ROOT / "data" / "messy" / "messy_test.jsonl")
+    codex = [row for path in sorted((ROOT / "data" / "codex").glob("*.jsonl")) for row in read_jsonl(path)]
+    print("set E:", json.dumps(build(PARTS, messy, "synthetic"), ensure_ascii=False))
+    print("curve pool:", json.dumps(build(POOL_PARTS, messy + codex, "synthetic_pool"), ensure_ascii=False))
 
 
 if __name__ == "__main__":

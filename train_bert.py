@@ -5,7 +5,9 @@ Usage: python train_bert.py [--model bert-base-uncased|roberta-base|vinai/bertwe
 [--teacher DIR --alpha A] [--tag NAME] [--seed N]. The output tag is --tag, or else the model name's first part
 (bert, roberta, bertweet) plus _large for large models. Set D writes <tag>_results.json,
 reports/<tag>_messy_predictions.csv and artifacts/<tag>/; sets E and F add an _E or _F suffix to each of those names,
-and a --seed other than 42 adds _seed<n>.
+and a --seed other than 42 adds _seed<n>. --synthetic N (data curve) trains on set D plus the first N rows of the
+synthetic pool and adds _syn<N>. When data/codex/codex_more_test.jsonl exists, the 60 Codex requests plus those are
+also scored as codex_all.
 
 Labels are O plus B-/I- for city, date and event_name. Only the first sub-token of each word is labelled and its
 prediction is used for the word; predictions go through repair_bio. Runs 4 epochs (--epochs) of AdamW with linear
@@ -40,7 +42,7 @@ from torch.optim import AdamW
 from transformers import AutoModelForTokenClassification, AutoTokenizer, get_linear_schedule_with_warmup
 
 from slots import describe, read_jsonl, repair_bio, slot_f1, span_scores
-from train_classic import load, set_d_rows, set_e_rows, set_f_rows
+from train_classic import load, set_d_rows, set_e_rows, set_f_rows, synthetic_pool
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_MODEL = "bert-base-uncased"
@@ -231,6 +233,7 @@ def main():
     parser.add_argument("--tag", help="output name instead of the one derived from --model")
     parser.add_argument("--epochs", type=int, default=EPOCHS, help=f"training epochs (default {EPOCHS})")
     parser.add_argument("--init-from", type=Path, help="start from this trained model directory instead of --model")
+    parser.add_argument("--synthetic", type=int, help="data curve: set D plus the first N rows of the synthetic pool")
     parser.add_argument("--seed", type=int, default=SEED, help=f"random seed (default {SEED}; others add _seed<n>)")
     parser.add_argument("--keep-layers", help="comma-separated 0-based layer indexes to keep, e.g. 0,3,6,9")
     args = parser.parse_args()
@@ -238,6 +241,10 @@ def main():
     name = model_id.split("/")[-1].lower()
     tag = args.tag or name.split("-")[0] + ("_large" if "large" in name else "")
     suffix = ("" if args.train_set == "D" else f"_{args.train_set}") + (f"_kd{args.alpha}" if args.teacher else "")
+    if args.synthetic is not None:
+        if args.train_set != "D":
+            raise SystemExit("--synthetic adds to set D; leave --train-set at D")
+        suffix += f"_syn{args.synthetic}"
     suffix += "" if args.seed == SEED else f"_seed{args.seed}"
     if not torch.cuda.is_available():
         raise SystemExit("CUDA GPU required")
@@ -247,10 +254,15 @@ def main():
     reports.mkdir(exist_ok=True)
 
     train_rows = {"D": set_d_rows, "E": set_e_rows, "F": set_f_rows}[args.train_set]()
+    if args.synthetic is not None:
+        train_rows += synthetic_pool()[:args.synthetic]
     dev_rows = load("dev") + load("massive_dev")
     tests = {"SGD test": load("test"), "MASSIVE test": load("massive_test"),
              "messy": read_jsonl(ROOT / "data" / "messy" / "messy_test.jsonl"),
              "codex": read_jsonl(ROOT / "data" / "codex" / "codex_test.jsonl")}
+    more = ROOT / "data" / "codex" / "codex_more_test.jsonl"
+    if more.exists():
+        tests["codex_all"] = tests["codex"] + read_jsonl(more)
 
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     pad_id = tokenizer.pad_token_id

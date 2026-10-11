@@ -1,0 +1,300 @@
+{"text": "yo is billie eilish playing anywhere near chicago this wknd??", "spans": [["event_name", "billie eilish"], ["city", "chicago"], ["date", "this wknd"]]}
+{"text": "need 2 tix for a good show somewhere, any ideas pls", "spans": []}
+{"text": "any good jazz bars open 2nite in nola", "spans": [["date", "2nite"], ["city", "nola"]]}
+{"text": "ngl i'd die to see the 1975 in manchester, when r they on", "spans": [["event_name", "the 1975"], ["city", "manchester"]]}
+{"text": "who's headlining coachella this year", "spans": [["event_name", "coachella"]]}
+{"text": "is the weeknd doing a show in toronto friday night", "spans": [["event_name", "the weeknd"], ["city", "toronto"], ["date", "friday night"]]}
+{"text": "anyone going to the radiohead gig in berlin on march 3rd?", "spans": [["event_name", "radiohead"], ["city", "berlin"], ["date", "march 3rd"]]}
+{"text": "lol took my mom to see abba in stockholm last year, it was so cute", "spans": [["event_name", "abba"], ["city", "stockholm"]]}
+{"text": "dua lipa tmrw in london??", "spans": [["event_name", "dua lipa"], ["date", "tmrw"], ["city", "london"]]}
+{"text": "any good concerts coming up?", "spans": []}
+{"text": "need tickets for the strokes in nyc the 15th", "spans": [["event_name", "the strokes"], ["city", "nyc"], ["date", "the 15th"]]}
+{"text": "bjork in reykjavik in july?? dying", "spans": [["event_name", "bjork"], ["city", "reykjavik"], ["date", "in july"]]}
+{"text": "sza 2nite in la??", "spans": [["event_name", "sza"], ["date", "2nite"], ["city", "la"]]}
+{"text": "drake or travis scott playing in philly this wknd? ill take either", "spans": [["event_name", "drake"], ["event_name", "travis scott"], ["city", "philly"], ["date", "this wknd"]]}
+{"text": "is metallica touring anywhere in europe", "spans": [["event_name", "metallica"]]}
+{"text": "kendrick lamar friday night in new orleans", "spans": [["event_name", "kendrick lamar"], ["date", "friday night"], ["city", "new orleans"]]}
+{"text": "omg taylor swift in tokyo next sat!! someone help", "spans": [["event_name", "taylor swift"], ["city", "tokyo"], ["date", "next sat"]]}
+{"text": "any punk bands playing near me, any ideas?", "spans": []}
+{"text": "pls tell me the arctic monkeys are not cancelled in glasgow", "spans": [["event_name", "arctic monkeys"], ["city", "glasgow"]]}
+{"text": "u know if phoebe bridgers is in la this wknd??", "spans": [["event_name", "phoebe bridgers"], ["city", "la"], ["date", "this wknd"]]}
+{"text": "fela kuti tribute night in lagos 2nite", "spans": [["event_name", "fela kuti"], ["city", "lagos"], ["date", "2nite"]]}
+{"text": "whos playing glastonbury this year", "spans": [["event_name", "glastonbury"]]}
+{"text": "bad bunny in san juan next sat 🔥", "spans": [["event_name", "bad bunny"], ["city", "san juan"], ["date", "next sat"]]}
+{"text": "is there a bossa nova night going on anywhere near me", "spans": []}
+{"text": "ok so the killers are in vegas on the 3rd right?", "spans": [["event_name", "the killers"], ["city", "vegas"], ["date", "the 3rd"]]}
+{"text": "ngl i'd sell a kidney for blackpink in seoul", "spans": [["event_name", "blackpink"], ["city", "seoul"]]}
+{"text": "wanna see sigur ros in reykjavik 2nite", "spans": [["event_name", "sigur ros"], ["city", "reykjavik"], ["date", "2nite"]]}
+{"text": "cant believe wizkid is in london next sat, sold out already :(", "spans": [["event_name", "wizkid"], ["city", "london"], ["date", "next sat"]]}
+{"text": "best techno dj set anywhere i can get to??", "spans": []}
+{"text": "is paramore touring? i need them in philly", "spans": [["event_name", "paramore"], ["city", "philly"]]}
+{"text": "rage against the machine in la march 3rd??", "spans": [["event_name", "rage against the machine"], ["city", "la"], ["date", "march 3rd"]]}
+{"text": "where can i see amy winehouse tribute bands in london", "spans": [["event_name", "amy winehouse"], ["city", "london"]]}
+{"text": "stray kids in manila in july??", "spans": [["event_name", "stray kids"], ["city", "manila"], ["date", "in july"]]}
+{"text": "i love the cure, when are they in dublin", "spans": [["event_name", "the cure"], ["city", "dublin"]]}
+{"text": "lil nas x tmrw in atlanta? pls say yes", "spans": [["event_name", "lil nas x"], ["date", "tmrw"], ["city", "atlanta"]]}
+{"text": "twenty one pilots 2nite in columbus??", "spans": [["event_name", "twenty one pilots"], ["date", "2nite"], ["city", "columbus"]]}
+{"text": "any reggae nights around here lol", "spans": []}
+{"text": "boygenius tour stops in seattle? pls", "spans": [["event_name", "boygenius"], ["city", "seattle"]]}
+{"text": "cant make tool in sf, anyone want my ticket??", "spans": [["event_name", "tool"], ["city", "sf"]]}
+{"text": "chappell roan next sat in la plz", "spans": [["event_name", "chappell roan"], ["date", "next sat"], ["city", "la"]]}
+{"text": "idk who's headlining the montreux jazz festival", "spans": [["event_name", "montreux jazz festival"]]}
+{"text": "the strokes 2nite in nyc lol", "spans": [["event_name", "the strokes"], ["date", "2nite"], ["city", "nyc"]]}
+{"text": "is there any 80s rock night around here", "spans": []}
+{"text": "mitski in tokyo march 3rd??", "spans": [["event_name", "mitski"], ["city", "tokyo"], ["date", "march 3rd"]]}
+{"text": "haven't been to a metal show since 2019 lol, any near me", "spans": []}
+{"text": "yo hozier in dublin tmrw?", "spans": [["event_name", "hozier"], ["city", "dublin"], ["date", "tmrw"]]}
+{"text": "what time does fleetwood mac start in la 2nite", "spans": [["event_name", "fleetwood mac"], ["city", "la"], ["date", "2nite"]]}
+{"text": "pls someone go to the ariana grande thing in nyc the 3rd with me", "spans": [["event_name", "ariana grande"], ["city", "nyc"], ["date", "the 3rd"]]}
+{"text": "is burna boy playing lagos this wknd", "spans": [["event_name", "burna boy"], ["city", "lagos"], ["date", "this wknd"]]}
+{"text": "anyone know if daft punk is doing anything in paris", "spans": [["event_name", "daft punk"], ["city", "paris"]]}
+{"text": "ok hear me out, tame impala in melbourne next sat", "spans": [["event_name", "tame impala"], ["city", "melbourne"], ["date", "next sat"]]}
+{"text": "the chemical brothers in manchester friday night!!", "spans": [["event_name", "the chemical brothers"], ["city", "manchester"], ["date", "friday night"]]}
+{"text": "anyone seen the lumineers live in denver?", "spans": [["event_name", "the lumineers"], ["city", "denver"]]}
+{"text": "tickets for nirvana tribute in seattle this wknd?", "spans": [["event_name", "nirvana"], ["city", "seattle"], ["date", "this wknd"]]}
+{"text": "is adele singing in london in july?", "spans": [["event_name", "adele"], ["city", "london"], ["date", "in july"]]}
+{"text": "brazilian funk party in sao paulo 2nite, yes or no", "spans": [["city", "sao paulo"], ["date", "2nite"]]}
+{"text": "where's the best place to hear fado in lisbon", "spans": [["city", "lisbon"]]}
+{"text": "big thief playing in brooklyn?", "spans": [["event_name", "big thief"]]}
+{"text": "the national in new york next sat, anyone?", "spans": [["event_name", "the national"], ["city", "new york"], ["date", "next sat"]]}
+{"text": "olivia rodrigo the 3rd in nyc???", "spans": [["event_name", "olivia rodrigo"], ["date", "the 3rd"], ["city", "nyc"]]}
+{"text": "karan aujla live in toronto next sat, ticket prices r insane", "spans": [["event_name", "karan aujla"], ["city", "toronto"], ["date", "next sat"]]}
+{"text": "anyone up for a shakira concert in miami 2nite?", "spans": [["event_name", "shakira"], ["city", "miami"], ["date", "2nite"]]}
+{"text": "is there a good salsa night somewhere in town", "spans": []}
+{"text": "kraftwerk tour in berlin march 3rd, tell me its real", "spans": [["event_name", "kraftwerk"], ["city", "berlin"], ["date", "march 3rd"]]}
+{"text": "nina simone tribute in philly friday night, anyone going", "spans": [["event_name", "nina simone"], ["city", "philly"], ["date", "friday night"]]}
+{"text": "vampire weekend tour next sat, anyone going", "spans": [["event_name", "vampire weekend"], ["date", "next sat"]]}
+{"text": "jamiroquai in tokyo tmrw??", "spans": [["event_name", "jamiroquai"], ["city", "tokyo"], ["date", "tmrw"]]}
+{"text": "ngl the 1975 in la would be sick", "spans": [["event_name", "the 1975"], ["city", "la"]]}
+{"text": "need a last minute ticket for bts in seoul the 3rd", "spans": [["event_name", "bts"], ["city", "seoul"], ["date", "the 3rd"]]}
+{"text": "queen and adam lambert in london in july, anyone going?", "spans": [["event_name", "queen"], ["event_name", "adam lambert"], ["city", "london"], ["date", "in july"]]}
+{"text": "is the foo fighters in cologne this wknd?", "spans": [["event_name", "foo fighters"], ["city", "cologne"], ["date", "this wknd"]]}
+{"text": "lana del rey tmrw in vegas, need a ride lol", "spans": [["event_name", "lana del rey"], ["date", "tmrw"], ["city", "vegas"]]}
+{"text": "beyonce in atlanta this wknd or nah??", "spans": [["event_name", "beyonce"], ["city", "atlanta"], ["date", "this wknd"]]}
+{"text": "classical music night in vienna next sat, recs?", "spans": [["city", "vienna"], ["date", "next sat"]]}
+{"text": "kanye in la next sat is cancelled right?", "spans": [["event_name", "kanye"], ["city", "la"], ["date", "next sat"]]}
+{"text": "i'm going to a gorillaz show in tokyo the 3rd, u coming?", "spans": [["event_name", "gorillaz"], ["city", "tokyo"], ["date", "the 3rd"]]}
+{"text": "which cairo festival has the best lineup this year", "spans": [["city", "cairo"]]}
+{"text": "abba voyage in london march 3rd, worth it?", "spans": [["event_name", "abba"], ["city", "london"], ["date", "march 3rd"]]}
+{"text": "phish in philly friday night, who's in", "spans": [["event_name", "phish"], ["city", "philly"], ["date", "friday night"]]}
+{"text": "radiohead vs thom yorke in berlin 2nite lol", "spans": [["event_name", "radiohead"], ["event_name", "thom yorke"], ["city", "berlin"], ["date", "2nite"]]}
+{"text": "can u believe ed sheeran is in singapore next sat", "spans": [["event_name", "ed sheeran"], ["city", "singapore"], ["date", "next sat"]]}
+{"text": "any bluegrass jam around here", "spans": []}
+{"text": "pls someone tell me if the black keys are in chicago tmrw", "spans": [["event_name", "the black keys"], ["city", "chicago"], ["date", "tmrw"]]}
+{"text": "i wanna see fka twigs in london in july, help", "spans": [["event_name", "fka twigs"], ["city", "london"], ["date", "in july"]]}
+{"text": "metallica in san francisco next sat 🤘", "spans": [["event_name", "metallica"], ["city", "san francisco"], ["date", "next sat"]]}
+{"text": "twice in seoul the 3rd???", "spans": [["event_name", "twice"], ["city", "seoul"], ["date", "the 3rd"]]}
+{"text": "mac miller tribute in la friday night", "spans": [["event_name", "mac miller"], ["city", "la"], ["date", "friday night"]]}
+{"text": "what's good for a cheap concert near me", "spans": []}
+{"text": "any open mic nights near me", "spans": []}
+{"text": "aphex twin tickets 2nite?", "spans": [["event_name", "aphex twin"], ["date", "2nite"]]}
+{"text": "yo are the pixies coming to philly in july", "spans": [["event_name", "pixies"], ["city", "philly"], ["date", "in july"]]}
+{"text": "eminem nyc march 3rd??? wild", "spans": [["event_name", "eminem"], ["city", "nyc"], ["date", "march 3rd"]]}
+{"text": "fontaines dc in dublin 2nite, who's going", "spans": [["event_name", "fontaines dc"], ["city", "dublin"], ["date", "2nite"]]}
+{"text": "is the jonas brothers in vegas next sat", "spans": [["event_name", "the jonas brothers"], ["city", "vegas"], ["date", "next sat"]]}
+{"text": "going to see the decemberists in portland tmrw, u wanna come", "spans": [["event_name", "the decemberists"], ["city", "portland"], ["date", "tmrw"]]}
+{"text": "pls just tell me if ghost is playing in stockholm the 15th", "spans": [["event_name", "ghost"], ["city", "stockholm"], ["date", "the 15th"]]}
+{"text": "sia 2nite in nyc or la??", "spans": [["event_name", "sia"], ["date", "2nite"], ["city", "nyc"], ["city", "la"]]}
+{"text": "need a fix of afrobeats in accra this wknd", "spans": [["city", "accra"], ["date", "this wknd"]]}
+{"text": "kings of leon in nashville friday night??", "spans": [["event_name", "kings of leon"], ["city", "nashville"], ["date", "friday night"]]}
+{"text": "what are the best music festivals in europe this summer", "spans": []}
+{"text": "is there a rave tonight somewhere??", "spans": []}
+{"text": "recs for indie concerts in the uk?", "spans": []}
+{"text": "can someone explain why tickets cost so much lol", "spans": []}
+{"text": "which djs are on at ultra this year", "spans": [["event_name", "ultra"]]}
+{"text": "bands like mew for a night out?", "spans": [["event_name", "mew"]]}
+{"text": "anyone else obsessed with lorde's new album", "spans": [["event_name", "lorde"]]}
+{"text": "i miss live music so much, any shows near me", "spans": []}
+{"text": "do u think the pogues are still touring", "spans": [["event_name", "the pogues"]]}
+{"text": "what's a good jazz festival in new york", "spans": [["city", "new york"]]}
+{"text": "looking for an emo show near me", "spans": []}
+{"text": "tips for getting cheap festival tix?", "spans": []}
+{"text": "i need a drum and bass night in berlin the 3rd... that's it", "spans": [["city", "berlin"], ["date", "the 3rd"]]}
+{"text": "ok sorry this is random but is nick cave touring in 2027", "spans": [["event_name", "nick cave"]]}
+{"text": "any country concerts open in nashville tonight", "spans": [["city", "nashville"]]}
+{"text": "hit me with some hip hop events near me", "spans": []}
+{"text": "ok so what's the lineup for primavera sound", "spans": [["event_name", "primavera sound"]]}
+{"text": "any concerts near me lol", "spans": []}
+{"text": "is there a symphony orchestra playing near me?", "spans": []}
+{"text": "the cranberries in limerick would be a dream", "spans": [["event_name", "the cranberries"], ["city", "limerick"]]}
+{"text": "wanna go to a techno rave in detroit 2nite", "spans": [["city", "detroit"], ["date", "2nite"]]}
+{"text": "the weeknd in la march 3rd, sold out, anyone selling?", "spans": [["event_name", "the weeknd"], ["city", "la"], ["date", "march 3rd"]]}
+{"text": "lorde in auckland next sat", "spans": [["event_name", "lorde"], ["city", "auckland"], ["date", "next sat"]]}
+{"text": "someone please tell me the vaccines are in berlin the 3rd", "spans": [["event_name", "the vaccines"], ["city", "berlin"], ["date", "the 3rd"]]}
+{"text": "my sister wants to see bruno mars in vegas next sat, help me get tix", "spans": [["event_name", "bruno mars"], ["city", "vegas"], ["date", "next sat"]]}
+{"text": "sad that the smiths reunion didnt come to manchester tmrw", "spans": [["event_name", "the smiths"], ["city", "manchester"], ["date", "tmrw"]]}
+{"text": "is there a bhangra night in birmingham this wknd", "spans": [["city", "birmingham"], ["date", "this wknd"]]}
+{"text": "looking for a cheap ticket for the national in la 2nite", "spans": [["event_name", "the national"], ["city", "la"], ["date", "2nite"]]}
+{"text": "anyone heard if the cardigans are coming to stockholm in july", "spans": [["event_name", "the cardigans"], ["city", "stockholm"], ["date", "in july"]]}
+{"text": "new order in manchester, friday night, lets gooo", "spans": [["event_name", "new order"], ["city", "manchester"], ["date", "friday night"]]}
+{"text": "flamenco show in sevilla the 3rd, is it worth it?", "spans": [["city", "sevilla"], ["date", "the 3rd"]]}
+{"text": "dropkick murphys in boston march 3rd???", "spans": [["event_name", "dropkick murphys"], ["city", "boston"], ["date", "march 3rd"]]}
+{"text": "would die for a gorillaz show in london tmrw", "spans": [["event_name", "gorillaz"], ["city", "london"], ["date", "tmrw"]]}
+{"text": "yo any jungle nights in bristol this wknd", "spans": [["city", "bristol"], ["date", "this wknd"]]}
+{"text": "i want to see pj harvey in london next sat", "spans": [["event_name", "pj harvey"], ["city", "london"], ["date", "next sat"]]}
+{"text": "is taylor swift's eras tour coming back to chicago next sat", "spans": [["event_name", "taylor swift"], ["city", "chicago"], ["date", "next sat"]]}
+{"text": "mumford and sons in dublin 2nite", "spans": [["event_name", "mumford and sons"], ["city", "dublin"], ["date", "2nite"]]}
+{"text": "pls someone take me to the cure in berlin in july", "spans": [["event_name", "the cure"], ["city", "berlin"], ["date", "in july"]]}
+{"text": "grateful dead tribute band in nola this wknd???", "spans": [["event_name", "grateful dead"], ["city", "nola"], ["date", "this wknd"]]}
+{"text": "cant wait for daft punk in tokyo tmrw", "spans": [["event_name", "daft punk"], ["city", "tokyo"], ["date", "tmrw"]]}
+{"text": "wish the killers were playing in kuala lumpur next sat", "spans": [["event_name", "the killers"], ["city", "kuala lumpur"], ["date", "next sat"]]}
+{"text": "the pogues in new york on march 3rd would be unreal", "spans": [["event_name", "the pogues"], ["city", "new york"], ["date", "march 3rd"]]}
+{"text": "does lauryn hill play anywhere in atlanta 2nite", "spans": [["event_name", "lauryn hill"], ["city", "atlanta"], ["date", "2nite"]]}
+{"text": "where can i get tickets for the rolling stones in toronto", "spans": [["event_name", "the rolling stones"], ["city", "toronto"]]}
+{"text": "any amapiano nights in cape town friday night?", "spans": [["city", "cape town"], ["date", "friday night"]]}
+{"text": "hot take: ariana grande is overrated but i'd still go to see her in la", "spans": [["event_name", "ariana grande"], ["city", "la"]]}
+{"text": "need to see bob marley tribute in kingston in july", "spans": [["event_name", "bob marley"], ["city", "kingston"], ["date", "in july"]]}
+{"text": "tame impala tickets in vancouver tmrw??", "spans": [["event_name", "tame impala"], ["city", "vancouver"], ["date", "tmrw"]]}
+{"text": "yo is sabrina carpenter doing a show in boston this wknd", "spans": [["event_name", "sabrina carpenter"], ["city", "boston"], ["date", "this wknd"]]}
+{"text": "ok so any kpop concert near me, who's down?", "spans": []}
+{"text": "the libertines in london 2nite, who's in", "spans": [["event_name", "the libertines"], ["city", "london"], ["date", "2nite"]]}
+{"text": "tryna see hiatus kaiyote in melbourne 2nite", "spans": [["event_name", "hiatus kaiyote"], ["city", "melbourne"], ["date", "2nite"]]}
+{"text": "green day in oakland march 3rd???", "spans": [["event_name", "green day"], ["city", "oakland"], ["date", "march 3rd"]]}
+{"text": "is there a symphony night around here", "spans": []}
+{"text": "cheap bar gigs near me?", "spans": []}
+{"text": "jazz legend herbie hancock in nyc in july??", "spans": [["event_name", "herbie hancock"], ["city", "nyc"], ["date", "in july"]]}
+{"text": "anyone going to rammstein in berlin tmrw", "spans": [["event_name", "rammstein"], ["city", "berlin"], ["date", "tmrw"]]}
+{"text": "vinyl listening session near me?", "spans": []}
+{"text": "sigh, nothing to do around here lol", "spans": []}
+{"text": "pls let pink floyd tribute be in la next sat", "spans": [["event_name", "pink floyd"], ["city", "la"], ["date", "next sat"]]}
+{"text": "yo r the hives playing in stockholm the 15th", "spans": [["event_name", "the hives"], ["city", "stockholm"], ["date", "the 15th"]]}
+{"text": "idk if bruce springsteen is in nyc 2nite", "spans": [["event_name", "bruce springsteen"], ["city", "nyc"], ["date", "2nite"]]}
+{"text": "ok i'm trying to find nightlife in tokyo tmrw nights", "spans": [["city", "tokyo"], ["date", "tmrw"]]}
+{"text": "idk if nicki minaj is in chicago this wknd", "spans": [["event_name", "nicki minaj"], ["city", "chicago"], ["date", "this wknd"]]}
+{"text": "bob dylan in la the 3rd pls say its happening", "spans": [["event_name", "bob dylan"], ["city", "la"], ["date", "the 3rd"]]}
+{"text": "i'm a huge fan of the beach boys, any shows in la next sat?", "spans": [["event_name", "the beach boys"], ["city", "la"], ["date", "next sat"]]}
+{"text": "someone please tell me there's a fleetwood mac tribute in philly 2nite", "spans": [["event_name", "fleetwood mac"], ["city", "philly"], ["date", "2nite"]]}
+{"text": "cant decide between tame impala or pixies in melbourne tmrw", "spans": [["event_name", "tame impala"], ["event_name", "pixies"], ["city", "melbourne"], ["date", "tmrw"]]}
+{"text": "the fray live in denver in july??", "spans": [["event_name", "the fray"], ["city", "denver"], ["date", "in july"]]}
+{"text": "coachella lineup drop friday night??", "spans": [["event_name", "coachella"], ["date", "friday night"]]}
+{"text": "i wanna see sade in london, anyone have a spare ticket", "spans": [["event_name", "sade"], ["city", "london"]]}
+{"text": "wonder if beck is in la next sat", "spans": [["event_name", "beck"], ["city", "la"], ["date", "next sat"]]}
+{"text": "weird question: is oasis touring manchester the 3rd", "spans": [["event_name", "oasis"], ["city", "manchester"], ["date", "the 3rd"]]}
+{"text": "blur in london next sat with my bf lol", "spans": [["event_name", "blur"], ["city", "london"], ["date", "next sat"]]}
+{"text": "charli xcx in nyc 2nite", "spans": [["event_name", "charli xcx"], ["city", "nyc"], ["date", "2nite"]]}
+{"text": "yall the naked and famous in toronto tmrw??", "spans": [["event_name", "the naked and famous"], ["city", "toronto"], ["date", "tmrw"]]}
+{"text": "anyone going to the sharon van etten show in philly next sat", "spans": [["event_name", "sharon van etten"], ["city", "philly"], ["date", "next sat"]]}
+{"text": "whats the move for jazz in new orleans this wknd lol", "spans": [["city", "new orleans"], ["date", "this wknd"]]}
+{"text": "ummm is linkin park coming to la in july", "spans": [["event_name", "linkin park"], ["city", "la"], ["date", "in july"]]}
+{"text": "any kraut rock concerts in berlin the 3rd?", "spans": [["city", "berlin"], ["date", "the 3rd"]]}
+{"text": "anyone going to see the 1975 in new york next sat?", "spans": [["event_name", "the 1975"], ["city", "new york"], ["date", "next sat"]]}
+{"text": "can i get a spare ticket for mitski in philly 2nite", "spans": [["event_name", "mitski"], ["city", "philly"], ["date", "2nite"]]}
+{"text": "sooo the cranberries are in cork in july?", "spans": [["event_name", "the cranberries"], ["city", "cork"], ["date", "in july"]]}
+{"text": "is it sold out for muse in cardiff next sat", "spans": [["event_name", "muse"], ["city", "cardiff"], ["date", "next sat"]]}
+{"text": "pls someone tell me if the struts are playing leeds tmrw", "spans": [["event_name", "the struts"], ["city", "leeds"], ["date", "tmrw"]]}
+{"text": "tickets for the velvet underground tribute in nyc march 3rd?", "spans": [["event_name", "the velvet underground"], ["city", "nyc"], ["date", "march 3rd"]]}
+{"text": "where to see a cumbia band in medellin 2nite", "spans": [["city", "medellin"], ["date", "2nite"]]}
+{"text": "ok the stone roses in manchester the 3rd or not", "spans": [["event_name", "the stone roses"], ["city", "manchester"], ["date", "the 3rd"]]}
+{"text": "i heard youssou ndour is in dakar in july, true?", "spans": [["event_name", "youssou ndour"], ["city", "dakar"], ["date", "in july"]]}
+{"text": "is the ramones tribute in london tmrw worth it", "spans": [["event_name", "the ramones"], ["city", "london"], ["date", "tmrw"]]}
+{"text": "you kno what, i'm going to see hozier in nyc next sat", "spans": [["event_name", "hozier"], ["city", "nyc"], ["date", "next sat"]]}
+{"text": "maybe i'll go see the pogues in dublin 2nite", "spans": [["event_name", "the pogues"], ["city", "dublin"], ["date", "2nite"]]}
+{"text": "lol my dad wants to see rod stewart in glasgow, what do i do", "spans": [["event_name", "rod stewart"], ["city", "glasgow"]]}
+{"text": "trying to find a rave near me", "spans": []}
+{"text": "any metal shows near me lol", "spans": []}
+{"text": "is nina kraviz playing in moscow in july?", "spans": [["event_name", "nina kraviz"], ["city", "moscow"], ["date", "in july"]]}
+{"text": "this is perfect, if the strokes do a show in dublin 2nite", "spans": [["event_name", "the strokes"], ["city", "dublin"], ["date", "2nite"]]}
+{"text": "pls i need coldplay tix, london the 3rd", "spans": [["event_name", "coldplay"], ["city", "london"], ["date", "the 3rd"]]}
+{"text": "is it true bon iver is in minneapolis this wknd?", "spans": [["event_name", "bon iver"], ["city", "minneapolis"], ["date", "this wknd"]]}
+{"text": "any cheap kpop concerts this year?", "spans": []}
+{"text": "how many people usually go to rock werchter, roughly", "spans": [["event_name", "rock werchter"]]}
+{"text": "what's a good playlist to get hyped for a gig", "spans": []}
+{"text": "when r the sex pistols playing again", "spans": [["event_name", "the sex pistols"]]}
+{"text": "this summer festival lineup is so bad lol", "spans": []}
+{"text": "pls tell me the beatles tribute tonight is legit", "spans": [["event_name", "the beatles"]]}
+{"text": "which bands are playing at sxsw", "spans": [["event_name", "sxsw"]]}
+{"text": "wish there were more ska shows around here", "spans": []}
+{"text": "ok what do you think of tomorrowland 2027 lineup", "spans": [["event_name", "tomorrowland"]]}
+{"text": "anyone hit a bhangra fest around here", "spans": []}
+{"text": "weird to think i was at a radiohead show in 2009", "spans": [["event_name", "radiohead"]]}
+{"text": "cool, so when does the rolling stones tour end", "spans": [["event_name", "the rolling stones"]]}
+{"text": "i'd kill for a pearl jam show right now", "spans": [["event_name", "pearl jam"]]}
+{"text": "should i see dave matthews band in cork tmrw or go to bed early", "spans": [["event_name", "dave matthews band"], ["city", "cork"], ["date", "tmrw"]]}
+{"text": "hype for the lumineers in philly friday night!!", "spans": [["event_name", "the lumineers"], ["city", "philly"], ["date", "friday night"]]}
+{"text": "lol yes i'm dying to see elton john in london 2nite", "spans": [["event_name", "elton john"], ["city", "london"], ["date", "2nite"]]}
+{"text": "guess who's headlining glastonbury this year??", "spans": [["event_name", "glastonbury"]]}
+{"text": "who knows the best reggaeton club in medellin, this wknd?", "spans": [["city", "medellin"], ["date", "this wknd"]]}
+{"text": "nobody cares about the shins anymore lol", "spans": [["event_name", "the shins"]]}
+{"text": "when's the next tool show in philly", "spans": [["event_name", "tool"], ["city", "philly"]]}
+{"text": "i'm cool with missing the stones in la next sat", "spans": [["event_name", "the stones"], ["city", "la"], ["date", "next sat"]]}
+{"text": "is the zombies still touring in london?", "spans": [["event_name", "the zombies"], ["city", "london"]]}
+{"text": "anybody going to kendrick lamar in la? the 3rd?", "spans": [["event_name", "kendrick lamar"], ["city", "la"], ["date", "the 3rd"]]}
+{"text": "wild that the doors are still a thing lol", "spans": [["event_name", "the doors"]]}
+{"text": "yo can someone tell me what time sufjan stevens is on in boston", "spans": [["event_name", "sufjan stevens"], ["city", "boston"]]}
+{"text": "is cypress hill going to be in la friday night", "spans": [["event_name", "cypress hill"], ["city", "la"], ["date", "friday night"]]}
+{"text": "heard the gorillaz are doing a secret gig in london 2nite", "spans": [["event_name", "gorillaz"], ["city", "london"], ["date", "2nite"]]}
+{"text": "is dolly parton anywhere near nashville 2nite", "spans": [["event_name", "dolly parton"], ["city", "nashville"], ["date", "2nite"]]}
+{"text": "ok but who's the best dj around here lol", "spans": []}
+{"text": "is the eagles in vegas next sat or nah?", "spans": [["event_name", "the eagles"], ["city", "vegas"], ["date", "next sat"]]}
+{"text": "tryna find a tango night near me", "spans": []}
+{"text": "bob marley's birthday party in kingston in july", "spans": [["event_name", "bob marley"], ["city", "kingston"], ["date", "in july"]]}
+{"text": "oh man the sunflower bean in nyc tmrw??", "spans": [["event_name", "sunflower bean"], ["city", "nyc"], ["date", "tmrw"]]}
+{"text": "i need a mariachi band for my bday, any ideas", "spans": []}
+{"text": "anyone seen the xx in london?", "spans": [["event_name", "the xx"], ["city", "london"]]}
+{"text": "saw a poster for the mamas and papas in la, when is it", "spans": [["event_name", "the mamas and papas"], ["city", "la"]]}
+{"text": "ok whos on at bonnaroo this year", "spans": [["event_name", "bonnaroo"]]}
+{"text": "lil uzi vert in atlanta 2nite??", "spans": [["event_name", "lil uzi vert"], ["city", "atlanta"], ["date", "2nite"]]}
+{"text": "can we see bts in busan the 3rd pls", "spans": [["event_name", "bts"], ["city", "busan"], ["date", "the 3rd"]]}
+{"text": "rage against the machine 2nite in la lol", "spans": [["event_name", "rage against the machine"], ["date", "2nite"], ["city", "la"]]}
+{"text": "any gospel choir shows near me", "spans": []}
+{"text": "sooo the dropkick murphys in boston next sat, u in?", "spans": [["event_name", "dropkick murphys"], ["city", "boston"], ["date", "next sat"]]}
+{"text": "is my fave band, hot chip, playing london in july?", "spans": [["event_name", "hot chip"], ["city", "london"], ["date", "in july"]]}
+{"text": "tiesto in amsterdam tmrw is so tempting", "spans": [["event_name", "tiesto"], ["city", "amsterdam"], ["date", "tmrw"]]}
+{"text": "what's the deal with the zutons, are they doing a show in liverpool", "spans": [["event_name", "the zutons"], ["city", "liverpool"]]}
+{"text": "need someone to go to the pixies with me in boston the 15th", "spans": [["event_name", "pixies"], ["city", "boston"], ["date", "the 15th"]]}
+{"text": "cant wait for muse in london next sat", "spans": [["event_name", "muse"], ["city", "london"], ["date", "next sat"]]}
+{"text": "i'd fly to tokyo for a yoasobi show 2nite, no joke", "spans": [["city", "tokyo"], ["event_name", "yoasobi"], ["date", "2nite"]]}
+{"text": "hey r you going to the mac demarco show in la friday night?", "spans": [["event_name", "mac demarco"], ["city", "la"], ["date", "friday night"]]}
+{"text": "looking for a free show by mac demarco in nyc 2nite", "spans": [["event_name", "mac demarco"], ["city", "nyc"], ["date", "2nite"]]}
+{"text": "lmao imagine the who in philly tmrw", "spans": [["event_name", "the who"], ["city", "philly"], ["date", "tmrw"]]}
+{"text": "is the who doing a show in toronto this wknd?", "spans": [["event_name", "the who"], ["city", "toronto"], ["date", "this wknd"]]}
+{"text": "is there a blues night around here", "spans": []}
+{"text": "who's on at pitchfork in chicago in july?", "spans": [["event_name", "pitchfork"], ["city", "chicago"], ["date", "in july"]]}
+{"text": "wanna see amy winehouse's tribute band in london next sat", "spans": [["event_name", "amy winehouse"], ["city", "london"], ["date", "next sat"]]}
+{"text": "any dub nights near me lol", "spans": []}
+{"text": "is the offspring playing in vegas on the 3rd", "spans": [["event_name", "the offspring"], ["city", "vegas"], ["date", "the 3rd"]]}
+{"text": "the libertines again?? in london?? 2nite pls", "spans": [["event_name", "the libertines"], ["city", "london"], ["date", "2nite"]]}
+{"text": "that's a sick lineup, is the stooges playing in detroit 2nite", "spans": [["event_name", "the stooges"], ["city", "detroit"], ["date", "2nite"]]}
+{"text": "i'm so hype for the national in berlin the 3rd", "spans": [["event_name", "the national"], ["city", "berlin"], ["date", "the 3rd"]]}
+{"text": "hi! is there an opera night in vienna tmrw?", "spans": [["city", "vienna"], ["date", "tmrw"]]}
+{"text": "anyone know if jaden smith has a show in la the 3rd", "spans": [["event_name", "jaden smith"], ["city", "la"], ["date", "the 3rd"]]}
+{"text": "weekend plans: find a cheap gig near me", "spans": []}
+{"text": "any good drum and bass dj in london next sat, recs?", "spans": [["city", "london"], ["date", "next sat"]]}
+{"text": "what's up with the wiggles tour in sydney this wknd", "spans": [["event_name", "the wiggles"], ["city", "sydney"], ["date", "this wknd"]]}
+{"text": "are khruangbin playing in austin 2nite", "spans": [["event_name", "khruangbin"], ["city", "austin"], ["date", "2nite"]]}
+{"text": "wait is joni mitchell playing in toronto 2nite", "spans": [["event_name", "joni mitchell"], ["city", "toronto"], ["date", "2nite"]]}
+{"text": "weird but true: the carpenters are playing in lisbon in july", "spans": [["event_name", "the carpenters"], ["city", "lisbon"], ["date", "in july"]]}
+{"text": "fingers crossed that the verve reunite for a show in manchester next sat", "spans": [["event_name", "the verve"], ["city", "manchester"], ["date", "next sat"]]}
+{"text": "lmao aurora is playing tokyo the 3rd??", "spans": [["event_name", "aurora"], ["city", "tokyo"], ["date", "the 3rd"]]}
+{"text": "yo is dua lipa in nyc next sat pls", "spans": [["event_name", "dua lipa"], ["city", "nyc"], ["date", "next sat"]]}
+{"text": "who's gonna be at ultra miami this year, besides everyone lol", "spans": [["event_name", "ultra"], ["city", "miami"]]}
+{"text": "need a last min ticket for pearl jam in vegas 2nite", "spans": [["event_name", "pearl jam"], ["city", "vegas"], ["date", "2nite"]]}
+{"text": "grab me a ticket for the cure in dublin, the 3rd pls", "spans": [["event_name", "the cure"], ["city", "dublin"], ["date", "the 3rd"]]}
+{"text": "i just want to hear some soul music tonight, any ideas", "spans": []}
+{"text": "sooo what's the lineup for lollapalooza in chicago this wknd", "spans": [["event_name", "lollapalooza"], ["city", "chicago"], ["date", "this wknd"]]}
+{"text": "do you know if nile rodgers is playing in la next sat?", "spans": [["event_name", "nile rodgers"], ["city", "la"], ["date", "next sat"]]}
+{"text": "yo the tallest man on earth in stockholm friday night?", "spans": [["event_name", "the tallest man on earth"], ["city", "stockholm"], ["date", "friday night"]]}
+{"text": "is roxy music in manchester the 3rd", "spans": [["event_name", "roxy music"], ["city", "manchester"], ["date", "the 3rd"]]}
+{"text": "pls someone bring me to a sertanejo show in sao paulo 2nite", "spans": [["city", "sao paulo"], ["date", "2nite"]]}
+{"text": "yo is the vamps playing in london tmrw?", "spans": [["event_name", "the vamps"], ["city", "london"], ["date", "tmrw"]]}
+{"text": "any emo nights near me, ngl i miss those", "spans": []}
+{"text": "going to see the mars volta in nyc next sat", "spans": [["event_name", "the mars volta"], ["city", "nyc"], ["date", "next sat"]]}
+{"text": "wait tool is in la this wknd??", "spans": [["event_name", "tool"], ["city", "la"], ["date", "this wknd"]]}
+{"text": "someone please rec a good jazz club in new orleans, 2nite", "spans": [["city", "new orleans"], ["date", "2nite"]]}
+{"text": "idk if the bee gees tribute is in la or vegas friday night", "spans": [["event_name", "the bee gees"], ["city", "la"], ["city", "vegas"], ["date", "friday night"]]}
+{"text": "ok what's the best festival in spain in july??", "spans": [["date", "in july"]]}
+{"text": "ariana grande in tokyo the 3rd, thoughts?", "spans": [["event_name", "ariana grande"], ["city", "tokyo"], ["date", "the 3rd"]]}
+{"text": "idk, a cheap gig would be nice this wknd", "spans": [["date", "this wknd"]]}
+{"text": "lol cant believe i'm going to see the eurythmics in london next sat", "spans": [["event_name", "the eurythmics"], ["city", "london"], ["date", "next sat"]]}
+{"text": "idk what's happening with the ramones tribute tmrw in nyc", "spans": [["event_name", "the ramones"], ["date", "tmrw"], ["city", "nyc"]]}
+{"text": "sooo any cool dance nights near me?", "spans": []}
+{"text": "i want to see billy joel in new york the 3rd, pls", "spans": [["event_name", "billy joel"], ["city", "new york"], ["date", "the 3rd"]]}
+{"text": "is the wu tang clan tour coming to la next sat", "spans": [["event_name", "wu tang clan"], ["city", "la"], ["date", "next sat"]]}
+{"text": "nothing exciting coming up in philly, i'm bored", "spans": [["city", "philly"]]}
+{"text": "yo r fleet foxes doing a festival in july in berlin", "spans": [["event_name", "fleet foxes"], ["date", "in july"], ["city", "berlin"]]}
+{"text": "need 2 tix for muse in rome next sat!!", "spans": [["event_name", "muse"], ["city", "rome"], ["date", "next sat"]]}
+{"text": "a cheap show, any?", "spans": []}
+{"text": "anyone else going to the knife in stockholm in july??", "spans": [["event_name", "the knife"], ["city", "stockholm"], ["date", "in july"]]}
+{"text": "lcd soundsystem in nyc next sat, who's coming??", "spans": [["event_name", "lcd soundsystem"], ["city", "nyc"], ["date", "next sat"]]}
+{"text": "tickets for the wailers in kingston tmrw?? please", "spans": [["event_name", "the wailers"], ["city", "kingston"], ["date", "tmrw"]]}
+{"text": "any wizkid fans going to lagos 2nite?? me too", "spans": [["event_name", "wizkid"], ["city", "lagos"], ["date", "2nite"]]}

@@ -1,0 +1,300 @@
+{"text": "im in boston but could drive to providence on saturday", "spans": [["city", "boston"], ["city", "providence"], ["date", "saturday"]]}
+{"text": "any events in msg this friday?", "spans": [["date", "this friday"]]}
+{"text": "whats happening near me", "spans": []}
+{"text": "phoenix suns game on the 3rd or 4th, whatever is cheapest", "spans": [["event_name", "phoenix suns"], ["date", "the 3rd or 4th"]]}
+{"text": "after 9 is too late, anything in la that starts earlier", "spans": [["city", "la"]]}
+{"text": "my train leaves before 6 so something in sf on the weekend", "spans": [["city", "sf"], ["date", "the weekend"]]}
+{"text": "looking for a jazz night in philly, nothing crazy, budget is like 40", "spans": [["city", "philly"]]}
+{"text": "idk what i want, maybe something in vegas after my exam", "spans": [["city", "vegas"]]}
+{"text": "ok so my sister is visiting from denver and we want to see the killers before she leaves on the 14th, were thinking atlanta or nashville, whichever has decent tickets", "spans": [["city", "denver"], ["event_name", "the killers"], ["date", "the 14th"], ["city", "atlanta"], ["city", "nashville"]]}
+{"text": "nyc, the week after thanksgiving, anything with live music but not a bar gig", "spans": [["city", "nyc"], ["date", "the week after thanksgiving"]]}
+{"text": "bro cheap stuff in pittsburgh pls", "spans": [["city", "pittsburgh"]]}
+{"text": "I'm downtown in Seattle, my office is by Pioneer Square, what is on monday", "spans": [["city", "Seattle"], ["date", "monday"]]}
+{"text": "the bay area is fine too, just sometime end of the month", "spans": [["date", "end of the month"]]}
+{"text": "celtics vs heat, thats the whole plan, boston or miami", "spans": [["event_name", "celtics vs heat"], ["city", "boston"], ["city", "miami"]]}
+{"text": "phoenix is too hot, anything in phoenix in february?", "spans": [["city", "phoenix"], ["date", "february"]]}
+{"text": "i'm in paris for a week and i want something, anything", "spans": [["city", "paris"]]}
+{"text": "victoria bc or victoria bc, i think victoria bc. events there?", "spans": [["city", "victoria"]]}
+{"text": "whats on in orlando the 22nd?", "spans": [["city", "orlando"], ["date", "the 22nd"]]}
+{"text": "the coachella pass i bought sucks lol, any sunday shows near pasadena that dont cost 300", "spans": [["event_name", "coachella"], ["date", "sunday"], ["city", "pasadena"]]}
+{"text": "cant make the first try but could do in a couple weeks in nashville", "spans": [["date", "a couple weeks"], ["city", "nashville"]]}
+{"text": "so i have this long story about my cousin getting married in guadalajara, i need something for the bachelor party before the wedding, maybe the night of the 9th or whenever the group is free", "spans": [["city", "guadalajara"], ["date", "the 9th"]]}
+{"text": "jordan davis at a small venue in tulsa, nxt thurs", "spans": [["event_name", "jordan davis"], ["city", "tulsa"], ["date", "nxt thurs"]]}
+{"text": "boygenius playing in london? idk, ten pounds max", "spans": [["event_name", "boygenius"], ["city", "london"]]}
+{"text": "whats near me after work tuesday, not the bar stuff", "spans": [["date", "tuesday"]]}
+{"text": "need stuff in mexico city before my flight out on the end of the month", "spans": [["city", "mexico city"], ["date", "the end of the month"]]}
+{"text": "ugh ok imagine the 3rd or 4th, san antonio or sf whichever", "spans": [["date", "the 3rd or 4th"], ["city", "san antonio"], ["city", "sf"]]}
+{"text": "bruh", "spans": []}
+{"text": "vegas!!!", "spans": [["city", "vegas"]]}
+{"text": "knicks vs nets sat, which arena is better for a dates night", "spans": [["event_name", "knicks vs nets"], ["date", "sat"]]}
+{"text": "hey! the glastonbury festival in the uk, i am in dublin, which is closest", "spans": [["event_name", "glastonbury"], ["city", "dublin"]]}
+{"text": "downtown houston, office hours after 5, not interested in bars", "spans": [["city", "houston"]]}
+{"text": "the arctic monkeys and whoever opens, would be cool in manchester sometime next month", "spans": [["event_name", "arctic monkeys"], ["city", "manchester"], ["date", "sometime next month"]]}
+{"text": "i want stuff in berlin or munich, cheap ones", "spans": [["city", "berlin"], ["city", "munich"]]}
+{"text": "phillies vs mets??", "spans": [["event_name", "phillies vs mets"]]}
+{"text": "the 3rd or 4th is my only free time, so anything in toronto", "spans": [["date", "the 3rd or 4th"], ["city", "toronto"]]}
+{"text": "la la land vibes, any jazz in new orleans", "spans": [["city", "new orleans"]]}
+{"text": "help cheap spot for a show in montreal, maybe the friday before", "spans": [["city", "montreal"], ["date", "the friday before"]]}
+{"text": "which is better for a weekend trip, austin or dallas, no concerts", "spans": [["city", "austin"], ["city", "dallas"]]}
+{"text": "pls tell me whats on in ottawa in a few days", "spans": [["city", "ottawa"], ["date", "in a few days"]]}
+{"text": "my roommate keeps saying the 1975 is in calgary, is that true", "spans": [["event_name", "the 1975"], ["city", "calgary"]]}
+{"text": "tomorrow, anything fun in vancouver, nothing with a dress code", "spans": [["date", "tomorrow"], ["city", "vancouver"]]}
+{"text": "im a broke student in madrid, cheapest thing this sunday", "spans": [["city", "madrid"], ["date", "this sunday"]]}
+{"text": "orlando magic game tues night??", "spans": [["event_name", "orlando magic"], ["date", "tues"]]}
+{"text": "ok so the story: i moved to vienna last year and my friends from prague keep asking me to come visit, they want a concert, maybe the week after easter", "spans": [["city", "vienna"], ["city", "prague"], ["date", "the week after easter"]]}
+{"text": "chicago bears?? nah just the musical, in chicago", "spans": [["city", "chicago"]]}
+{"text": "wanna see tame impala in brisbane, anything after the 20th?", "spans": [["event_name", "tame impala"], ["city", "brisbane"], ["date", "the 20th"]]}
+{"text": "in a couple weeks i have a free day, sydney or melbourne", "spans": [["date", "a couple weeks"], ["city", "sydney"], ["city", "melbourne"]]}
+{"text": "best event in sf for a first date", "spans": [["city", "sf"]]}
+{"text": "i'm stuck in the bay area, any shows near my office in san jose?", "spans": [["city", "san jose"]]}
+{"text": "phoenix suns home game the 12th", "spans": [["event_name", "phoenix suns"], ["date", "the 12th"]]}
+{"text": "tbh i just want to get out of the house, near me is fine, date sometime around end of the year", "spans": [["date", "end of the year"]]}
+{"text": "honolulu, the weekend after next, whatever is free", "spans": [["city", "honolulu"], ["date", "the weekend after next"]]}
+{"text": "looking for a coldplay show in paris on the 17th", "spans": [["event_name", "coldplay"], ["city", "paris"], ["date", "the 17th"]]}
+{"text": "cheap concert in tampa for my 30th, rough budget 50 bucks", "spans": [["city", "tampa"]]}
+{"text": "pittsburgh or cleveland, whatever is closer to my cousins place in columbus", "spans": [["city", "pittsburgh"], ["city", "cleveland"], ["city", "columbus"]]}
+{"text": "after 9 at night, is there anything in cincinnati worth driving for", "spans": [["city", "cincinnati"]]}
+{"text": "lol someone said dodgers vs giants in la on the 29th, real?", "spans": [["event_name", "dodgers vs giants"], ["city", "la"], ["date", "the 29th"]]}
+{"text": "i'll be in kyoto around the start of november, is osaka better for shows", "spans": [["city", "kyoto"], ["date", "the start of november"], ["city", "osaka"]]}
+{"text": "my bf wants to see phoebe bridgers, im down, anywhere in the us but not the east coast, he hates humidity", "spans": [["event_name", "phoebe bridgers"]]}
+{"text": "omg i keep forgetting, the lakers vs warriors on new years eve, is that in inglewood or nagoya", "spans": [["event_name", "lakers vs warriors"], ["date", "new years eve"], ["city", "inglewood"], ["city", "nagoya"]]}
+{"text": "anything near busan on a weekday? i have class but its over at 4", "spans": [["city", "busan"], ["date", "a weekday"]]}
+{"text": "two cities, seattle and portland, cheap, the 6th or 7th, dont care which", "spans": [["city", "seattle"], ["city", "portland"], ["date", "the 6th or 7th"]]}
+{"text": "what's going on in ankara or istanbul the week before halloween", "spans": [["city", "ankara"], ["city", "istanbul"], ["date", "the week before halloween"]]}
+{"text": "dublin, glasgow or manchester, whoever has a good indie show, im flexible", "spans": [["city", "dublin"], ["city", "glasgow"], ["city", "manchester"]]}
+{"text": "oof, the lab is in philly, my advisor says events are maybe the 22nd, idk", "spans": [["city", "philly"], ["date", "the 22nd"]]}
+{"text": "tomorrow at the dome in tokyo, maybe? i dont speak japanese but whatever", "spans": [["date", "tomorrow"], ["city", "tokyo"]]}
+{"text": "brooklyn? no, i'm in queens, the bronx is also fine, sometime this month", "spans": [["date", "this month"]]}
+{"text": "got a cousin in tucson and im in phoenix for work next tuesday, what shows happen then", "spans": [["city", "tucson"], ["city", "phoenix"], ["date", "next tuesday"]]}
+{"text": "any fun stuff in denver for the 4th of july weekend? nothing that costs more than 60", "spans": [["city", "denver"], ["date", "the 4th of july weekend"]]}
+{"text": "jackson browne at a small theater in victoria bc, thursday maybe", "spans": [["event_name", "jackson browne"], ["city", "victoria"], ["date", "thursday"]]}
+{"text": "i'm a student in ljubljana and want something on the first weekend of december", "spans": [["city", "ljubljana"], ["date", "the first weekend of december"]]}
+{"text": "madison beer tour, which city is first? i'm guessing madison wi, but idk", "spans": [["event_name", "madison beer"]]}
+{"text": "mid november, a show in toronto or montreal, whichever is cheaper", "spans": [["date", "mid november"], ["city", "toronto"], ["city", "montreal"]]}
+{"text": "bruh i literally need a show, not a bar, before 10, in tacoma", "spans": [["city", "tacoma"]]}
+{"text": "looking for something in denver, i can't stand the drive to aurora", "spans": [["city", "denver"]]}
+{"text": "the bears game in chicago next saturday or whatever", "spans": [["city", "chicago"], ["date", "next saturday"]]}
+{"text": "ill be in cairo for work, any festival near me, i dont know if there are any", "spans": [["city", "cairo"]]}
+{"text": "i'm in london and my office is in canary wharf, need something quick after lunch on wed", "spans": [["city", "london"], ["date", "wed"]]}
+{"text": "going to the flamengo vs palmeiras in rio the week after carnival, cheap seats", "spans": [["event_name", "flamengo vs palmeiras"], ["city", "rio"], ["date", "the week after carnival"]]}
+{"text": "i found a flyer for bts in seoul, when is it, is it the 1st", "spans": [["event_name", "bts"], ["city", "seoul"], ["date", "the 1st"]]}
+{"text": "what do you think about the french band phoenix playing in berlin?", "spans": [["event_name", "phoenix"], ["city", "berlin"]]}
+{"text": "too much to type, come to brussels, antwerp, or amsterdam in the end of the month", "spans": [["city", "brussels"], ["city", "antwerp"], ["city", "amsterdam"], ["date", "the end of the month"]]}
+{"text": "i keep reading about tomorrowland, is it worth flying to brussels or just staying in amsterdam", "spans": [["event_name", "tomorrowland"], ["city", "brussels"], ["city", "amsterdam"]]}
+{"text": "tickets for the stones in toronto, 2 seats, sometime before halloween?", "spans": [["city", "toronto"], ["date", "before halloween"]]}
+{"text": "its my birthday on the 19th and i just want a show in san diego", "spans": [["date", "the 19th"], ["city", "san diego"]]}
+{"text": "hey can u find anything in oakland this sunday? thanks", "spans": [["city", "oakland"], ["date", "this sunday"]]}
+{"text": "no city for me yet, im just thinking about a show in berlin next month", "spans": [["city", "berlin"], ["date", "next month"]]}
+{"text": "a friend says the killers play in boise, idk if that's true", "spans": [["event_name", "the killers"], ["city", "boise"]]}
+{"text": "what's up in new orleans on the 2nd, my aunt lives there", "spans": [["city", "new orleans"], ["date", "the 2nd"]]}
+{"text": "toronto raptors vs boston celtics, the 11th?", "spans": [["event_name", "toronto raptors vs boston celtics"], ["date", "the 11th"]]}
+{"text": "i'm in boston, could drive to providence for music, sometime in a couple weeks", "spans": [["city", "boston"], ["city", "providence"], ["date", "in a couple weeks"]]}
+{"text": "any ideas for kansas city in late november? i have a tour and my boss is pushing the date", "spans": [["city", "kansas city"], ["date", "late november"]]}
+{"text": "ok the story is my girlfriend turned 25 and i'm trying to plan something, maybe the weekend of the 15th, i thought about a show in philly or nyc", "spans": [["date", "the weekend of the 15th"], ["city", "philly"], ["city", "nyc"]]}
+{"text": "lol my dog ate the ticket, can i still get into the bon iver show in duluth?", "spans": [["event_name", "bon iver"], ["city", "duluth"]]}
+{"text": "no slots here just venting, my week was rough and my office is a mess", "spans": []}
+{"text": "something quiet in ottawa after my dentist appt, date the 8th", "spans": [["city", "ottawa"], ["date", "the 8th"]]}
+{"text": "nxt thurs, anywhere in quebec city is fine", "spans": [["date", "nxt thurs"], ["city", "quebec city"]]}
+{"text": "bored in halifax, got the 27th off", "spans": [["city", "halifax"], ["date", "the 27th"]]}
+{"text": "what's on in hamilton ontario this month", "spans": [["city", "hamilton"], ["date", "this month"]]}
+{"text": "sunday after the game, anywhere in reykjavik", "spans": [["date", "sunday"], ["city", "reykjavik"]]}
+{"text": "Florence and the Machine in florence italy, which would be better", "spans": [["event_name", "Florence and the Machine"], ["city", "florence"]]}
+{"text": "need something after my exam, in colombo", "spans": [["city", "colombo"]]}
+{"text": "what happens in victoria seychelles around the 25th", "spans": [["city", "victoria"], ["date", "the 25th"]]}
+{"text": "a wedding is not an event right? ok what about a jazz brunch in bergen on sunday", "spans": [["city", "bergen"], ["date", "sunday"]]}
+{"text": "ugh my brain is fried, anything at all in oslo or stockholm before mid december", "spans": [["city", "oslo"], ["city", "stockholm"], ["date", "mid december"]]}
+{"text": "midnight shows in tokyo?? around midnight is fine", "spans": [["city", "tokyo"]]}
+{"text": "if it's anything in lima this coming tues, im in", "spans": [["city", "lima"], ["date", "this coming tues"]]}
+{"text": "after work is when i can go, so anything in santiago that starts after 6", "spans": [["city", "santiago"]]}
+{"text": "Tokyo, Osaka, or Kyoto. choose one. i like anime", "spans": [["city", "Tokyo"], ["city", "Osaka"], ["city", "Kyoto"]]}
+{"text": "my mom is in town from ohio and she wants to see the eagles play in sapporo before she flies home on the 3rd", "spans": [["city", "ohio"], ["event_name", "the eagles"], ["city", "sapporo"], ["date", "the 3rd"]]}
+{"text": "ive been stuck at work all week and all i want is a jazz night in new orleans, saturday or whenever", "spans": [["city", "new orleans"], ["date", "saturday"]]}
+{"text": "i need a cheap spot for a show in lisbon the 2nd week of march, im in porto till then", "spans": [["city", "lisbon"], ["date", "the 2nd week of march"], ["city", "porto"]]}
+{"text": "im flying into fukuoka on the 18th, staying 2 nights, is there a good gig that weekend", "spans": [["city", "fukuoka"], ["date", "the 18th"]]}
+{"text": "what is happening in paris after my flight lands on the 6th", "spans": [["city", "paris"], ["date", "the 6th"]]}
+{"text": "hey my boyfriend got me tickets for something in las vegas for valentines day but i forgot what it is, can you check", "spans": [["city", "las vegas"], ["date", "valentines day"]]}
+{"text": "lollapalooza in chicago this year, is it the first weekend of august or later", "spans": [["event_name", "lollapalooza"], ["city", "chicago"], ["date", "the first weekend of august"]]}
+{"text": "my cat is sick so i can only go out for an hour, anything in yokohama tonight after 7", "spans": [["city", "yokohama"]]}
+{"text": "anyone know if the dodgers are home the week after the 4th in la", "spans": [["event_name", "dodgers"], ["date", "the week after the 4th"], ["city", "la"]]}
+{"text": "im in a rush, the phoenix mercury game sun, is it at home", "spans": [["event_name", "phoenix mercury"], ["date", "sun"]]}
+{"text": "cant decide between seoul and busan for a concert in late october", "spans": [["city", "seoul"], ["city", "busan"], ["date", "late october"]]}
+{"text": "tbh i dont even know, lmk anything in tampa, miami, or orlando this month", "spans": [["city", "tampa"], ["city", "miami"], ["city", "orlando"], ["date", "this month"]]}
+{"text": "so my friend jordan is in town and wants to see something in houston, sometime after the 25th, idk", "spans": [["city", "houston"], ["date", "after the 25th"]]}
+{"text": "my office moved to a new building next to the stadium, is anything going on in atlanta on the 30th", "spans": [["city", "atlanta"], ["date", "the 30th"]]}
+{"text": "for my 40th, something big in vancouver, could be the week before christmas", "spans": [["city", "vancouver"], ["date", "the week before christmas"]]}
+{"text": "a guy at work said incheon or providence, any shows the 12th-14th?", "spans": [["city", "incheon"], ["city", "providence"], ["date", "the 12th-14th"]]}
+{"text": "what's on in edinburgh for the festival, im there the last week of august", "spans": [["city", "edinburgh"], ["date", "the last week of august"]]}
+{"text": "Dua Lipa in london, how much for floor seats, is there anything the weekend after easter", "spans": [["event_name", "Dua Lipa"], ["city", "london"], ["date", "the weekend after easter"]]}
+{"text": "do you know if the glastonbury tickets are sold out, im in bristol the 23rd", "spans": [["event_name", "glastonbury"], ["city", "bristol"], ["date", "the 23rd"]]}
+{"text": "my flight leaves tomorrow morning so give me something in rome tonight", "spans": [["date", "tomorrow morning"], ["city", "rome"]]}
+{"text": "looking for a good sunday show in munich, im sick of the bar scene", "spans": [["date", "sunday"], ["city", "munich"]]}
+{"text": "daegu or tucson, whichever has a decent music night in early june", "spans": [["city", "daegu"], ["city", "tucson"], ["date", "early june"]]}
+{"text": "mom wants to see the bee gees tribute in miami over the holidays, does that exist", "spans": [["event_name", "bee gees"], ["city", "miami"], ["date", "over the holidays"]]}
+{"text": "tonight after work i have nothing, anything in austin that starts before 8", "spans": [["city", "austin"]]}
+{"text": "seriously, anything in orlando for halloween weekend, my son is 8 and loves magic", "spans": [["city", "orlando"], ["date", "halloween weekend"]]}
+{"text": "the bulls vs pistons on the 14th in hong kong", "spans": [["event_name", "bulls vs pistons"], ["date", "the 14th"], ["city", "hong kong"]]}
+{"text": "we are a family of 5 and want a night out in nashville, the first weekend of may", "spans": [["city", "nashville"], ["date", "the first weekend of may"]]}
+{"text": "can u check if the knicks are home on the 19th or 20th", "spans": [["event_name", "knicks"], ["date", "the 19th or 20th"]]}
+{"text": "my tax refund comes in mid february so maybe a concert in macau around then", "spans": [["date", "mid february"], ["city", "macau"]]}
+{"text": "im in valencia and my friend in barcelona says theres a show the first thursday of the month, is that true", "spans": [["city", "valencia"], ["city", "barcelona"], ["date", "the first thursday of the month"]]}
+{"text": "omg my grandma turns 90 soon and she loves the bee gees, maybe a tribute show in philadelphia or new york on the 8th", "spans": [["event_name", "bee gees"], ["city", "philadelphia"], ["city", "new york"], ["date", "the 8th"]]}
+{"text": "no slots, just telling you i need a nap, so nothing for now", "spans": []}
+{"text": "a jazz trio in shenzhen or osaka on the last sunday of the month, i am a beginner so nothing too loud", "spans": [["city", "shenzhen"], ["city", "osaka"], ["date", "the last sunday of the month"]]}
+{"text": "searching for the mitski show near guangzhou, not in boston proper, maybe cambridge", "spans": [["event_name", "mitski"], ["city", "guangzhou"], ["city", "cambridge"]]}
+{"text": "hi! im in lagos for a month. any live music on the 1st of next month, or nah", "spans": [["city", "lagos"], ["date", "the 1st of next month"]]}
+{"text": "my week is a mess but i like kpop, bts or stray kids in seoul, whatever is nearest the 15th", "spans": [["event_name", "bts"], ["event_name", "stray kids"], ["city", "seoul"], ["date", "the 15th"]]}
+{"text": "hey hey hey", "spans": []}
+{"text": "some kind of festival in the uk around the august bank holiday, my mate says manchester is best", "spans": [["date", "the august bank holiday"], ["city", "manchester"]]}
+{"text": "need a bar for a comedy night, not a concert, before 9 in san francisco on wednesday", "spans": [["city", "san francisco"], ["date", "wednesday"]]}
+{"text": "the celtics vs heat game was amazing last season, is there one in shanghai on the 27th", "spans": [["event_name", "celtics vs heat"], ["city", "shanghai"], ["date", "the 27th"]]}
+{"text": "im trying to find something for when i get back from my trip to buenos aires, probably first week of october", "spans": [["city", "buenos aires"], ["date", "first week of october"]]}
+{"text": "i want to see sabrina carpenter with a group of 6 in beijing, budget is tight, any dates in the next 3 weeks", "spans": [["event_name", "sabrina carpenter"], ["city", "beijing"], ["date", "the next 3 weeks"]]}
+{"text": "kansas is playing in kansas city on the 16th lol, is that a joke", "spans": [["event_name", "kansas"], ["city", "kansas city"], ["date", "the 16th"]]}
+{"text": "pls find the cheapest hip hop show in houston this month, my roommates and i are broke", "spans": [["city", "houston"], ["date", "this month"]]}
+{"text": "a second cousin got married in tbilisi and im visiting next week, is there a good night for live music", "spans": [["city", "tbilisi"], ["date", "next week"]]}
+{"text": "who has tickets to see fontaines dc in dublin, looking for the 9th-10th", "spans": [["event_name", "fontaines dc"], ["city", "dublin"], ["date", "the 9th-10th"]]}
+{"text": "im flexible on dates but not on city: its vegas, reno, or sacramento, any decent show", "spans": [["city", "vegas"], ["city", "reno"], ["city", "sacramento"]]}
+{"text": "hey can someone recommend a cheap show in mumbai before the monsoon ends", "spans": [["city", "mumbai"]]}
+{"text": "the rockets game is at home on the 4th right? my dad wants to know", "spans": [["event_name", "rockets"], ["date", "the 4th"]]}
+{"text": "at the end of the day, im going to be near the beach in santa barbara in mid september, any music", "spans": [["city", "santa barbara"], ["date", "mid september"]]}
+{"text": "mac miller tribute show in pittsburgh? cant remember if it was the 6th or the 8th", "spans": [["event_name", "mac miller"], ["city", "pittsburgh"], ["date", "the 6th or the 8th"]]}
+{"text": "just do whatever in chengdu for the week after thanksgiving, i dont care what it is", "spans": [["city", "chengdu"], ["date", "the week after thanksgiving"]]}
+{"text": "so i need a date night thing, nothing loud, in santa fe or albuquerque this weekend", "spans": [["city", "santa fe"], ["city", "albuquerque"], ["date", "this weekend"]]}
+{"text": "hey guys i have a 2nd cousin in leeds and im in hangzhou for 5 days, cheapest show in either, date ideas", "spans": [["city", "leeds"], ["city", "hangzhou"]]}
+{"text": "anything for the 5th of november in edinburgh or glasgow? fireworks are not a show lol", "spans": [["date", "the 5th of november"], ["city", "edinburgh"], ["city", "glasgow"]]}
+{"text": "bobby is dropping his new album and his tour date in charlotte is on the 3rd, ok?", "spans": [["city", "charlotte"], ["date", "the 3rd"]]}
+{"text": "i wanna go to an oasis tribute in nanjing on the bank holiday monday, my nan says it's cheap", "spans": [["event_name", "oasis"], ["city", "nanjing"], ["date", "the bank holiday monday"]]}
+{"text": "what happens at the pitch in honolulu in the next couple of days", "spans": [["city", "honolulu"], ["date", "the next couple of days"]]}
+{"text": "just a tiny request, cheap, in wuhan or qingdao, anytime after the 21st", "spans": [["city", "wuhan"], ["city", "qingdao"], ["date", "after the 21st"]]}
+{"text": "ok we have the 30th free but our friend in bogota wants to see something too, do you know anything", "spans": [["date", "the 30th"], ["city", "bogota"]]}
+{"text": "tickets for radiohead in seattle on the 4th of june, how much would it cost", "spans": [["event_name", "radiohead"], ["city", "seattle"], ["date", "the 4th of june"]]}
+{"text": "a fast one: what is on in milan the end of the week", "spans": [["city", "milan"], ["date", "the end of the week"]]}
+{"text": "wanna catch the strokes in cork, ill drive down from galway if its worth it, the 9th maybe", "spans": [["event_name", "the strokes"], ["city", "cork"], ["city", "galway"], ["date", "the 9th"]]}
+{"text": "bristol gigs this weekend? my flatmate is loud and i want out of the flat", "spans": [["city", "bristol"], ["date", "this weekend"]]}
+{"text": "omg i have no idea where to go, i just got hired in perth and my first paycheck is the 15th so anything cheap", "spans": [["city", "perth"], ["date", "the 15th"]]}
+{"text": "my sister insists we go to hobart on the 2nd of february for some festival, is that a real thing", "spans": [["city", "hobart"], ["date", "the 2nd of february"]]}
+{"text": "i want to see parcels in adelaide before i move, end of the month works", "spans": [["event_name", "parcels"], ["city", "adelaide"], ["date", "end of the month"]]}
+{"text": "wellington or christchurch, which one has the better gig in mid january", "spans": [["city", "wellington"], ["city", "christchurch"], ["date", "mid january"]]}
+{"text": "my niece wants a big show in cebu for her birthday, she is turning 16 on the 20th, what can we do", "spans": [["city", "cebu"], ["date", "the 20th"]]}
+{"text": "pune has a jazz festival, is it the same weekend as the 25th? my uncle is asking", "spans": [["city", "pune"], ["date", "the 25th"]]}
+{"text": "chennai or hyderabad, whichever has a good open air show next month", "spans": [["city", "chennai"], ["city", "hyderabad"], ["date", "next month"]]}
+{"text": "kolkata for a week at the end of the month, what do people do on weekends there", "spans": [["city", "kolkata"], ["date", "the end of the month"]]}
+{"text": "i keep hearing about a big rock show in lahore, is it on the 11th?", "spans": [["city", "lahore"], ["date", "the 11th"]]}
+{"text": "karachi and lahore both sound fun, which one for a long weekend in late february", "spans": [["city", "karachi"], ["city", "lahore"], ["date", "late february"]]}
+{"text": "my bestie is sick of living in kingston, can we just go anywhere with a show for her 27th", "spans": [["city", "kingston"], ["date", "her 27th"]]}
+{"text": "nassau is a nice break but i want music, thinking the first saturday of june", "spans": [["city", "nassau"], ["date", "the first saturday of june"]]}
+{"text": "cancun or monterrey, whichever has the better live band the week after easter", "spans": [["city", "cancun"], ["city", "monterrey"], ["date", "the week after easter"]]}
+{"text": "medellin looks good for a month of music, is there something around the 1st of march", "spans": [["city", "medellin"], ["date", "the 1st of march"]]}
+{"text": "cali and medellin both have salsa nights, which one has more shows on thursdays", "spans": [["city", "cali"], ["city", "medellin"], ["date", "thursdays"]]}
+{"text": "cusco for a music festival, can someone tell me if its in june or july", "spans": [["city", "cusco"], ["date", "june"]]}
+{"text": "quito sounds lovely, im there the 3rd through the 6th, any live stuff", "spans": [["city", "quito"], ["date", "the 3rd through the 6th"]]}
+{"text": "montevideo has a candombe night every last friday right? i want to go", "spans": [["city", "montevideo"], ["date", "every last friday"]]}
+{"text": "la paz or santiago, idk, i just want a tango show in one of them soon", "spans": [["city", "la paz"], ["city", "santiago"], ["date", "soon"]]}
+{"text": "recife or salvador for carnival, music is the whole point, which is better", "spans": [["city", "recife"], ["city", "salvador"], ["date", "carnival"]]}
+{"text": "fortaleza sounds cheap for a show, and im free on tuesday", "spans": [["city", "fortaleza"], ["date", "tuesday"]]}
+{"text": "curitiba next week? ill be there for a conference, need a show after 7", "spans": [["city", "curitiba"], ["date", "next week"]]}
+{"text": "belo horizonte in late september, some kind of jazz night", "spans": [["city", "belo horizonte"], ["date", "late september"]]}
+{"text": "funchal in madeira or ponta delgada in the azores, my friend asks which has better gigs in the summer", "spans": [["city", "funchal"], ["city", "ponta delgada"], ["date", "the summer"]]}
+{"text": "malaga for a jazz festival the first days of august, is that a thing", "spans": [["city", "malaga"], ["date", "the first days of august"]]}
+{"text": "bilbao or san sebastian, the 19th or 20th, a live band would be nice", "spans": [["city", "bilbao"], ["city", "san sebastian"], ["date", "the 19th or 20th"]]}
+{"text": "granada has that old square with bands, what about the week before new years", "spans": [["city", "granada"], ["date", "the week before new years"]]}
+{"text": "cordoba, palermo, turin: which one has a good opera night in february", "spans": [["city", "cordoba"], ["city", "palermo"], ["city", "turin"], ["date", "february"]]}
+{"text": "bologna or verona, i have the 5th free, anything for a date night", "spans": [["city", "bologna"], ["city", "verona"], ["date", "the 5th"]]}
+{"text": "bari is off the map but my cousin lives there, anything going on the weekend of the 7th", "spans": [["city", "bari"], ["date", "the weekend of the 7th"]]}
+{"text": "split in croatia during the summer festival, is there a show on the 10th, im so excited", "spans": [["city", "split"], ["date", "the 10th"]]}
+{"text": "zagreb or belgrade for a week of gigs in september, which is cheaper to get to", "spans": [["city", "zagreb"], ["city", "belgrade"], ["date", "september"]]}
+{"text": "sofia has a rock stage on tuesdays, im trying to plan around that", "spans": [["city", "sofia"], ["date", "tuesdays"]]}
+{"text": "bucharest, cluj, both have indie bands. the first full week of november, pls help", "spans": [["city", "bucharest"], ["city", "cluj"], ["date", "the first full week of november"]]}
+{"text": "kyiv or lviv, whichever is safe to go to for music right now", "spans": [["city", "kyiv"], ["city", "lviv"]]}
+{"text": "minsk is out, but kaunas and tartu, which has the better music scene", "spans": [["city", "kaunas"], ["city", "tartu"]]}
+{"text": "gdansk, wroclaw, or krakow? any music on the 28th, i love polish jazz", "spans": [["city", "gdansk"], ["city", "wroclaw"], ["city", "krakow"], ["date", "the 28th"]]}
+{"text": "brno is my favourite city in czechia but i never see shows there, anything on the 2nd", "spans": [["city", "brno"], ["date", "the 2nd"]]}
+{"text": "bratislava, graz, salzburg: a weekend trip, what is on. im with my partner who likes opera", "spans": [["city", "bratislava"], ["city", "graz"], ["city", "salzburg"], ["date", "a weekend"]]}
+{"text": "innsbruck in winter for a concert, cheapest option please, the 26th", "spans": [["city", "innsbruck"], ["date", "the 26th"]]}
+{"text": "lucerne or geneva in july, which one has the nicer lakeside show", "spans": [["city", "lucerne"], ["city", "geneva"], ["date", "july"]]}
+{"text": "lyon or marseille, im in france for work all of october, anything live", "spans": [["city", "lyon"], ["city", "marseille"], ["date", "october"]]}
+{"text": "nice has a jazz festival in july right? i want to go the week of the 14th", "spans": [["city", "nice"], ["date", "the week of the 14th"]]}
+{"text": "bordeaux and toulouse, anything the 1st weekend of may, i dont care which one", "spans": [["city", "bordeaux"], ["city", "toulouse"], ["date", "the 1st weekend of may"]]}
+{"text": "nantes, lille, strasbourg, rennes, whichever has a free concert in march", "spans": [["city", "nantes"], ["city", "lille"], ["city", "strasbourg"], ["city", "rennes"], ["date", "march"]]}
+{"text": "montpellier for a festival, i have the 22nd free, is it on the 22nd", "spans": [["city", "montpellier"], ["date", "the 22nd"]]}
+{"text": "cologne or frankfurt, any metal show on the 8th, i need it loud", "spans": [["city", "cologne"], ["city", "frankfurt"], ["date", "the 8th"]]}
+{"text": "stuttgart and dresden both sound okay for a club night this winter, which one", "spans": [["city", "stuttgart"], ["city", "dresden"], ["date", "this winter"]]}
+{"text": "leipzig for the spring, i keep reading they have great underground music, when is it", "spans": [["city", "leipzig"], ["date", "the spring"]]}
+{"text": "hanover is boring but my sister lives there, what happens on the 4th of may", "spans": [["city", "hanover"], ["date", "the 4th of may"]]}
+{"text": "bremen, kiel, aarhus, odense, do any of these have a good band on the weekend of the 30th", "spans": [["city", "bremen"], ["city", "kiel"], ["city", "aarhus"], ["city", "odense"], ["date", "the weekend of the 30th"]]}
+{"text": "tampere or turku for a summer festival, we are going in july for the 2nd week, which one", "spans": [["city", "tampere"], ["city", "turku"], ["date", "the 2nd week"]]}
+{"text": "trondheim or tromso in winter for the northern lights and a concert, pick one", "spans": [["city", "trondheim"], ["city", "tromso"], ["date", "winter"]]}
+{"text": "uppsala or malmo, i want something on a thursday in november", "spans": [["city", "uppsala"], ["city", "malmo"], ["date", "a thursday in november"]]}
+{"text": "kigali for a week of work, is there anything chill on the 18th", "spans": [["city", "kigali"], ["date", "the 18th"]]}
+{"text": "kampala or nairobi for a festival in december, which one", "spans": [["city", "kampala"], ["city", "nairobi"], ["date", "december"]]}
+{"text": "dar es salaam in the week after eid, are there shows", "spans": [["city", "dar es salaam"], ["date", "the week after eid"]]}
+{"text": "addis ababa has a jazz club, my boss says it is open on sundays only", "spans": [["city", "addis ababa"], ["date", "sundays"]]}
+{"text": "tunis, algiers, rabat: looking for something live on the first friday of the month", "spans": [["city", "tunis"], ["city", "algiers"], ["city", "rabat"], ["date", "the first friday of the month"]]}
+{"text": "casablanca or marrakesh on a long weekend, i love a good oud player", "spans": [["city", "casablanca"], ["city", "marrakesh"], ["date", "a long weekend"]]}
+{"text": "fez or tangier, quick question, any shows in either on the 13th", "spans": [["city", "fez"], ["city", "tangier"], ["date", "the 13th"]]}
+{"text": "dakar for a festival in early december, is it worth the flight from abidjan", "spans": [["city", "dakar"], ["date", "early december"], ["city", "abidjan"]]}
+{"text": "windhoek sounds quiet, is there anything in the city for the holidays", "spans": [["city", "windhoek"], ["date", "the holidays"]]}
+{"text": "harare or lusaka, which has more music on weekends in the spring", "spans": [["city", "harare"], ["city", "lusaka"], ["date", "weekends in the spring"]]}
+{"text": "maputo, mid-month, some live band, not a club, i prefer a garden", "spans": [["city", "maputo"], ["date", "mid-month"]]}
+{"text": "antananarivo, whatever, im going on the 17th for a conference, need a show after it", "spans": [["city", "antananarivo"], ["date", "the 17th"]]}
+{"text": "port louis or male, one of them for a beach show in the holiday season", "spans": [["city", "port louis"], ["city", "male"], ["date", "the holiday season"]]}
+{"text": "kathmandu in october, the trekking is done so i want a concert, what is on", "spans": [["city", "kathmandu"], ["date", "october"]]}
+{"text": "dhaka for the 21st, a friend says there is a folk concert but i cant find it", "spans": [["city", "dhaka"], ["date", "the 21st"]]}
+{"text": "yangon, phnom penh, vientiane, pick the easiest one for live music this week", "spans": [["city", "yangon"], ["city", "phnom penh"], ["city", "vientiane"], ["date", "this week"]]}
+{"text": "ulaanbaatar in winter? is there any show at all or is it dead", "spans": [["city", "ulaanbaatar"], ["date", "winter"]]}
+{"text": "bishkek or dushanbe for a concert around the 1st of may, ill fly in from almaty", "spans": [["city", "bishkek"], ["city", "dushanbe"], ["date", "the 1st of may"], ["city", "almaty"]]}
+{"text": "ashgabat seems closed, is it even possible to see music there", "spans": [["city", "ashgabat"]]}
+{"text": "the cure at the forum in jeju on the 16th, any cheaper seats", "spans": [["event_name", "the cure"], ["city", "jeju"], ["date", "the 16th"]]}
+{"text": "pixies in kuala lumpur on halloween?? is that a thing", "spans": [["event_name", "pixies"], ["city", "kuala lumpur"], ["date", "halloween"]]}
+{"text": "vampire weekend in cleveland, my brother drives, is it the 14th", "spans": [["event_name", "vampire weekend"], ["city", "cleveland"], ["date", "the 14th"]]}
+{"text": "fleet foxes at a small place in asheville, maybe late august", "spans": [["event_name", "fleet foxes"], ["city", "asheville"], ["date", "late august"]]}
+{"text": "bjork in reykjavik? i just want the full show, not the bar thing", "spans": [["event_name", "bjork"], ["city", "reykjavik"]]}
+{"text": "ac/dc in melbourne next month, is there a cheaper way to get in", "spans": [["event_name", "ac/dc"], ["city", "melbourne"], ["date", "next month"]]}
+{"text": "charli xcx in penang on the 5th, tell me if the venue is near the station", "spans": [["event_name", "charli xcx"], ["city", "penang"], ["date", "the 5th"]]}
+{"text": "lorde in auckland the first week of december, i want to bring my mum", "spans": [["event_name", "lorde"], ["city", "auckland"], ["date", "the first week of december"]]}
+{"text": "death cab for cutie at a theater in surabaya, you think its sold out", "spans": [["event_name", "death cab for cutie"], ["city", "surabaya"]]}
+{"text": "the national in brooklyn? no, im near the new jersey side, but they play nyc on the 9th", "spans": [["event_name", "the national"], ["city", "nyc"], ["date", "the 9th"]]}
+{"text": "wilco on the 12th in bandung, how much is a balcony seat", "spans": [["event_name", "wilco"], ["date", "the 12th"], ["city", "bandung"]]}
+{"text": "pearl jam in oakland is on my bucket list, the 30th of june if they actually play", "spans": [["event_name", "pearl jam"], ["city", "oakland"], ["date", "the 30th of june"]]}
+{"text": "rush tribute in yogyakarta, is it worth driving from ottawa, idk what to do", "spans": [["event_name", "rush"], ["city", "yogyakarta"], ["city", "ottawa"]]}
+{"text": "sleater-kinney at the small room in portland, cheap, friday night", "spans": [["event_name", "sleater-kinney"], ["city", "portland"], ["date", "friday night"]]}
+{"text": "the offspring on the 6th in san diego, i'd rather not drive more than an hour", "spans": [["event_name", "the offspring"], ["date", "the 6th"], ["city", "san diego"]]}
+{"text": "elbow in leeds the week before xmas, my dad got me the tickets and i need to plan", "spans": [["event_name", "elbow"], ["city", "leeds"], ["date", "the week before xmas"]]}
+{"text": "the smiths tribute band in edinburgh, all weekend, which night is best", "spans": [["event_name", "the smiths"], ["city", "edinburgh"], ["date", "all weekend"]]}
+{"text": "mitski in mexico city on the 3rd, im in guadalajara for the week", "spans": [["event_name", "mitski"], ["city", "mexico city"], ["date", "the 3rd"], ["city", "guadalajara"]]}
+{"text": "still cant find the show im looking for in denpasar, its probably not in new orleans, maybe baton rouge", "spans": [["city", "denpasar"], ["city", "baton rouge"]]}
+{"text": "no question, just a thought: i want a concert in cairo before the 2nd half of ramadan", "spans": [["city", "cairo"], ["date", "before the 2nd half of ramadan"]]}
+{"text": "the tiniest request ever: anything in cape coast on the 28th? my friend says the drums are great", "spans": [["city", "cape coast"], ["date", "the 28th"]]}
+{"text": "mango in busan or taipei, i want to go on a friday night, so whichever is free", "spans": [["city", "busan"], ["city", "taipei"], ["date", "friday night"]]}
+{"text": "kaohsiung and taichung both do rock shows on sunday, which is closer to kenting", "spans": [["city", "kaohsiung"], ["city", "taichung"], ["date", "sunday"]]}
+{"text": "hanoi or da nang in early april for a weekend, live stuff, i like cafes with bands", "spans": [["city", "hanoi"], ["city", "da nang"], ["date", "early april"]]}
+{"text": "davao or cebu on the 1st weekend of the month, i'm in manila and want something different", "spans": [["city", "davao"], ["city", "cebu"], ["date", "the 1st weekend of the month"], ["city", "manila"]]}
+{"text": "pune on the 14th, chennai on the 16th, which order makes sense for a 4 day trip", "spans": [["city", "pune"], ["date", "the 14th"], ["city", "chennai"], ["date", "the 16th"]]}
+{"text": "ppl r out there? gig in quito fri???", "spans": [["city", "quito"], ["date", "fri"]]}
+{"text": "gym was rough today", "spans": []}
+{"text": "sooo wanna go to the parcels thing in hobart or nah", "spans": [["event_name", "parcels"], ["city", "hobart"]]}
+{"text": "honestly lost, lmao", "spans": []}
+{"text": "vilnius weekend? any band? cheap plz", "spans": [["city", "vilnius"], ["date", "weekend"]]}
+{"text": "my ex wants to go to a big show in dallas on the 3rd, im not going, just wondering", "spans": [["city", "dallas"], ["date", "the 3rd"]]}
+{"text": "ok fine. the sabrina carpenter show in ho chi minh city or siem reap whichever is closest to my lab", "spans": [["event_name", "sabrina carpenter"], ["city", "ho chi minh city"], ["city", "siem reap"]]}
+{"text": "my car died and i'm stuck in tulsa until the 10th so a concert nearby would save me", "spans": [["city", "tulsa"], ["date", "the 10th"]]}
+{"text": "the pitch is looking good for thursday in mumbai, my cousin says the sound is loud", "spans": [["date", "thursday"], ["city", "mumbai"]]}
+{"text": "hi sorry this is long, i moved to luang prabang last year, i miss my old friends in portland, so maybe a show in portland on the 24th, i have a car", "spans": [["city", "luang prabang"], ["city", "portland"], ["date", "the 24th"]]}
+{"text": "need a laugh, anything comedy in kuching on a school night", "spans": [["city", "kuching"], ["date", "a school night"]]}
+{"text": "its fine if its a small thing, somewhere in new york state, the 1st or 2nd of march", "spans": [["date", "the 1st or 2nd of march"]]}
+{"text": "sunday brunch with live jazz in athens, im in athens greece for 2 days", "spans": [["date", "sunday"], ["city", "athens"]]}
+{"text": "i'm bored and in st petersburg, one word answers are fine", "spans": [["city", "st petersburg"]]}
+{"text": "is it pleasant in belgrade in may, and is there a concert", "spans": [["city", "belgrade"], ["date", "may"]]}
+{"text": "how far is kansas from kansas city? kidding, just want the Kansas show on the 1st", "spans": [["city", "kansas city"], ["event_name", "Kansas"], ["date", "the 1st"]]}
+{"text": "idk my friend said something happens in the south of france, maybe marseille or nice, around the middle of july", "spans": [["city", "marseille"], ["city", "nice"], ["date", "the middle of july"]]}
+{"text": "going to a concert in dubai in december, after my conference, not sure which night", "spans": [["city", "dubai"], ["date", "december"]]}
+{"text": "need help ASAP, a show in austin tomorrow, cheap, nothing with a cover over 20", "spans": [["city", "austin"], ["date", "tomorrow"]]}
+{"text": "my boyfriend says we should go to moscow for the suns, i say we go to novosibirsk for the heat", "spans": [["city", "moscow"], ["event_name", "suns"], ["city", "novosibirsk"], ["event_name", "heat"]]}
+{"text": "the orlando magic and the vladivostok heat play on the 9th in miami, cheap seats please", "spans": [["event_name", "orlando magic"], ["city", "vladivostok"], ["date", "the 9th"]]}
+{"text": "where should i go this weekend if i want to see a band that's touring the balkans, sarajevo or skopje", "spans": [["date", "this weekend"], ["city", "sarajevo"], ["city", "skopje"]]}
+{"text": "grandma's birthday is on the 13th and she wants an opera in vienna, could you find one", "spans": [["date", "the 13th"], ["city", "vienna"]]}
+{"text": "what happens in singapore for the national day week, the last week of august", "spans": [["city", "singapore"], ["date", "the last week of august"]]}
+{"text": "i want a lovely night in rome, not a crowd, maybe a choir on the sunday before easter", "spans": [["city", "rome"], ["date", "the sunday before easter"]]}
+{"text": "maybe something in the uk? i'm in leeds, my job says to be in perm the 2nd week of april", "spans": [["city", "leeds"], ["city", "perm"], ["date", "the 2nd week of april"]]}
+{"text": "nothing much, i'm just here in hamburg, any shows around the 31st, idk", "spans": [["city", "hamburg"], ["date", "the 31st"]]}
+{"text": "hi, long-time reader, first time asking: what is on in gothenburg in the first half of the month", "spans": [["city", "gothenburg"], ["date", "the first half of the month"]]}

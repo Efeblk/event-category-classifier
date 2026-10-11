@@ -18,8 +18,8 @@ lowercase, typo-filled requests.
 | SGD Events | Google Schema-Guided Dialogue, user turns of the Events services | CC BY-SA 4.0 | 5,586 / 626 / 784 |
 | MASSIVE en-US | Amazon MASSIVE, rows with date, place or event slots | CC BY 4.0 | 2,607 / 488 / 633 |
 | Messy test | 50 casual requests with slang and typos (AI-drafted, checked and corrected by hand) | MIT | test only |
-| Synthetic | 942 messy requests written by an AI model (Claude Haiku) | MIT | train only |
-| Codex test | 60 requests written by a different AI agent (OpenAI Codex), checked by hand | MIT | test only |
+| Synthetic | 942 messy requests written by an AI model (Claude Haiku); 1,400 more for the data curve | MIT | train only |
+| Codex test | 60 requests written by a different AI agent (OpenAI Codex), checked by hand; 200 more for the data curve | MIT | test only |
 
 The preprocessing scripts download the raw data, map the slots to `city` / `date` /
 `event_name`, convert character spans to BIO tags, remove duplicates, and drop dev/test
@@ -148,14 +148,31 @@ Main findings:
 8. **Shrinking BERTweet itself works much better than starting from a small model.** Half of
    BERTweet (6 layers) stored in 16-bit is 184 MB, 2.9× smaller than the full model. With seed
    42 it had the same messy and Codex F1 (0.95); over three seeds it loses about 0.01 (messy
-   0.93 ± 0.02 vs 0.95 ± 0.01, Codex 0.94 vs 0.94). Cut-down BERTweet keeps its knowledge of casual text, which
-   BERT-mini never had. Keeping the bottom 4 layers beat keeping 4 spread-out layers on the
+   0.93 ± 0.02 vs 0.95 ± 0.01, Codex 0.94 vs 0.94). Cut-down BERTweet keeps its knowledge of
+   casual text, which BERT-mini never had. Keeping the bottom 4 layers beat keeping 4 spread-out layers on the
    Codex test (0.94 vs 0.90): neighbouring layers already work together. 16-bit storage cost
    nothing; 8-bit costs 0.03–0.07 on messy text, so it is not worth it here. The word table
    (49M of BERTweet's 135M parameters) is why cutting layers alone shrinks the model only 1.5×.
+9. **About 500 AI-written requests are enough.** The data curve below adds the first N rows of a
+   1,957-row pool of AI-written requests to set D (3 seeds per point). On all 260 Codex requests,
+   F1 rises from 0.85 to 0.93 by 500 rows and then stays flat (0.92–0.93 up to 1,957), so more of
+   the same data is not worth making. The messy test keeps rising slowly (0.95 → 0.98), but it was
+   written by the same AI as the training rows and its spread between seeds is as large as the rise.
 
-Limitations: one seed except for the three-seed table; the messy and Codex test sets have only 50 and 60 requests, so
-differences of a few points are within noise; both were written by AI models, not by real
+Data curve (BERTweet, set D + N AI-written rows; mean ± standard deviation over seeds 42, 1, 2). The pool is
+decontaminated against every test set, so the 260 Codex requests share no event name with it:
+
+| AI-written rows | Codex test (260) | Messy test (50) |
+|---|---|---|
+| 0 | 0.85 ± 0.01 | 0.80 ± 0.03 |
+| 250 | 0.91 ± 0.00 | 0.93 ± 0.02 |
+| 500 | **0.93 ± 0.01** | 0.95 ± 0.01 |
+| 1,000 | 0.92 ± 0.01 | 0.97 ± 0.02 |
+| 1,500 | 0.92 ± 0.00 | 0.95 ± 0.03 |
+| 1,957 | 0.92 ± 0.00 | 0.98 ± 0.01 |
+
+Limitations: one seed except for the three-seed table and the data curve; the messy and Codex test sets have only
+50 and 60 requests (260 Codex requests for the data curve), so differences of a few points are within noise; both were written by AI models, not by real
 users. Remaining BERTweet errors on the Codex test include places that are not cities
 ("msg", "bway") tagged as cities, and missed time-of-day words ("this evening").
 
@@ -167,7 +184,7 @@ Full numbers, per-slot scores and the learning curve are in `results/`.
 |---|---|
 | `prepare_sgd.py` | Downloads SGD, keeps Events dialogues, writes `data/raw/sgd/` and `data/clean/{train,dev,test}.jsonl` |
 | `prepare_massive.py` | Downloads MASSIVE en-US, maps slots, writes `data/raw/massive/` and `data/clean/massive_*.jsonl` |
-| `prepare_synthetic.py` | Converts `data/synthetic/` to BIO tags, drops rows that leak messy-test event names, writes `data/clean/synthetic_*` |
+| `prepare_synthetic.py` | Converts `data/synthetic/` to BIO tags and drops rows that leak test-set event names: parts 1–4 for set E (`data/clean/synthetic_*`), parts 1–8 for the data curve (`data/clean/synthetic_pool_*`) |
 | `slots.py` | Shared helpers: reading data, BIO tags, span F1, word features, typo copies, dictionary baseline |
 | `train_classic.py` | Trains and compares the dictionary, Naive Bayes, Logistic Regression and Linear SVM on sets A–E; learning curve |
 | `train_bert.py` | Fine-tunes one transformer (`--model`) on set D, E or F (`--train-set`), optionally distilled from a trained teacher (`--teacher`, `--alpha`); needs a CUDA GPU |
@@ -180,7 +197,7 @@ Full numbers, per-slot scores and the learning curve are in `results/`.
 | `data/clean/` | BIO-tagged training, dev and test data, plus statistics |
 | `data/messy/` | The 50-request messy test set |
 | `data/synthetic/` | The AI-written training requests with their slot spans, before conversion |
-| `data/codex/` | The 60-request Codex test set |
+| `data/codex/` | The Codex test sets: 60 requests (`codex_test.jsonl`) and 200 more for the data curve (`codex_more_test.jsonl`) |
 | `results/` | Scores of every model (JSON), written by the training scripts |
 | `tests/` | Unit tests (no network or GPU needed) |
 | `contributions/` | Contribution statement |
@@ -214,6 +231,8 @@ python train_bert.py --model google/bert_uncased_L-4_H-256_A-4 --train-set E --t
 ```
 
 The other distillation runs use the same commands with `--alpha 0.3` / `0.5` / `0.7` and `--train-set F`.
+Data curve: `python train_bert.py --model vinai/bertweet-base --synthetic N --seed S` for N in 0, 250, 500, 1000,
+1500, 1957 and S in 42, 1, 2.
 Three seeds: the same commands with `--seed 1` and `--seed 2` (results get a `_seed<n>` suffix).
 Shrinking (also with `--alpha 0.3` / `0.5` / `0.7`, and `--keep-layers 0,3,6,9` or `0,1,2,3` with tags
 `bertweet_4L` / `bertweet_4L_bottom`), then the precision check:
@@ -241,7 +260,7 @@ Each claim above can be checked without a GPU:
 | Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
 | No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
 | No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json`. Synthetic rows that mention messy-test event names are dropped (`data/clean/synthetic_stats.json`) |
-| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores per precision); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run |
+| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores per precision); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run; data curve: `results/bertweet_syn<N>[_seed<n>]_results.json` (`codex_all` = all 260 Codex requests), pool sizes in `data/clean/synthetic_pool_stats.json` |
 | Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
 | Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 

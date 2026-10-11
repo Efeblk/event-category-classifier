@@ -26,6 +26,10 @@ class ToRowTest(unittest.TestCase):
                                                "spans": [["city", "Paris"], ["city", "Paris"]]})
         self.assertEqual(row["tags"], ["B-city", "O", "B-city", "O"])
 
+    def test_substring_inside_an_earlier_word_is_skipped(self):
+        row = prepare_synthetic.to_row("s:5", {"text": "who is playing in la", "spans": [["city", "la"]]})
+        self.assertEqual(row["tags"], ["O", "O", "O", "O", "B-city"])
+
     def test_missing_substring_fails_loudly(self):
         with self.assertRaises(ValueError):
             prepare_synthetic.to_row("s:3", {"text": "Jazz tonight", "spans": [["event_name", "Rock"]]})
