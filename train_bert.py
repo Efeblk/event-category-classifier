@@ -1,15 +1,16 @@
 """Fine-tune a pre-trained transformer for slot tagging on training set D (SGD + MASSIVE + typo copies, from
 train_classic), set E (D + synthetic rows) or set F (E + messy copies).
 
-Usage: python train_bert.py [--model bert-base-uncased|roberta-base|vinai/bertweet-base] [--train-set D|E]
-[--teacher DIR --alpha A] [--tag NAME]. The output tag is --tag, or else the model name's first part (bert, roberta,
-bertweet) plus _large for large models. Set D writes <tag>_results.json, reports/<tag>_messy_predictions.csv and
-artifacts/<tag>/; sets E and F add an _E or _F suffix to each of those names.
+Usage: python train_bert.py [--model bert-base-uncased|roberta-base|vinai/bertweet-base] [--train-set D|E|F]
+[--teacher DIR --alpha A] [--tag NAME] [--seed N]. The output tag is --tag, or else the model name's first part
+(bert, roberta, bertweet) plus _large for large models. Set D writes <tag>_results.json,
+reports/<tag>_messy_predictions.csv and artifacts/<tag>/; sets E and F add an _E or _F suffix to each of those names,
+and a --seed other than 42 adds _seed<n>.
 
 Labels are O plus B-/I- for city, date and event_name. Only the first sub-token of each word is labelled and its
 prediction is used for the word; predictions go through repair_bio. Runs 4 epochs (--epochs) of AdamW with linear
-warmup, bf16 autocast on CUDA and seed 42. The epoch with the best span micro F1 on SGD dev + MASSIVE dev is kept, then
-scored once on SGD test, MASSIVE test, the messy test set and the Codex test set. Writes the summary to
+warmup, bf16 autocast on CUDA and seed 42 (--seed). The epoch with the best span micro F1 on SGD dev + MASSIVE dev is
+kept, then scored once on SGD test, MASSIVE test, the messy test set and the Codex test set. Writes the summary to
 results/<tag>_results.json, the per-row messy predictions to reports/<tag>_messy_predictions.csv and the model to
 artifacts/<tag>/. Requires torch with a CUDA GPU (see requirements-gpu.txt).
 
@@ -56,11 +57,11 @@ MAX_LEN = 128
 TEMPERATURE = 2.0
 
 
-def set_seed():
-    random.seed(SEED)
-    np.random.seed(SEED)
-    torch.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)
+def set_seed(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
 
 def encode(tokenizer, rows):
@@ -177,7 +178,7 @@ def evaluate(model, examples, rows, pad_id):
     return span_scores([r["tags"] for r in rows], pred), pred
 
 
-def train(model, train_ex, dev_ex, dev_rows, pad_id, alpha=None, epochs=EPOCHS):
+def train(model, train_ex, dev_ex, dev_rows, pad_id, alpha=None, epochs=EPOCHS, seed=SEED):
     """Train for epochs epochs; return the per-epoch history and the epoch whose weights are loaded at the end.
     With alpha, the examples carry teacher soft labels and distill_loss is used."""
     no_decay = ("bias", "LayerNorm.weight")
@@ -189,7 +190,7 @@ def train(model, train_ex, dev_ex, dev_rows, pad_id, alpha=None, epochs=EPOCHS):
     optimizer = AdamW(groups, lr=LR)
     total = math.ceil(len(train_ex) / BATCH) * epochs
     scheduler = get_linear_schedule_with_warmup(optimizer, int(WARMUP * total), total)
-    order_rng = torch.Generator().manual_seed(SEED)
+    order_rng = torch.Generator().manual_seed(seed)
     history, best = [], None
     for epoch in range(1, epochs + 1):
         model.train()
@@ -230,15 +231,17 @@ def main():
     parser.add_argument("--tag", help="output name instead of the one derived from --model")
     parser.add_argument("--epochs", type=int, default=EPOCHS, help=f"training epochs (default {EPOCHS})")
     parser.add_argument("--init-from", type=Path, help="start from this trained model directory instead of --model")
+    parser.add_argument("--seed", type=int, default=SEED, help=f"random seed (default {SEED}; others add _seed<n>)")
     parser.add_argument("--keep-layers", help="comma-separated 0-based layer indexes to keep, e.g. 0,3,6,9")
     args = parser.parse_args()
     model_id = args.model
     name = model_id.split("/")[-1].lower()
     tag = args.tag or name.split("-")[0] + ("_large" if "large" in name else "")
     suffix = ("" if args.train_set == "D" else f"_{args.train_set}") + (f"_kd{args.alpha}" if args.teacher else "")
+    suffix += "" if args.seed == SEED else f"_seed{args.seed}"
     if not torch.cuda.is_available():
         raise SystemExit("CUDA GPU required")
-    set_seed()
+    set_seed(args.seed)
     results_dir, reports, artifacts = ROOT / "results", ROOT / "reports", ROOT / "artifacts" / (tag + suffix)
     results_dir.mkdir(exist_ok=True)
     reports.mkdir(exist_ok=True)
@@ -264,7 +267,7 @@ def main():
 
     train_started = time.perf_counter()
     history, chosen = train(model, train_ex, dev_ex, dev_rows, pad_id, args.alpha if args.teacher else None,
-                            args.epochs)
+                            args.epochs, args.seed)
     train_seconds = time.perf_counter() - train_started
 
     scores, messy_pred = {}, None
@@ -279,7 +282,7 @@ def main():
 
     gpu = torch.cuda.get_device_name(0)
     results = {
-        "model": model_id, "labels": LABELS, "seed": SEED,
+        "model": model_id, "labels": LABELS, "seed": args.seed,
         "hyperparameters": {"lr": LR, "weight_decay": WEIGHT_DECAY, "batch": BATCH, "max_epochs": args.epochs,
                             "warmup": WARMUP, "max_len": MAX_LEN, "grad_clip": 1.0, "precision": "bf16 autocast"},
         "distillation": ({"teacher": args.teacher.name, "alpha": args.alpha, "temperature": TEMPERATURE}

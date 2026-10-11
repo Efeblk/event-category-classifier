@@ -107,6 +107,18 @@ which scores with bf16 (≈ sizes: parameters × 4 bytes):
 | BERTweet, α = 0.5 | 4 spread (1, 4, 7, 10) | 32-bit (training) | ≈ 310 MB | 0.964 | 0.89 | 0.90 |
 | BERT-mini, α = 0.5 | — | 32-bit (training) | ≈ 45 MB | 0.960 | 0.86 | 0.83 |
 
+Three seeds (42, 1, 2) for the key comparisons, mean ± standard deviation. The seed changes the
+classifier's starting weights, dropout and the order of the training sentences; the data and α stay
+the same:
+
+| Model | Dev | MASSIVE test | Messy test | Codex test |
+|---|---|---|---|---|
+| BERTweet, set D | 0.966 ± 0.002 | 0.91 ± 0.01 | 0.80 ± 0.03 | 0.83 ± 0.01 |
+| BERTweet, set E | 0.966 ± 0.001 | 0.91 ± 0.01 | **0.95 ± 0.01** | **0.94 ± 0.02** |
+| BERTweet 6 layers, set E, soft labels α = 0.7 | 0.964 ± 0.001 | 0.90 ± 0.00 | 0.93 ± 0.02 | 0.94 ± 0.01 |
+| BERT-mini, set E, gold labels | 0.957 ± 0.003 | 0.89 ± 0.01 | 0.84 ± 0.01 | 0.84 ± 0.01 |
+| BERT-mini, set E, soft labels α = 0.5 | 0.957 ± 0.004 | 0.89 ± 0.01 | 0.85 ± 0.02 | 0.84 ± 0.01 |
+
 Main findings:
 
 1. **Every model loses accuracy on messy requests.** The classic models find cities well but
@@ -120,26 +132,29 @@ Main findings:
    reaches 0.90 test F1, and on all of it 0.92.
 5. **AI-written messy training data helps a lot, and the gain holds on the independent Codex
    test**: BERTweet goes from 0.84 to 0.95 there, Linear SVM from 0.66 to 0.81. The clean test
-   scores stay the same.
-6. **Distillation only helps with a stronger teacher.** RoBERTa-large is 3× bigger but ties
+   scores stay the same. Over three seeds the gain is far larger than the spread (messy 0.80 ±
+   0.03 → 0.95 ± 0.01, Codex 0.83 ± 0.01 → 0.94 ± 0.02).
+6. **Distillation gave no clear gain.** RoBERTa-large is 3× bigger but ties
    BERTweet on dev and is worse on messy text, so it had nothing to teach: the distilled
    BERTweet stayed within 0.01 of plain BERTweet. Jev was a weaker teacher still (0.73 span F1
    on 300 dev sentences, against 0.96 for BERTweet). When BERTweet teaches the 12× smaller
-   BERT-mini, the soft labels raised dev F1 for every α tried (0.957 → 0.958–0.960) and messy
-   F1 by about 0.01–0.02; the messy gains are within noise.
+   BERT-mini, the soft labels raised dev F1 for every α tried with seed 42 (0.957 → 0.958–0.960),
+   but over three seeds dev F1 is equal (0.957) and messy F1 moves only 0.84 → 0.85, less than
+   the spread between seeds. So the gain from soft labels here is not shown to be real.
 7. **A 12× smaller model keeps the clean-text score but not the messy one**: BERT-mini reaches
    0.960 dev F1 (BERTweet 0.966) but only 0.86 on messy requests (BERTweet 0.95). Adding 9k
    chat-style copies (set F) did not close the gap. Dev is clean text, so choosing α on dev
    cannot reward gains on messy text.
 8. **Shrinking BERTweet itself works much better than starting from a small model.** Half of
-   BERTweet (6 layers) stored in 16-bit is 184 MB, 2.9× smaller than the full model, with the
-   same messy and Codex F1 (0.95). Cut-down BERTweet keeps its knowledge of casual text, which
+   BERTweet (6 layers) stored in 16-bit is 184 MB, 2.9× smaller than the full model. With seed
+   42 it had the same messy and Codex F1 (0.95); over three seeds it loses about 0.01 (messy
+   0.93 ± 0.02 vs 0.95 ± 0.01, Codex 0.94 vs 0.94). Cut-down BERTweet keeps its knowledge of casual text, which
    BERT-mini never had. Keeping the bottom 4 layers beat keeping 4 spread-out layers on the
    Codex test (0.94 vs 0.90): neighbouring layers already work together. 16-bit storage cost
    nothing; 8-bit costs 0.03–0.07 on messy text, so it is not worth it here. The word table
    (49M of BERTweet's 135M parameters) is why cutting layers alone shrinks the model only 1.5×.
 
-Limitations: one seed; the messy and Codex test sets have only 50 and 60 requests, so
+Limitations: one seed except for the three-seed table; the messy and Codex test sets have only 50 and 60 requests, so
 differences of a few points are within noise; both were written by AI models, not by real
 users. Remaining BERTweet errors on the Codex test include places that are not cities
 ("msg", "bway") tagged as cities, and missed time-of-day words ("this evening").
@@ -199,6 +214,7 @@ python train_bert.py --model google/bert_uncased_L-4_H-256_A-4 --train-set E --t
 ```
 
 The other distillation runs use the same commands with `--alpha 0.3` / `0.5` / `0.7` and `--train-set F`.
+Three seeds: the same commands with `--seed 1` and `--seed 2` (results get a `_seed<n>` suffix).
 Shrinking (also with `--alpha 0.3` / `0.5` / `0.7`, and `--keep-layers 0,3,6,9` or `0,1,2,3` with tags
 `bertweet_4L` / `bertweet_4L_bottom`), then the precision check:
 
@@ -225,7 +241,7 @@ Each claim above can be checked without a GPU:
 | Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
 | No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
 | No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json`. Synthetic rows that mention messy-test event names are dropped (`data/clean/synthetic_stats.json`) |
-| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores per precision) |
+| Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores per precision); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run |
 | Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
 | Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 
