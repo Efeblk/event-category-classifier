@@ -71,8 +71,31 @@ test, so a gain on the messy test alone could come from shared style. The Codex 
 - **Jev** (TypeSafe, optional, paid): answers what word tagging cannot, namely the event type
   and the number of tickets ("with my girlfriend" means two).
 
+### Baselines and new methods
+
+The methods taught in the course, in their plain form, are the baselines; the rest are this project's new methods.
+Architecture and the specific pre-trained model are listed separately.
+
+| Role | Method | Architecture | Specific model |
+|---|---|---|---|
+| Baseline | Parser | dictionary lookup (longest match) | built from the training spans |
+| Baseline | Naive Bayes, Logistic Regression, Linear SVM | linear classifiers on hand-made word features | scikit-learn |
+| Baseline | BERT | BERT encoder (12 layers) | `bert-base-uncased` |
+| Baseline | RoBERTa | RoBERTa encoder (12 layers) | `roberta-base` |
+| New | BERTweet | RoBERTa encoder (12 layers), pre-trained on tweets | `vinai/bertweet-base` |
+| New | AI-written messy training data (set E) | same models, new data | BERTweet_E and the classic models on set E |
+| New | Distillation | teacher and student encoders | `roberta-large` → BERTweet; BERTweet → `google/bert_uncased_L-4_H-256_A-4` (BERT-mini) |
+| New | Shrinking | BERTweet with 6 or 4 of its 12 layers, 16-bit and 8-bit weights | from BERTweet_E |
+| New | Jev (TypeSafe) | hosted model that answers choice questions with probabilities | `jev-1.13.0`: event type and ticket count, and tested as a teacher |
+
 Every setting is chosen on the dev sets (SGD dev + MASSIVE dev); each test set is scored once.
-The metric is exact-span F1.
+
+**Metric: micro-averaged exact-span F1.** A slot counts as correct only if its type and both ends match the gold
+span exactly; precision and recall are counted over all slots of all sentences together (micro average), and
+`results/*.json` also keep the F1 of each slot type. Accuracy per word would be misleading: 82% of the words in the
+SGD test (68% in the messy test) have no slot ("O"), so a model that tags nothing would already look good. A
+half-found name ("roan" instead of "chappell roan") is also a wrong answer for the user, which exact spans count
+as wrong.
 
 ## Results
 
@@ -273,7 +296,7 @@ Each claim above can be checked without a GPU:
 | Claim | Where to look |
 |---|---|
 | Rubric items | Preprocessing: `prepare_*.py`. Training: `train_*.py`. Raw and clean data: `data/`. Licence: `LICENSE`. Contributions: `contributions/` |
-| Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; dictionary baseline and Jev as benchmarks |
+| Naive Bayes plus taught methods (LR, SVM, BERT), and benchmarks | `train_classic.py`, `train_bert.py`; baselines and new methods in the Methods section (Jev as a new method) |
 | No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
 | No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json`. Synthetic rows that mention messy-test event names are dropped (`data/clean/synthetic_stats.json`) |
 | Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores and ms per request per precision, including the seed 1 and 2 runs of the 12- and 6-layer models); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run; data curve: `results/bertweet_syn<N>[_seed<n>]_results.json` (`codex_all` = all 260 Codex requests), pool sizes in `data/clean/synthetic_pool_stats.json` |
