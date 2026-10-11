@@ -479,7 +479,7 @@ function drawDumbbell(section, groups, note) {
     }
   });
   const axisY = y + 8;
-  const H = axisY + 56;
+  const H = axisY + 56 + (note ? 100 : 0);  // the note gets its own space under the axis, clear of the labels
   const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
   for (let i = 0; i <= 6; i++) {
     const v = Math.round((0.4 + i * 0.1) * 10) / 10;
@@ -515,9 +515,10 @@ function drawDumbbell(section, groups, note) {
                                    "font-size": 15 }, f2(row.messy)));
       }
       if (note && hasBoth && row.name === note.row) {
-        const left = x(row.messy), right = x(row.sgd), noteX = L + 105;
-        svg.append(handCircle((left + right) / 2, item.y, (right - left) / 2 + 26, 20),
-                   handArrow(noteX + 140, item.y - 36, left - 26, item.y - 4), handNote(noteX, item.y - 50, note.text));
+        // The circle also takes in the value label left of the messy dot; the arrow runs up between two tick labels.
+        const left = x(row.messy) - 44, right = x(row.sgd), arrowX = x(0.85), noteY = axisY + 86;
+        svg.append(handCircle((left + right) / 2, item.y, (right - left) / 2 + 22, 20),
+                   handArrow(arrowX, noteY - 30, arrowX, item.y + 22), handNote(arrowX + 100, noteY, note.text));
       }
       if (hasBoth) {
         const drop = row.sgd - row.messy;
