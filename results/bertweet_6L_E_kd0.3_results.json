@@ -1,0 +1,171 @@
+{
+  "model": "vinai/bertweet-base",
+  "labels": [
+    "O",
+    "B-city",
+    "I-city",
+    "B-date",
+    "I-date",
+    "B-event_name",
+    "I-event_name"
+  ],
+  "seed": 42,
+  "hyperparameters": {
+    "lr": 3e-05,
+    "weight_decay": 0.01,
+    "batch": 32,
+    "max_epochs": 4,
+    "warmup": 0.1,
+    "max_len": 128,
+    "grad_clip": 1.0,
+    "precision": "bf16 autocast"
+  },
+  "distillation": {
+    "teacher": "bertweet_E",
+    "alpha": 0.3,
+    "temperature": 2.0
+  },
+  "init_from": "bertweet_E",
+  "kept_layers": "0,2,4,6,8,10",
+  "parameters": 91787527,
+  "train_sentences": 17328,
+  "dev_sentences": 1114,
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 0.20991967238289927,
+      "dev_f1": 0.960931630353118
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.028084831531812536,
+      "dev_f1": 0.9606594230048707
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.01435786067994442,
+      "dev_f1": 0.9621013133208255
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.01020707418571649,
+      "dev_f1": 0.9624060150375939
+    }
+  ],
+  "chosen_epoch": 4,
+  "dev_f1_chosen": 0.9624060150375939,
+  "test": {
+    "SGD test": {
+      "precision": 0.9755142017629774,
+      "recall": 0.9812807881773399,
+      "f1": 0.9783889980353635,
+      "sentence_exact": 0.9681122448979592,
+      "slots": {
+        "city": {
+          "precision": 0.9733333333333334,
+          "recall": 0.9941634241245136,
+          "f1": 0.9836381135707412,
+          "support": 514
+        },
+        "date": {
+          "precision": 0.9924242424242424,
+          "recall": 0.9949367088607595,
+          "f1": 0.9936788874841972,
+          "support": 395
+        },
+        "event_name": {
+          "precision": 0.92,
+          "recall": 0.8679245283018868,
+          "f1": 0.8932038834951457,
+          "support": 106
+        }
+      }
+    },
+    "MASSIVE test": {
+      "precision": 0.8969957081545065,
+      "recall": 0.8982808022922636,
+      "f1": 0.8976377952755906,
+      "sentence_exact": 0.8625592417061612,
+      "slots": {
+        "city": {
+          "precision": 0.8905109489051095,
+          "recall": 0.8905109489051095,
+          "f1": 0.8905109489051094,
+          "support": 274
+        },
+        "date": {
+          "precision": 0.9116945107398569,
+          "recall": 0.9271844660194175,
+          "f1": 0.9193742478941035,
+          "support": 412
+        },
+        "event_name": {
+          "precision": 0.16666666666666666,
+          "recall": 0.08333333333333333,
+          "f1": 0.1111111111111111,
+          "support": 12
+        }
+      }
+    },
+    "messy": {
+      "precision": 0.945054945054945,
+      "recall": 0.945054945054945,
+      "f1": 0.945054945054945,
+      "sentence_exact": 0.86,
+      "slots": {
+        "city": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 36
+        },
+        "date": {
+          "precision": 0.9166666666666666,
+          "recall": 0.8918918918918919,
+          "f1": 0.9041095890410958,
+          "support": 37
+        },
+        "event_name": {
+          "precision": 0.8947368421052632,
+          "recall": 0.9444444444444444,
+          "f1": 0.918918918918919,
+          "support": 18
+        }
+      }
+    },
+    "codex": {
+      "precision": 0.935251798561151,
+      "recall": 0.9558823529411765,
+      "f1": 0.9454545454545454,
+      "sentence_exact": 0.8333333333333334,
+      "slots": {
+        "city": {
+          "precision": 0.9107142857142857,
+          "recall": 0.9807692307692307,
+          "f1": 0.9444444444444444,
+          "support": 52
+        },
+        "date": {
+          "precision": 0.9361702127659575,
+          "recall": 0.8979591836734694,
+          "f1": 0.9166666666666666,
+          "support": 49
+        },
+        "event_name": {
+          "precision": 0.9722222222222222,
+          "recall": 1.0,
+          "f1": 0.9859154929577464,
+          "support": 35
+        }
+      }
+    }
+  },
+  "train_seconds": 102.86624080000001,
+  "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+  "versions": {
+    "python": "3.13.3",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "transformers": "5.19.0"
+  }
+}

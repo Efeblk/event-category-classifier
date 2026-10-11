@@ -1,0 +1,500 @@
+{"text": "yo r the devils playing in newark tmrw?", "spans": [["event_name", "devils"], ["city", "newark"], ["date", "tmrw"]]}
+{"text": "my dad wants 2 see the jaguars sunday, any seats left in jacksonville", "spans": [["event_name", "jaguars"], ["date", "sunday"], ["city", "jacksonville"]]}
+{"text": "is there a monaco vs lyon watch party tonight lol", "spans": [["event_name", "monaco vs lyon"], ["date", "tonight"]]}
+{"text": "anyone wanna go to the lakers game in la 2nite? i have 2 extra tix", "spans": [["event_name", "lakers"], ["city", "la"], ["date", "2nite"]]}
+{"text": "how much r tickets for the knicks sat night at msg", "spans": [["event_name", "knicks"], ["date", "sat night"]]}
+{"text": "ok so the phoenix suns are at home in phoenix this wknd right? need 4 people", "spans": [["event_name", "phoenix suns"], ["city", "phoenix"], ["date", "this wknd"]]}
+{"text": "whats cheap to see a game in chicago this weekend, budget like 40 bucks", "spans": [["city", "chicago"], ["date", "this weekend"]]}
+{"text": "going to a bulls game w my roommates, is it still on tmrw in chi", "spans": [["event_name", "bulls"], ["date", "tmrw"], ["city", "chi"]]}
+{"text": "should i take my gf to a yankees game in nyc next fri or is it too cheesy lol", "spans": [["event_name", "yankees"], ["city", "nyc"], ["date", "next fri"]]}
+{"text": "does the mets game get rained out often? trying to plan something sunday", "spans": [["event_name", "mets"], ["date", "sunday"]]}
+{"text": "pls tell me where the wizards play this sat and how much parking costs", "spans": [["event_name", "wizards"], ["date", "sat"]]}
+{"text": "i need a lakers vs celtics ticket for sunday night and i dont care what it costs ngl", "spans": [["event_name", "lakers vs celtics"], ["date", "sunday night"]]}
+{"text": "anybody know if the warriors are in sf tmrw or on the road", "spans": [["event_name", "warriors"], ["city", "sf"], ["date", "tmrw"]]}
+{"text": "my buddy from atl says the hawks game is 2nite. is that true??", "spans": [["city", "atl"], ["event_name", "hawks"], ["date", "2nite"]]}
+{"text": "where can i watch the cowboys play in dallas on sunday with a crowd", "spans": [["event_name", "cowboys"], ["city", "dallas"], ["date", "sunday"]]}
+{"text": "anything fun to do in philly on sat besides the eagles game", "spans": [["city", "philly"], ["date", "sat"], ["event_name", "eagles"]]}
+{"text": "can u find me seats for the red sox vs yankees in boston next weekend", "spans": [["event_name", "red sox vs yankees"], ["city", "boston"], ["date", "next weekend"]]}
+{"text": "i wanna go to a fight in vegas this weekend, what's on", "spans": [["city", "vegas"], ["date", "this weekend"]]}
+{"text": "ufc 300 tickets in vegas?? price check pls", "spans": [["event_name", "ufc 300"], ["city", "vegas"]]}
+{"text": "how far is the nearest ufc event from la this month, ideally sat", "spans": [["event_name", "ufc"], ["city", "la"], ["date", "sat"]]}
+{"text": "is the dodgers game on tonight or nah", "spans": [["event_name", "dodgers"], ["date", "tonight"]]}
+{"text": "yoo do the giants play sf sunday or tuesday, my cousin is asking", "spans": [["event_name", "giants"], ["city", "sf"], ["date", "sunday"]]}
+{"text": "my girlfriend and i want a date night at a sports game in nyc on the 14th", "spans": [["city", "nyc"], ["date", "the 14th"]]}
+{"text": "trying to see the jets play in new york sunday, any tips?", "spans": [["event_name", "jets"], ["date", "sunday"]]}
+{"text": "bro i need to see the lakers in person before they trade lebron, any seats in la this month?", "spans": [["event_name", "lakers"], ["city", "la"]]}
+{"text": "is there a tennis match in paris on the 3rd or was that last year", "spans": [["city", "paris"], ["date", "the 3rd"]]}
+{"text": "best seats for wimbledon sunday? budget is kinda tight", "spans": [["event_name", "wimbledon"], ["date", "sunday"]]}
+{"text": "how much is a ticket to the super bowl in new orleans sunday", "spans": [["event_name", "super bowl"], ["city", "new orleans"], ["date", "sunday"]]}
+{"text": "yo anyone heading to the us open 2nite? i got a spare seat", "spans": [["event_name", "us open"], ["date", "2nite"]]}
+{"text": "is it worth flying to london for the arsenal game tmrw", "spans": [["city", "london"], ["event_name", "arsenal"], ["date", "tmrw"]]}
+{"text": "u think the pistons will be in detroit tmrw? trying to plan a trip", "spans": [["event_name", "pistons"], ["city", "detroit"], ["date", "tmrw"]]}
+{"text": "where do the bucks play when they are home in milwaukee on sat", "spans": [["event_name", "bucks"], ["city", "milwaukee"], ["date", "sat"]]}
+{"text": "cheapest way to get into a ravens game in baltimore sunday? asking for a friend", "spans": [["event_name", "ravens"], ["city", "baltimore"], ["date", "sunday"]]}
+{"text": "does anyone know if the broncos are home sunday in denver", "spans": [["event_name", "broncos"], ["date", "sunday"], ["city", "denver"]]}
+{"text": "need help finding a bar in boston to watch the celtics tonight", "spans": [["city", "boston"], ["event_name", "celtics"], ["date", "tonight"]]}
+{"text": "anything good on in seattle this wknd? mariners maybe?", "spans": [["city", "seattle"], ["date", "this wknd"], ["event_name", "mariners"]]}
+{"text": "should i go to the rangers game or the pens game in pittsburgh", "spans": [["event_name", "rangers"], ["event_name", "pens"], ["city", "pittsburgh"]]}
+{"text": "hey so my coworkers want to go watch the braves on the 22nd, what do you think", "spans": [["event_name", "braves"], ["date", "the 22nd"]]}
+{"text": "what time do the blue jays play toronto on the 5th", "spans": [["event_name", "blue jays"], ["city", "toronto"], ["date", "the 5th"]]}
+{"text": "how much r floor seats for the heat in miami 2nite", "spans": [["event_name", "heat"], ["city", "miami"], ["date", "2nite"]]}
+{"text": "i wanna watch the nuggets this weekend in denver with my bro, any ideas", "spans": [["event_name", "nuggets"], ["date", "this weekend"], ["city", "denver"]]}
+{"text": "cool game to take my dad to in la this sunday?", "spans": [["city", "la"], ["date", "sunday"]]}
+{"text": "dad wants to see the timberwolves in minneapolis tmrw, its his bday", "spans": [["event_name", "timberwolves"], ["city", "minneapolis"], ["date", "tmrw"]]}
+{"text": "anyone else trying to get to the sixers game in philly sat??", "spans": [["event_name", "sixers"], ["city", "philly"], ["date", "sat"]]}
+{"text": "the 76ers in philadelphia on sunday or monday, which is it", "spans": [["event_name", "76ers"], ["city", "philadelphia"], ["date", "sunday"]]}
+{"text": "can you tell me when the pistons vs cavs game is in detroit this weekend", "spans": [["event_name", "pistons vs cavs"], ["city", "detroit"], ["date", "this weekend"]]}
+{"text": "heyy whats the best way to see the cavs live in cleveland next fri??", "spans": [["event_name", "cavs"], ["city", "cleveland"], ["date", "next fri"]]}
+{"text": "i'm in the mood for some hockey tonight, any games in chicago", "spans": [["date", "tonight"], ["city", "chicago"]]}
+{"text": "i need a plan for sunday, my friends want to watch the packers in green bay", "spans": [["date", "sunday"], ["event_name", "packers"], ["city", "green bay"]]}
+{"text": "would the lions game in detroit on thurs night be a good first game for my kid", "spans": [["event_name", "lions"], ["city", "detroit"], ["date", "thurs night"]]}
+{"text": "anyone going to the dynamo game in houston sat? my boyfriend wants to go", "spans": [["event_name", "dynamo"], ["city", "houston"], ["date", "sat"]]}
+{"text": "give me the cheapest seats to the mets game this weekend lol", "spans": [["event_name", "mets"], ["date", "this weekend"]]}
+{"text": "where are the rockets playing tmrw? i think its houston but idk", "spans": [["event_name", "rockets"], ["date", "tmrw"], ["city", "houston"]]}
+{"text": "rockies or the diamondbacks in phoenix next weekend? i can only pick one", "spans": [["event_name", "rockies"], ["event_name", "diamondbacks"], ["city", "phoenix"], ["date", "next weekend"]]}
+{"text": "we're doing a dinner and a game thing in nyc on friday, which team plays", "spans": [["city", "nyc"], ["date", "friday"]]}
+{"text": "any fun soccer watch parties in london tonight?", "spans": [["city", "london"], ["date", "tonight"]]}
+{"text": "anyone know if the tigers are playing in detroit on the 18th? my uncle wants to come", "spans": [["event_name", "tigers"], ["city", "detroit"], ["date", "the 18th"]]}
+{"text": "this is a long shot but do the nets play brooklyn on march 3rd", "spans": [["event_name", "nets"], ["city", "brooklyn"], ["date", "march 3rd"]]}
+{"text": "warriors vs suns in phoenix, is it sunday night", "spans": [["event_name", "warriors vs suns"], ["city", "phoenix"], ["date", "sunday night"]]}
+{"text": "cubs vs cardinals in stl this sat, can i get a parking spot near the stadium", "spans": [["event_name", "cubs vs cardinals"], ["city", "stl"], ["date", "this sat"]]}
+{"text": "my friend has a spare ticket for the rangers game in new york on tuesday", "spans": [["event_name", "rangers"], ["date", "tuesday"]]}
+{"text": "should i buy tix for the sharks game in sj 2nite or wait till tmrw", "spans": [["event_name", "sharks"], ["city", "sj"], ["date", "2nite"], ["date", "tmrw"]]}
+{"text": "do the bruins play in boston next thurs or is it the friday game", "spans": [["event_name", "bruins"], ["city", "boston"], ["date", "next thurs"]]}
+{"text": "need a seat for the flyers game on sat in philly, under 60 bucks pls", "spans": [["event_name", "flyers"], ["date", "sat"], ["city", "philly"]]}
+{"text": "my ex is going to the canucks game in van tmrw and i want to go too lol", "spans": [["event_name", "canucks"], ["city", "van"], ["date", "tmrw"]]}
+{"text": "i think the oilers are home on the 9th, is that right?", "spans": [["event_name", "oilers"], ["date", "the 9th"]]}
+{"text": "where can i see the avalanche in denver this weekend", "spans": [["event_name", "avalanche"], ["city", "denver"], ["date", "this weekend"]]}
+{"text": "do the penguins play in pittsburgh tonight, my boss wants to know", "spans": [["event_name", "penguins"], ["city", "pittsburgh"], ["date", "tonight"]]}
+{"text": "need 2 tickets for the knights game in vegas 2nite, asap", "spans": [["event_name", "knights"], ["city", "vegas"], ["date", "2nite"]]}
+{"text": "anyone else gonna be at the kings game in sacramento 2morrow??", "spans": [["event_name", "kings"], ["city", "sacramento"], ["date", "2morrow"]]}
+{"text": "can u help me find a bar showing the grizzlies in memphis on friday", "spans": [["event_name", "grizzlies"], ["city", "memphis"], ["date", "friday"]]}
+{"text": "trying to take my little sister to a pelicans game in nola next weekend", "spans": [["event_name", "pelicans"], ["city", "nola"], ["date", "next weekend"]]}
+{"text": "what's the cheapest way to see the new orleans pelicans tonight", "spans": [["event_name", "new orleans pelicans"], ["date", "tonight"]]}
+{"text": "is the lightning game in tampa this sunday worth the drive from orlando", "spans": [["event_name", "lightning"], ["city", "tampa"], ["date", "this sunday"], ["city", "orlando"]]}
+{"text": "should i go to the magic game in orlando sat or the hornets one in charlotte", "spans": [["event_name", "magic"], ["city", "orlando"], ["date", "sat"], ["event_name", "hornets"], ["city", "charlotte"]]}
+{"text": "which bars in nyc show the nets vs knicks game next fri", "spans": [["city", "nyc"], ["event_name", "nets vs knicks"], ["date", "next fri"]]}
+{"text": "were the bulls playing in chicago on wed or thurs??", "spans": [["event_name", "bulls"], ["city", "chicago"], ["date", "wed"]]}
+{"text": "Tickets to see the chicago bulls tonight? price matters", "spans": [["event_name", "chicago bulls"], ["date", "tonight"]]}
+{"text": "u got any clue if the hurricanes game in raleigh is on tues", "spans": [["event_name", "hurricanes"], ["city", "raleigh"], ["date", "tues"]]}
+{"text": "the islanders are in brooklyn on sunday right? where do i park", "spans": [["event_name", "islanders"], ["city", "brooklyn"], ["date", "sunday"]]}
+{"text": "dad said the red wings are in detroit on fri. is that the right day", "spans": [["event_name", "red wings"], ["city", "detroit"], ["date", "fri"]]}
+{"text": "wanna go to a wild game in st paul tmrw, anyone interested", "spans": [["event_name", "wild"], ["city", "st paul"], ["date", "tmrw"]]}
+{"text": "buying a jersey and going to the mariners game in seattle this weekend, pls help", "spans": [["event_name", "mariners"], ["city", "seattle"], ["date", "this weekend"]]}
+{"text": "what time is the kraken vs jets game in seattle tonight", "spans": [["event_name", "kraken vs jets"], ["city", "seattle"], ["date", "tonight"]]}
+{"text": "are the yankees playing tmrw in the bronx or somewhere in nyc", "spans": [["event_name", "yankees"], ["date", "tmrw"], ["city", "nyc"]]}
+{"text": "my dad wants to go to fenway for the red sox 2nite, any cheap tix?", "spans": [["event_name", "red sox"], ["date", "2nite"]]}
+{"text": "does anyone have the dodgers schedule for la next fri", "spans": [["event_name", "dodgers"], ["city", "la"], ["date", "next fri"]]}
+{"text": "the giants are playing padres in sf on sunday right?", "spans": [["event_name", "giants"], ["event_name", "padres"], ["city", "sf"], ["date", "sunday"]]}
+{"text": "sooo is the cubs game at wrigley tmrw or is it postponed", "spans": [["event_name", "cubs"], ["date", "tmrw"]]}
+{"text": "found out the white sox are in chicago sun, anybody want to join me", "spans": [["event_name", "white sox"], ["city", "chicago"], ["date", "sun"]]}
+{"text": "which day do the cardinals play in stl saturday or sunday", "spans": [["event_name", "cardinals"], ["city", "stl"], ["date", "saturday"]]}
+{"text": "i swear the astros play in houston tonite, can someone confirm", "spans": [["event_name", "astros"], ["city", "houston"], ["date", "tonite"]]}
+{"text": "need a cheap hotel near the phillies game in philly tonight", "spans": [["event_name", "phillies"], ["city", "philly"], ["date", "tonight"]]}
+{"text": "padres home game in san diego sat, do they still sell the cheap seats", "spans": [["event_name", "padres"], ["city", "san diego"], ["date", "sat"]]}
+{"text": "should we do the orioles game in baltimore tmrw or wait for the weekend", "spans": [["event_name", "orioles"], ["city", "baltimore"], ["date", "tmrw"], ["date", "weekend"]]}
+{"text": "rangers arlington tonight", "spans": [["event_name", "rangers"], ["city", "arlington"], ["date", "tonight"]]}
+{"text": "anybody going to the guardians game in cle this weekend? drive from columbus?", "spans": [["event_name", "guardians"], ["city", "cle"], ["date", "this weekend"], ["city", "columbus"]]}
+{"text": "where can i buy tickets for the brewers game in milwaukee fri night", "spans": [["event_name", "brewers"], ["city", "milwaukee"], ["date", "fri night"]]}
+{"text": "my grandma wants to see the tigers play in detroit sat afternoon, is that possible", "spans": [["event_name", "tigers"], ["city", "detroit"], ["date", "sat"]]}
+{"text": "twins game in minneapolis 2nite, i have a free seat if anyone wants it", "spans": [["event_name", "twins"], ["city", "minneapolis"], ["date", "2nite"]]}
+{"text": "the royals are playing kc tues, right? trying to get some friends together", "spans": [["event_name", "royals"], ["city", "kc"], ["date", "tues"]]}
+{"text": "athletics in oakland this wknd, anyone wanna road trip from sf", "spans": [["event_name", "athletics"], ["city", "oakland"], ["date", "this wknd"], ["city", "sf"]]}
+{"text": "is it true the a's are staying in oakland on sunday?? lol", "spans": [["event_name", "a's"], ["city", "oakland"], ["date", "sunday"]]}
+{"text": "the reds in cincinnati tmrw, how do i get a seat with a view", "spans": [["event_name", "reds"], ["city", "cincinnati"], ["date", "tmrw"]]}
+{"text": "pirates vs cubs pittsburgh sat, is the stadium near downtown", "spans": [["event_name", "pirates vs cubs"], ["city", "pittsburgh"], ["date", "sat"]]}
+{"text": "where do i get cheap seats to the nationals game in dc sun", "spans": [["event_name", "nationals"], ["city", "dc"], ["date", "sun"]]}
+{"text": "my friend in miami wants to see the marlins 2nite, any good spots", "spans": [["city", "miami"], ["event_name", "marlins"], ["date", "2nite"]]}
+{"text": "the rockies play denver next weekend, but which game is the best one", "spans": [["event_name", "rockies"], ["city", "denver"], ["date", "next weekend"]]}
+{"text": "i'm trying to plan a trip to see the rays in tampa bay friday night", "spans": [["event_name", "rays"], ["city", "tampa bay"], ["date", "friday night"]]}
+{"text": "is the tampa bay rays game on tonight, need to know asap", "spans": [["event_name", "tampa bay rays"], ["date", "tonight"]]}
+{"text": "anyone wanna check out the tigers vs twins in minneapolis with me", "spans": [["event_name", "tigers vs twins"], ["city", "minneapolis"]]}
+{"text": "super bowl in la, how much do the tickets run lol", "spans": [["event_name", "super bowl"], ["city", "la"]]}
+{"text": "bringing the kids to the chiefs game in kc on sunday, any parking tips?", "spans": [["event_name", "chiefs"], ["city", "kc"], ["date", "sunday"]]}
+{"text": "eagles tickets in philly for sunday night are way too expensive rn", "spans": [["event_name", "eagles"], ["city", "philly"], ["date", "sunday night"]]}
+{"text": "i want to see the cowboys in dallas tmrw bc my bday is then lol", "spans": [["event_name", "cowboys"], ["city", "dallas"], ["date", "tmrw"]]}
+{"text": "need to find a sports bar in green bay that shows the packers sunday", "spans": [["city", "green bay"], ["event_name", "packers"], ["date", "sunday"]]}
+{"text": "should i get 49ers tickets in sf for thurs or wait for the sunday game", "spans": [["event_name", "49ers"], ["city", "sf"], ["date", "thurs"], ["date", "sunday"]]}
+{"text": "buffalo bills game this sat in buffalo, cheap tix anywhere?", "spans": [["event_name", "buffalo bills"], ["date", "this sat"], ["city", "buffalo"]]}
+{"text": "does baltimore have a ravens game this sunday night or is it next week", "spans": [["city", "baltimore"], ["event_name", "ravens"], ["date", "this sunday night"], ["date", "next week"]]}
+{"text": "the steelers are in pittsburgh sun, my dad is buying a whole bunch of beer lol", "spans": [["event_name", "steelers"], ["city", "pittsburgh"], ["date", "sun"]]}
+{"text": "do the patriots play boston this sun or is it an away game", "spans": [["event_name", "patriots"], ["city", "boston"], ["date", "this sun"]]}
+{"text": "jets vs pats in nyc sunday, which bar should we go to beforehand", "spans": [["event_name", "jets vs pats"], ["city", "nyc"], ["date", "sunday"]]}
+{"text": "trying to score giants tickets at metlife next sun, any luck??", "spans": [["event_name", "giants"], ["date", "next sun"]]}
+{"text": "the broncos game denver sunday, how early should we get there", "spans": [["event_name", "broncos"], ["city", "denver"], ["date", "sunday"]]}
+{"text": "dolphins miami sunday, who wants to come with me to the stadium", "spans": [["event_name", "dolphins"], ["city", "miami"], ["date", "sunday"]]}
+{"text": "texans in houston sun, ya'll coming or nah", "spans": [["event_name", "texans"], ["city", "houston"], ["date", "sun"]]}
+{"text": "colts game in indy sun, my brother wants to tailgate", "spans": [["event_name", "colts"], ["city", "indy"], ["date", "sun"]]}
+{"text": "saints nola sun, the whole crew is going, u in?", "spans": [["event_name", "saints"], ["city", "nola"], ["date", "sun"]]}
+{"text": "falcons in atl sat, which game is the one to see", "spans": [["event_name", "falcons"], ["city", "atl"], ["date", "sat"]]}
+{"text": "panthers charlotte tmrw, do they play at home or away??", "spans": [["event_name", "panthers"], ["city", "charlotte"], ["date", "tmrw"]]}
+{"text": "bengals home game in cincinnati sat, how do i get tickets without paying scalper prices", "spans": [["event_name", "bengals"], ["city", "cincinnati"], ["date", "sat"]]}
+{"text": "where do the browns play cleveland sunday", "spans": [["event_name", "browns"], ["city", "cleveland"], ["date", "sunday"]]}
+{"text": "lions detroit thurs night, is it a home game for them", "spans": [["event_name", "lions"], ["city", "detroit"], ["date", "thurs night"]]}
+{"text": "vikings minneapolis mon, is the game still on with all the snow", "spans": [["event_name", "vikings"], ["city", "minneapolis"], ["date", "mon"]]}
+{"text": "bears in chicago sunday, my dad wants season tickets", "spans": [["event_name", "bears"], ["city", "chicago"], ["date", "sunday"]]}
+{"text": "commanders dc tmrw, is it sold out yet", "spans": [["event_name", "commanders"], ["city", "dc"], ["date", "tmrw"]]}
+{"text": "seahawks seattle sun, what's the best food near the stadium", "spans": [["event_name", "seahawks"], ["city", "seattle"], ["date", "sun"]]}
+{"text": "rams la sat, my roommate got me a ticket as a bday gift", "spans": [["event_name", "rams"], ["city", "la"], ["date", "sat"]]}
+{"text": "chargers la 2nite, anyone wanna split a parking spot", "spans": [["event_name", "chargers"], ["city", "la"], ["date", "2nite"]]}
+{"text": "titans in nashville sun, is it the one with the big crowd", "spans": [["event_name", "titans"], ["city", "nashville"], ["date", "sun"]]}
+{"text": "jaguars in jacksonville sunday, any dog friendly spots nearby", "spans": [["event_name", "jaguars"], ["city", "jacksonville"], ["date", "sunday"]]}
+{"text": "raiders in vegas tmrw, is the game night a good idea", "spans": [["event_name", "raiders"], ["city", "vegas"], ["date", "tmrw"]]}
+{"text": "any nfl games lately??", "spans": []}
+{"text": "anything worth watching lately?", "spans": []}
+{"text": "saturday night ball in boston, what's good", "spans": [["date", "saturday night"], ["city", "boston"]]}
+{"text": "fc barcelona tmrw, who wants to split tickets", "spans": [["event_name", "fc barcelona"], ["date", "tmrw"]]}
+{"text": "barca at camp nou this wknd, is there a deal on bus tix", "spans": [["event_name", "barca"], ["date", "this wknd"]]}
+{"text": "barca game in bcn next sat, can you find me a cheap seat", "spans": [["event_name", "barca"], ["city", "bcn"], ["date", "next sat"]]}
+{"text": "arsenal vs spurs in london saturday, will the game be on tv too", "spans": [["event_name", "arsenal vs spurs"], ["city", "london"], ["date", "saturday"]]}
+{"text": "arsenal game ldn tmrw, anyone got a spare seat", "spans": [["event_name", "arsenal"], ["city", "ldn"], ["date", "tmrw"]]}
+{"text": "man utd vs liverpool tmrw, is it worth it for a first timer", "spans": [["event_name", "man utd vs liverpool"], ["date", "tmrw"]]}
+{"text": "where's the tottenham game tonight, i keep getting lost", "spans": [["event_name", "tottenham"], ["date", "tonight"]]}
+{"text": "everton vs leeds in liverpool sat, my dad says it's a big one", "spans": [["event_name", "everton vs leeds"], ["city", "liverpool"], ["date", "sat"]]}
+{"text": "inter milan vs juve tonight, would u go or stay home", "spans": [["event_name", "inter milan vs juve"], ["date", "tonight"]]}
+{"text": "milan derby in milan sunday, should i wear the red or the black", "spans": [["event_name", "milan derby"], ["city", "milan"], ["date", "sunday"]]}
+{"text": "ac milan game milan tmrw, where do the fans go after", "spans": [["event_name", "ac milan"], ["city", "milan"], ["date", "tmrw"]]}
+{"text": "juventus turin 2nite, do i need a ticket or can i watch it at a bar", "spans": [["event_name", "juventus"], ["city", "turin"], ["date", "2nite"]]}
+{"text": "napoli in naples sat, the pizza there is the best right", "spans": [["event_name", "napoli"], ["city", "naples"], ["date", "sat"]]}
+{"text": "roma game rome this sun, is there a good place to watch it nearby", "spans": [["event_name", "roma"], ["city", "rome"], ["date", "this sun"]]}
+{"text": "borussia dortmund at signal iduna park tmrw, how much for standing", "spans": [["event_name", "borussia dortmund"], ["date", "tmrw"]]}
+{"text": "bvb game tmrw, who's coming to my place to watch", "spans": [["event_name", "bvb"], ["date", "tmrw"]]}
+{"text": "bayern munich 2nite? i heard the tickets are cheap in munich", "spans": [["event_name", "bayern munich"], ["date", "2nite"], ["city", "munich"]]}
+{"text": "real madrid vs atleti in madrid sat, which metro stop should i take", "spans": [["event_name", "real madrid vs atleti"], ["city", "madrid"], ["date", "sat"]]}
+{"text": "atletico madrid home game sat, need a cheap ticket asap", "spans": [["event_name", "atletico madrid"], ["date", "sat"]]}
+{"text": "chelsea tonight?? where's the watch party", "spans": [["event_name", "chelsea"], ["date", "tonight"]]}
+{"text": "arsenal vs chelsea, who do you think wins", "spans": [["event_name", "arsenal vs chelsea"]]}
+{"text": "psg vs marseille in paris tmrw, can i buy tix at the door", "spans": [["event_name", "psg vs marseille"], ["city", "paris"], ["date", "tmrw"]]}
+{"text": "marseille game 2nite, any bars playing it nearby", "spans": [["event_name", "marseille"], ["date", "2nite"]]}
+{"text": "galatasaray istanbul sunday, is there a cheap way to get there from ankara", "spans": [["event_name", "galatasaray"], ["city", "istanbul"], ["date", "sunday"], ["city", "ankara"]]}
+{"text": "fenerbahce vs besiktas istanbul tonight, is the derby worth going to", "spans": [["event_name", "fenerbahce vs besiktas"], ["city", "istanbul"], ["date", "tonight"]]}
+{"text": "besiktas game this weekend, do they play at home", "spans": [["event_name", "besiktas"], ["date", "this weekend"]]}
+{"text": "inter miami tmrw, is messi playing this time", "spans": [["event_name", "inter miami"], ["date", "tmrw"]]}
+{"text": "la galaxy game 2nite, what's the best bar near the stadium", "spans": [["event_name", "la galaxy"], ["date", "2nite"]]}
+{"text": "galaxy home sat, anybody free to come", "spans": [["event_name", "galaxy"], ["date", "sat"]]}
+{"text": "seattle sounders tonight, where can i get a cheap beer", "spans": [["event_name", "seattle sounders"], ["date", "tonight"]]}
+{"text": "sounders at home sun, my kid wants to wear the scarf", "spans": [["event_name", "sounders"], ["date", "sun"]]}
+{"text": "toronto fc tmrw, is the stadium easy to get to by transit", "spans": [["event_name", "toronto fc"], ["date", "tmrw"]]}
+{"text": "atl united sat, my sister wants to go with her friends", "spans": [["event_name", "atl united"], ["date", "sat"]]}
+{"text": "portland timbers 2nite, how much is parking", "spans": [["event_name", "portland timbers"], ["date", "2nite"]]}
+{"text": "nycfc vs red bulls in nyc 2nite, is this a big rivalry or nah", "spans": [["event_name", "nycfc vs red bulls"], ["city", "nyc"], ["date", "2nite"]]}
+{"text": "newcastle united tmrw, we are going with the whole office lol", "spans": [["event_name", "newcastle united"], ["date", "tmrw"]]}
+{"text": "everton tonight, is it on tv or only streaming", "spans": [["event_name", "everton"], ["date", "tonight"]]}
+{"text": "leeds vs west ham sat, is it a good match for kids", "spans": [["event_name", "leeds vs west ham"], ["date", "sat"]]}
+{"text": "celtic glasgow sunday, which pub is best for a pre game drink", "spans": [["event_name", "celtic"], ["city", "glasgow"], ["date", "sunday"]]}
+{"text": "hearts vs hibs in edinburgh tmrw, is the derby on tv too", "spans": [["event_name", "hearts vs hibs"], ["city", "edinburgh"], ["date", "tmrw"]]}
+{"text": "benfica lisbon 2nite, is there a cheap train from porto", "spans": [["event_name", "benfica"], ["city", "lisbon"], ["date", "2nite"], ["city", "porto"]]}
+{"text": "porto vs sporting in porto sunday, is it a good idea to bring my son", "spans": [["event_name", "porto vs sporting"], ["city", "porto"], ["date", "sunday"]]}
+{"text": "ajax amsterdam tmrw, i really want to see the stadium", "spans": [["event_name", "ajax"], ["city", "amsterdam"], ["date", "tmrw"]]}
+{"text": "psv eindhoven sat, how far is eindhoven from amsterdam by train", "spans": [["event_name", "psv"], ["city", "eindhoven"], ["date", "sat"], ["city", "amsterdam"]]}
+{"text": "sevilla game seville 2nite, is it too hot for a match", "spans": [["event_name", "sevilla"], ["city", "seville"], ["date", "2nite"]]}
+{"text": "valencia vs betis in valencia sun, can we walk there from the beach", "spans": [["event_name", "valencia vs betis"], ["city", "valencia"], ["date", "sun"]]}
+{"text": "monaco vs lyon tonight, which channel shows it in the us", "spans": [["event_name", "monaco vs lyon"], ["date", "tonight"]]}
+{"text": "olympique lyonnais tmrw, we're doing a french night out", "spans": [["event_name", "olympique lyonnais"], ["date", "tmrw"]]}
+{"text": "celta vigo sat, first time going to a spanish match, any tips", "spans": [["event_name", "celta vigo"], ["date", "sat"]]}
+{"text": "wolves vs villa tonight, bringing my dad, he's an old school fan", "spans": [["event_name", "wolves vs villa"], ["date", "tonight"]]}
+{"text": "fulham vs brentford in london sunday, what's the tube stop", "spans": [["event_name", "fulham vs brentford"], ["city", "london"], ["date", "sunday"]]}
+{"text": "west ham 2nite, is it in the east end", "spans": [["event_name", "west ham"], ["date", "2nite"]]}
+{"text": "lazio game rome sat, my girlfriend's family is from rome lol", "spans": [["event_name", "lazio"], ["city", "rome"], ["date", "sat"]]}
+{"text": "torino turin sunday, can you get there by train from milan", "spans": [["event_name", "torino"], ["city", "turin"], ["date", "sunday"], ["city", "milan"]]}
+{"text": "tottenham hotspur tmrw, anyone want to split a cab from king's cross", "spans": [["event_name", "tottenham hotspur"], ["date", "tmrw"]]}
+{"text": "sporting cp lisbon tues, which bar is best for the match", "spans": [["event_name", "sporting cp"], ["city", "lisbon"], ["date", "tues"]]}
+{"text": "us open tennis 2nite, do the tickets go up after 8", "spans": [["event_name", "us open"], ["date", "2nite"]]}
+{"text": "wimbledon finals sunday, is it worth paying 300 for a seat", "spans": [["event_name", "wimbledon"], ["date", "sunday"]]}
+{"text": "roland garros tmrw, how do i get a seat with a view of the court", "spans": [["event_name", "roland garros"], ["date", "tmrw"]]}
+{"text": "australian open in melbourne next sat, can i get the cheap grandstand seats", "spans": [["event_name", "australian open"], ["city", "melbourne"], ["date", "next sat"]]}
+{"text": "any tennis in paris this wknd, my mom wants to see a match", "spans": [["city", "paris"], ["date", "this wknd"]]}
+{"text": "is there a monaco gp this sunday or did they cancel it", "spans": [["event_name", "monaco gp"], ["date", "this sunday"]]}
+{"text": "british gp in silverstone sat, how much for general admission", "spans": [["event_name", "british gp"], ["date", "sat"]]}
+{"text": "us gp in austin this wknd, we want to see the track from the hill", "spans": [["event_name", "us gp"], ["city", "austin"], ["date", "this wknd"]]}
+{"text": "italian gp monza sunday, is it an easy train ride from milan", "spans": [["event_name", "italian gp"], ["city", "monza"], ["date", "sunday"], ["city", "milan"]]}
+{"text": "japanese gp in tokyo 2morrow, any good seats left at the grandstand", "spans": [["event_name", "japanese gp"], ["city", "tokyo"], ["date", "2morrow"]]}
+{"text": "singapore gp tmrw night, how do i get a ticket last minute", "spans": [["event_name", "singapore gp"], ["date", "tmrw night"]]}
+{"text": "ufc 300 2nite, does anyone know which bar has the stream", "spans": [["event_name", "ufc 300"], ["date", "2nite"]]}
+{"text": "ufc 302 in newark sat, is it the big main card or the early prelims", "spans": [["event_name", "ufc 302"], ["city", "newark"], ["date", "sat"]]}
+{"text": "ufc in mexico city this fri, do they sell tickets at the door", "spans": [["event_name", "ufc"], ["city", "mexico city"], ["date", "this fri"]]}
+{"text": "ufc fight in toronto tmrw nite, how much is the cheapest seat", "spans": [["event_name", "ufc"], ["city", "toronto"], ["date", "tmrw nite"]]}
+{"text": "ufc 303 sun, is it a pay per view or can we watch it on a stream", "spans": [["event_name", "ufc 303"], ["date", "sun"]]}
+{"text": "alabama vs georgia sat, who's the favorite going in", "spans": [["event_name", "alabama vs georgia"], ["date", "sat"]]}
+{"text": "georgia bulldogs in athens sat, do i need a hotel room or can i drive back", "spans": [["event_name", "georgia bulldogs"], ["city", "athens"], ["date", "sat"]]}
+{"text": "lsu game in baton rouge sunday, is it fun for a first timer", "spans": [["event_name", "lsu"], ["city", "baton rouge"], ["date", "sunday"]]}
+{"text": "florida gators in gainesville 2nite, my roommate is a huge fan", "spans": [["event_name", "florida gators"], ["city", "gainesville"], ["date", "2nite"]]}
+{"text": "texas a&m aggies college station tmrw, is the stadium open to visitors", "spans": [["event_name", "texas a&m aggies"], ["city", "college station"], ["date", "tmrw"]]}
+{"text": "oregon ducks in eugene sat, we're going with the whole family", "spans": [["event_name", "oregon ducks"], ["city", "eugene"], ["date", "sat"]]}
+{"text": "usc trojans la this sat, is the rivalry game against ucla that day", "spans": [["event_name", "usc trojans"], ["city", "la"], ["date", "this sat"]]}
+{"text": "stanford game palo alto tmrw, is it cheap to park there", "spans": [["event_name", "stanford"], ["city", "palo alto"], ["date", "tmrw"]]}
+{"text": "uconn huskies storrs fri, anyone want to drive up with me", "spans": [["event_name", "uconn huskies"], ["city", "storrs"], ["date", "fri"]]}
+{"text": "villanova wildcats philly sun, is the game worth it for a non fan", "spans": [["event_name", "villanova wildcats"], ["city", "philly"], ["date", "sun"]]}
+{"text": "purdue boilermakers in west lafayette 2nite, what should i wear to the game", "spans": [["event_name", "purdue boilermakers"], ["city", "west lafayette"], ["date", "2nite"]]}
+{"text": "illinois fighting illini in champaign tmrw, how do i get there from chicago", "spans": [["event_name", "illinois fighting illini"], ["city", "champaign"], ["date", "tmrw"], ["city", "chicago"]]}
+{"text": "kansas jayhawks in lawrence sat, is there a bus from kc", "spans": [["event_name", "kansas jayhawks"], ["city", "lawrence"], ["date", "sat"], ["city", "kc"]]}
+{"text": "auburn tigers tmrw, is it sold out or can i still get a seat", "spans": [["event_name", "auburn tigers"], ["date", "tmrw"]]}
+{"text": "arkansas razorbacks in fayetteville sun, how far is it from little rock", "spans": [["event_name", "arkansas razorbacks"], ["city", "fayetteville"], ["date", "sun"], ["city", "little rock"]]}
+{"text": "clemson tigers tonight, can you get a ticket on the day", "spans": [["event_name", "clemson tigers"], ["date", "tonight"]]}
+{"text": "miami hurricanes in coral gables sat, is there a good spot for tailgating", "spans": [["event_name", "miami hurricanes"], ["city", "coral gables"], ["date", "sat"]]}
+{"text": "florida state seminoles in tallahassee 2nite, is it worth the drive", "spans": [["event_name", "florida state seminoles"], ["city", "tallahassee"], ["date", "2nite"]]}
+{"text": "baylor bears in waco sat, my friend says it's a must see", "spans": [["event_name", "baylor bears"], ["city", "waco"], ["date", "sat"]]}
+{"text": "tcu horned frogs in fort worth tmrw, do i need a parking pass", "spans": [["event_name", "tcu horned frogs"], ["city", "fort worth"], ["date", "tmrw"]]}
+{"text": "iowa hawkeyes in iowa city fri, is the crowd crazy", "spans": [["event_name", "iowa hawkeyes"], ["city", "iowa city"], ["date", "fri"]]}
+{"text": "penn state nittany lions in state college sun, tailgate starts when", "spans": [["event_name", "penn state nittany lions"], ["city", "state college"], ["date", "sun"]]}
+{"text": "north carolina tar heels in chapel hill sat, any cheap seats", "spans": [["event_name", "north carolina tar heels"], ["city", "chapel hill"], ["date", "sat"]]}
+{"text": "virginia cavaliers in charlottesville 2nite, do i need a hotel", "spans": [["event_name", "virginia cavaliers"], ["city", "charlottesville"], ["date", "2nite"]]}
+{"text": "usc vs ucla in la sat, is it the big rivalry game", "spans": [["event_name", "usc vs ucla"], ["city", "la"], ["date", "sat"]]}
+{"text": "duke blue devils in durham tmrw, what's the best bbq near the arena", "spans": [["event_name", "duke blue devils"], ["city", "durham"], ["date", "tmrw"]]}
+{"text": "any college baseball in omaha sat, my son plays and i want to go", "spans": [["city", "omaha"], ["date", "sat"]]}
+{"text": "anybody else sick of the refs lol", "spans": []}
+{"text": "no idea whats on, any good games to watch", "spans": []}
+{"text": "what's on tv for the big game", "spans": []}
+{"text": "sports bar near me showing the game", "spans": []}
+{"text": "how do i find a sports bar with good food", "spans": []}
+{"text": "wanna go see a live game w my bro", "spans": []}
+{"text": "any live sports nearby rn", "spans": []}
+{"text": "best place to watch the final with friends", "spans": []}
+{"text": "is there a game on sat in tokyo", "spans": [["date", "sat"], ["city", "tokyo"]]}
+{"text": "baseball in sydney this weekend, which stadium has the best beer", "spans": [["city", "sydney"], ["date", "this weekend"]]}
+{"text": "afl in melbourne sat, never been to one, is it fun", "spans": [["city", "melbourne"], ["date", "sat"]]}
+{"text": "rugby in auckland sun, where's the cheapest place to sit", "spans": [["city", "auckland"], ["date", "sun"]]}
+{"text": "all blacks vs wallabies in dublin, do the tickets sell out fast", "spans": [["event_name", "all blacks vs wallabies"], ["city", "dublin"]]}
+{"text": "six nations in dublin sat, my dad is flying in from cork", "spans": [["event_name", "six nations"], ["city", "dublin"], ["date", "sat"], ["city", "cork"]]}
+{"text": "ireland vs england rugby in dublin 2nite, where can i watch it with a pint", "spans": [["event_name", "ireland vs england"], ["city", "dublin"], ["date", "2nite"]]}
+{"text": "nba in tokyo?", "spans": [["city", "tokyo"]]}
+{"text": "nba games in mexico city tmrw, are the seats worth the price", "spans": [["city", "mexico city"], ["date", "tmrw"]]}
+{"text": "nba london game next wknd, is it on tv too", "spans": [["city", "london"], ["date", "next wknd"]]}
+{"text": "bulls in paris tmrw, do they play the game in the arena near the eiffel tower", "spans": [["event_name", "bulls"], ["city", "paris"], ["date", "tmrw"]]}
+{"text": "pls tell me the knicks play tmrw, my mom wants to come", "spans": [["event_name", "knicks"], ["date", "tmrw"]]}
+{"text": "stanley cup game 7 in denver tonight, is it on the big screen downtown", "spans": [["event_name", "stanley cup"], ["city", "denver"], ["date", "tonight"]]}
+{"text": "world series in la or nyc?", "spans": [["event_name", "world series"], ["city", "la"], ["city", "nyc"]]}
+{"text": "march madness sweet 16 in atl thursday, is the arena close to the airport", "spans": [["event_name", "march madness"], ["city", "atl"], ["date", "thursday"]]}
+{"text": "nba finals 2nite?", "spans": [["event_name", "nba finals"], ["date", "2nite"]]}
+{"text": "im so bored, any sports to watch lol", "spans": []}
+{"text": "fc dallas vs houston dynamo 2morrow, is it a good night out", "spans": [["event_name", "fc dallas vs houston dynamo"], ["date", "2morrow"]]}
+{"text": "dynamo tmrw, is it the home opener", "spans": [["event_name", "dynamo"], ["date", "tmrw"]]}
+{"text": "sporting kc game sat, are they playing at home or away", "spans": [["event_name", "sporting kc"], ["date", "sat"]]}
+{"text": "columbus crew at home fri, what's the parking situation", "spans": [["event_name", "columbus crew"], ["date", "fri"]]}
+{"text": "d.c. united vs nycfc sat, how much for a family pack", "spans": [["event_name", "d.c. united vs nycfc"], ["date", "sat"]]}
+{"text": "new england revolution in foxborough sat, is there a shuttle from boston", "spans": [["event_name", "new england revolution"], ["city", "foxborough"], ["date", "sat"], ["city", "boston"]]}
+{"text": "charlotte fc 2nite, is it a good first game for my nephew", "spans": [["event_name", "charlotte fc"], ["date", "2nite"]]}
+{"text": "nashville sc game tmrw, do they still have the cheap tickets", "spans": [["event_name", "nashville sc"], ["date", "tmrw"]]}
+{"text": "fc cincinnati tmrw, my wife is a huge fan", "spans": [["event_name", "fc cincinnati"], ["date", "tmrw"]]}
+{"text": "austin fc sat night, what's the vibe like at the stadium", "spans": [["event_name", "austin fc"], ["date", "sat night"]]}
+{"text": "dynamo in houston sat, is parking hard to find", "spans": [["event_name", "dynamo"], ["city", "houston"], ["date", "sat"]]}
+{"text": "lafc vs la galaxy tonight, can someone get me a ticket", "spans": [["event_name", "lafc vs la galaxy"], ["date", "tonight"]]}
+{"text": "lafc tmrw, what's the cheapest way to get a seat", "spans": [["event_name", "lafc"], ["date", "tmrw"]]}
+{"text": "mls cup in atlanta 2nite, is the stadium open to everyone", "spans": [["event_name", "mls cup"], ["city", "atlanta"], ["date", "2nite"]]}
+{"text": "any soccer in tokyo this weekend, what bars show it live", "spans": [["city", "tokyo"], ["date", "this weekend"]]}
+{"text": "japan vs korea in seoul sunday, is it sold out already", "spans": [["event_name", "japan vs korea"], ["city", "seoul"], ["date", "sunday"]]}
+{"text": "argentina vs brazil in buenos aires 2nite, can i watch it in a bar", "spans": [["event_name", "argentina vs brazil"], ["city", "buenos aires"], ["date", "2nite"]]}
+{"text": "boca juniors in buenos aires sat, is the stadium safe for tourists", "spans": [["event_name", "boca juniors"], ["city", "buenos aires"], ["date", "sat"]]}
+{"text": "flamengo vs palmeiras rio sun, is the maracana easy to get to from copacabana", "spans": [["event_name", "flamengo vs palmeiras"], ["city", "rio"], ["date", "sun"], ["city", "copacabana"]]}
+{"text": "corinthians in sao paulo tmrw, how do i get tickets with no fan card", "spans": [["event_name", "corinthians"], ["city", "sao paulo"], ["date", "tmrw"]]}
+{"text": "santos game sp 2nite, anyone have a spare seat", "spans": [["event_name", "santos"], ["city", "sp"], ["date", "2nite"]]}
+{"text": "chivas guadalajara sat, my abuela wants to come", "spans": [["event_name", "chivas"], ["city", "guadalajara"], ["date", "sat"]]}
+{"text": "america vs tigres in cdmx tonight, is it an early kickoff", "spans": [["event_name", "america vs tigres"], ["city", "cdmx"], ["date", "tonight"]]}
+{"text": "monterrey game tmrw, where's the cheapest place to eat near the stadium", "spans": [["event_name", "monterrey"], ["date", "tmrw"]]}
+{"text": "toluca sat pls, my friend has 2 extra seats", "spans": [["event_name", "toluca"], ["date", "sat"]]}
+{"text": "kaizer chiefs in joburg sat, is the stadium close to the city center", "spans": [["event_name", "kaizer chiefs"], ["city", "joburg"], ["date", "sat"]]}
+{"text": "mamelodi sundowns game durban 2nite, is it worth the flight", "spans": [["event_name", "mamelodi sundowns"], ["city", "durban"], ["date", "2nite"]]}
+{"text": "ahly vs zamalek cairo sat, do foreigners get in easily", "spans": [["event_name", "ahly vs zamalek"], ["city", "cairo"], ["date", "sat"]]}
+{"text": "al hilal in riyadh tmrw, is the stadium open to women", "spans": [["event_name", "al hilal"], ["city", "riyadh"], ["date", "tmrw"]]}
+{"text": "al nassr game sat, what's the price of a seat behind the goal", "spans": [["event_name", "al nassr"], ["date", "sat"]]}
+{"text": "f marinos in yokohama sat, is it a fun game for a beginner", "spans": [["event_name", "f marinos"], ["city", "yokohama"], ["date", "sat"]]}
+{"text": "fc seoul game sunday, my kids want to see the mascot", "spans": [["event_name", "fc seoul"], ["date", "sunday"]]}
+{"text": "mumbai indians cricket tonight, can i still get a ticket at the gate", "spans": [["event_name", "mumbai indians"], ["date", "tonight"]]}
+{"text": "ipl in chennai sat, is it worth taking the train from bangalore", "spans": [["city", "chennai"], ["date", "sat"], ["city", "bangalore"]]}
+{"text": "csk vs rcb in bengaluru 2nite, which bar is showing it", "spans": [["event_name", "csk vs rcb"], ["city", "bengaluru"], ["date", "2nite"]]}
+{"text": "sydney swans game sat, is it worth going if i'm not a fan", "spans": [["event_name", "sydney swans"], ["date", "sat"]]}
+{"text": "richmond tigers in melbourne sun, is it hard to get seats", "spans": [["event_name", "richmond tigers"], ["city", "melbourne"], ["date", "sun"]]}
+{"text": "melbourne storm game 2nite, can i get there by tram", "spans": [["event_name", "melbourne storm"], ["date", "2nite"]]}
+{"text": "brisbane broncos sun, is it a good night out for a group", "spans": [["event_name", "brisbane broncos"], ["date", "sun"]]}
+{"text": "auckland warriors tmrw, do they have cheap student tickets", "spans": [["event_name", "auckland warriors"], ["date", "tmrw"]]}
+{"text": "crusaders in christchurch sat, my dad used to play for them", "spans": [["event_name", "crusaders"], ["city", "christchurch"], ["date", "sat"]]}
+{"text": "bulldogs in sydney tmrw, is the crowd friendly for kids", "spans": [["event_name", "bulldogs"], ["city", "sydney"], ["date", "tmrw"]]}
+{"text": "anything good on lol", "spans": []}
+{"text": "any good sports on the tv lately", "spans": []}
+{"text": "wat should i do with my free time lol", "spans": []}
+{"text": "sports on rn", "spans": []}
+{"text": "anyone know a good spot to get wings and watch", "spans": []}
+{"text": "is the crowd at these things wild or nah", "spans": []}
+{"text": "who is the best driver lately lol", "spans": []}
+{"text": "the indy 500 in indy sat, what's the best way to get there from chicago", "spans": [["event_name", "indy 500"], ["city", "indy"], ["date", "sat"], ["city", "chicago"]]}
+{"text": "daytona 500 sun, is it on tv or only in person", "spans": [["event_name", "daytona 500"], ["date", "sun"]]}
+{"text": "nascar in vegas next fri, does the track have seats under 100", "spans": [["city", "vegas"], ["date", "next fri"]]}
+{"text": "pga championship in louisville tmrw, do i need a press pass to walk the course", "spans": [["event_name", "pga championship"], ["city", "louisville"], ["date", "tmrw"]]}
+{"text": "masters in augusta this weekend, is the course open to the public", "spans": [["event_name", "masters"], ["city", "augusta"], ["date", "this weekend"]]}
+{"text": "ryder cup in rome sat, do they sell tickets to the public", "spans": [["event_name", "ryder cup"], ["city", "rome"], ["date", "sat"]]}
+{"text": "super bowl sunday, who has a spare ticket", "spans": [["event_name", "super bowl"], ["date", "sunday"]]}
+{"text": "wimbledon in london tmrw, is the grounds easy to walk", "spans": [["event_name", "wimbledon"], ["city", "london"], ["date", "tmrw"]]}
+{"text": "boxing in vegas 2nite, what's the best seat for the money", "spans": [["city", "vegas"], ["date", "2nite"]]}
+{"text": "fight in vegas sat, i'm going with my brothers, any ideas", "spans": [["city", "vegas"], ["date", "sat"]]}
+{"text": "can we get a group discount on fight tix", "spans": []}
+{"text": "ufc 305 la sat, is it the one with the big heavyweight fight", "spans": [["event_name", "ufc 305"], ["city", "la"], ["date", "sat"]]}
+{"text": "rockets vs wolves in houston tonight, is it good value for kids", "spans": [["event_name", "rockets vs wolves"], ["city", "houston"], ["date", "tonight"]]}
+{"text": "pistons game 2nite, is it a good time to take a date", "spans": [["event_name", "pistons"], ["date", "2nite"]]}
+{"text": "lol the refs r garbage ngl", "spans": []}
+{"text": "celtics or heat tonight?", "spans": [["event_name", "celtics"], ["event_name", "heat"], ["date", "tonight"]]}
+{"text": "boston celtics tmrw, is it worth the 200 bucks", "spans": [["event_name", "boston celtics"], ["date", "tmrw"]]}
+{"text": "any lakers games this wknd, i'm trying to take my mom", "spans": [["event_name", "lakers"], ["date", "this wknd"]]}
+{"text": "is there a family discount on tickets usually", "spans": []}
+{"text": "nets game sat, do they still play in the old arena", "spans": [["event_name", "nets"], ["date", "sat"]]}
+{"text": "mets vs yankees subway series 2nite, are the seats in the upper deck any good", "spans": [["event_name", "mets vs yankees"], ["date", "2nite"]]}
+{"text": "subway series in nyc tmrw, anybody want to share a rideshare", "spans": [["event_name", "subway series"], ["city", "nyc"], ["date", "tmrw"]]}
+{"text": "is it worth it without a car tho", "spans": []}
+{"text": "senators ottawa game 2nite, can we get a last minute ticket", "spans": [["event_name", "senators"], ["city", "ottawa"], ["date", "2nite"]]}
+{"text": "jets fans in winnipeg this weekend lol, need a jersey first", "spans": [["event_name", "jets"], ["city", "winnipeg"], ["date", "this weekend"]]}
+{"text": "panthers tampa sat, is it a good game for a bachelor party", "spans": [["event_name", "panthers"], ["city", "tampa"], ["date", "sat"]]}
+{"text": "florida panthers miami tmrw, do we need to arrive early", "spans": [["event_name", "florida panthers"], ["city", "miami"], ["date", "tmrw"]]}
+{"text": "canadiens montreal tonight, which bar is the best for the crowd", "spans": [["event_name", "canadiens"], ["city", "montreal"], ["date", "tonight"]]}
+{"text": "montreal canadiens 2nite, can i get a ticket with a student card", "spans": [["event_name", "montreal canadiens"], ["date", "2nite"]]}
+{"text": "toronto blue jays sun, my bf got me tickets, what do i wear", "spans": [["event_name", "toronto blue jays"], ["date", "sun"]]}
+{"text": "dallas mavericks home game tmrw, is the arena easy to get to", "spans": [["event_name", "dallas mavericks"], ["date", "tmrw"]]}
+{"text": "vegas golden knights tonight, is it on the strip or near the arena", "spans": [["event_name", "vegas golden knights"], ["date", "tonight"]]}
+{"text": "golden knights vs oilers in edmonton tmrw, do they play in canada all week", "spans": [["event_name", "golden knights vs oilers"], ["city", "edmonton"], ["date", "tmrw"]]}
+{"text": "oilers edmonton sat night, is it warm enough to tailgate", "spans": [["event_name", "oilers"], ["city", "edmonton"], ["date", "sat night"]]}
+{"text": "edmonton oilers tickets this fri, what's the price range", "spans": [["event_name", "edmonton oilers"], ["date", "this fri"]]}
+{"text": "colorado avs 2nite, is there a good view from the upper level", "spans": [["event_name", "colorado avs"], ["date", "2nite"]]}
+{"text": "calgary flames home sat, anybody want to drive up with me", "spans": [["event_name", "calgary flames"], ["date", "sat"]]}
+{"text": "seattle kraken tmrw, is there a cheap way to get a seat", "spans": [["event_name", "seattle kraken"], ["date", "tmrw"]]}
+{"text": "pens vs flyers in philly tmrw, is it a rivalry that gets wild", "spans": [["event_name", "pens vs flyers"], ["city", "philly"], ["date", "tmrw"]]}
+{"text": "washington capitals dc sat, can i bring a kid under 5", "spans": [["event_name", "washington capitals"], ["city", "dc"], ["date", "sat"]]}
+{"text": "caps tmrw, my boyfriend is dying to go", "spans": [["event_name", "caps"], ["date", "tmrw"]]}
+{"text": "blackhawks tmrw, is the united center close to the el", "spans": [["event_name", "blackhawks"], ["date", "tmrw"]]}
+{"text": "st louis blues 2nite, is the game on tv or only on the radio", "spans": [["event_name", "st louis blues"], ["date", "2nite"]]}
+{"text": "lightning vs panthers 2nite, which side has better seats", "spans": [["event_name", "lightning vs panthers"], ["date", "2nite"]]}
+{"text": "hurricanes game sun, parking near the arena is a nightmare right", "spans": [["event_name", "hurricanes"], ["date", "sun"]]}
+{"text": "ducks anaheim sat, my dad is a big fan from the 80s", "spans": [["event_name", "ducks"], ["city", "anaheim"], ["date", "sat"]]}
+{"text": "anaheim ducks 2nite, can we get there from la in time", "spans": [["event_name", "anaheim ducks"], ["date", "2nite"], ["city", "la"]]}
+{"text": "coyotes tmrw, is it a cheap night out", "spans": [["event_name", "coyotes"], ["date", "tmrw"]]}
+{"text": "predators vs blues in nashville sat, is the game worth the drive from memphis", "spans": [["event_name", "predators vs blues"], ["city", "nashville"], ["date", "sat"], ["city", "memphis"]]}
+{"text": "islanders vs rangers sunday, who's favored to win", "spans": [["event_name", "islanders vs rangers"], ["date", "sunday"]]}
+{"text": "devils vs flyers tmrw, is that a good matchup for a first game", "spans": [["event_name", "devils vs flyers"], ["date", "tmrw"]]}
+{"text": "ice hockey in helsinki sat, can i buy tickets at the venue", "spans": [["city", "helsinki"], ["date", "sat"]]}
+{"text": "finland vs sweden in helsinki tmrw, do they sell beer at the game", "spans": [["event_name", "finland vs sweden"], ["city", "helsinki"], ["date", "tmrw"]]}
+{"text": "stockholm game sun, what's the transit like on sunday", "spans": [["city", "stockholm"], ["date", "sun"]]}
+{"text": "frolunda in gothenburg sat, can u get a train from stockholm", "spans": [["event_name", "frolunda"], ["city", "gothenburg"], ["date", "sat"], ["city", "stockholm"]]}
+{"text": "ak bars in kazan sun, is it a good idea in the winter", "spans": [["event_name", "ak bars"], ["city", "kazan"], ["date", "sun"]]}
+{"text": "cska moscow 2nite, can we buy tickets online from abroad", "spans": [["event_name", "cska"], ["city", "moscow"], ["date", "2nite"]]}
+{"text": "spartak moscow tmrw, is it the big derby that day", "spans": [["event_name", "spartak moscow"], ["date", "tmrw"]]}
+{"text": "bayern vs dortmund in munich sat, is there a shuttle from the airport", "spans": [["event_name", "bayern vs dortmund"], ["city", "munich"], ["date", "sat"]]}
+{"text": "schalke in gelsenkirchen sat, my friend wants to see the stadium", "spans": [["event_name", "schalke"], ["city", "gelsenkirchen"], ["date", "sat"]]}
+{"text": "hertha berlin 2nite, is there an english speaking bar near the stadium", "spans": [["event_name", "hertha berlin"], ["date", "2nite"]]}
+{"text": "union berlin tmrw, where can i stand with the ultras", "spans": [["event_name", "union berlin"], ["date", "tmrw"]]}
+{"text": "eintracht frankfurt in frankfurt sun, are they good this season", "spans": [["event_name", "eintracht frankfurt"], ["city", "frankfurt"], ["date", "sun"]]}
+{"text": "leverkusen game tmrw, do they play in the same stadium as the bayer club", "spans": [["event_name", "leverkusen"], ["date", "tmrw"]]}
+{"text": "wolfsburg vs stuttgart sat, is the match on tv in the us", "spans": [["event_name", "wolfsburg vs stuttgart"], ["date", "sat"]]}
+{"text": "hamburg derby sunday, is it safe to walk to the stadium", "spans": [["event_name", "hamburg derby"], ["date", "sunday"]]}
+{"text": "st pauli in hamburg tmrw, are the tickets cheap for a friend", "spans": [["event_name", "st pauli"], ["city", "hamburg"], ["date", "tmrw"]]}
+{"text": "olympiacos piraeus 2nite, can we get a ferry from athens", "spans": [["event_name", "olympiacos"], ["city", "piraeus"], ["date", "2nite"], ["city", "athens"]]}
+{"text": "panathinaikos in athens sat, do they have english subtitles on the stream", "spans": [["event_name", "panathinaikos"], ["city", "athens"], ["date", "sat"]]}
+{"text": "red star in belgrade tmrw, what's the best stadium to see a derby", "spans": [["event_name", "red star"], ["city", "belgrade"], ["date", "tmrw"]]}
+{"text": "partizan belgrade sat, my cousin plays for the youth team", "spans": [["event_name", "partizan"], ["city", "belgrade"], ["date", "sat"]]}
+{"text": "dinamo zagreb tonight, is the game worth it for a non fan", "spans": [["event_name", "dinamo zagreb"], ["date", "tonight"]]}
+{"text": "slavia prague 2nite, which tram goes to the stadium", "spans": [["event_name", "slavia prague"], ["date", "2nite"]]}
+{"text": "sparta prague game sat, is it a family friendly game", "spans": [["event_name", "sparta prague"], ["date", "sat"]]}
+{"text": "legia in warsaw sun, is the crowd rowdy or chill", "spans": [["event_name", "legia"], ["city", "warsaw"], ["date", "sun"]]}
+{"text": "zenit st petersburg sat, can u still get in if you don't speak russian", "spans": [["event_name", "zenit"], ["city", "st petersburg"], ["date", "sat"]]}
+{"text": "dynamo kyiv tmrw, is it safe to go right now", "spans": [["event_name", "dynamo kyiv"], ["date", "tmrw"]]}
+{"text": "shakhtar donetsk game sun, what's the best way to watch it from abroad", "spans": [["event_name", "shakhtar donetsk"], ["date", "sun"]]}
+{"text": "rapid vienna in vienna tmrw, do i need to book a table in advance", "spans": [["event_name", "rapid vienna"], ["city", "vienna"], ["date", "tmrw"]]}
+{"text": "salzburg game 2nite, where's the best bratwurst near the stadium", "spans": [["event_name", "salzburg"], ["date", "2nite"]]}
+{"text": "basel vs zurich sat, is it a long train ride", "spans": [["event_name", "basel vs zurich"], ["date", "sat"]]}
+{"text": "young boys in bern sun, do they still play at the old ground", "spans": [["event_name", "young boys"], ["city", "bern"], ["date", "sun"]]}
+{"text": "club brugge in bruges tonight, is the old town worth a visit too", "spans": [["event_name", "club brugge"], ["city", "bruges"], ["date", "tonight"]]}
+{"text": "anderlecht brussels sat, do the fans sing in french or dutch", "spans": [["event_name", "anderlecht"], ["city", "brussels"], ["date", "sat"]]}
+{"text": "fc copenhagen 2nite, are there any cheap hotels nearby", "spans": [["event_name", "fc copenhagen"], ["date", "2nite"]]}
+{"text": "rosenborg in trondheim sun, is it cold for the match", "spans": [["event_name", "rosenborg"], ["city", "trondheim"], ["date", "sun"]]}
+{"text": "malmo ff vs aik in stockholm sat, do u need a card to get in", "spans": [["event_name", "malmo ff vs aik"], ["city", "stockholm"], ["date", "sat"]]}
+{"text": "ludogorets in sofia tmrw, is the stadium near the metro", "spans": [["event_name", "ludogorets"], ["city", "sofia"], ["date", "tmrw"]]}
+{"text": "biathlon in oslo sat, is it worth going if i can't ski", "spans": [["city", "oslo"], ["date", "sat"]]}
+{"text": "olympics in paris 2nite, who's got the best seats", "spans": [["event_name", "olympics"], ["city", "paris"], ["date", "2nite"]]}
+{"text": "world cup final sunday, where do the fans go after the match", "spans": [["event_name", "world cup"], ["date", "sunday"]]}
+{"text": "copa america in miami 2nite, is the stadium near the beach", "spans": [["event_name", "copa america"], ["city", "miami"], ["date", "2nite"]]}
+{"text": "champions league in madrid next tue, which hotel is closest to the stadium", "spans": [["event_name", "champions league"], ["city", "madrid"], ["date", "next tue"]]}
+{"text": "europa league tonight, is it on the big screen at the bar", "spans": [["event_name", "europa league"], ["date", "tonight"]]}
+{"text": "fa cup final sat, my nan wants to come too lol", "spans": [["event_name", "fa cup"], ["date", "sat"]]}
+{"text": "carabao cup tmrw, any tickets left for the away end", "spans": [["event_name", "carabao cup"], ["date", "tmrw"]]}
+{"text": "copa libertadores in bogota sat, is it safe to walk to the stadium", "spans": [["event_name", "copa libertadores"], ["city", "bogota"], ["date", "sat"]]}
+{"text": "millonarios vs santa fe in bogota 2nite, what time does it start", "spans": [["event_name", "millonarios vs santa fe"], ["city", "bogota"], ["date", "2nite"]]}
+{"text": "atletico nacional in medellin tmrw, is the match on tv", "spans": [["event_name", "atletico nacional"], ["city", "medellin"], ["date", "tmrw"]]}
+{"text": "independiente in avellaneda sat, can you get a bus from buenos aires", "spans": [["event_name", "independiente"], ["city", "avellaneda"], ["date", "sat"], ["city", "buenos aires"]]}
+{"text": "river plate game sun, is it true the stadium holds 60k", "spans": [["event_name", "river plate"], ["date", "sun"]]}
+{"text": "river vs boca tonight, is it the big superclasico", "spans": [["event_name", "river vs boca"], ["date", "tonight"]]}
+{"text": "colo colo in santiago 2nite, is the bus from the airport running late", "spans": [["event_name", "colo colo"], ["city", "santiago"], ["date", "2nite"]]}
+{"text": "universidad de chile tmrw, do they have student discounts", "spans": [["event_name", "universidad de chile"], ["date", "tmrw"]]}
+{"text": "peru vs chile in lima sat, is it a big deal for the locals", "spans": [["event_name", "peru vs chile"], ["city", "lima"], ["date", "sat"]]}
+{"text": "alianza lima game sun, can i take a taxi from miraflores", "spans": [["event_name", "alianza lima"], ["date", "sun"], ["city", "miraflores"]]}
+{"text": "barcelona sc in guayaquil sat, is the game good for kids", "spans": [["event_name", "barcelona sc"], ["city", "guayaquil"], ["date", "sat"]]}
+{"text": "toronto raptors vs nets tonight, are the seats nice on the upper level", "spans": [["event_name", "toronto raptors vs nets"], ["date", "tonight"]]}
+{"text": "yakult swallows in tokyo tmrw, is there an english menu at the stadium", "spans": [["event_name", "yakult swallows"], ["city", "tokyo"], ["date", "tmrw"]]}
+{"text": "hanshin tigers in osaka sat, is the crowd loud at the game", "spans": [["event_name", "hanshin tigers"], ["city", "osaka"], ["date", "sat"]]}
+{"text": "dodgers in tokyo, is that the game they play in march", "spans": [["event_name", "dodgers"], ["city", "tokyo"]]}
+{"text": "orioles vs rays tonight, can i get in for free if i'm a student", "spans": [["event_name", "orioles vs rays"], ["date", "tonight"]]}
+{"text": "any college hoops in lexington sat, my cousin is a freshman there", "spans": [["city", "lexington"], ["date", "sat"]]}
+{"text": "kentucky wildcats 2nite, are the tickets worth the price", "spans": [["event_name", "kentucky wildcats"], ["date", "2nite"]]}
+{"text": "michigan wolverines in ann arbor tmrw, which bars are close to the stadium", "spans": [["event_name", "michigan wolverines"], ["city", "ann arbor"], ["date", "tmrw"]]}
+{"text": "purdue vs ohio state tonight, which channel is it on", "spans": [["event_name", "purdue vs ohio state"], ["date", "tonight"]]}
+{"text": "buckeyes game tmrw, is the bus going from columbus to the stadium", "spans": [["event_name", "buckeyes"], ["date", "tmrw"], ["city", "columbus"]]}
+{"text": "gonzaga bulldogs in spokane 2nite, is it worth going on a weeknight", "spans": [["event_name", "gonzaga bulldogs"], ["city", "spokane"], ["date", "2nite"]]}
+{"text": "san diego state aztecs sat, can we tailgate outside the lot", "spans": [["event_name", "san diego state aztecs"], ["date", "sat"]]}
+{"text": "byu cougars in provo sun, is it cold up there in sunday", "spans": [["event_name", "byu cougars"], ["city", "provo"], ["date", "sun"]]}
+{"text": "ole miss rebels in oxford sat, how do i find a parking spot", "spans": [["event_name", "ole miss rebels"], ["city", "oxford"], ["date", "sat"]]}
+{"text": "missouri tigers in columbia tmrw, do they have a family section", "spans": [["event_name", "missouri tigers"], ["city", "columbia"], ["date", "tmrw"]]}
+{"text": "tennessee volunteers in knoxville sat, what's the best food near the stadium", "spans": [["event_name", "tennessee volunteers"], ["city", "knoxville"], ["date", "sat"]]}
+{"text": "vols game in knoxville 2nite, my cousin is going, can i come", "spans": [["event_name", "vols"], ["city", "knoxville"], ["date", "2nite"]]}
+{"text": "xavier musketeers in cincinnati sun, is the arena near the bars", "spans": [["event_name", "xavier musketeers"], ["city", "cincinnati"], ["date", "sun"]]}
+{"text": "creighton bluejays in omaha sat, how much for a family package", "spans": [["event_name", "creighton bluejays"], ["city", "omaha"], ["date", "sat"]]}
+{"text": "nebraska cornhuskers in lincoln tmrw, is there a good tailgate spot", "spans": [["event_name", "nebraska cornhuskers"], ["city", "lincoln"], ["date", "tmrw"]]}
+{"text": "wisconsin badgers in madison sat, is the game worth it in the cold", "spans": [["event_name", "wisconsin badgers"], ["city", "madison"], ["date", "sat"]]}
+{"text": "minnesota golden gophers in minneapolis tmrw, do i need to bring a coat", "spans": [["event_name", "minnesota golden gophers"], ["city", "minneapolis"], ["date", "tmrw"]]}
+{"text": "any games on at all lol", "spans": []}
+{"text": "who do u think takes the title this year", "spans": []}
+{"text": "is it normal to cry at the last minute of a game lol", "spans": []}
+{"text": "my team lost again and i need a new hobby", "spans": []}
+{"text": "best snacks for a long game day", "spans": []}
+{"text": "does anyone make good wings near me", "spans": []}
+{"text": "should i buy the season pass or single tix", "spans": []}
+{"text": "how do i get rid of my ticket stub hangover lol", "spans": []}
+{"text": "those refs were awful last night ngl", "spans": []}
+{"text": "is there a cheap way to stream the big match", "spans": []}
+{"text": "anyone know the rules of cricket pls", "spans": []}
+{"text": "what time do the fans usually show up", "spans": []}
+{"text": "bringing a cooler into the stadium allowed?", "spans": []}
+{"text": "which seats have the best view of the court", "spans": []}
+{"text": "who is the goat of the nba in your opinion", "spans": []}
+{"text": "anyone tried those new stadium hot dogs", "spans": []}
+{"text": "my kid wants a jersey, whats a good size", "spans": []}
+{"text": "wanna make a bet on the big game, who is in", "spans": []}
+{"text": "does the stadium have a family section", "spans": []}
+{"text": "idk if i should go or stay home, thoughts?", "spans": []}
+{"text": "best jersey brands for the fans", "spans": []}
+{"text": "what happens if the game gets rained out", "spans": []}
+{"text": "any fun traditions at the big games", "spans": []}
+{"text": "how long do these games usually last", "spans": []}
+{"text": "is it weird to go to a game alone", "spans": []}
+{"text": "anyone got a good playlist for the drive", "spans": []}
+{"text": "i need a new pair of sneakers for hoops", "spans": []}
+{"text": "which team has the best fans lol", "spans": []}
+{"text": "is it worth paying extra for the good seats", "spans": []}
+{"text": "anyone else pumped for the playoffs", "spans": []}
+{"text": "where is the best place to grab a beer near the arena", "spans": []}
+{"text": "can someone explain offsides again pls", "spans": []}
+{"text": "lost my ticket, can someone help", "spans": []}
+{"text": "do stadium lines move fast on game day", "spans": []}
+{"text": "which is better, watching at home or in the stands", "spans": []}
+{"text": "what do u wear to a game in the cold", "spans": []}
+{"text": "is there any free parking near the arena", "spans": []}
+{"text": "need someone to split the uber home lol", "spans": []}
+{"text": "who is ready for a big sports night", "spans": []}
+{"text": "anyone know when presale tickets start", "spans": []}
+{"text": "best bars for a sports crowd around here", "spans": []}
+{"text": "is it rude to bring a sign to the game", "spans": []}
+{"text": "how do i get my dad into a stadium in a wheelchair", "spans": []}
+{"text": "my friend says the seats in the nosebleeds are fine", "spans": []}
+{"text": "should i bring a seat cushion or nah", "spans": []}
+{"text": "do u think the crowd will be loud", "spans": []}
+{"text": "trying to find a group to go with, anybody", "spans": []}
+{"text": "whats a good gift for a sports fan", "spans": []}
+{"text": "who won the last big match between these two", "spans": []}
+{"text": "is streaming better than cable for sports", "spans": []}
+{"text": "help me pick a team to root for lol", "spans": []}
+{"text": "whats the best way to avoid traffic after games", "spans": []}
+{"text": "can we all agree the commentators are annoying", "spans": []}

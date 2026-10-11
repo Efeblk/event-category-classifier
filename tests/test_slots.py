@@ -1,4 +1,5 @@
-"""Tests for slots.py: BIO conversion and cleaning, span scoring, typo noise, features and the dictionary tagger.
+"""Tests for slots.py: BIO conversion and cleaning, span scoring, typo and messy noise, features and the dictionary
+tagger.
 
 Standard library plus scikit-learn only, no network and no GPU.
 """
@@ -9,7 +10,7 @@ import unittest
 from sklearn.svm import LinearSVC
 
 from slots import (DictionaryTagger, add_typos, bio_tags, clean_split, dedupe, drop_leaks, featurize,
-                   fit_vectorizer, predict, repair_bio, slot_counts, span_scores, spans, token_features)
+                   fit_vectorizer, messy_copy, predict, repair_bio, slot_counts, span_scores, spans, token_features)
 
 
 class BioTagsTest(unittest.TestCase):
@@ -82,6 +83,17 @@ class AddTyposTest(unittest.TestCase):
         noisy = add_typos(self.TOKENS, random.Random(3), 1.0)
         self.assertEqual(noisy[2], "go")
         self.assertEqual(noisy[5], "!")
+
+
+class MessyCopyTest(unittest.TestCase):
+    TOKENS = ["Any", "concerts", "in", "Chicago", "Tomorrow", "?"]
+
+    def test_lowercases_and_uses_slang_without_changing_length(self):
+        messy = messy_copy(self.TOKENS, random.Random(1), slang_rate=1.0, typo_rate=0.0)
+        self.assertEqual(messy, ["any", "concerts", "in", "chicago", "tmrw", "?"])
+
+    def test_same_seed_gives_same_copy(self):
+        self.assertEqual(messy_copy(self.TOKENS, random.Random(5)), messy_copy(self.TOKENS, random.Random(5)))
 
 
 class FeatureTest(unittest.TestCase):

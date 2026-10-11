@@ -134,24 +134,30 @@ class LoadModelsTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as empty:
             models, notes = extract.load_models(classic_dir=empty, artifacts_dir=empty)
         self.assertEqual(models, [])
-        self.assertEqual(len(notes), len(extract.CLASSIC_MODELS) + len(extract.TRANSFORMER_MODELS))
-        self.assertIn("BERTweet skipped", notes[-1])
+        self.assertEqual(len(notes), len(extract.CLASSIC_MODELS) + len(extract.LIVE_TRANSFORMERS))
+        self.assertTrue(any("BERTweet_E skipped" in note for note in notes))
 
     def test_transformers_are_skipped_with_a_note_when_no_gpu_is_available(self):
         with tempfile.TemporaryDirectory() as tmp:
-            for key, _ in extract.TRANSFORMER_MODELS:
+            for key, _ in extract.LIVE_TRANSFORMERS:
                 (Path(tmp) / key).mkdir()
                 (Path(tmp) / key / "config.json").write_text("{}", encoding="utf-8")
             with mock.patch.object(extract, "transformer_problem", return_value="no CUDA GPU is available"):
                 models, notes = extract.load_models(classic_dir=tmp, artifacts_dir=tmp)
         self.assertEqual(models, [])
-        self.assertEqual(notes[-3:], [f"{name} skipped: no CUDA GPU is available"
-                                      for _, name in extract.TRANSFORMER_MODELS])
+        self.assertEqual(notes[-len(extract.LIVE_TRANSFORMERS):], [f"{name} skipped: no CUDA GPU is available"
+                                      for _, name in extract.LIVE_TRANSFORMERS])
 
     def test_dictionary_tagger_data_becomes_a_tag_function(self):
         tagger = DictionaryTagger([{"tokens": ["Paris"], "tags": ["B-city"]}])
         tag = extract.classic_tagger({"model": "dictionary baseline", "tagger": tagger})
         self.assertEqual(tag(["paris", "x"]), ["B-city", "O"])
+
+
+class NewWordsTest(unittest.TestCase):
+    def test_lists_unseen_words_once_in_order_ignoring_case(self):
+        vocabulary = {"tix", "for", "in", "austin"}
+        self.assertEqual(extract.new_words("Tix for Roan in Austin, roan tmmrw!", vocabulary), ["roan", "tmmrw"])
 
 
 if __name__ == "__main__":

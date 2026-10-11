@@ -41,21 +41,43 @@
   .ms { margin-left: auto; color: #52514e; font-size: 0.9rem; }
   .request { font-size: 1.15rem; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; margin: 8px 0; }
   .summary { font-size: 1rem; }
+  .section-title { font-weight: 700; font-size: 1.1rem; margin: 0 0 6px; }
+  .new-words { margin: 0 0 8px; }
+  .new-words b { background: #fff3c4; padding: 0 4px; border-radius: 4px; }
+  .jev-card { border: 1px dashed #b9b9b4; border-radius: 10px; padding: 14px; margin-top: 16px; }
+  .filled { border: 1px solid #b9b9b4; border-radius: 10px; padding: 14px; margin-top: 16px; }
+  .filled-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 10px 0; }
+  @media (max-width: 900px) { .filled-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .slot-label { color: #52514e; font-size: 0.85rem; }
+  .slot-value { font-size: 1.1rem; font-weight: 700; }
+  .slot-value.missing { color: #b8b7b2; font-weight: 400; }
   mark { padding: 1px 3px; border-radius: 4px; color: #0b0b0b; }
   mark.city { background: #dbe8f9; box-shadow: inset 0 -3px #2a78d6; }
   mark.date { background: #d3f1e4; box-shadow: inset 0 -3px #1baf7a; }
   mark.event_name { background: #fde2d5; box-shadow: inset 0 -3px #eb6834; }
+  mark.clue { background: none; box-shadow: none; padding: 0; }
   .assistant { font-size: 1.2rem; font-weight: 600; margin: 18px 0 0; }
   h2.results-title { font-size: 1.5rem; margin: 0 0 4px; }
-  .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
-  @media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .tile { background: #fcfcfb; border: 1px solid #b9b9b4; border-radius: 10px; padding: 14px; }
-  .tile-label { color: #52514e; font-size: 0.9rem; }
-  .tile-value { font-size: 1.25rem; font-weight: 700; margin: 4px 0; white-space: nowrap; }
-  .tile.hero { background: #0b0b0b; color: #fcfcfb; border-color: #0b0b0b; }
-  .tile.hero .tile-label, .tile.hero .tile-sub { color: #d6d6d2; }
-  .tile.hero .tile-value { font-size: 2.2rem; }
-  .tile-sub { color: #52514e; font-size: 0.85rem; }
+  .mix { display: flex; height: 34px; border-radius: 8px; overflow: hidden; margin: 10px 0 6px; }
+  .mix div { color: #fcfcfb; font-size: 0.85rem; display: flex; align-items: center; padding: 0 8px;
+    white-space: nowrap; overflow: hidden; }
+  .data-table td { vertical-align: top; }
+  .data-block { border: 1px solid #b9b9b4; border-radius: 10px; padding: 12px 14px; margin-top: 14px; }
+  .train-block { background: #f3f7fd; }
+  .test-block { background: #fdf5f0; }
+  .block-title { font-weight: 700; font-size: 1.05rem; margin: 4px 0 6px; }
+  .data-block table { background: #fcfcfb; border-radius: 8px; }
+  .source-cell { border-left: 5px solid transparent; padding-left: 10px; }
+  .badge { font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+  .badge.clean { background: #dbe8f9; color: #1d4ed8; }
+  .badge.messy { background: #fde2d5; color: #9a3412; }
+  .callout { background: #0b0b0b; color: #fcfcfb; border-radius: 10px; padding: 16px 18px; margin: 8px 0 16px; }
+  .callout-main { font-size: 1.25rem; font-weight: 700; }
+  .callout-sub { color: #d6d6d2; margin-top: 6px; }
+  .hand-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .formula { display: flex; align-items: stretch; gap: 10px; margin: 6px 0 12px; flex-wrap: wrap; }
+  .formula-box { flex: 1; min-width: 180px; border: 1px solid #b9b9b4; border-radius: 10px; padding: 10px 12px; }
+  .formula-op { font-size: 1.6rem; font-weight: 700; align-self: center; }
   .chart-title { font-size: 22px; margin: 0 0 4px; }
   .caption { color: #52514e; margin: 0 0 12px; font-size: 0.95rem; }
   .chart-host { position: relative; }
@@ -93,12 +115,16 @@
       <div id="examples" class="examples"></div>
     </div>
     <div class="card" id="results" hidden>
+      <p class="section-title">Slot tagging: which model finds the slots?</p>
+      <p id="new-words" class="new-words"></p>
       <p class="legend-line">
         <span class="legend-item"><i class="swatch city"></i>city</span>
         <span class="legend-item"><i class="swatch date"></i>date</span>
         <span class="legend-item"><i class="swatch event_name"></i>event</span>
       </p>
       <div id="rows"></div>
+      <div id="jev"></div>
+      <div id="filled"></div>
       <p id="assistant" class="assistant"></p>
       <p id="notes" class="muted"></p>
       <p id="error" class="error"></p>
@@ -109,17 +135,19 @@
     <h2 class="results-title">Results</h2>
     <p id="results-note" class="muted"></p>
     <p id="results-error" class="error"></p>
-    <div id="tiles" class="tiles"></div>
     <div id="charts"></div>
   </section>
 </main>
 <script>
+// The first four contain words that never appear in the training data; in the fifth only BERTweet_E finds the
+// lowercase name; the last one shows what Jev adds.
 const EXAMPLES = [
-  "im bored, find me a event for tommorrow that so i can go with my girlfriend",
-  "wanna catch the lakers game w my dad tmrw",
-  "is lizzo playing anywhere near sf soon? need a ticket just for me",
-  "my kids love musicals, whats on in NYC next sat",
-  "taylor swift in chi-town this wknd??"
+  "tix for chappell roan in austin tmmrw",
+  "is goose playing in denver this satuday",
+  "can i see laufey in lisbon on the 3rd",
+  "whats on in reykjavik next thrusday",
+  "taylor swift in chi-town this wknd??",
+  "im bored, find me a event for tommorrow that so i can go with my girlfriend"
 ];
 const FOLLOW_UPS = {
   ask_city: "Ask for the city",
@@ -134,8 +162,8 @@ const GRID = "#e2e2de";
 const MUTED = "#b8b7b2";
 const SURFACE = "#fcfcfb";
 const SET_D = "D: SGD+MASSIVE+typos";
-const SETS_AD = ["A: SGD", "B: SGD+MASSIVE", "C: SGD+typos", SET_D];
-const CLASSIC_NAMES = ["Dictionary", "Naive Bayes", "Logistic Regression", "Linear SVM"];
+const SET_E = "E: SGD+MASSIVE+typos+synthetic";
+const CLASSIC_NAMES = ["Parser", "Naive Bayes", "Logistic Regression", "Linear SVM"];
 const $ = (id) => document.getElementById(id);
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -202,24 +230,65 @@ function modelRow(model, text) {
   return card;
 }
 
-function jevRow(jev) {
-  const card = el("div", "model-row");
+// Jev is not a slot tagger, so it gets its own box: it answers what the words do not say.
+function jevCard(jev) {
+  const card = el("div", "jev-card");
   const head = el("div", "model-head");
-  head.append(el("span", "model-name", "Jev"), el("span", "family", "paid call"));
+  head.append(el("span", "model-name", "Jev: what the words don't say"), el("span", "family", "paid call"));
   const line = jev.status === "ok"
-    ? "Event type: " + jev.event_type + " · Tickets: " + jev.tickets + " · Status: ok"
-    : "Status: " + jev.status + (jev.message ? " · " + jev.message : "");
+    ? "Event type: " + jev.event_type + " · Tickets: " + jev.tickets.replace("_", "–")
+    : jev.status === "skipped"
+      ? "Not asked. Tick “Ask Jev” to get the event type and the number of tickets."
+      : "Status: " + jev.status + (jev.message ? " · " + jev.message : "");
   card.append(head, el("div", "summary", line));
   return card;
 }
 
+// The final result: slots from the trained model, event type and tickets from Jev when it ran.
+function filledCard(model, jev) {
+  const card = el("div", "filled");
+  card.append(el("div", "model-name", "Filled slots"),
+              el("div", "slot-label", "from " + model.name + (jev.status === "ok" ? " and Jev" : "")));
+  const grid = el("div", "filled-grid");
+  const jevValue = (key) => (jev.status !== "ok" ? null : jev[key] === "unknown" ? "-" : jev[key].replace("_", "–"));
+  const items = [["City", cell(model.slots.city)], ["Date", cell(model.slots.date)],
+                 ["Event", cell(model.slots.event_name)], ["Type (Jev)", jevValue("event_type")],
+                 ["Tickets (Jev)", jevValue("tickets")]];
+  for (const [label, value] of items) {
+    const box = el("div");
+    const shown = value === null ? "not asked" : value === "-" ? "missing" : value;
+    box.append(el("div", "slot-label", label), el("div", shown === value ? "slot-value" : "slot-value missing", shown));
+    grid.append(box);
+  }
+  card.append(grid);
+  return card;
+}
+
+// A parser can only find words it has seen; the models that generalise also tag the words listed here.
+function showNewWords(words) {
+  const line = $("new-words");
+  line.textContent = "";
+  if (!words.length) {
+    line.append("Every word of this request appears in the training data.");
+    return;
+  }
+  line.append("Words no model saw in training: ");
+  words.forEach((word, i) => line.append(i ? ", " : "", el("b", null, word)));
+}
+
 function showCompare(data) {
+  showNewWords(data.new_words || []);
   const rows = $("rows");
   rows.textContent = "";
   for (const model of data.models) rows.append(modelRow(model, data.text));
-  rows.append(jevRow(data.jev));
-  const bertweet = data.models.find((model) => model.key === "bertweet");
+  $("jev").textContent = "";
+  $("jev").append(jevCard(data.jev));
+  // The last transformer row is the strongest model; its slots drive the follow-up questions.
+  const bertweet = data.models.find((model) => model.key === "bertweet_E")
+    || data.models.find((model) => model.key === "bertweet");
   const questions = bertweet ? bertweet.follow_ups.map((name) => FOLLOW_UPS[name]) : [];
+  $("filled").textContent = "";
+  if (bertweet) $("filled").append(filledCard(bertweet, data.jev));
   $("assistant").textContent = "Assistant would ask: " + (questions.join("; ") || "None, ready to search");
   $("notes").textContent = data.notes.join(" · ");
   $("results").hidden = false;
@@ -231,6 +300,8 @@ async function compare() {
   $("error").textContent = "";
   $("results").hidden = false;
   $("rows").textContent = "Running every model...";
+  $("jev").textContent = "";
+  $("filled").textContent = "";
   $("assistant").textContent = "";
   $("notes").textContent = "";
   try {
@@ -269,34 +340,6 @@ async function loadResults() {
     resultsLoaded = true;
   } catch (error) {
     $("results-error").textContent = "Results unavailable: " + error.message;
-  }
-}
-
-function tile(label, value, sub, hero) {
-  const node = el("div", hero ? "tile hero" : "tile");
-  node.append(el("div", "tile-label", label), el("div", "tile-value", value), el("div", "tile-sub", sub));
-  return node;
-}
-
-function renderTiles(data) {
-  const tiles = $("tiles");
-  tiles.textContent = "";
-  const stats = data.stats || {};
-  const split = (s) => "+ " + fmt(s.dev.rows) + " dev, " + fmt(s.test.rows) + " test";
-  if (stats.sgd) tiles.append(tile("SGD training requests", fmt(stats.sgd.train.rows), split(stats.sgd)));
-  if (stats.massive) tiles.append(tile("MASSIVE training requests", fmt(stats.massive.train.rows), split(stats.massive)));
-  if (data.messy_test_rows !== undefined) {
-    tiles.append(tile("Messy test requests", fmt(data.messy_test_rows), "AI-drafted, hand-checked, never trained on"));
-  }
-  if (data.user_requests !== undefined) {
-    tiles.append(tile("Logged user requests", fmt(data.user_requests), "saved locally for testing"));
-  }
-  // Both models were chosen on dev; the messy set is only reported, never used to pick.
-  const bertweet = (data.transformers || []).find((t) => t.key === "bertweet");
-  const linearSvm = (data.classic || []).find((r) => r.training_set === SET_D && r.name === "Linear SVM");
-  if (bertweet) {
-    const sub = linearSvm ? "vs Linear SVM " + f2(linearSvm.messy_f1) + " (both chosen on dev)" : "";
-    tiles.append(tile("Messy-test F1 (BERTweet)", f2(bertweet.messy_f1), sub, true));
   }
 }
 
@@ -369,7 +412,8 @@ function barPath(x0, y, w, h, r) {
 }
 
 // Grouped horizontal bars on a 0 to 1 axis. series[i].colors, when given, colours each category's bar.
-function drawBars(section, categories, series) {
+// note, when given, is {category, series, text}: a hand-drawn circle at the end of that bar and text under the axis.
+function drawBars(section, categories, series, note) {
   drawLegend(section.legend, series);
   if (series.every((s) => s.values.every((v) => v == null))) {
     section.host.append(el("p", "muted", "No data yet."));
@@ -378,8 +422,9 @@ function drawBars(section, categories, series) {
   const W = 1000, L = 230, R = 64, top = 8, bh = 14, gap = 2, groupGap = 18, axisH = 40;
   const plotW = W - L - R;
   const groupH = series.length * bh + (series.length - 1) * gap;
-  const H = top + categories.length * groupH + (categories.length - 1) * groupGap + axisH;
-  const plotBottom = H - axisH;
+  const noteH = note ? 70 : 0;
+  const H = top + categories.length * groupH + (categories.length - 1) * groupGap + axisH + noteH;
+  const plotBottom = H - axisH - noteH;
   const x = (v) => L + v * plotW;
   const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
   for (const t of [0, 0.25, 0.5, 0.75, 1]) {
@@ -399,6 +444,11 @@ function drawBars(section, categories, series) {
       const bar = svgEl("path", { d: barPath(L, y, x(v) - L, bh, 4), fill: color });
       attachTip(bar, section.host, `${label} · ${s.name}: ${v.toFixed(3)}`);
       svg.append(bar, svgEl("text", { x: x(v) + 6, y: y + bh / 2 + 5, fill: INK, "font-size": 15 }, f2(v)));
+      if (note && label === note.category && i === note.series) {
+        const noteX = x(v) - 260, noteY = plotBottom + 62;
+        svg.append(handCircle(x(v) + 18, y + bh / 2, 40, 17), handArrow(noteX + 170, noteY - 22, x(v) - 4, y + bh + 14),
+                   handNote(noteX, noteY, note.text));
+      }
     });
   });
   section.host.append(svg);
@@ -406,8 +456,9 @@ function drawBars(section, categories, series) {
     categories.map((label, c) => [label, ...series.map((s) => (s.values[c] == null ? "-" : f2(s.values[c])))]));
 }
 
-// Dumbbell rows: one dot per test set joined by a grey line. Axis 0.4 to 1.0. groups: [{heading, rows}].
-function drawDumbbell(section, groups) {
+// Dumbbell rows: one dot per test set joined by a grey line. Axis 0.4 to 1.0. groups: [{heading, rows}]. note, when
+// given, is {row: name, text}: a hand-drawn circle around that row's gap with text written to its left.
+function drawDumbbell(section, groups, note) {
   drawLegend(section.legend, [{ name: "SGD test", color: SERIES_COLORS[0] },
                               { name: "Messy test", color: SERIES_COLORS[1] }]);
   const W = 1000, L = 230, R = 170, top = 8, rowH = 34, headH = 34, dividerH = 18;
@@ -428,7 +479,7 @@ function drawDumbbell(section, groups) {
     }
   });
   const axisY = y + 8;
-  const H = axisY + 56;
+  const H = axisY + 56 + (note ? 100 : 0);  // the note gets its own space under the axis, clear of the labels
   const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
   for (let i = 0; i <= 6; i++) {
     const v = Math.round((0.4 + i * 0.1) * 10) / 10;
@@ -463,6 +514,12 @@ function drawDumbbell(section, groups) {
         svg.append(svgEl("text", { x: x(row.messy) - 12, y: item.y + 5, "text-anchor": "end", fill: INK,
                                    "font-size": 15 }, f2(row.messy)));
       }
+      if (note && hasBoth && row.name === note.row) {
+        // The circle also takes in the value label left of the messy dot; the arrow runs up between two tick labels.
+        const left = x(row.messy) - 44, right = x(row.sgd), arrowX = x(0.85), noteY = axisY + 86;
+        svg.append(handCircle((left + right) / 2, item.y, (right - left) / 2 + 22, 20),
+                   handArrow(arrowX, noteY - 30, arrowX, item.y + 22), handNote(arrowX + 100, noteY, note.text));
+      }
       if (hasBoth) {
         const drop = row.sgd - row.messy;
         svg.append(svgEl("text", { x: plotRight + 24, y: item.y + 5, fill: SECONDARY, "font-size": 15 },
@@ -473,118 +530,820 @@ function drawDumbbell(section, groups) {
   section.host.append(svg);
 }
 
-// Learning curve on a 0.80 to 1.00 test F1 axis; points are {fraction, value, sentences, label}.
-function drawLine(section, points) {
-  const W = 1000, H = 340, L = 90, R = 40, T = 34, B = 64;
-  const x = (f) => L + f * (W - L - R);
-  const y = (v) => T + ((1 - v) / 0.2) * (H - T - B);
+// The parts of one distillation group: teacher, student with gold labels only, and student with soft labels added.
+function distillParts(group) {
+  return { teacher: group.rows.find((r) => r.name.includes("teacher")),
+           gold: group.rows.find((r) => !r.soft && r.name.includes("gold labels")),
+           soft: group.rows.find((r) => r.soft) };
+}
+
+// One row per experiment, in two panels (messy test, Codex test): the teacher as a diamond, then an arrow from the
+// student with gold labels only (grey) to the same student with the teacher's soft labels added (orange).
+// A red hand-drawn note marks the first teacher when it scores below its own student on the messy test.
+function drawDistillation(section, groups) {
+  const soft = SERIES_COLORS[1];
+  section.legend.append(...[["Teacher", "diamond"], ["Student, gold labels only", MUTED],
+                            ["Student + teacher's soft labels", soft]].map(([name, color]) => {
+    const item = el("span", "legend-item");
+    const swatch = el("i", "swatch");
+    if (color === "diamond") {
+      swatch.style.cssText = "background:" + INK + ";transform:rotate(45deg) scale(0.8)";
+    } else {
+      swatch.style.background = color;
+    }
+    item.append(swatch, el("span", null, name));
+    return item;
+  }));
+  const lo = 0.8, W = 1000, L = 270, T = 46, rowH = 76, gap = 40;
+  const panelW = (W - L - 20 - gap) / 2;
+  const panels = [{ key: "messy_f1", name: "Messy test", x0: L + 20 },
+                  { key: "codex_f1", name: "Codex test", x0: L + 20 + panelW + gap }];
+  const rows = groups.map((group) => ({ group: group, ...distillParts(group) })).filter((r) => r.gold && r.soft);
+  const first = rows[0];
+  const note = first && first.teacher && first.teacher.messy_f1 < first.gold.messy_f1;
+  const axisY = T + rows.length * rowH;
+  const H = axisY + 34 + (note ? 90 : 0);
   const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
-  for (let i = 0; i <= 4; i++) {
-    const v = Math.round((0.8 + i * 0.05) * 100) / 100;
-    svg.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: GRID, "stroke-width": 1 }));
-    svg.append(svgEl("text", { x: L - 12, y: y(v) + 5, "text-anchor": "end", fill: SECONDARY, "font-size": 15 }, f2(v)));
+  const at = (panel, v) => panel.x0 + ((Math.max(v, lo) - lo) / (1 - lo)) * panelW;
+  for (const panel of panels) {
+    svg.append(svgEl("text", { x: panel.x0 + panelW / 2, y: 20, "text-anchor": "middle", fill: INK, "font-size": 16,
+                               "font-weight": 700 }, panel.name));
+    for (let v = lo; v <= 1.0001; v += 0.05) {
+      svg.append(svgEl("line", { x1: at(panel, v), x2: at(panel, v), y1: T - 10, y2: axisY, stroke: GRID,
+                                 "stroke-width": 1 }),
+                 svgEl("text", { x: at(panel, v), y: axisY + 22, "text-anchor": "middle", fill: SECONDARY,
+                                 "font-size": 14 }, f2(v)));
+    }
   }
-  svg.append(svgEl("text", { x: L - 12, y: T - 14, "text-anchor": "end", fill: SECONDARY, "font-size": 15 }, "test F1"));
-  for (const p of points) {
-    svg.append(svgEl("text", { x: x(p.fraction), y: H - B + 24, "text-anchor": "middle", fill: SECONDARY,
-                               "font-size": 15 }, Math.round(p.fraction * 100) + "%"));
-  }
-  svg.append(svgEl("text", { x: (L + W - R) / 2, y: H - 12, "text-anchor": "middle", fill: SECONDARY,
-                             "font-size": 15 }, "share of SGD training sentences"));
-  svg.append(svgEl("polyline", { points: points.map((p) => `${x(p.fraction)},${y(p.value)}`).join(" "),
-                                 fill: "none", stroke: SERIES_COLORS[0], "stroke-width": 2 }));
-  for (const p of points) {
-    const dot = svgEl("circle", { cx: x(p.fraction), cy: y(p.value), r: 6, fill: SERIES_COLORS[0] });
-    attachTip(dot, section.host, `${p.label}: test F1 ${p.value.toFixed(3)}`);
-    svg.append(dot, svgEl("text", { x: x(p.fraction), y: y(p.value) - 14, "text-anchor": "middle", fill: INK,
-                                    "font-size": 15 }, f2(p.value)));
+  let teacherDot = null;
+  rows.forEach((row, i) => {
+    const cy = T + i * rowH + rowH / 2;
+    if (i > 0) svg.append(svgEl("line", { x1: 0, x2: W, y1: cy - rowH / 2, y2: cy - rowH / 2, stroke: GRID }));
+    const [what, who] = row.group.heading.includes(": ") ? row.group.heading.split(": ") : ["", row.group.heading];
+    svg.append(svgEl("text", { x: 0, y: cy - 2, fill: INK, "font-size": 15, "font-weight": 600 }, who),
+               svgEl("text", { x: 0, y: cy + 18, fill: SECONDARY, "font-size": 14 }, what));
+    for (const panel of panels) {
+      const g = row.gold[panel.key], s = row.soft[panel.key];
+      if (g == null || s == null) continue;
+      if (row.teacher && row.teacher[panel.key] != null) {
+        const tx = at(panel, row.teacher[panel.key]);
+        const diamond = svgEl("rect", { x: tx - 6, y: cy - 6, width: 12, height: 12, fill: INK, stroke: SURFACE,
+                                        "stroke-width": 1.5, transform: `rotate(45 ${tx} ${cy})` });
+        attachTip(diamond, section.host, `${row.teacher.name} · ${panel.name}: ${row.teacher[panel.key].toFixed(3)}`);
+        svg.append(diamond);
+        if (i === 0 && panel.key === "messy_f1") teacherDot = { cx: tx, cy: cy };
+      }
+      const gx = at(panel, g), sx = at(panel, s);
+      if (Math.abs(sx - gx) > 12) {
+        const dir = Math.sign(sx - gx), tip = sx - dir * 9;
+        svg.append(svgEl("path", { d: `M${gx + dir * 7},${cy} L${tip},${cy} M${tip - dir * 7},${cy - 5} L${tip},${cy} ` +
+                                      `L${tip - dir * 7},${cy + 5}`, fill: "none", stroke: soft, "stroke-width": 2.5,
+                                   "stroke-linecap": "round", "stroke-linejoin": "round" }));
+      }
+      const goldDot = svgEl("circle", { cx: gx, cy: cy, r: 7, fill: MUTED, stroke: SURFACE, "stroke-width": 2 });
+      const softDot = svgEl("circle", { cx: sx, cy: cy, r: 7, fill: soft, stroke: SURFACE, "stroke-width": 2 });
+      attachTip(goldDot, section.host, `${row.gold.name} · ${panel.name}: ${g.toFixed(3)}`);
+      attachTip(softDot, section.host, `${row.soft.name} · ${panel.name}: ${s.toFixed(3)}`);
+      const change = s - g;
+      svg.append(goldDot, softDot, svgEl("text", { x: Math.min(gx, sx), y: cy - 14, fill: soft, "font-size": 14,
+                                                   "font-weight": 700 },
+        Math.abs(change) < 0.005 ? "same" : (change > 0 ? "+" : "−") + Math.abs(change).toFixed(2)));
+    }
+  });
+  if (note && teacherDot) {
+    const noteX = teacherDot.cx + 40, noteY = axisY + 76;
+    svg.append(handCircle(teacherDot.cx, teacherDot.cy, 22, 18),
+               handArrow(noteX - 60, noteY - 26, teacherDot.cx - 4, teacherDot.cy + 22),
+               handNote(noteX, noteY, "THE TEACHER (" + f2(first.teacher.messy_f1) + ") IS WORSE THAN ITS STUDENT (" +
+                 f2(first.gold.messy_f1) + ")!"));
   }
   section.host.append(svg);
-  drawTable(section, ["Training data", "Sentences", "Test F1"],
-    points.map((p) => [Math.round(p.fraction * 100) + "%", fmt(p.sentences), f2(p.value)]));
+  drawTable(section, ["Experiment", "Model", "Dev (clean)", "Messy test", "Codex test"],
+    groups.flatMap((group) => group.rows.map((r) => [group.heading, r.name, f2(r.dev_f1), f2(r.messy_f1),
+                                                     r.codex_f1 == null ? "-" : f2(r.codex_f1)])));
+}
+
+function distillationCaption(groups) {
+  const rows = groups.map(distillParts).filter((r) => r.gold && r.soft);
+  const changes = rows.flatMap((r) => [r.soft.messy_f1 - r.gold.messy_f1,
+                                       r.soft.codex_f1 == null ? 0 : r.soft.codex_f1 - r.gold.codex_f1]);
+  return "Distillation: a bigger “teacher” model tags the training sentences, and the student learns from " +
+    "the teacher's confidence for every tag (soft labels) as well as from the human tags. Result: the scores moved " +
+    "by at most " + Math.max(...changes.map(Math.abs)).toFixed(2) + ", which is within noise, so it did not help here. " +
+    "α (the teacher's weight) is chosen on dev.";
+}
+
+// The smallest stored version whose messy F1 is within 0.01 of the full model, and the full model itself.
+function bestTradeOff(groups) {
+  const full = groups[0].rows[0];
+  const rows = groups.flatMap((group) => group.rows.map((row) => ({ ...row, heading: group.heading })));
+  const close = rows.filter((r) => r.messy_f1 >= full.messy_f1 - 0.01);
+  return { full: full, small: close.reduce((a, b) => (b.megabytes < a.megabytes ? b : a)) };
+}
+
+// The blue note: one model stored as 32-bit and as 16-bit, when both exist.
+function halfPrecision(group) {
+  const at = (bits) => group.rows.find((r) => r.name.startsWith(bits));
+  const big = at("32-bit"), half = at("16-bit");
+  if (!big || !half) return null;
+  return { group: group.heading, rows: [big.name, half.name],
+           text: "SAME SCORE (" + f2(big.messy_f1) + " vs " + f2(half.messy_f1) + "), HALF THE SIZE:\n" +
+             Math.round(big.megabytes) + " MB \u2192 " + Math.round(half.megabytes) + " MB, JUST 16-BIT NUMBERS" };
+}
+
+function shrinkingCaption(groups) {
+  const { full, small } = bestTradeOff(groups);
+  return small.heading + " stored as " + small.name + " keeps messy F1 at " + f2(small.messy_f1) + " (full model " +
+    f2(full.messy_f1) + ", " + Math.round(full.megabytes) + " MB): " + (full.megabytes / small.megabytes).toFixed(1) +
+    "× smaller (one seed; over three seeds the 6-layer model scores about 0.01 lower). 8-bit makes files smaller " +
+    "still but costs accuracy.";
+}
+
+// Size against score: one dot per stored version, coloured by how many layers it keeps. Small and accurate is the
+// top-left corner. note, when given, is {group, row, text}: a red hand-drawn circle on one dot. pair, when given, is
+// {group, rows: [name, name], text}: blue circles on two dots with one note pointing at both.
+function drawScatter(section, groups, key, lo, note, pair) {
+  const colors = [SERIES_COLORS[0], SERIES_COLORS[1], SERIES_COLORS[2]];
+  drawLegend(section.legend, groups.map((g, i) => ({ name: g.heading, color: colors[i % colors.length] })));
+  const W = 1000, L = 90, R = 40, T = pair ? 96 : 24, B = 64, H = 376 + T;  // pair: room for its note on top
+  const maxMB = Math.ceil(Math.max(...groups.flatMap((g) => g.rows.map((r) => r.megabytes))) / 100) * 100;
+  const x = (mb) => L + (mb / maxMB) * (W - L - R);
+  const y = (v) => T + ((1 - v) / (1 - lo)) * (H - T - B);
+  const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
+  for (let i = 0; i <= Math.round((1 - lo) / 0.05); i++) {
+    const v = Math.round((lo + i * 0.05) * 100) / 100;
+    svg.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: GRID, "stroke-width": 1 }));
+    svg.append(svgEl("text", { x: L - 12, y: y(v) + 5, "text-anchor": "end", fill: SECONDARY,
+                               "font-size": 15 }, f2(v)));
+  }
+  for (let mb = 0; mb <= maxMB; mb += 100) {
+    svg.append(svgEl("text", { x: x(mb), y: H - B + 24, "text-anchor": "middle", fill: SECONDARY,
+                               "font-size": 15 }, mb + " MB"));
+  }
+  svg.append(svgEl("text", { x: (L + W - R) / 2, y: H - 14, "text-anchor": "middle", fill: SECONDARY,
+                             "font-size": 15 }, "model file size (smaller is better \u2190)"));
+  svg.append(svgEl("text", { x: L + 8, y: T + 14, fill: SECONDARY, "font-size": 15 },
+                   "\u2191 messy-test F1 (higher is better)"));
+  let circled = null;
+  const paired = [];
+  groups.forEach((group, g) => {
+    for (const row of group.rows) {
+      const cx = x(row.megabytes), cy = y(Math.max(row[key], lo));
+      const dot = svgEl("circle", { cx: cx, cy: cy, r: 8, fill: colors[g % colors.length], stroke: SURFACE,
+                                    "stroke-width": 2 });
+      attachTip(dot, section.host, `${group.heading}, ${row.name}: messy F1 ${row[key].toFixed(3)}`);
+      svg.append(dot, svgEl("text", { x: cx + 12, y: cy + 5, fill: INK, "font-size": 14 }, row.name.split(",")[0]));
+      if (note && group.heading === note.group && row.name === note.row) circled = { cx: cx, cy: cy };
+      if (pair && group.heading === pair.group && pair.rows.includes(row.name)) paired.push({ cx: cx, cy: cy });
+    }
+  });
+  if (circled) {
+    const noteX = circled.cx + 260, noteY = y(lo + 0.06);
+    svg.append(handCircle(circled.cx + 22, circled.cy, 46, 22),
+               handArrow(noteX - 150, noteY - 34, circled.cx + 30, circled.cy + 26), handNote(noteX, noteY, note.text));
+  }
+  if (paired.length === 2) {
+    const noteX = (paired[0].cx + paired[1].cx) / 2 + 20, noteY = 30;
+    for (const dot of paired) {
+      svg.append(handCircle(dot.cx + 22, dot.cy, 42, 20, HAND_BLUE),
+                 handArrow(dot.cx + (dot.cx < noteX ? 50 : -20), noteY + 40, dot.cx + 18, dot.cy - 22, HAND_BLUE));
+    }
+    svg.append(handNote(noteX, noteY - 8, pair.text, HAND_BLUE));
+  }
+  section.host.append(svg);
+  drawTable(section, ["Version", "Size", "Dev (clean)", "Messy test", "Codex test"], groups.flatMap((group) =>
+    group.rows.map((row) => [group.heading + ", " + row.name.split(",")[0], Math.round(row.megabytes) + " MB",
+                             f2(row.dev_f1), f2(row.messy_f1), f2(row.codex_f1)])));
+}
+
+const mean = (values) => values.reduce((a, b) => a + b, 0) / values.length;
+
+function pickCaption(pick) {
+  const [big, small] = pick;
+  return "Both stored as 16-bit, each trained " + big.messy.length + " times with different seeds. Messy F1 " +
+    big.name + " " + mean(big.messy).toFixed(3) + ", " + small.name + " " + mean(small.messy).toFixed(3) + " (mean). " + small.name +
+    " is " + Math.round(big.megabytes - small.megabytes) + " MB smaller and " +
+    (big.ms_per_request / small.ms_per_request).toFixed(1) + "× faster, but less reliable. Accuracy is the goal, " +
+    "so we keep " + big.name + ". With 50 messy requests, a gap of about 0.01 is within noise.";
+}
+
+// Two versions side by side: one dot per seed on each test set (a tick marks the mean), then size and speed bars.
+// A red hand-drawn circle marks the weakest seed of the second version.
+function drawPick(section, pick) {
+  const colors = [SERIES_COLORS[0], SERIES_COLORS[1]];
+  drawLegend(section.legend, pick.map((p, i) => ({ name: "BERTweet, " + p.name + ", 16-bit", color: colors[i] })));
+  const tests = [{ key: "messy", name: "Messy test" }, { key: "codex", name: "Codex test" }];
+  const scores = pick.flatMap((p) => tests.flatMap((t) => p[t.key]));
+  const lo = Math.floor(Math.min(...scores) * 100 - 1) / 100, hi = Math.ceil(Math.max(...scores) * 100) / 100;
+  const W = 1000, L = 230, R = 64, T = 30, laneH = 30, testGap = 26, barH = 22;
+  const axisY = T + tests.length * (pick.length * laneH + testGap);
+  const costTop = axisY + 130;  // room between the dots and the bars for the handwritten note
+  const H = costTop + 2 * (pick.length * (barH + 6) + 26) + 10;
+  const x = (v) => L + ((v - lo) / (hi - lo)) * (W - L - R);
+  const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
+  for (let v = lo; v <= hi + 1e-9; v += 0.01) {
+    svg.append(svgEl("line", { x1: x(v), x2: x(v), y1: T - 10, y2: axisY - testGap + 6, stroke: GRID,
+                               "stroke-width": 1 }));
+    svg.append(svgEl("text", { x: x(v), y: axisY, "text-anchor": "middle", fill: SECONDARY, "font-size": 15 },
+                     f2(v)));
+  }
+  svg.append(svgEl("text", { x: (L + W - R) / 2, y: axisY + 24, "text-anchor": "middle", fill: SECONDARY,
+                             "font-size": 15 }, "F1, one dot per seed (higher is better →)"));
+  let weakest = null;
+  tests.forEach((test, t) => {
+    const top = T + t * (pick.length * laneH + testGap);
+    svg.append(svgEl("text", { x: 14, y: top + pick.length * laneH / 2, fill: INK, "font-size": 15,
+                               "font-weight": 600 }, test.name));
+    pick.forEach((p, i) => {
+      const cy = top + i * laneH + laneH / 2 - 6;
+      svg.append(svgEl("text", { x: L - 14, y: cy + 5, "text-anchor": "end", fill: INK, "font-size": 15 }, p.name));
+      const m = mean(p[test.key]);
+      svg.append(svgEl("line", { x1: x(m), x2: x(m), y1: cy - 11, y2: cy + 11, stroke: INK, "stroke-width": 2.5 }));
+      for (const v of p[test.key]) {
+        const dot = svgEl("circle", { cx: x(v), cy: cy, r: 7, fill: colors[i], stroke: SURFACE, "stroke-width": 2,
+                                      "fill-opacity": 0.85 });
+        attachTip(dot, section.host, `${p.name}, ${test.name}: ${v.toFixed(3)} (mean ${m.toFixed(3)})`);
+        svg.append(dot);
+        if (t === 0 && i === pick.length - 1 && (!weakest || v < weakest.v)) weakest = { v: v, cx: x(v), cy: cy };
+      }
+    });
+  });
+  const costs = [{ name: "Size", unit: " MB", key: "megabytes", digits: 0 },
+                 { name: "Speed", unit: " ms per request", key: "ms_per_request", digits: 1 }];
+  costs.forEach((cost, c) => {
+    const top = costTop + c * (pick.length * (barH + 6) + 26);
+    svg.append(svgEl("text", { x: 14, y: top + barH, fill: INK, "font-size": 15, "font-weight": 600 },
+                     cost.name + (c ? " (lower is better)" : " (smaller is better)")));
+    const max = Math.max(...pick.map((p) => p[cost.key]));
+    pick.forEach((p, i) => {
+      const y = top + i * (barH + 6), w = (p[cost.key] / max) * (W - L - R - 170);
+      svg.append(svgEl("path", { d: barPath(L, y, w, barH, 4), fill: colors[i] }),
+                 svgEl("text", { x: L + w + 8, y: y + barH / 2 + 5, fill: INK, "font-size": 15 },
+                       p[cost.key].toFixed(cost.digits) + cost.unit));
+    });
+  });
+  if (weakest && pick.length === 2) {
+    const best = Math.min(...pick[0].messy);
+    const noteX = weakest.cx + 300, noteY = axisY + 70;
+    svg.append(handCircle(weakest.cx, weakest.cy, 26, 18),
+               handArrow(noteX - 230, noteY - 22, weakest.cx + 6, weakest.cy + 22),
+               handNote(noteX, noteY, "ONE RUN WITH " + pick[1].name.toUpperCase() + " FELL TO " +
+                 f2(weakest.v) + ",\nWITH " + pick[0].name.toUpperCase() + " NEVER BELOW " + f2(best) + "!"));
+  }
+  section.host.append(svg);
+  drawTable(section, ["Version (16-bit)", "Messy test, per seed", "Codex test, per seed", "Size", "Speed"],
+    pick.map((p) => [p.name, p.messy.map(f2).join(", "), p.codex.map(f2).join(", "), Math.round(p.megabytes) + " MB",
+                     p.ms_per_request.toFixed(1) + " ms"]));
+}
+
+// Hand-drawn notes on top of a chart, like a marked-up screenshot: a wobbly circle, a curved arrow and handwriting.
+// The wobble comes from a fixed formula, so the drawing is the same on every load.
+const HAND = "#d6302b";
+const HAND_BLUE = "#1d4ed8";
+const HAND_FONT = '"Segoe Print", "Bradley Hand", "Comic Sans MS", cursive';
+const jitter = (i) => Math.sin(i * 12.9898 + 78.233) * 0.5;
+
+function handCircle(cx, cy, rx, ry, color = HAND) {
+  const points = [];
+  for (let i = 0; i <= 44; i++) {
+    const a = -0.6 + (i / 40) * 2 * Math.PI;  // a little more than one turn, so the ends overlap like a pen stroke
+    const wob = 1 + 0.06 * jitter(i);
+    points.push(`${(cx + rx * wob * Math.cos(a)).toFixed(1)},${(cy + ry * wob * Math.sin(a)).toFixed(1)}`);
+  }
+  return svgEl("polyline", { points: points.join(" "), fill: "none", stroke: color, "stroke-width": 3,
+                             "stroke-linecap": "round", "stroke-linejoin": "round" });
+}
+
+// A slightly wavy pen line from (x1, y1) to (x2, y2).
+function handLine(x1, y1, x2, y2) {
+  const points = [];
+  for (let i = 0; i <= 16; i++) {
+    const t = i / 16, wob = 2.5 * jitter(i + 7);
+    points.push(`${(x1 + (x2 - x1) * t + wob).toFixed(1)},${(y1 + (y2 - y1) * t).toFixed(1)}`);
+  }
+  return svgEl("polyline", { points: points.join(" "), fill: "none", stroke: HAND, "stroke-width": 3,
+                             "stroke-linecap": "round", "stroke-linejoin": "round" });
+}
+
+function handArrow(x1, y1, x2, y2, color = HAND) {
+  const cx = (x1 + x2) / 2 - (y2 - y1) * 0.3, cy = (y1 + y2) / 2 + (x2 - x1) * 0.3;
+  const angle = Math.atan2(y2 - cy, x2 - cx);
+  const head = (turn) => `M${x2},${y2} L${(x2 - 14 * Math.cos(angle + turn)).toFixed(1)},` +
+    `${(y2 - 14 * Math.sin(angle + turn)).toFixed(1)}`;
+  return svgEl("path", { d: `M${x1},${y1} Q${cx},${cy} ${x2},${y2} ${head(0.45)} ${head(-0.45)}`, fill: "none",
+                         stroke: color, "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round" });
+}
+
+// Handwritten text centred on x; a newline in text starts a new line.
+function handNote(x, y, text, color = HAND) {
+  const note = svgEl("text", { x: x, y: y, fill: color, "font-size": 22, "font-family": HAND_FONT,
+                               "font-weight": 700, "text-anchor": "middle", transform: `rotate(-3 ${x} ${y})`,
+                               stroke: SURFACE, "stroke-width": 6, "paint-order": "stroke" });
+  text.split("\n").forEach((line, i) => note.append(svgEl("tspan", { x: x, dy: i ? 28 : 0 }, line)));
+  return note;
+}
+
+function annotateElement(card, target, text) {
+  card.style.position = "relative";
+  const overlay = svgEl("svg", { class: "hand-overlay" });
+  card.append(overlay);
+  // No viewBox: one unit is one CSS pixel, so the drawing never stretches. It is redrawn whenever the card changes
+  // size (window resize, fonts or tables loading later).
+  const draw = () => {
+    const box = card.getBoundingClientRect(), t = target.getBoundingClientRect();
+    overlay.textContent = "";
+    const cx = t.left - box.left + t.width / 2, cy = t.top - box.top + t.height / 2;
+    const noteX = Math.max(160, cx - 230), noteY = t.top - box.top - 40;
+    overlay.append(handCircle(cx, cy, t.width / 2 + 14, t.height / 2 + 10),
+                   handArrow(noteX + 150, noteY - 8, cx - t.width / 2 - 10, cy - 6), handNote(noteX, noteY - 14, text));
+  };
+  new ResizeObserver(draw).observe(card);
+}
+
+// Data curve: x = AI-written training rows, y = F1 on a lo to 1.0 axis; one line per series with a band of
+// ± one standard deviation over seeds. series: [{name, color, mean, sd}] read from each point. marker, when given,
+// is {rows, label}: a hand-drawn vertical line at that x, with label as a handwritten note.
+function drawCurve(section, points, series, lo, marker) {
+  drawLegend(section.legend, series);
+  const W = 1000, H = 360, L = 90, R = 40, T = 34, B = 70;
+  const maxX = Math.max(...points.map((p) => p.rows));
+  const x = (n) => L + (n / maxX) * (W - L - R);
+  const y = (v) => T + ((1 - Math.max(v, lo)) / (1 - lo)) * (H - T - B);
+  const svg = svgEl("svg", { class: "chart", viewBox: `0 0 ${W} ${H}`, role: "img" });
+  for (let i = 0; i <= Math.round((1 - lo) / 0.05); i++) {
+    const v = Math.round((lo + i * 0.05) * 100) / 100;
+    svg.append(svgEl("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: GRID, "stroke-width": 1 }));
+    svg.append(svgEl("text", { x: L - 12, y: y(v) + 5, "text-anchor": "end", fill: SECONDARY,
+                               "font-size": 15 }, f2(v)));
+  }
+  for (const p of points) {
+    svg.append(svgEl("text", { x: x(p.rows), y: H - B + 24, "text-anchor": "middle", fill: SECONDARY,
+                               "font-size": 15 }, fmt(p.rows)));
+  }
+  svg.append(svgEl("text", { x: (L + W - R) / 2, y: H - 14, "text-anchor": "middle", fill: SECONDARY,
+                             "font-size": 15 }, "AI-written training requests added to set D"));
+  for (const s of series) {
+    const pts = points.filter((p) => p[s.mean] != null);
+    const upper = pts.map((p) => `${x(p.rows)},${y(p[s.mean] + p[s.sd])}`);
+    const lower = pts.map((p) => `${x(p.rows)},${y(p[s.mean] - p[s.sd])}`).reverse();
+    svg.append(svgEl("polygon", { points: [...upper, ...lower].join(" "), fill: s.color, "fill-opacity": 0.15 }));
+    svg.append(svgEl("polyline", { points: pts.map((p) => `${x(p.rows)},${y(p[s.mean])}`).join(" "),
+                                   fill: "none", stroke: s.color, "stroke-width": 2 }));
+    for (const p of pts) {
+      const dot = svgEl("circle", { cx: x(p.rows), cy: y(p[s.mean]), r: 5, fill: s.color });
+      const value = `${p[s.mean].toFixed(3)} ± ${p[s.sd].toFixed(3)}`;
+      attachTip(dot, section.host, `${fmt(p.rows)} rows · ${s.name}: ${value} (${p.runs} seeds)`);
+      svg.append(dot);
+    }
+  }
+  if (marker) {
+    const mx = x(marker.rows), noteY = y(lo + 0.06);
+    svg.append(handLine(mx, T - 10, mx, H - B + 4), handArrow(mx - 60, noteY - 30, mx - 6, noteY - 64),
+               handNote(mx - 150, noteY - 6, marker.label));
+  }
+  section.host.append(svg);
+  const curveCell = (p, s) => (p[s.mean] == null ? "-" : f2(p[s.mean]) + " ± " + f2(p[s.sd]));
+  drawTable(section, ["AI-written rows", "Seeds", ...series.map((s) => s.name)],
+    points.map((p) => [fmt(p.rows), String(p.runs), ...series.map((s) => curveCell(p, s))]));
+}
+
+function dataCurveCaption(points) {
+  const codex = points.filter((p) => p.codex_mean != null);
+  if (codex.length < 2) return "";
+  const first = codex[0], last = codex[codex.length - 1];
+  // The first point within one standard deviation of the last one: past it, more rows stop paying off.
+  const flat = codex.find((p) => p.codex_mean >= last.codex_mean - last.codex_sd);
+  const answer = flat !== last ? "Only up to a point. " : "Yes, so far. ";
+  return answer + "On the Codex test, F1 goes from " + f2(first.codex_mean) + " with no messy requests to " +
+    f2(flat.codex_mean) + " with " + fmt(flat.rows) + ", then stays flat up to " + fmt(last.rows) + " (" +
+    f2(last.codex_mean) + "). After about " + fmt(flat.rows) + ", more messy requests of the same kind stop helping, " +
+    "so that is where to stop.";
 }
 
 // Captions are built from the numbers, so each claim is checked against the data it describes.
 function resultsNote(data) {
-  const seed = data.seed !== undefined ? "Single run, seed " + data.seed + ". " : "Single run. ";
-  const messy = data.messy_test_rows !== undefined ? "Messy test = " + fmt(data.messy_test_rows) + " " : "Messy test ";
-  return seed + messy + "AI-drafted, hand-checked requests; small differences are within noise.";
+  const seed = data.seed !== undefined ? "seed " + data.seed : "one seed";
+  return "Scores are span F1 (1.00 = every slot found exactly). One training run (" + seed + ") unless a chart " +
+    "says otherwise; the test sets are small, so differences of about 0.02 are within noise.";
 }
 
+// The headline of section 2 is the drop from clean to messy, shown for the best classic model and BERTweet.
 function cleanVsMessyCaption(rows) {
-  const top = rows.reduce((a, b) => (b.messy_f1 > a.messy_f1 ? b : a));
-  const lower = rows.every((r) => r.messy_f1 < r.sgd_f1)
-    ? "Every model scores lower on messy requests than on SGD test; " : "";
-  return lower + top.name + " scores highest on messy requests (" + f2(top.messy_f1) + ").";
+  const drop = (name) => {
+    const r = rows.find((row) => row.name === name);
+    return r ? name + " " + f2(r.sgd_f1) + " \u2192 " + f2(r.messy_f1) : null;
+  };
+  const lower = rows.every((r) => r.messy_f1 < r.sgd_f1) ? "Every model drops from the clean test to the messy test: "
+    : "Clean test vs messy test: ";
+  return "All trained on set D. " + lower + [drop("Linear SVM"), drop("BERTweet")].filter(Boolean).join(", ") + ".";
 }
 
-function eventNameCaption(rows) {
-  const scored = rows.filter((r) => r.value != null);
-  const best = scored.reduce((a, b) => (b.value > a.value ? b : a));
-  const others = scored.filter((r) => r !== best).map((r) => r.value);
-  if (best.name === "BERTweet" && others.length) {
-    return "BERTweet finds event names best (" + f2(best.value) + "); the others reach at most " +
-      f2(Math.max(...others)) + ".";
+// Two real test sentences side by side, so the reader sees what "clean" and "messy" mean before the numbers.
+function cleanVsMessyPair(sources) {
+  const example = (name) => (sources.find((s) => s.name.startsWith(name)) || {}).example;
+  const clean = example("SGD"), messy = example("Messy");
+  if (!clean || !messy) return null;
+  const table = el("table", "data-table");
+  const head = el("tr");
+  head.append(el("th", null, "Clean test (SGD): what the models trained on"),
+              el("th", null, "Messy test: how real people type"));
+  const sentences = el("tr");
+  for (const s of [clean, messy]) {
+    const td = el("td");
+    const box = el("div", "request");
+    highlight(box, s.text, s.spans);
+    td.append(box);
+    sentences.append(td);
   }
-  return "Best event-name F1 on messy requests: " + best.name + " (" + f2(best.value) + ").";
+  const traits = el("tr");
+  traits.append(el("td", "muted", "Capital letters, full words, correct spelling, well-known names"),
+                el("td", "muted", "Lowercase, slang (tmrw, wknd), typos, names the models never saw"));
+  table.append(head, sentences, traits);
+  return table;
+}
+
+// Section 1: where the training and test sentences come from, how many there are, and one tagged example of each.
+// Training and test sets are drawn as two separate blocks; the colour of each training row matches its part of the bar.
+function renderData(sources) {
+  const card = el("section", "card");
+  card.append(el("h2", "chart-title", "1. The data"), el("p", "caption",
+    "The models learn from training sentences in which every word is tagged as city, date, event or nothing, " +
+    "and are scored on test sentences they never saw."), slotLegend());
+  const train = sources.filter((s) => s.train);
+  const total = train.reduce((sum, s) => sum + s.train, 0);
+  const colorOf = sourceColors(sources);
+
+  const trainBlock = el("div", "data-block train-block");
+  trainBlock.append(el("div", "block-title", "Training data: set E, " + fmt(total) + " sentences"));
+  const mix = el("div", "mix");
+  let messyPart = null;
+  for (const s of train) {
+    const part = el("div", null, s.name.split(" (")[0] + " " + fmt(s.train));
+    part.style.width = (100 * s.train / total) + "%";
+    part.style.background = colorOf.get(s.name);
+    part.title = s.name + ": " + fmt(s.train) + " sentences";
+    if (s.name.startsWith("AI-written")) messyPart = { node: part, share: s.train / total };
+    mix.append(part);
+  }
+  trainBlock.append(mix, sourceTable(["Source", "Sentences", "Example (tagged)"], train.map((s) =>
+    [sourceCell(s, colorOf.get(s.name)), fmt(s.train), exampleCell(s.example)])));
+  trainBlock.append(el("p", "muted", "Set D = SGD + MASSIVE + typo copies. Set E = set D + the AI-written " +
+    "requests; BERTweet_E is trained on set E."));
+
+  const tests = sources.filter((s) => s.test);
+  const testBlock = el("div", "data-block test-block");
+  testBlock.append(el("div", "block-title", "Test data: never used in training, " +
+    fmt(tests.reduce((sum, s) => sum + s.test, 0)) + " sentences"));
+  testBlock.append(sourceTable(["Test set", "Sentences", "Style", "Example (tagged)"], tests.map((s) => {
+    const messy = !s.train;
+    return [sourceCell({ name: s.name.replace(/ \(.*/, "") + (messy ? "" : " test"), note: s.note }),
+            fmt(s.test), el("span", "badge " + (messy ? "messy" : "clean"), messy ? "Messy" : "Clean"),
+            messy ? exampleCell(s.example) : el("span", "muted", "Same style as its training rows above")];
+  })));
+  card.append(trainBlock, testBlock);
+  $("charts").append(card);
+  if (messyPart) {
+    mix.style.marginTop = "76px";  // room for the note above the bar
+    const share = Math.round(100 * messyPart.share);
+    annotateElement(card, messyPart.node, "ONLY " + share + "% OF THE DATA...\nBUT IT'S THE KEY (SEE 3)");
+  }
+}
+
+// Section 1.1: how each source got its tags. All are hard labels; soft labels were tried in section 6.
+function renderLabels(sources) {
+  const card = el("section", "card");
+  card.append(el("h2", "chart-title", "1.1 We used hard labels"));
+  const callout = el("div", "callout");
+  callout.append(
+    el("div", "callout-main",
+      "Hard labels: exactly one tag per word, set by people or by the AI that wrote the sentence. " +
+      "Our main models learn from these alone."),
+    el("div", "callout-sub",
+      "Soft labels (a teacher model's probability for every tag) were also tried, but they did not " +
+      "increase accuracy: see section 6."));
+  card.append(callout);
+  card.append(el("div", "block-title", "Where each source's labels come from"));
+  card.append(sourceTable(["Source", "How the tags were made"], sources.map((s) =>
+    [sourceCell({ name: s.name, note: s.train ? "training" : "test only" }, sourceColors(sources).get(s.name)),
+     s.labels || "-"])));
+  $("charts").append(card);
+}
+
+// Section 7: how far the numbers can be trusted, and the next step after release.
+function renderTrust(sources) {
+  const sized = (name) => (sources.find((s) => s.name.startsWith(name)) || {}).test || 0;
+  const caption = "Every score on this page rests on these test sets. Real users have not typed a request yet, " +
+    "so the numbers are not 100% sure. With 50 messy requests (91 slots), one wrong slot moves F1 by about 0.01.";
+  const section = chartSection("7. How far can you trust these numbers?", caption);
+  const clean = sources.filter((s) => s.train > 0 && s.test > 0).reduce((sum, s) => sum + s.test, 0);
+  const rows = [
+    { name: "Clean tests (SGD + MASSIVE)", value: clean, color: SERIES_COLORS[0],
+      by: "Google and Amazon annotators" },
+    { name: "Messy test", value: sized("Messy"), color: SERIES_COLORS[1], by: "AI-drafted, checked by hand" },
+    { name: "Codex test", value: sized("Codex"), color: SERIES_COLORS[2], by: "A different AI, checked by hand" },
+    { name: "Real users", value: 0, color: null, by: "Not tested yet" }
+  ];
+  const L = 260, barH = 22, rowH = 44, top = 8;
+  const maxValue = Math.max(...rows.map((r) => r.value));
+  const H = top + rows.length * rowH + 20;
+  const svg = svgEl("svg", { class: "chart", viewBox: `0 0 1000 ${H}`, role: "img" });
+  rows.forEach((row, i) => {
+    const y = top + i * rowH, mid = y + barH / 2;
+    svg.append(svgEl("text", { x: L - 14, y: mid + 5, "text-anchor": "end", fill: INK, "font-size": 15 }, row.name));
+    if (row.color) {
+      const w = (row.value / maxValue) * (1000 - L - 120);
+      const bar = svgEl("path", { d: barPath(L, y, w, barH, 4), fill: row.color });
+      attachTip(bar, section.host, `${row.name}: ${fmt(row.value)} requests`);
+      svg.append(bar, svgEl("text", { x: L + w + 6, y: mid + 5, fill: INK, "font-size": 15 },
+                            fmt(row.value) + " requests"));
+    } else {
+      svg.append(svgEl("text", { x: L + 6, y: mid + 5, fill: HAND, "font-size": 15, "font-weight": 700 }, "0 so far"),
+                 handCircle(L + 40, mid, 52, 18),
+                 handNote(L + 330, mid + 6, "THE REAL TEST IS STILL TO COME"));
+    }
+  });
+  section.host.append(svg);
+  drawTable(section, ["Test set", "Requests", "Written by"], rows.map((r) => [r.name, fmt(r.value), r.by]));
+  section.host.after(el("p", "muted", "Next step after release: save real requests (the demo can already do it " +
+    "with app.py --log), tag them by hand, retrain, and test on real people."));
+}
+
+// Section 8: what Jev adds next to the slot tagger. Two real answers from the demo's request log (2026-10-11),
+// copied here because the log itself is private and not in the repository.
+const JEV_EXAMPLES = [
+  { text: "im bored, find me a event for tommorrow that so i can go with my girlfriend",
+    slots: { city: [], date: ["tommorrow"], event_name: [] },
+    jev: { status: "ok", event_type: "unknown", tickets: "two" },
+    clue: "with my girlfriend", note: "JEV: THAT MEANS 2 TICKETS!", asks: ["ask_city", "ask_what"] },
+  { text: "my kids love musicals, whats on in NYC next sat",
+    slots: { city: ["NYC"], date: ["next sat"], event_name: [] },
+    jev: { status: "ok", event_type: "theater", tickets: "unknown" },
+    clue: "musicals", note: "JEV: THAT MEANS THEATER!", asks: ["ask_people"] }
+];
+
+function renderJevRole() {
+  const section = chartSection("8. Why we also use Jev: it reads what the words don't say",
+    "The tagger can only mark words that are in the request (coloured below). Some answers are not written as " +
+    "words, so Jev reads the meaning. Two real requests from the demo (2026-10-11).");
+  section.legend.append(...slotLegend().childNodes);
+  const card = section.host.closest("section");
+  const rows = [];
+  for (const example of JEV_EXAMPLES) {
+    const spans = [];
+    for (const [slot, words] of Object.entries(example.slots)) {
+      for (const word of words) {
+        const start = example.text.indexOf(word);
+        spans.push({ slot: slot, start: start, end: start + word.length });
+      }
+    }
+    const clueStart = example.text.indexOf(example.clue);
+    spans.push({ slot: "clue", start: clueStart, end: clueStart + example.clue.length });
+    const tags = [];
+    for (const [slot, words] of Object.entries(example.slots)) {
+      for (const word of words) tags.push(slot + ": " + word);
+    }
+    const adds = example.jev.tickets !== "unknown"
+      ? "tickets " + example.jev.tickets
+      : "type " + example.jev.event_type;
+    const box = el("div", "request");
+    highlight(box, example.text, spans);
+    box.style.marginTop = "76px";
+    section.host.append(box, el("p", "muted", "BERTweet: " + tags.join(", ") + " · Jev: " + adds));
+    annotateElement(card, box.querySelector("mark.clue"), example.note);
+    rows.push([example.text, tags.join(", "), adds]);
+  }
+  drawTable(section, ["Request", "BERTweet tags", "Jev adds"], rows);
+}
+
+// Section 9: the questions the assistant asks before searching, from extract.follow_ups (the asks of JEV_EXAMPLES
+// are what it returns for those two requests).
+function renderFollowUps() {
+  const section = chartSection("9. What the assistant asks next",
+    "When a slot is missing, the assistant asks for it instead of guessing. Same two requests as section 8: " +
+    "the slots come from BERTweet and Jev, the questions from extract.follow_ups.");
+  const card = section.host.closest("section");
+  const rows = [];
+  JEV_EXAMPLES.forEach((example, i) => {
+    const filled = filledCard({ name: "BERTweet_E", slots: example.slots }, example.jev);
+    const asks = example.asks.map((a) => FOLLOW_UPS[a]).join("; ");
+    section.host.append(el("div", "request", "“" + example.text + "”"), filled,
+                        el("p", "assistant", "Assistant would ask: " + asks));
+    if (i === 0) {
+      // The last missing cell is on the right, where the card heading leaves room for the note above it.
+      annotateElement(card, [...filled.querySelectorAll(".missing")].pop(), "MISSING, SO IT ASKS!");
+    }
+    rows.push([example.text, asks]);
+  });
+  drawTable(section, ["Request", "Assistant asks"], rows);
+}
+
+// Training sources by name to their colour in the section 1 bar.
+function sourceColors(sources) {
+  const colors = [SERIES_COLORS[0], SECONDARY, MUTED, SERIES_COLORS[1]];
+  return new Map(sources.filter((s) => s.train).map((s, i) => [s.name, colors[i % colors.length]]));
+}
+
+const slotName = (slot) => ({ O: "nothing", city: "city", date: "date", event_name: "event" })[slot] || slot;
+
+function slotLegend() {
+  const line = el("div", "legend-line");
+  line.append(el("span", "muted", "Tagged words:"));
+  for (const slot of ["city", "date", "event_name"]) {
+    const item = el("span", "legend-item");
+    item.append(el("i", "swatch " + slot), el("span", null, slotName(slot)));
+    line.append(item);
+  }
+  return line;
+}
+
+function sourceCell(s, color) {
+  const cell = el("div", "source-cell");
+  if (color) cell.style.borderLeftColor = color;
+  cell.append(el("div", "model-name", s.name), el("div", "muted", s.note));
+  return cell;
+}
+
+function exampleCell(example) {
+  const box = el("div", "request");
+  if (example) highlight(box, example.text, example.spans);
+  return box;
+}
+
+// A table whose cells are strings or nodes; strings that are numbers are right-aligned.
+function sourceTable(headers, rows) {
+  const table = el("table", "data-table");
+  const head = el("tr");
+  for (const h of headers) head.append(el("th", null, h));
+  table.append(head);
+  for (const row of rows) {
+    const tr = el("tr");
+    for (const value of row) {
+      const td = el("td", typeof value === "string" && /^[\d,]+$/.test(value) ? "num" : null);
+      td.append(value);
+      tr.append(td);
+    }
+    table.append(tr);
+  }
+  return table;
+}
+
+function loggedNote(count) {
+  return count === undefined ? "" : " Requests typed into this demo so far: " + fmt(count) +
+    " (saved locally, never used for training).";
+}
+
+// "Set D + messy requests = set E" as three boxes, with the sizes and one messy example from the data section.
+function setFormula(sources) {
+  const messy = sources.find((s) => s.name.startsWith("AI-written"));
+  if (!messy) return null;
+  const setD = sources.filter((s) => s.train && s !== messy).reduce((sum, s) => sum + s.train, 0);
+  const box = (title, sub) => {
+    const node = el("div", "formula-box");
+    node.append(el("div", "model-name", title), el("div", "muted", sub));
+    return node;
+  };
+  const row = el("div", "formula");
+  const example = messy.example ? "\u201c" + messy.example.text + "\u201d" : "";
+  row.append(box("Set D: " + fmt(setD), "SGD + MASSIVE + typo copies (clean)"), el("div", "formula-op", "+"),
+             box("Messy requests: " + fmt(messy.train), "written by AI, e.g. " + example), el("div", "formula-op", "="),
+             box("Set E: " + fmt(setD + messy.train), "what BERTweet_E is trained on"));
+  return row;
+}
+
+// Messy F1 before and after for BERTweet and the best classic model, and whether clean F1 held.
+function fixCaption(models) {
+  const pick = (name) => models.find((m) => m.name === name);
+  const change = (m, key) => m.name + " " + f2(m.d[key]) + " \u2192 " + f2(m.e[key]);
+  const shown = [pick("BERTweet"), pick("Linear SVM")].filter(Boolean);
+  const allUp = models.every((m) => m.e.messy_f1 > m.d.messy_f1);
+  const tweetModel = pick("BERTweet");
+  const clean = tweetModel && Math.abs(tweetModel.e.sgd_f1 - tweetModel.d.sgd_f1) < 0.01
+    ? " Clean scores stay the same (" + change(tweetModel, "sgd_f1") + " on the SGD test)." : "";
+  const codex = shown.every((m) => m.d.codex_f1 != null && m.e.codex_f1 != null)
+    ? " On the Codex test too: " + shown.map((m) => change(m, "codex_f1")).join(", ") + "." : "";
+  return "Messy-test F1 " + (allUp ? "rises for every model: " : "before and after: ") +
+    shown.map((m) => change(m, "messy_f1")).join(", ") + "." + codex + clean;
+}
+
+// Which test sets section 3 is scored on, and why the second one matters.
+function testNote(sources) {
+  const size = (name) => (sources.find((s) => s.name.startsWith(name)) || {}).test;
+  return el("p", "muted", "Tested on two sets of messy requests the models never saw: the messy test (" +
+    fmt(size("Messy") || 0) + " requests) and the Codex test (" + fmt(size("Codex") || 0) + "). The messy " +
+    "training requests and the messy test were both drafted by the same AI, so the Codex test, written by a " +
+    "different AI, checks that the gain is not just that AI's writing style.");
 }
 
 function renderResults(data) {
-  renderTiles(data);
-  $("results-note").textContent = resultsNote(data);
+  $("results-note").textContent = resultsNote(data) + loggedNote(data.user_requests);
+  if (data.data) {
+    renderData(data.data);
+    renderLabels(data.data);
+  }
   const classicRows = data.classic || [];
   const transformers = data.transformers || [];
-  const classicD = CLASSIC_NAMES.map((name) => classicRows.find((r) => r.training_set === SET_D && r.name === name) || null);
-  const allD = [...classicD, ...transformers].filter(Boolean);
-
-  const one = chartSection("Clean vs messy F1", allD.length ? cleanVsMessyCaption(allD.map((r) => ({
-    name: r.name, messy_f1: r.messy_f1, sgd_f1: r.sgd_f1 }))) : "");
+  // Section 2 compares kinds of model on the same training data (set D), so only the model differs.
+  const classicD = CLASSIC_NAMES.map((name) => classicRows.find((r) => r.training_set === SET_D && r.name === name)
+    || null);
+  const transformersD = transformers.filter((t) => t.key !== "bertweet_E");
+  const allD = [...classicD, ...transformersD].filter(Boolean);
+  const one = chartSection("2. Why we mixed in messy data: models trained on clean text fail on real requests",
+    allD.length
+    ? cleanVsMessyCaption(allD.map((r) => ({ name: r.name, messy_f1: r.messy_f1, sgd_f1: r.sgd_f1 }))) : "");
+  const pair = data.data ? cleanVsMessyPair(data.data) : null;
+  if (pair) one.legend.before(pair);
   const dumbbellRows = (rows) => rows.filter(Boolean).map((r) => ({ name: r.name, sgd: r.sgd_f1, messy: r.messy_f1 }));
+  const best = transformersD.find((t) => t.key === "bertweet");
   drawDumbbell(one, [
-    { heading: "Classic (trained on set D)", rows: dumbbellRows(classicD) },
-    { heading: "Transformers", rows: dumbbellRows(transformers) }
-  ]);
-  drawTable(one, ["Model", "SGD test", "MASSIVE test", "Messy test"], allD.map((r) =>
-    [r.name, f2(r.sgd_f1), f2(r.massive_f1), f2(r.messy_f1)]));
+    { heading: "Parser and classic models", rows: dumbbellRows(classicD) },
+    { heading: "Transformers", rows: dumbbellRows(transformersD) }
+  ], best ? { row: best.name,
+               text: "EVEN THE BEST MODEL\nDROPS " + f2(best.sgd_f1) + " \u2192 " + f2(best.messy_f1) + "!" } : null);
+  one.host.after(el("p", "muted", "Why: the training data (SGD, MASSIVE) is clean, so the models learned clean " +
+    "patterns, such as capital letters marking names and dates spelled correctly. Real users don't type like that."));
+  drawTable(one, ["Model", "SGD test", "MASSIVE test", "Messy test", "Codex test"], allD.map((r) =>
+    [r.name, f2(r.sgd_f1), f2(r.massive_f1), f2(r.messy_f1), r.codex_f1 == null ? "-" : f2(r.codex_f1)]));
 
-  const classic = ["Naive Bayes", "Logistic Regression", "Linear SVM"];
-  const messyOf = (set, name) => {
-    const row = classicRows.find((r) => r.training_set === set && r.name === name);
-    return row ? row.messy_f1 : null;
-  };
-  const risesForAll = classic.every((name) => messyOf(SET_D, name) > messyOf(SETS_AD[0], name));
-  const two = chartSection("Messy F1 by training data", risesForAll
-    ? "Mixing MASSIVE and typo copies into SGD (set A to set D) raises messy F1 for all three classic models."
-    : "Messy F1 of the three classic models for each training set.");
-  drawBars(two, SETS_AD, classic.map((name, i) => ({
-    name: name, color: SERIES_COLORS[i],
-    values: SETS_AD.map((set) => {
-      const row = classicRows.find((r) => r.training_set === set && r.name === name);
-      return row ? row.messy_f1 : null;
-    })
-  })));
+  // Section 3: the fix. The same models on set D and on set E (set D plus the messy AI-written requests).
+  const tweet = { D: transformers.find((t) => t.key === "bertweet"),
+                  E: transformers.find((t) => t.key === "bertweet_E") };
+  const scoreOf = (set, name) => (name === "BERTweet" ? tweet[set === SET_D ? "D" : "E"]
+    : classicRows.find((r) => r.training_set === set && r.name === name));
+  const fixed = ["Naive Bayes", "Logistic Regression", "Linear SVM", "BERTweet"].map((name) => ({
+    name: name, d: scoreOf(SET_D, name), e: scoreOf(SET_E, name) })).filter((m) => m.d && m.e);
+  const three = chartSection("3. So we added messy requests to the training data", fixCaption(fixed));
+  const formula = data.data ? setFormula(data.data) : null;
+  if (formula) three.legend.before(formula, testNote(data.data));
+  drawBars(three, fixed.map((m) => m.name), [
+    { name: "Set D (no messy requests)", color: MUTED, values: fixed.map((m) => m.d.messy_f1) },
+    { name: "Set E = set D + messy requests", color: SERIES_COLORS[1], values: fixed.map((m) => m.e.messy_f1) }
+  ], tweet.D && tweet.E ? { category: "BERTweet", series: 1, text: f2(tweet.D.messy_f1) + " \u2192 " +
+    f2(tweet.E.messy_f1) + " JUST BY ADDING MESSY REQUESTS!" } : null);
+  three.details.querySelector("table").remove();  // replaced by a table that also has the Codex scores
+  drawTable(three, ["Model", "Messy test, set D", "Messy test, set E", "Codex test, set D", "Codex test, set E"],
+    fixed.map((m) => [m.name, f2(m.d.messy_f1), f2(m.e.messy_f1), m.d.codex_f1 == null ? "-" : f2(m.d.codex_f1),
+                      m.e.codex_f1 == null ? "-" : f2(m.e.codex_f1)]));
 
-  const slotRows = allD.map((r) => ({ name: r.name, value: r.messy_slots ? r.messy_slots.event_name : null }));
-  const three = chartSection("Event-name F1 on messy requests",
-    slotRows.some((r) => r.value != null) ? eventNameCaption(slotRows) : "");
-  drawBars(three, slotRows.map((r) => r.name), [
-    { name: "Event-name F1", color: MUTED,
-      colors: slotRows.map((r) => (r.name === "BERTweet" ? SERIES_COLORS[0] : MUTED)),
-      values: slotRows.map((r) => r.value) }
-  ]);
+  const curve = data.data_curve || [];
+  if (curve.length) {
+    const four = chartSection("4. So do more messy requests always mean better accuracy?", dataCurveCaption(curve));
+    const stats = data.synthetic_stats;
+    const marker = stats ? { rows: stats.rows_out,
+                             label: fmt(stats.rows_out) + " = THAT'S WHAT\nBERTWEET_E WAS TRAINED ON!" } : null;
+    four.host.after(el("p", "muted", "Each point is BERTweet trained on set D plus that many messy requests, three " +
+      "times with different seeds; the band shows the spread between runs. The messy test keeps creeping up, but it " +
+      "was drafted by the same AI as the training requests, so the Codex line is the one to trust."));
+    drawCurve(four, curve, [
+      { name: "Codex test (260)", color: SERIES_COLORS[2], mean: "codex_mean", sd: "codex_sd" },
+      { name: "Messy test (50)", color: SERIES_COLORS[1], mean: "messy_mean", sd: "messy_sd" }
+    ], 0.7, marker);
+    if (stats) {
+      four.host.after(el("p", "muted", "Red line: set E (section 3) uses " + fmt(stats.rows_out) + " messy " +
+        "requests: " + fmt(stats.rows_in) + " were written, and " + fmt(stats.dropped_test_event_names) + " were " +
+        "removed because they mention an event from the messy test. That is already past the point where the " +
+        "curve flattens."));
+    }
+  }
 
-  const points = (data.learning_curve || []).map((p) => ({
-    fraction: p.fraction, value: p.test_f1, sentences: p.sentences,
-    label: Math.round(p.fraction * 100) + "% of training data (" + fmt(p.sentences) + " sentences)"
-  }));
-  const first = points[0], last = points[points.length - 1];
-  const lead = points.length && Math.round(last.fraction / first.fraction) === 10 ? "Ten times more data" : "More data";
-  const four = chartSection("Learning curve (Linear SVM, SGD only)", points.length
-    ? lead + " barely helps: " + Math.round(first.fraction * 100) + "% of the data already reaches " +
-      f2(first.value) + ", all of it " + f2(last.value) + "."
-    : "");
-  if (points.length) drawLine(four, points);
-  else four.host.append(el("p", "muted", "No data yet."));
+  const shrink = data.shrinking || [];
+  if (shrink.length) {
+    const { full, small } = bestTradeOff(shrink);
+    drawScatter(chartSection("5. Can we make it smaller?", shrinkingCaption(shrink)), shrink, "messy_f1", 0.8,
+      { group: small.heading, row: small.name,
+        text: small.heading.toUpperCase() + ", " + small.name.split(",")[0] + ":\n" +
+          Math.round(small.megabytes) + " MB INSTEAD OF " + Math.round(full.megabytes) + ", ALMOST SAME SCORE!" },
+      halfPrecision(shrink[0]));
+  }
+  const pick = data.pick || [];
+  if (pick.length === 2) {
+    const section = chartSection("5.1 Which one to pick: 12 or 6 layers?", pickCaption(pick));
+    drawPick(section, pick);
+    section.host.after(el("p", "muted", "Speed is the median time to tag one request on the GPU (RTX 4070 SUPER). " +
+      "6 layers is the better pick when speed matters more than the last point of accuracy, for example on a phone " +
+      "or a busy server."));
+  }
+
+  const groups = data.distillation || [];
+  if (groups.length) {
+    drawDistillation(chartSection("6. Tried: learning from a bigger teacher model (distillation)",
+                                  distillationCaption(groups)), groups);
+  }
+  const jev = data.jev_teacher;
+  if (jev) {
+    const section = chartSection("6.1 Could Jev be the teacher?", "Before training a student on Jev's tag " +
+      "probabilities, we checked them on " + jev.sentences + " dev sentences (half SGD, half MASSIVE; " + jev.calls +
+      " paid calls, about $" + jev.cost_usd.toFixed(2) + "). Jev finds the slots with span F1 " + f2(jev.jev_f1) +
+      ", BERTweet " + f2(jev.bertweet_f1) + ", so a student would learn Jev's mistakes; we did not train with it.");
+    drawBars(section, ["BERTweet (our model)", "Jev (TypeSafe)"],
+      [{ name: "Span F1", colors: [SERIES_COLORS[0], SERIES_COLORS[1]], values: [jev.bertweet_f1, jev.jev_f1] }],
+      { category: "Jev (TypeSafe)", series: 0,
+        text: "TOO WEAK TO TEACH: " + f2(jev.jev_f1) + " vs " + f2(jev.bertweet_f1) });
+    section.host.after(el("p", "muted", "Jev is still in the demo (Try it tab) for what word tagging cannot do: " +
+      "the event type and the number of tickets."));
+  }
+  if (data.data) renderTrust(data.data);
+  renderJevRole();
+  renderFollowUps();
 }
 
 function addExamples() {

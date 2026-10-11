@@ -206,27 +206,99 @@ class ResultsTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             self.assertEqual(app.build_results(Path(tmp), logged=None), {})
 
-    def test_reports_and_stats_are_summarised(self):
+    def test_reports_and_data_are_summarised(self):
+        messy_row = {"id": "messy:02", "text": "shows in nyc", "tokens": ["shows", "in", "nyc"],
+                     "tags": ["O", "O", "B-city"]}
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             write_json(root / "results" / "classic_results.json", CLASSIC_RESULTS)
             write_json(root / "results" / "bert_results.json", BERT)
-            write_json(root / "data" / "clean" / "stats.json", {"train": {"rows": 5}, "dev": {"rows": 2},
-                                                              "test": {"rows": 3}})
             (root / "data" / "messy").mkdir(parents=True)
-            (root / "data" / "messy" / "messy_test.jsonl").write_text('{"id": 1}\n{"id": 2}\n', encoding="utf-8")
+            (root / "data" / "messy" / "messy_test.jsonl").write_text(
+                json.dumps(messy_row) + "\n" + json.dumps({**messy_row, "id": "messy:03"}) + "\n", encoding="utf-8")
             out = app.build_results(root, logged=2)
 
-        self.assertEqual(out["stats"], {"sgd": {"train": {"rows": 5}, "dev": {"rows": 2}, "test": {"rows": 3}}})
-        self.assertEqual(out["messy_test_rows"], 2)
+        self.assertEqual([(s["name"], s["train"], s["test"]) for s in out["data"]], [("Messy test", 0, 2)])
+        self.assertEqual(out["data"][0]["example"], {"text": "shows in nyc",
+                                                     "spans": [{"slot": "city", "start": 9, "end": 12}]})
         self.assertEqual(out["user_requests"], 2)
         self.assertEqual(out["classic"][0]["name"], "Naive Bayes")
         self.assertEqual(out["classic"][0]["messy_slots"], {"event_name": 0.2})
         self.assertEqual(out["transformers"][0]["name"], "BERT")
         self.assertEqual(out["transformers"][0]["messy_f1"], 0.85)
-        self.assertEqual(out["learning_curve"][0]["test_f1"], 0.8)
         self.assertEqual(out["seed"], CLASSIC_RESULTS["seed"])
-        self.assertNotIn("best_messy", out)
+
+    def test_distillation_shows_the_alpha_with_the_best_dev_f1(self):
+        def run(dev, messy, alpha=None):
+            return {**BERT, "dev_f1_chosen": dev, "distillation": {"alpha": alpha} if alpha else None,
+                    "test": {**BERT["test"], "messy": {"f1": messy, "slots": {}}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            results = Path(tmp) / "results"
+            write_json(results / "bert_mini_8ep_E_results.json", run(0.95, 0.80))
+            write_json(results / "bert_mini_8ep_E_kd0.3_results.json", run(0.96, 0.70, 0.3))
+            write_json(results / "bert_mini_8ep_E_kd0.5_results.json", run(0.94, 0.90, 0.5))
+            groups = app.build_results(Path(tmp), logged=None)["distillation"]
+
+        self.assertEqual(len(groups), 1)
+        gold, soft = groups[0]["rows"]
+        self.assertEqual((gold["soft"], gold["messy_f1"]), (False, 0.80))
+        self.assertEqual((soft["soft"], soft["messy_f1"], soft["dev_f1"]), (True, 0.70, 0.96))
+        self.assertTrue(soft["name"].endswith("α 0.3"))
+
+    def test_shrinking_groups_precisions_by_model(self):
+        def run(model, precision, mb, messy):
+            return {"model": model, "precision": precision, "parameters": 1, "megabytes": mb,
+                    "f1": {"dev": 0.9, "messy": messy, "codex": 0.8}}
+        with tempfile.TemporaryDirectory() as tmp:
+            write_json(Path(tmp) / "results" / "quantized_results.json",
+                       [run("bertweet_6L_E_kd0.7", "float32", 367.2, 0.95),
+                        run("bertweet_6L_E_kd0.7", "int8", 93.2, 0.9), run("other_model", "float16", 1.0, 0.5)])
+            groups = app.build_results(Path(tmp), logged=None)["shrinking"]
+
+        self.assertEqual([g["heading"] for g in groups], ["BERTweet, 6 layers"])
+        self.assertEqual([r["name"] for r in groups[0]["rows"]], ["32-bit, 367 MB", "8-bit, 93 MB"])
+        self.assertEqual(groups[0]["rows"][1]["messy_f1"], 0.9)
+
+    def test_jev_teacher_check_is_summarized(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            write_json(Path(tmp) / "results" / "jev_teacher_check.json",
+                       {"by_group": {"all": {"sentences": 300, "jev": {"f1": 0.73}, "bertweet": {"f1": 0.96}}},
+                        "ledger_usage": {"attempts": 310, "estimated_input_cost_usd": 0.04}})
+            jev = app.build_results(Path(tmp), logged=None)["jev_teacher"]
+
+        self.assertEqual(jev, {"sentences": 300, "jev_f1": 0.73, "bertweet_f1": 0.96, "calls": 310, "cost_usd": 0.04})
+
+    def test_pick_collects_16_bit_seeds_per_model(self):
+        def run(model, precision, messy, ms):
+            return {"model": model, "precision": precision, "parameters": 1, "megabytes": 184.0,
+                    "ms_per_request": ms, "f1": {"dev": 0.9, "messy": messy, "codex": 0.8}}
+        with tempfile.TemporaryDirectory() as tmp:
+            write_json(Path(tmp) / "results" / "quantized_results.json",
+                       [run("bertweet_6L_E_kd0.7", "float16", 0.95, 3.0),
+                        run("bertweet_6L_E_kd0.7_seed1", "float16", 0.91, 4.0),
+                        run("bertweet_6L_E_kd0.7_seed1", "int8", 0.5, 9.0),
+                        run("bertweet_6L_E_kd0.3", "float16", 0.1, 1.0)])
+            pick = app.build_results(Path(tmp), logged=None)["pick"]
+
+        self.assertEqual([p["name"] for p in pick], ["6 layers"])
+        self.assertEqual(pick[0]["messy"], [0.95, 0.91])
+        self.assertEqual(pick[0]["ms_per_request"], 3.5)
+
+    def test_data_curve_averages_seeds_per_size(self):
+        def run(messy, codex):
+            return {"test": {"messy": {"f1": messy}, "codex_all": {"f1": codex}}}
+        with tempfile.TemporaryDirectory() as tmp:
+            results = Path(tmp) / "results"
+            write_json(results / "bertweet_syn0_results.json", run(0.8, 0.82))
+            write_json(results / "bertweet_syn0_seed1_results.json", run(0.7, 0.84))
+            write_json(results / "bertweet_syn250_results.json", run(0.9, 0.9))
+            curve = app.build_results(Path(tmp), logged=None)["data_curve"]
+
+        self.assertEqual([(p["rows"], p["runs"]) for p in curve], [(0, 2), (250, 1)])
+        self.assertAlmostEqual(curve[0]["messy_mean"], 0.75)
+        self.assertAlmostEqual(curve[0]["codex_mean"], 0.83)
+        self.assertGreater(curve[0]["messy_sd"], 0)
+        self.assertEqual(curve[1]["codex_sd"], 0.0)
 
     def test_request_count_is_left_out_when_logging_is_off(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -254,9 +326,9 @@ class PageTest(unittest.TestCase):
                      "None, ready to search"):
             self.assertIn(text, PAGE)
 
-    def test_page_has_no_best_of_all_headline(self):
+    def test_page_compares_models_on_the_same_data(self):
         self.assertFalse("Best messy F1" in PAGE)
-        self.assertTrue("Messy-test F1 (BERTweet)" in PAGE)
+        self.assertIn("All trained on set D.", PAGE)
 
     def test_page_only_calls_the_three_api_routes(self):
         self.assertEqual(sorted(set(re.findall(r'fetch\("(/api/[a-z]+)"', PAGE))),

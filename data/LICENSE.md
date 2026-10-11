@@ -31,6 +31,22 @@ described below.
 - Written by the author: AI-drafted requests that were checked and corrected by hand. Not taken from any other source.
 - Licence: MIT, the same as the code.
 
+## Synthetic training rows: `data/synthetic/` and `data/clean/synthetic_*`
+
+- Parts 1-4: 1,000 messy requests with their slot spans, written by an AI model (Claude Haiku) for training set E.
+  Parts 5-8: 1,400 more, written later the same way for the data curve (two files were rewritten after review: one
+  was machine-generated word salad, one too repetitive). `prepare_synthetic.py` converts them to BIO tags and drops
+  rows that mention an event name of a test set.
+- Licence: MIT, the same as the code.
+
+## Codex test sets: `data/codex/codex_test.jsonl` and `data/codex/codex_more_test.jsonl`
+
+- 60 requests written and labelled by a different AI coding agent (OpenAI Codex) than the one that wrote the messy
+  test set and the synthetic training rows, then checked by hand; 9 labels were changed to follow the training data's
+  rules. `codex_more_test.jsonl` adds 200 more by the same agent for the data curve; 3 labels were changed ("asap" is
+  not a date; "after the 20th" and "sometime before Friday" keep only the date). Not taken from any other source.
+- Licence: MIT, the same as the code.
+
 ## Pre-trained models (not redistributed)
 
 `train_bert.py` downloads these from Hugging Face when it runs. They are not included in this repository.

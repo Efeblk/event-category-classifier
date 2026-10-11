@@ -1,0 +1,12 @@
+{
+  "rows_in": 1000,
+  "dropped_test_event_names": 58,
+  "dropped_test_text": 0,
+  "duplicates_dropped": 0,
+  "rows_out": 942,
+  "spans": {
+    "city": 513,
+    "date": 471,
+    "event_name": 510
+  }
+}

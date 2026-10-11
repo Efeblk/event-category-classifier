@@ -1,10 +1,12 @@
 """Train the classic slot taggers: dictionary baseline, Naive Bayes, Logistic Regression and Linear SVM.
 
-Four training sets, labelled A to D in the output: A SGD, B SGD+MASSIVE, C SGD+typo copies, D SGD+MASSIVE+typo copies.
-Each model is tuned on the combined SGD + MASSIVE dev set, then scored once on SGD test, MASSIVE test and the
-hand-written messy test set. The messy set is never used for training or tuning. The Linear SVM learning curve is
-trained on SGD only, tuned on SGD dev. Set D's models are saved to artifacts/classic/ for extract.py. Writes the
-summary to results/classic_results.json and the per-row messy predictions to reports/classic_messy_predictions.csv.
+Five training sets, labelled A to E in the output: A SGD, B SGD+MASSIVE, C SGD+typo copies, D SGD+MASSIVE+typo copies,
+E D plus the synthetic LLM-written rows (no typo copies of them).
+Each model is tuned on the combined SGD + MASSIVE dev set, then scored once on SGD test, MASSIVE test, the messy
+test set and the Codex test set. The messy and Codex sets are never used for training or tuning. The Linear SVM
+learning curve is trained on SGD only, tuned on SGD dev. Set E's models are saved to artifacts/classic/ for
+extract.py. Writes the summary to results/classic_results.json and the per-row messy predictions to
+reports/classic_messy_predictions.csv.
 """
 
 import argparse
@@ -20,8 +22,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 
-from slots import (DictionaryTagger, add_typos, describe, featurize, fit_vectorizer, predict, read_jsonl, slot_f1,
-                   span_scores)
+from slots import (DictionaryTagger, add_typos, describe, featurize, fit_vectorizer, messy_copy, predict, read_jsonl,
+                   slot_f1, span_scores)
 
 ROOT = Path(__file__).resolve().parent
 RESULTS_DIR = ROOT / "results"
@@ -29,6 +31,7 @@ REPORTS_DIR = ROOT / "reports"
 SEED = 42
 TYPO_RATE = 0.15
 SET_D_LABEL = "D: SGD+MASSIVE+typos"
+SET_E_LABEL = "E: SGD+MASSIVE+typos+synthetic"
 GRIDS = {
     "MultinomialNB": ("alpha", [0.1, 0.3, 1.0], lambda v: MultinomialNB(alpha=v)),
     "LogisticRegression": ("C", [1, 3, 10, 30], lambda v: LogisticRegression(C=v, max_iter=2000, random_state=SEED)),
@@ -55,22 +58,44 @@ def set_d_rows():
     return sgd + massive + typo_copy(sgd) + typo_copy(massive)
 
 
+def set_e_rows():
+    """Training set E: set D plus the synthetic rows from prepare_synthetic.py, without typo copies."""
+    return set_d_rows() + load("synthetic_train")
+
+
+def synthetic_pool():
+    """The data-curve pool from prepare_synthetic.py (parts 1-8, decontaminated against every test set), shuffled in
+    a fixed order so that the first N rows of a bigger N always include those of a smaller N."""
+    rows = load("synthetic_pool_train")
+    random.Random(SEED).shuffle(rows)
+    return rows
+
+
+def set_f_rows():
+    """Training set F (train_bert.py only): set E plus a messy_copy of every SGD, MASSIVE and synthetic row."""
+    rng = random.Random(SEED)
+    originals = load("train") + load("massive_train") + load("synthetic_train")
+    return set_e_rows() + [{**r, "id": r["id"] + ":messy", "tokens": messy_copy(r["tokens"], rng)} for r in originals]
+
+
 def training_sets():
-    """The four training sets {label: rows}, labelled A to D as in the output."""
+    """The five training sets {label: rows}, labelled A to E as in the output."""
     sgd, massive = load("train"), load("massive_train")
     return {
         "A: SGD": sgd,
         "B: SGD+MASSIVE": sgd + massive,
         "C: SGD+typos": sgd + typo_copy(sgd),
         SET_D_LABEL: set_d_rows(),
+        SET_E_LABEL: set_e_rows(),
     }
 
 
 def load_evaluation():
-    """The dev rows (SGD + MASSIVE) and the test sets {name: rows}. The messy set is only ever scored."""
+    """The dev rows (SGD + MASSIVE) and the test sets {name: rows}. The messy and Codex sets are only ever scored."""
     dev_rows = load("dev") + load("massive_dev")
     tests = {"SGD test": load("test"), "MASSIVE test": load("massive_test"),
-             "messy": read_jsonl(ROOT / "data" / "messy" / "messy_test.jsonl")}
+             "messy": read_jsonl(ROOT / "data" / "messy" / "messy_test.jsonl"),
+             "codex": read_jsonl(ROOT / "data" / "codex" / "codex_test.jsonl")}
     return dev_rows, tests
 
 
@@ -138,7 +163,7 @@ def run_training_set(label, rows, dev, tests, test_feats):
 
 
 def save_models(save_dir, winners, dictionary):
-    """Write each set-D model as {model, setting, vectorizer, estimator} and the dictionary baseline as {tagger}."""
+    """Write each set-E model as {model, setting, vectorizer, estimator} and the dictionary baseline as {tagger}."""
     save_dir.mkdir(parents=True, exist_ok=True)
     for model_name, best in winners.items():
         joblib.dump({"model": model_name, "setting": best["setting"], "vectorizer": best["vec"],
@@ -181,21 +206,22 @@ def save_outputs(report, predictions):
 
 
 def print_table(results):
-    head = (f"{'training set':<22}{'model':<20}{'setting':>10}{'SGD F1':>9}{'MASSIVE F1':>12}{'messy F1':>10}  "
+    head = (f"{'training set':<31}{'model':<20}{'setting':>10}{'SGD F1':>9}{'MASSIVE F1':>12}{'messy F1':>10}"
+            f"{'Codex F1':>10}  "
             + "  ".join(f"{s:<10}" for s in SLOTS))
     print(head)
     print("-" * len(head))
     for r in results:
         s = r["scores"]
         per_slot = "  ".join(f"{slot_f1(s['messy'], slot):<10}" for slot in SLOTS)
-        print(f"{r['training_set']:<22}{r['model']:<20}{r['setting']:>10}{s['SGD test']['f1']:>9.3f}"
-              f"{s['MASSIVE test']['f1']:>12.3f}{s['messy']['f1']:>10.3f}  {per_slot}")
+        print(f"{r['training_set']:<31}{r['model']:<20}{r['setting']:>10}{s['SGD test']['f1']:>9.3f}"
+              f"{s['MASSIVE test']['f1']:>12.3f}{s['messy']['f1']:>10.3f}{s['codex']['f1']:>10.3f}  {per_slot}")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--save-dir", type=Path, default=ROOT / "artifacts" / "classic",
-                        help="where the set-D models are saved")
+                        help="where the set-E models are saved")
     args = parser.parse_args()
     started = time.perf_counter()
 
@@ -203,15 +229,16 @@ def main():
     dev = (dev_rows, featurize(dev_rows))
     test_feats = {name: featurize(rows) for name, rows in tests.items()}
 
-    results, predictions, set_d = [], [], None
+    results, predictions, saved = [], [], None
     for label, rows in training_sets().items():
         set_results, set_predictions, winners, tagger = run_training_set(label, rows, dev, tests, test_feats)
         results += set_results
         predictions += set_predictions
-        if label == SET_D_LABEL:
-            set_d = (winners, tagger)
-    save_models(args.save_dir, *set_d)
-    print(f"saved set-D models to {args.save_dir}", flush=True)
+        # The demo compares these with BERTweet trained on set E, so all models learn from the same data.
+        if label == SET_E_LABEL:
+            saved = (winners, tagger)
+    save_models(args.save_dir, *saved)
+    print(f"saved set-E models to {args.save_dir}", flush=True)
 
     curve_setting, curve = run_learning_curve(load("train"), load("dev"), tests["SGD test"])
     seconds = time.perf_counter() - started

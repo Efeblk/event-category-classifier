@@ -1,12 +1,13 @@
 """Turn a request into slots (city, date, event_name) with every saved slot tagger, an optional Jev check and
 the follow-ups.
 
-load_models loads the dictionary and classic models from artifacts/classic and the fine-tuned transformers
-(bert, roberta, bertweet) from artifacts/<tag>. Transformers need torch with a CUDA GPU. When torch is missing or no GPU
-is available, transformer artifacts are skipped with a note instead of failing. torch is imported only inside
-load_models and load_transformer, so this module imports without it. Spans are rebuilt from the original text by
-character offsets, so "chi-town" stays "chi-town". Missing artifacts are skipped and reported in notes. Without Jev
-settings the jev field reports not_configured.
+load_models loads the four models of the live demo, all trained on set E: the parser (dictionary baseline) and the
+Linear SVM from artifacts/classic, BERTweet from artifacts/bertweet_E and its 6-layer version from
+artifacts/bertweet_6L_E_kd0.7. Transformers need torch with a CUDA GPU. When torch is
+missing or no GPU is available, transformer artifacts are skipped with a note instead of failing. torch is imported
+only inside load_models and load_transformer, so this module imports without it. Spans are rebuilt from the original
+text by character offsets, so "chi-town" stays "chi-town". Missing artifacts are skipped and reported in notes.
+Without Jev settings the jev field reports not_configured.
 
 Usage: python extract.py [--no-jev] "request text"
 """
@@ -27,10 +28,13 @@ ROOT = Path(__file__).resolve().parent
 ARTIFACTS_DIR = ROOT / "artifacts"
 CLASSIC_DIR = ARTIFACTS_DIR / "classic"
 SLOT_NAMES = ("city", "date", "event_name")
-# Classic models in display order as (file stem, display name, family); transformers as (artifact dir, display name).
-CLASSIC_MODELS = (("dictionary", "Dictionary", "baseline"), ("naive_bayes", "Naive Bayes", "classic"),
-                  ("logistic_regression", "Logistic Regression", "classic"), ("linear_svm", "Linear SVM", "classic"))
-TRANSFORMER_MODELS = (("bert", "BERT"), ("roberta", "RoBERTa"), ("bertweet", "BERTweet"))
+# Live demo models in display order: the simple parser, the best classic model on dev, and the trained transformer.
+# Classic models as (file stem, display name, family); transformers as (artifact dir, display name).
+CLASSIC_MODELS = (("dictionary", "Parser", "baseline"), ("linear_svm", "Linear SVM", "classic"))
+LIVE_TRANSFORMERS = (("bertweet_E", "BERTweet_E"), ("bertweet_6L_E_kd0.7", "BERTweet_E small (6 of 12 layers)"))
+# Every transformer whose results the Results tab shows.
+TRANSFORMER_MODELS = (("bert", "BERT"), ("roberta", "RoBERTa"), ("bertweet", "BERTweet"),
+                      ("bertweet_E", "BERTweet_E"))
 LoadedModel = namedtuple("LoadedModel", "key name family tag")
 
 
@@ -85,7 +89,7 @@ def load_models(classic_dir=CLASSIC_DIR, artifacts_dir=ARTIFACTS_DIR):
             notes.append(f"{name} skipped: {path} not found")
     problem = None
     checked = False
-    for key, name in TRANSFORMER_MODELS:
+    for key, name in LIVE_TRANSFORMERS:
         path = Path(artifacts_dir) / key
         if not (path / "config.json").exists():
             notes.append(f"{name} skipped: {path} not found")
@@ -97,6 +101,23 @@ def load_models(classic_dir=CLASSIC_DIR, artifacts_dir=ARTIFACTS_DIR):
             continue
         models.append(LoadedModel(key, name, "transformer", load_transformer(path)))
     return models, notes
+
+
+def training_vocabulary():
+    """Lowercased words of training set E, which every live demo model was trained on."""
+    from train_classic import set_e_rows
+
+    return {word.lower() for row in set_e_rows() for word in row["tokens"]}
+
+
+def new_words(text, vocabulary):
+    """Words (not punctuation) of text that never appear in the training data, in order, each once, lowercased."""
+    found = []
+    for match in TOKEN.finditer(text):
+        word = match.group().lower()
+        if word[0].isalnum() and word not in vocabulary and word not in found:
+            found.append(word)
+    return found
 
 
 def extract_spans(text, tag):

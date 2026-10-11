@@ -1,0 +1,300 @@
+{"text": "any good musicals in nyc tmrw? my mom is visiting w me 😊", "spans": [["city", "nyc"], ["date", "tmrw"]]}
+{"text": "smth chill for date night?", "spans": []}
+{"text": "hamilton tix in chicago this weekend??", "spans": [["event_name", "hamilton"], ["city", "chicago"], ["date", "this weekend"]]}
+{"text": "la comedy shows 2nite pls, ngl i need a laugh", "spans": [["city", "la"], ["date", "2nite"]]}
+{"text": "john mulaney in toronto next sat??", "spans": [["event_name", "john mulaney"], ["city", "toronto"], ["date", "next sat"]]}
+{"text": "museums open sunday in dc w my kids lol", "spans": [["date", "sunday"], ["city", "dc"]]}
+{"text": "ballet this wknd near me pls", "spans": [["date", "this wknd"]]}
+{"text": "opera in paris on dec 12 pls", "spans": [["city", "paris"], ["date", "dec 12"]]}
+{"text": "kid friendly stuff in sf saturday afternoon", "spans": [["city", "sf"], ["date", "saturday afternoon"]]}
+{"text": "taste of chicago tmrw?? food fest w my coworkers", "spans": [["event_name", "taste of chicago"], ["date", "tmrw"]]}
+{"text": "is there any standup in austin on friday night 😂", "spans": [["city", "austin"], ["date", "friday night"]]}
+{"text": "cats the musical in london this weekend?", "spans": [["event_name", "cats"], ["city", "london"], ["date", "this weekend"]]}
+{"text": "whats on in tokyo tonight, me n my bf wanna do smth", "spans": [["city", "tokyo"], ["date", "tonight"]]}
+{"text": "new exhibitions in berlin this weekend pls", "spans": [["city", "berlin"], ["date", "this weekend"]]}
+{"text": "nola food festival this wknd?? with my parents", "spans": [["city", "nola"], ["date", "this wknd"]]}
+{"text": "wicked tix for the 18th? w my gf 🥰", "spans": [["event_name", "wicked"], ["date", "the 18th"]]}
+{"text": "we want a date night thing in seattle sometime next week", "spans": [["city", "seattle"], ["date", "next week"]]}
+{"text": "kids theatre show in boston tmrw morning", "spans": [["city", "boston"], ["date", "tmrw"]]}
+{"text": "standup show in philly tonite w/ my roommates", "spans": [["city", "philly"], ["date", "tonite"]]}
+{"text": "phantom of the opera in vienna this sat??", "spans": [["event_name", "phantom of the opera"], ["city", "vienna"], ["date", "this sat"]]}
+{"text": "swan lake in istanbul on christmas eve", "spans": [["event_name", "swan lake"], ["city", "istanbul"], ["date", "christmas eve"]]}
+{"text": "food street festival in new york this weekend lol", "spans": [["city", "new york"], ["date", "this weekend"]]}
+{"text": "nate bargatze show in dc on tuesday??", "spans": [["event_name", "nate bargatze"], ["city", "dc"], ["date", "tuesday"]]}
+{"text": "kids museum in singapore on saturday w the fam", "spans": [["city", "singapore"], ["date", "saturday"]]}
+{"text": "date night ideas in sydney tonight pls", "spans": [["city", "sydney"], ["date", "tonight"]]}
+{"text": "van gogh immersive in amsterdam this wknd", "spans": [["event_name", "van gogh immersive"], ["city", "amsterdam"], ["date", "this wknd"]]}
+{"text": "we're going to see les mis in madrid 2morrow", "spans": [["event_name", "les mis"], ["city", "madrid"], ["date", "2morrow"]]}
+{"text": "plans w my friends this fri, something cheap in denver", "spans": [["date", "this fri"], ["city", "denver"]]}
+{"text": "opera for a first date in rome next sun??", "spans": [["city", "rome"], ["date", "next sun"]]}
+{"text": "any cute family shows in la this wknd, kids are 5 & 8", "spans": [["city", "la"], ["date", "this wknd"]]}
+{"text": "hadestown in new orleans on the 25th", "spans": [["event_name", "hadestown"], ["city", "new orleans"], ["date", "the 25th"]]}
+{"text": "taste of toronto tmrw w coworkers??", "spans": [["event_name", "taste of toronto"], ["date", "tmrw"]]}
+{"text": "kids stuff in chicago on halloween w my nephews", "spans": [["city", "chicago"], ["date", "halloween"]]}
+{"text": "comedy club w my gf in portland, sat night??", "spans": [["city", "portland"], ["date", "sat night"]]}
+{"text": "paris exhibitions for a date night? 💕", "spans": [["city", "paris"]]}
+{"text": "the lion king in dallas on dec 26 w the kids", "spans": [["event_name", "the lion king"], ["city", "dallas"], ["date", "dec 26"]]}
+{"text": "bo burnham show in edinburgh 2nite?", "spans": [["event_name", "bo burnham"], ["city", "edinburgh"], ["date", "2nite"]]}
+{"text": "monet's garden exhibit in dc this fri", "spans": [["event_name", "monet's garden"], ["city", "dc"], ["date", "this fri"]]}
+{"text": "nothing too fancy, just a chill sat night out w my partner", "spans": [["date", "sat night"]]}
+{"text": "musical theatre in toronto on the 18th?", "spans": [["city", "toronto"], ["date", "the 18th"]]}
+{"text": "dave chappelle tickets vancouver tmrw pls 🙏", "spans": [["event_name", "dave chappelle"], ["city", "vancouver"], ["date", "tmrw"]]}
+{"text": "ballet in kyiv this weekend?", "spans": [["city", "kyiv"], ["date", "this weekend"]]}
+{"text": "food trucks in mumbai tonight w the office crew", "spans": [["city", "mumbai"], ["date", "tonight"]]}
+{"text": "best kid friendly shows in la sunday w my 2 nieces", "spans": [["city", "la"], ["date", "sunday"]]}
+{"text": "ali wong in houston fri nite??", "spans": [["event_name", "ali wong"], ["city", "houston"], ["date", "fri nite"]]}
+{"text": "moulin rouge musical in atlanta next friday", "spans": [["event_name", "moulin rouge"], ["city", "atlanta"], ["date", "next friday"]]}
+{"text": "carmen in sf on jan 3, my dad wants to go", "spans": [["event_name", "carmen"], ["city", "sf"], ["date", "jan 3"]]}
+{"text": "museums for kids in budapest tmrw morning 🧒", "spans": [["city", "budapest"], ["date", "tmrw"]]}
+{"text": "oktoberfest in munich this weekend?? with friends", "spans": [["event_name", "oktoberfest"], ["city", "munich"], ["date", "this weekend"]]}
+{"text": "teamlab in tokyo next wknd", "spans": [["event_name", "teamlab"], ["city", "tokyo"], ["date", "next wknd"]]}
+{"text": "date night in miami thurs?", "spans": [["city", "miami"], ["date", "thurs"]]}
+{"text": "family night stuff in new york, we have 3 kids lol, sat", "spans": [["city", "new york"], ["date", "sat"]]}
+{"text": "six the musical in nashville tonight", "spans": [["event_name", "six"], ["city", "nashville"], ["date", "tonight"]]}
+{"text": "wanna see the nutcracker in minneapolis christmas eve w my fam", "spans": [["event_name", "the nutcracker"], ["city", "minneapolis"], ["date", "christmas eve"]]}
+{"text": "pls find me a standup show in dublin this wknd, u know what i like", "spans": [["city", "dublin"], ["date", "this wknd"]]}
+{"text": "chill theatre thing in lisbon tmrw evening", "spans": [["city", "lisbon"], ["date", "tmrw"]]}
+{"text": "anything fun happening in osaka the weekend?", "spans": [["city", "osaka"], ["date", "the weekend"]]}
+{"text": "we need smth for our anniversary in prague sat night 💍", "spans": [["city", "prague"], ["date", "sat night"]]}
+{"text": "kids craft fair in houston this sat", "spans": [["city", "houston"], ["date", "this sat"]]}
+{"text": "romeo and juliet ballet in seoul on fri", "spans": [["event_name", "romeo and juliet"], ["city", "seoul"], ["date", "fri"]]}
+{"text": "i wanna laugh so bad, any comedians in philly 2nite?", "spans": [["city", "philly"], ["date", "2nite"]]}
+{"text": "food festival in denver this wknd w the roommates", "spans": [["city", "denver"], ["date", "this wknd"]]}
+{"text": "give me something for a first date in chicago tonight 🍷", "spans": [["city", "chicago"], ["date", "tonight"]]}
+{"text": "plans w the coworkers: a museum in dc after work fri", "spans": [["city", "dc"], ["date", "fri"]]}
+{"text": "rigoletto in verona next week?", "spans": [["event_name", "rigoletto"], ["city", "verona"], ["date", "next week"]]}
+{"text": "lunar new year parade in san diego sat", "spans": [["event_name", "lunar new year parade"], ["city", "san diego"], ["date", "sat"]]}
+{"text": "hasan minhaj live in cleveland on dec 12??", "spans": [["event_name", "hasan minhaj"], ["city", "cleveland"], ["date", "dec 12"]]}
+{"text": "exhibition of frida kahlo in mexico city this weekend", "spans": [["event_name", "frida kahlo"], ["city", "mexico city"], ["date", "this weekend"]]}
+{"text": "any kid things in cdmx this wknd, my niece is 6", "spans": [["city", "cdmx"], ["date", "this wknd"]]}
+{"text": "giselle in glasgow the 14th", "spans": [["event_name", "giselle"], ["city", "glasgow"], ["date", "the 14th"]]}
+{"text": "smorgasburg in new york sunday", "spans": [["event_name", "smorgasburg"], ["city", "new york"], ["date", "sunday"]]}
+{"text": "u know any good theatre in edinburgh for a date tmrw?", "spans": [["city", "edinburgh"], ["date", "tmrw"]]}
+{"text": "whos going to the comedy fest in montreal this weekend lol", "spans": [["city", "montreal"], ["date", "this weekend"]]}
+{"text": "2 tix for la boheme in seattle next fri pls 🎭", "spans": [["event_name", "la boheme"], ["city", "seattle"], ["date", "next fri"]]}
+{"text": "birthday dinner plus a show in new orleans, 4 of us", "spans": [["city", "new orleans"]]}
+{"text": "mike birbiglia in sf this sat", "spans": [["event_name", "mike birbiglia"], ["city", "sf"], ["date", "this sat"]]}
+{"text": "pls sugg a fun parents day thing in dc, mom turns 60 on mother's day", "spans": [["city", "dc"], ["date", "mother's day"]]}
+{"text": "cute art show for a date in paris tonight 🥰", "spans": [["city", "paris"], ["date", "tonight"]]}
+{"text": "what are the free kid events in toronto this sat morning", "spans": [["city", "toronto"], ["date", "this sat"]]}
+{"text": "frozen the musical in london on the 9th??", "spans": [["event_name", "frozen"], ["city", "london"], ["date", "the 9th"]]}
+{"text": "night market in taipei fri night w friends", "spans": [["city", "taipei"], ["date", "fri night"]]}
+{"text": "i need a laugh 2nite, standup in la?", "spans": [["date", "2nite"], ["city", "la"]]}
+{"text": "best musicals in chicago for a group of 6 coworkers?", "spans": [["city", "chicago"]]}
+{"text": "hadestown tix for tmrw in nyc??", "spans": [["event_name", "hadestown"], ["date", "tmrw"], ["city", "nyc"]]}
+{"text": "dinner and a show in las vegas this weekend, bf wants comedy", "spans": [["city", "las vegas"], ["date", "this weekend"]]}
+{"text": "family picnic festival in jakarta sunday", "spans": [["city", "jakarta"], ["date", "sunday"]]}
+{"text": "date ideas in hong kong sun 😍", "spans": [["city", "hong kong"], ["date", "sun"]]}
+{"text": "kids show in helsinki this saturday? 👧", "spans": [["city", "helsinki"], ["date", "this saturday"]]}
+{"text": "any opera in milan this month pls", "spans": [["city", "milan"], ["date", "this month"]]}
+{"text": "sf standup this fri?", "spans": [["city", "sf"], ["date", "this fri"]]}
+{"text": "my bf and i wanna see hamilton in dc on valentines day", "spans": [["event_name", "hamilton"], ["city", "dc"], ["date", "valentines day"]]}
+{"text": "pls, anything with live music in la tmrw, lol", "spans": [["city", "la"], ["date", "tmrw"]]}
+{"text": "opera night in berlin on fri 🎶", "spans": [["city", "berlin"], ["date", "fri"]]}
+{"text": "immersive art show in seoul this wknd, coworkers wanna go", "spans": [["city", "seoul"], ["date", "this wknd"]]}
+{"text": "u got smth for kids in calgary on sat?", "spans": [["city", "calgary"], ["date", "sat"]]}
+{"text": "comedy night in glasgow tonight??", "spans": [["city", "glasgow"], ["date", "tonight"]]}
+{"text": "food truck festival in austin tonight", "spans": [["city", "austin"], ["date", "tonight"]]}
+{"text": "night out with my partner somewhere in miami fri", "spans": [["city", "miami"], ["date", "fri"]]}
+{"text": "kids theatre in cairo, my daughter's bday is the 18th", "spans": [["city", "cairo"], ["date", "the 18th"]]}
+{"text": "plans for a christmas eve dinner show in nyc pls", "spans": [["date", "christmas eve"], ["city", "nyc"]]}
+{"text": "smth chill for a date night w my bf, idk what tho", "spans": []}
+{"text": "ok so my bro wants a comedy show in sf this weekend and im the planner", "spans": [["city", "sf"], ["date", "this weekend"]]}
+{"text": "pls tell me best kid friendly stuff in kyoto on sat 🙏", "spans": [["city", "kyoto"], ["date", "sat"]]}
+{"text": "theatre w my friends tmrw?? anything under 60 bucks", "spans": [["date", "tmrw"]]}
+{"text": "where do i go for a museum date that isnt boring", "spans": []}
+{"text": "exhibitions in dublin or london this month, my gf loves art", "spans": [["city", "dublin"], ["city", "london"], ["date", "this month"]]}
+{"text": "ballet in vienna on the 14th, we r 3 adults", "spans": [["city", "vienna"], ["date", "the 14th"]]}
+{"text": "mamma mia sing along in toronto tonite?? 💃", "spans": [["event_name", "mamma mia"], ["city", "toronto"], ["date", "tonite"]]}
+{"text": "anyone do the food tour in new orleans this wknd lol", "spans": [["city", "new orleans"], ["date", "this wknd"]]}
+{"text": "fun family festival in halifax this sat", "spans": [["city", "halifax"], ["date", "this sat"]]}
+{"text": "date night at home vs out? idk help", "spans": []}
+{"text": "kids want to see the lion king again, we r in tampa next sunday", "spans": [["event_name", "the lion king"], ["city", "tampa"], ["date", "next sunday"]]}
+{"text": "2nite plz: standup in philly w my partner or nah?", "spans": [["date", "2nite"], ["city", "philly"]]}
+{"text": "where can i take my mom for mothers day in seattle, she likes art", "spans": [["date", "mothers day"], ["city", "seattle"]]}
+{"text": "nate bargatze in new york on jan 2?", "spans": [["event_name", "nate bargatze"], ["city", "new york"], ["date", "jan 2"]]}
+{"text": "smth fun 2do w coworkers after the holiday party 🎉", "spans": []}
+{"text": "opera w the fam in vienna this fri", "spans": [["city", "vienna"], ["date", "this fri"]]}
+{"text": "ngl ballet is overrated but my gf loves it, where in dc tonight", "spans": [["city", "dc"], ["date", "tonight"]]}
+{"text": "kids museum for a 4yo in boston tomorrow pls", "spans": [["city", "boston"], ["date", "tomorrow"]]}
+{"text": "cheap comedy in la this thurs w my squad", "spans": [["city", "la"], ["date", "this thurs"]]}
+{"text": "any ideas for a rainy day date? we r cooped up", "spans": []}
+{"text": "what's happening in berlin christmas eve? wanna go to smth fun", "spans": [["city", "berlin"], ["date", "christmas eve"]]}
+{"text": "wicked in sydney 2 tix pls 🎶", "spans": [["event_name", "wicked"], ["city", "sydney"]]}
+{"text": "food festival in rio this wknd, my bf speaks no portuguese lol", "spans": [["city", "rio"], ["date", "this wknd"]]}
+{"text": "kid stuff in dc on the 4th of july??", "spans": [["city", "dc"], ["date", "the 4th of july"]]}
+{"text": "tonight: comedy show in toronto w the gang pls", "spans": [["date", "tonight"], ["city", "toronto"]]}
+{"text": "my partner and i want a cute cafe + theatre combo, ideas?", "spans": []}
+{"text": "smorgasburg in nyc this sunday? my kids want the ice cream", "spans": [["event_name", "smorgasburg"], ["city", "nyc"], ["date", "this sunday"]]}
+{"text": "stand up in mexico city tmrw, looking for english shows", "spans": [["city", "mexico city"], ["date", "tmrw"]]}
+{"text": "day trip to montreal sat for the jazz festival, u in?", "spans": [["city", "montreal"], ["date", "sat"]]}
+{"text": "theatre for teens in new york tmrw", "spans": [["city", "new york"], ["date", "tmrw"]]}
+{"text": "phantom of the opera on fri in london, tix are $$$", "spans": [["event_name", "phantom of the opera"], ["date", "fri"], ["city", "london"]]}
+{"text": "chill art show near me, something for a first date pls", "spans": []}
+{"text": "dance performance w coworkers in berlin next wed", "spans": [["city", "berlin"], ["date", "next wed"]]}
+{"text": "shakespeare in the park in austin this sat 🌳", "spans": [["city", "austin"], ["date", "this sat"]]}
+{"text": "kids birthday party at the science museum in houston sat", "spans": [["city", "houston"], ["date", "sat"]]}
+{"text": "yo any good spots for a double date?? 👫", "spans": []}
+{"text": "magic show for kids in sf sun 2pm", "spans": [["city", "sf"], ["date", "sun"]]}
+{"text": "moulin rouge tmrw in new orleans?", "spans": [["event_name", "moulin rouge"], ["date", "tmrw"], ["city", "new orleans"]]}
+{"text": "we r a group of 5 going to the night market in bangkok this fri", "spans": [["city", "bangkok"], ["date", "this fri"]]}
+{"text": "kid's theatre in tokyo sat or sun?", "spans": [["city", "tokyo"], ["date", "sat"]]}
+{"text": "anyone know a cool hidden exhibition in kraków this wknd?", "spans": [["city", "kraków"], ["date", "this wknd"]]}
+{"text": "i'm bored af, planning a fun parents night out, any vibes", "spans": []}
+{"text": "cats musical in new york this sat, mom's bday", "spans": [["event_name", "cats"], ["city", "new york"], ["date", "this sat"]]}
+{"text": "dec 12 date night in chicago?? 2 people, budget ok", "spans": [["date", "dec 12"], ["city", "chicago"]]}
+{"text": "best food truck event in brisbane tonight?", "spans": [["city", "brisbane"], ["date", "tonight"]]}
+{"text": "hadestown tix for christmas eve in ny pls", "spans": [["event_name", "hadestown"], ["date", "christmas eve"], ["city", "ny"]]}
+{"text": "need a last minute museum plan in amsterdam, sat afternoon", "spans": [["city", "amsterdam"], ["date", "sat afternoon"]]}
+{"text": "kids wanna do smth with a clown show in la on the weekend", "spans": [["city", "la"], ["date", "the weekend"]]}
+{"text": "any musicals with a good plot? my ex always said no lol", "spans": []}
+{"text": "u think the new comedy hall in edinburgh is worth it?", "spans": [["city", "edinburgh"]]}
+{"text": "tmrw eve: dance show in budapest w the team 🌙", "spans": [["date", "tmrw"], ["city", "budapest"]]}
+{"text": "opera in verona in august?? is it worth it", "spans": [["city", "verona"], ["date", "august"]]}
+{"text": "i need an exhibit for a first date in nola this wknd, nothing weird", "spans": [["city", "nola"], ["date", "this wknd"]]}
+{"text": "pls help, taking my dad to the nutcracker in minneapolis friday", "spans": [["event_name", "the nutcracker"], ["city", "minneapolis"], ["date", "friday"]]}
+{"text": "smth for a family day, the little ones are 3 and 7 pls", "spans": []}
+{"text": "anybody going to the lunar new year parade in sf this year?", "spans": [["event_name", "lunar new year parade"], ["city", "sf"]]}
+{"text": "the book of mormon in toronto sat night, 2 people, going 4 the vibes", "spans": [["event_name", "the book of mormon"], ["city", "toronto"], ["date", "sat night"]]}
+{"text": "standup in melbourne on fri, ngl i want the bo burnham vibe", "spans": [["city", "melbourne"], ["date", "fri"], ["event_name", "bo burnham"]]}
+{"text": "where should we go for a date in istanbul this sat, budget is loose", "spans": [["city", "istanbul"], ["date", "this sat"]]}
+{"text": "food festival w the fam sun in seoul? u know any", "spans": [["date", "sun"], ["city", "seoul"]]}
+{"text": "idk what to do w my coworkers after work, nothing too loud", "spans": []}
+{"text": "is there a kids show in dc tmrw or is it all adult stuff", "spans": [["city", "dc"], ["date", "tmrw"]]}
+{"text": "taste of chicago 2nite??", "spans": [["event_name", "taste of chicago"], ["date", "2nite"]]}
+{"text": "exhibition about space in houston this weekend, nerdy date", "spans": [["city", "houston"], ["date", "this weekend"]]}
+{"text": "opera night in new orleans 2nite", "spans": [["city", "new orleans"], ["date", "2nite"]]}
+{"text": "ok so we r in sf for the weekend, anything w my wife", "spans": [["city", "sf"], ["date", "the weekend"]]}
+{"text": "les mis tix in paris pls, may 3?", "spans": [["event_name", "les mis"], ["city", "paris"], ["date", "may 3"]]}
+{"text": "coworker lunch then a show in la tmrw, wild", "spans": [["city", "la"], ["date", "tmrw"]]}
+{"text": "anything for a theatre date w my partner? 🎭", "spans": []}
+{"text": "kids want a dinosaur exhibit in new york on sat", "spans": [["city", "new york"], ["date", "sat"]]}
+{"text": "a standup in austin for a group of friends, wknd", "spans": [["city", "austin"], ["date", "wknd"]]}
+{"text": "ballet giselle in milan this sat??", "spans": [["event_name", "giselle"], ["city", "milan"], ["date", "this sat"]]}
+{"text": "sunday brunch + a comedy show in london?? my bf is picky lol", "spans": [["date", "sunday"], ["city", "london"]]}
+{"text": "museum in istanbul w my parents tmrw morning", "spans": [["city", "istanbul"], ["date", "tmrw"]]}
+{"text": "dance show w my roommates this thurs in toronto", "spans": [["date", "this thurs"], ["city", "toronto"]]}
+{"text": "pls suggest a theatre show for the 18th in dc, mom is coming", "spans": [["date", "the 18th"], ["city", "dc"]]}
+{"text": "u know what's good in edinburgh 2nite?", "spans": [["city", "edinburgh"], ["date", "2nite"]]}
+{"text": "date ideas that aren't dinner and a movie pls", "spans": []}
+{"text": "mike birbiglia live in dc, is it on sat or sun?", "spans": [["event_name", "mike birbiglia"], ["city", "dc"], ["date", "sat"]]}
+{"text": "big family festival in jakarta sat night 🎉", "spans": [["city", "jakarta"], ["date", "sat night"]]}
+{"text": "the nutcracker tix for mothers day??", "spans": [["event_name", "the nutcracker"], ["date", "mothers day"]]}
+{"text": "oktoberfest type thing in sf this sat, cheap?", "spans": [["event_name", "oktoberfest"], ["city", "sf"], ["date", "this sat"]]}
+{"text": "wicked tmrw in la, 2 tix?? 🎟️", "spans": [["event_name", "wicked"], ["date", "tmrw"], ["city", "la"]]}
+{"text": "is there anything chill in tokyo this month for a solo trip", "spans": [["city", "tokyo"], ["date", "this month"]]}
+{"text": "trying to find a kids science exhibit in sydney on the 10th", "spans": [["city", "sydney"], ["date", "the 10th"]]}
+{"text": "a nice date spot in austin tonight, not a bar pls", "spans": [["city", "austin"], ["date", "tonight"]]}
+{"text": "family comedy in toronto sat, my 8 yr old is obsessed w john mulaney", "spans": [["city", "toronto"], ["date", "sat"], ["event_name", "john mulaney"]]}
+{"text": "lowkey want a cute night out w the bf, somewhere w live music", "spans": []}
+{"text": "frozen musical in lisbon this wknd, the kids r so hyped", "spans": [["event_name", "frozen"], ["city", "lisbon"], ["date", "this wknd"]]}
+{"text": "2 tix to a play in dublin on christmas eve pls", "spans": [["city", "dublin"], ["date", "christmas eve"]]}
+{"text": "rio carnival fri night w my gf 💃", "spans": [["city", "rio"], ["date", "fri night"]]}
+{"text": "anything w monet's garden in paris or tokyo this wknd", "spans": [["event_name", "monet's garden"], ["city", "paris"], ["city", "tokyo"], ["date", "this wknd"]]}
+{"text": "food street fest tmrw in philly, u coming or nah", "spans": [["date", "tmrw"], ["city", "philly"]]}
+{"text": "need a gift idea for a coworker who loves theatre", "spans": []}
+{"text": "1 hr from sf, any kid friendly stuff sunday?", "spans": [["city", "sf"], ["date", "sunday"]]}
+{"text": "taking my partner to the swan lake ballet in moscow on the 14th", "spans": [["event_name", "swan lake"], ["city", "moscow"], ["date", "the 14th"]]}
+{"text": "cheap stuff to do in new york tmrw, we r 3 coworkers 2 sleepy", "spans": [["city", "new york"], ["date", "tmrw"]]}
+{"text": "anyone up for a comedy night in la friday? idk who i wanna bring", "spans": [["city", "la"], ["date", "friday"]]}
+{"text": "any opera tix for 2 in vienna next month pls", "spans": [["city", "vienna"], ["date", "next month"]]}
+{"text": "bored af, anyone wanna go see something fun 🙃", "spans": []}
+{"text": "date night ideas w my gf, she hates escape rooms", "spans": []}
+{"text": "museum date w u in berlin tmrw?", "spans": [["city", "berlin"], ["date", "tmrw"]]}
+{"text": "any hidden gem art spots in my town that r kid friendly", "spans": []}
+{"text": "smth cute for our 1yr anniv? she loves musicals", "spans": []}
+{"text": "exhibition of ancient egypt in cairo this sat", "spans": [["city", "cairo"], ["date", "this sat"]]}
+{"text": "we need a comedy venue rec for a group of 10 friends", "spans": []}
+{"text": "yo sf dance performance, sat w my bro?", "spans": [["city", "sf"], ["date", "sat"]]}
+{"text": "the phantom of the opera in new york next tue", "spans": [["event_name", "phantom of the opera"], ["city", "new york"], ["date", "next tue"]]}
+{"text": "brunch then a museum, planning for my parents, any ideas", "spans": []}
+{"text": "boston or dc this weekend for a comedy show? open to suggestions", "spans": [["city", "boston"], ["city", "dc"], ["date", "this weekend"]]}
+{"text": "theatre people of reddit, what's good for a casual date", "spans": []}
+{"text": "kids day out in singapore on sat? my 2yo loves trains lol", "spans": [["city", "singapore"], ["date", "sat"]]}
+{"text": "food fest on the 4th in chicago??", "spans": [["date", "the 4th"], ["city", "chicago"]]}
+{"text": "hamilton in toronto 2nite", "spans": [["event_name", "hamilton"], ["city", "toronto"], ["date", "2nite"]]}
+{"text": "pls tell me a cute spot for a double date, i'm lowkey nervous", "spans": []}
+{"text": "cats the musical in paris in march?? 2 tix", "spans": [["event_name", "cats"], ["city", "paris"], ["date", "march"]]}
+{"text": "we r a family of 5 looking for stuff to do over the holidays", "spans": []}
+{"text": "pls rec some zen art galleries in kyoto this wknd", "spans": [["city", "kyoto"], ["date", "this wknd"]]}
+{"text": "dinner theatre in la on fri night? pls help", "spans": [["city", "la"], ["date", "fri night"]]}
+{"text": "what are some fun activities for my coworkers and me", "spans": []}
+{"text": "ballet dance in edinburgh tmrw but my bf has no rhythm 😂", "spans": [["city", "edinburgh"], ["date", "tmrw"]]}
+{"text": "comedy in sf, u know any open mics? this sat", "spans": [["city", "sf"], ["date", "this sat"]]}
+{"text": "jazz in new orleans tonight, friends are coming", "spans": [["city", "new orleans"], ["date", "tonight"]]}
+{"text": "suggestions for a cute theatre w my partner? no musicals", "spans": []}
+{"text": "shakespeare play in glasgow this sat, theater nerds unite", "spans": [["city", "glasgow"], ["date", "this sat"]]}
+{"text": "ok family fun in toronto this wknd w 2 kids and my mom", "spans": [["city", "toronto"], ["date", "this wknd"]]}
+{"text": "moulin rouge in paris for our 10th anniv, dec 25", "spans": [["event_name", "moulin rouge"], ["city", "paris"], ["date", "dec 25"]]}
+{"text": "any date ideas that r not a bar or a movie?", "spans": []}
+{"text": "kids theatre fest in nyc on sun, my niece wants to perform", "spans": [["city", "nyc"], ["date", "sun"]]}
+{"text": "carmen in madrid tmrw??", "spans": [["event_name", "carmen"], ["city", "madrid"], ["date", "tmrw"]]}
+{"text": "a laugh riot is all i need rn, any suggestions?", "spans": []}
+{"text": "art walk in portland this sat, sunny?", "spans": [["city", "portland"], ["date", "this sat"]]}
+{"text": "taking my gf to the ballet in vancouver christmas eve", "spans": [["city", "vancouver"], ["date", "christmas eve"]]}
+{"text": "tmrw night in sf: food festival or comedy? ur pick", "spans": [["date", "tmrw"], ["city", "sf"]]}
+{"text": "pls find a kids show in rome, we r there sat", "spans": [["city", "rome"], ["date", "sat"]]}
+{"text": "any cool spots for a casual meetup w coworkers, nothing fancy", "spans": []}
+{"text": "exhibition on dinosaurs for kids in tampa this sun, pls", "spans": [["city", "tampa"], ["date", "this sun"]]}
+{"text": "best standup in cleveland tonight??", "spans": [["city", "cleveland"], ["date", "tonight"]]}
+{"text": "is there a good one-person show in dublin on 12/5?", "spans": [["city", "dublin"], ["date", "12/5"]]}
+{"text": "anything w taste of toronto this wknd for me and the squad", "spans": [["event_name", "taste of toronto"], ["date", "this wknd"]]}
+{"text": "good for a rainy afternoon with the fam? ideas pls", "spans": []}
+{"text": "theatre thing in new york tonight, my bf wants a surprise", "spans": [["city", "new york"], ["date", "tonight"]]}
+{"text": "the lion king in san diego on sat 🦁", "spans": [["event_name", "the lion king"], ["city", "san diego"], ["date", "sat"]]}
+{"text": "comedy in tokyo sat or sun, i'll pay", "spans": [["city", "tokyo"], ["date", "sat"]]}
+{"text": "smth wholesome for my kids and i to do, any ideas", "spans": []}
+{"text": "date night in nola on valentines day?? 💘", "spans": [["city", "nola"], ["date", "valentines day"]]}
+{"text": "fam fun in dc on the weekend w grandma", "spans": [["city", "dc"], ["date", "the weekend"]]}
+{"text": "swan lake in budapest tmrw w my mom, she's 70 🩰", "spans": [["event_name", "swan lake"], ["city", "budapest"], ["date", "tmrw"]]}
+{"text": "giselle in sf this sun? ballet newbie here", "spans": [["event_name", "giselle"], ["city", "sf"], ["date", "this sun"]]}
+{"text": "kids want a musical in toronto, sat maybe", "spans": [["city", "toronto"], ["date", "sat"]]}
+{"text": "crowded spots r a no for me, somewhere calm for a date", "spans": []}
+{"text": "hairspray in la wknd?? or is it too pricey", "spans": [["event_name", "hairspray"], ["city", "la"], ["date", "wknd"]]}
+{"text": "taste of taipei w the crew, sat or sun 🍜", "spans": [["event_name", "taste of taipei"], ["date", "sat"]]}
+{"text": "any museum in dubai tmrw morning", "spans": [["city", "dubai"], ["date", "tmrw"]]}
+{"text": "pls, a funny show w my dad in houston 2nite", "spans": [["city", "houston"], ["date", "2nite"]]}
+{"text": "help me pick a theatre show for a 1st date, i'm nervous lol", "spans": []}
+{"text": "what r the best kid events in nairobi this sat", "spans": [["city", "nairobi"], ["date", "this sat"]]}
+{"text": "come from away tix for fri in new york", "spans": [["event_name", "come from away"], ["date", "fri"], ["city", "new york"]]}
+{"text": "dance show in kraków on new year's eve? wanna go", "spans": [["city", "kraków"], ["date", "new year's eve"]]}
+{"text": "wanna bring my mom out for a fun day, any ideas?", "spans": []}
+{"text": "brisbane comedy fest tmrw?? 😆", "spans": [["city", "brisbane"], ["date", "tmrw"]]}
+{"text": "exhibition on the ocean in sydney on sat", "spans": [["city", "sydney"], ["date", "sat"]]}
+{"text": "kids science fair type stuff in austin this sat 🧪", "spans": [["city", "austin"], ["date", "this sat"]]}
+{"text": "ok so rome or milan for an opera this fall, which?", "spans": [["city", "rome"], ["city", "milan"]]}
+{"text": "my bf w no plans, rec something cool, 2 people", "spans": []}
+{"text": "theater nerd here: got a free tmrw eve, any shows in berlin?", "spans": [["date", "tmrw"], ["city", "berlin"]]}
+{"text": "san francisco kids museum sat please 👶", "spans": [["city", "san francisco"], ["date", "sat"]]}
+{"text": "pls find a show for my parents anniversary in seattle, tues", "spans": [["city", "seattle"], ["date", "tues"]]}
+{"text": "any cool art stuff in mexico city on the 14th?", "spans": [["city", "mexico city"], ["date", "the 14th"]]}
+{"text": "hi! suggestions for a fun group outing w my friends", "spans": []}
+{"text": "kids open-air theatre in cdmx sun, we're 4 kids and 2 adults", "spans": [["city", "cdmx"], ["date", "sun"]]}
+{"text": "2nite? anyone want a comedy show in dc, my treat", "spans": [["date", "2nite"], ["city", "dc"]]}
+{"text": "oktoberfest in toronto or munich this wknd?", "spans": [["event_name", "oktoberfest"], ["city", "toronto"], ["city", "munich"], ["date", "this wknd"]]}
+{"text": "a cozy coffee + play date in portland, sat, w my gf", "spans": [["city", "portland"], ["date", "sat"]]}
+{"text": "any stuff for a coworker's farewell party, nothing dumb", "spans": []}
+{"text": "opera in paris tonight w u?", "spans": [["city", "paris"], ["date", "tonight"]]}
+{"text": "what's on in la on halloween for kids", "spans": [["city", "la"], ["date", "halloween"]]}
+{"text": "theatre in new york for my gf's bday on 9/14", "spans": [["city", "new york"], ["date", "9/14"]]}
+{"text": "kid friendly and not boring, pls, for my 3 nephews", "spans": []}
+{"text": "smorgasburg rec? i'm in nyc tmrw, bringing my roommates", "spans": [["event_name", "smorgasburg"], ["city", "nyc"], ["date", "tmrw"]]}
+{"text": "monet's garden in sf for my mom on mother's day", "spans": [["event_name", "monet's garden"], ["city", "sf"], ["date", "mother's day"]]}
+{"text": "cheap comedy in lisbon, u fancy it on wknd?", "spans": [["city", "lisbon"], ["date", "wknd"]]}
+{"text": "ballet in ankara this month, u up for it?", "spans": [["city", "ankara"], ["date", "this month"]]}
+{"text": "a list of things to do for a bachelorette, fun not wild", "spans": []}
+{"text": "urgh i need a plan for the wknd, gf wants theatre", "spans": [["date", "wknd"]]}
+{"text": "pls rec standup in bangkok this sat, i'm a visitor", "spans": [["city", "bangkok"], ["date", "this sat"]]}
+{"text": "kids want a dino exhibit at the museum in nyc or dc sun", "spans": [["city", "nyc"], ["city", "dc"], ["date", "sun"]]}
+{"text": "smth sweet for a date, i love pastry and jazz 🎷", "spans": []}
+{"text": "date night in hamburg next fri, need suggestions 🙏", "spans": [["city", "hamburg"], ["date", "next fri"]]}
+{"text": "any ballet in la on the 25th? my daughter's 9", "spans": [["city", "la"], ["date", "the 25th"]]}
+{"text": "les mis in toronto on halloween", "spans": [["event_name", "les mis"], ["city", "toronto"], ["date", "halloween"]]}
+{"text": "what should i do w my coworkers in nairobi on sat afternoon", "spans": [["city", "nairobi"], ["date", "sat afternoon"]]}
+{"text": "bored in singapore, need something for a rainy tmrw", "spans": [["city", "singapore"], ["date", "tmrw"]]}
+{"text": "3 friends + 1 bf, comedy in austin tonight, go", "spans": [["city", "austin"], ["date", "tonight"]]}
+{"text": "idk what to do, any cozy plans for two people?", "spans": []}
+{"text": "night at the opera in new york, weekday ok?", "spans": [["city", "new york"]]}
+{"text": "is the taste of chicago this wknd or next?", "spans": [["event_name", "taste of chicago"], ["date", "this wknd"]]}
+{"text": "any laughs anywhere near me, no cap", "spans": []}
+{"text": "let's go to an exhibit in dc, my gf has an exam so.. sat", "spans": [["city", "dc"], ["date", "sat"]]}
