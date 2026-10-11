@@ -31,7 +31,7 @@ DEFAULT_LOG_PATH = ROOT / "data" / "user_requests" / "requests.jsonl"
 LOG_LOCK = threading.Lock()
 MAX_TEXT_CHARACTERS = 1000
 MAX_BODY_BYTES = 16_384
-MODEL_NAMES = {"dictionary baseline": "Dictionary", "MultinomialNB": "Naive Bayes",
+MODEL_NAMES = {"dictionary baseline": "Parser", "MultinomialNB": "Naive Bayes",
                "LogisticRegression": "Logistic Regression", "LinearSVC": "Linear SVM"}
 # Distillation chart: (heading, short name, [(results key, row name)]). A key ending in _kd stands for all
 # <key><alpha> runs; the one with the best dev F1 is shown, so alpha is chosen on dev like every other setting.
@@ -241,21 +241,24 @@ def build_results(root=ROOT, logged=None):
     return out
 
 
-def compare_text(text, use_jev, jev, models, notes, lock):
-    """Every model on text. Jev is asked at most once here and its answer is shared by all rows."""
+def compare_text(text, use_jev, jev, models, notes, lock, vocabulary=frozenset()):
+    """Every model on text, plus the words no model saw in training. Jev is asked at most once here and its answer
+    is shared by all rows."""
     jev_result = extract.jev_check(text, jev if use_jev else None)
     with lock:
         rows = extract.compare(text, models, jev_result)
-    return {"text": text, "jev": jev_result, "models": rows, "notes": notes}
+    return {"text": text, "jev": jev_result, "models": rows, "notes": notes,
+            "new_words": extract.new_words(text, vocabulary) if vocabulary else []}
 
 
 class DemoServer(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = False
 
-    def __init__(self, port, models, notes, jev, log_path):
+    def __init__(self, port, models, notes, jev, log_path, vocabulary=frozenset()):
         super().__init__(("127.0.0.1", port), Handler)
         self.models, self.notes, self.jev, self.log_path = models, notes, jev, log_path
+        self.vocabulary = vocabulary
         self.gpu_lock = threading.Lock()
         # Counted once at start; each saved request adds one, so GET /api/results never rereads the log.
         self.logged = count_lines(Path(log_path)) if log_path is not None and Path(log_path).exists() else 0
@@ -319,7 +322,7 @@ class Handler(BaseHTTPRequestHandler):
         except RequestError as error:
             return self._json(error.status, {"error": error.message})
         result = compare_text(text, use_jev, self.server.jev, self.server.models, self.server.notes,
-                              self.server.gpu_lock)
+                              self.server.gpu_lock, self.server.vocabulary)
         self.server.log(build_log_record(result, datetime.now(timezone.utc)))
         self._json(200, result)
 
@@ -349,7 +352,8 @@ def main(argv=None):
     for note in notes:
         print(note, flush=True)
     jev = None if args.no_jev else JevClient()
-    server = DemoServer(args.port, models, notes, jev, args.log_path if args.log else None)
+    server = DemoServer(args.port, models, notes, jev, args.log_path if args.log else None,
+                        extract.training_vocabulary())
     print(f"ready on {server.origin}", flush=True)
     try:
         server.serve_forever()

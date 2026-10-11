@@ -41,6 +41,16 @@
   .ms { margin-left: auto; color: #52514e; font-size: 0.9rem; }
   .request { font-size: 1.15rem; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; margin: 8px 0; }
   .summary { font-size: 1rem; }
+  .section-title { font-weight: 700; font-size: 1.1rem; margin: 0 0 6px; }
+  .new-words { margin: 0 0 8px; }
+  .new-words b { background: #fff3c4; padding: 0 4px; border-radius: 4px; }
+  .jev-card { border: 1px dashed #b9b9b4; border-radius: 10px; padding: 14px; margin-top: 16px; }
+  .filled { border: 1px solid #b9b9b4; border-radius: 10px; padding: 14px; margin-top: 16px; }
+  .filled-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 10px 0; }
+  @media (max-width: 900px) { .filled-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .slot-label { color: #52514e; font-size: 0.85rem; }
+  .slot-value { font-size: 1.1rem; font-weight: 700; }
+  .slot-value.missing { color: #b8b7b2; font-weight: 400; }
   mark { padding: 1px 3px; border-radius: 4px; color: #0b0b0b; }
   mark.city { background: #dbe8f9; box-shadow: inset 0 -3px #2a78d6; }
   mark.date { background: #d3f1e4; box-shadow: inset 0 -3px #1baf7a; }
@@ -93,12 +103,16 @@
       <div id="examples" class="examples"></div>
     </div>
     <div class="card" id="results" hidden>
+      <p class="section-title">Slot tagging: which model finds the slots?</p>
+      <p id="new-words" class="new-words"></p>
       <p class="legend-line">
         <span class="legend-item"><i class="swatch city"></i>city</span>
         <span class="legend-item"><i class="swatch date"></i>date</span>
         <span class="legend-item"><i class="swatch event_name"></i>event</span>
       </p>
       <div id="rows"></div>
+      <div id="jev"></div>
+      <div id="filled"></div>
       <p id="assistant" class="assistant"></p>
       <p id="notes" class="muted"></p>
       <p id="error" class="error"></p>
@@ -114,12 +128,15 @@
   </section>
 </main>
 <script>
+// The first four contain words that never appear in the training data; in the fifth only BERTweet_E finds the
+// lowercase name; the last one shows what Jev adds.
 const EXAMPLES = [
-  "im bored, find me a event for tommorrow that so i can go with my girlfriend",
-  "wanna catch the lakers game w my dad tmrw",
-  "is lizzo playing anywhere near sf soon? need a ticket just for me",
-  "my kids love musicals, whats on in NYC next sat",
-  "taylor swift in chi-town this wknd??"
+  "tix for chappell roan in austin tmmrw",
+  "is goose playing in denver this satuday",
+  "can i see laufey in lisbon on the 3rd",
+  "whats on in reykjavik next thrusday",
+  "taylor swift in chi-town this wknd??",
+  "im bored, find me a event for tommorrow that so i can go with my girlfriend"
 ];
 const FOLLOW_UPS = {
   ask_city: "Ask for the city",
@@ -136,7 +153,7 @@ const SURFACE = "#fcfcfb";
 const SET_D = "D: SGD+MASSIVE+typos";
 const SET_E = "E: SGD+MASSIVE+typos+synthetic";
 const SETS_AE = ["A: SGD", "B: SGD+MASSIVE", "C: SGD+typos", SET_D, SET_E];
-const CLASSIC_NAMES = ["Dictionary", "Naive Bayes", "Logistic Regression", "Linear SVM"];
+const CLASSIC_NAMES = ["Parser", "Naive Bayes", "Logistic Regression", "Linear SVM"];
 const $ = (id) => document.getElementById(id);
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -203,26 +220,65 @@ function modelRow(model, text) {
   return card;
 }
 
-function jevRow(jev) {
-  const card = el("div", "model-row");
+// Jev is not a slot tagger, so it gets its own box: it answers what the words do not say.
+function jevCard(jev) {
+  const card = el("div", "jev-card");
   const head = el("div", "model-head");
-  head.append(el("span", "model-name", "Jev"), el("span", "family", "paid call"));
+  head.append(el("span", "model-name", "Jev: what the words don't say"), el("span", "family", "paid call"));
   const line = jev.status === "ok"
-    ? "Event type: " + jev.event_type + " · Tickets: " + jev.tickets + " · Status: ok"
-    : "Status: " + jev.status + (jev.message ? " · " + jev.message : "");
+    ? "Event type: " + jev.event_type + " · Tickets: " + jev.tickets.replace("_", "–")
+    : jev.status === "skipped"
+      ? "Not asked. Tick “Ask Jev” to get the event type and the number of tickets."
+      : "Status: " + jev.status + (jev.message ? " · " + jev.message : "");
   card.append(head, el("div", "summary", line));
   return card;
 }
 
+// The final result: slots from the trained model, event type and tickets from Jev when it ran.
+function filledCard(model, jev) {
+  const card = el("div", "filled");
+  card.append(el("div", "model-name", "Filled slots"),
+              el("div", "slot-label", "from " + model.name + (jev.status === "ok" ? " and Jev" : "")));
+  const grid = el("div", "filled-grid");
+  const jevValue = (key) => (jev.status !== "ok" ? null : jev[key] === "unknown" ? "-" : jev[key].replace("_", "–"));
+  const items = [["City", cell(model.slots.city)], ["Date", cell(model.slots.date)],
+                 ["Event", cell(model.slots.event_name)], ["Type (Jev)", jevValue("event_type")],
+                 ["Tickets (Jev)", jevValue("tickets")]];
+  for (const [label, value] of items) {
+    const box = el("div");
+    const shown = value === null ? "not asked" : value === "-" ? "missing" : value;
+    box.append(el("div", "slot-label", label), el("div", shown === value ? "slot-value" : "slot-value missing", shown));
+    grid.append(box);
+  }
+  card.append(grid);
+  return card;
+}
+
+// A parser can only find words it has seen; the models that generalise also tag the words listed here.
+function showNewWords(words) {
+  const line = $("new-words");
+  line.textContent = "";
+  if (!words.length) {
+    line.append("Every word of this request appears in the training data.");
+    return;
+  }
+  line.append("Words no model saw in training: ");
+  words.forEach((word, i) => line.append(i ? ", " : "", el("b", null, word)));
+}
+
 function showCompare(data) {
+  showNewWords(data.new_words || []);
   const rows = $("rows");
   rows.textContent = "";
   for (const model of data.models) rows.append(modelRow(model, data.text));
-  rows.append(jevRow(data.jev));
+  $("jev").textContent = "";
+  $("jev").append(jevCard(data.jev));
   // The last transformer row is the strongest model; its slots drive the follow-up questions.
   const bertweet = data.models.find((model) => model.key === "bertweet_E")
     || data.models.find((model) => model.key === "bertweet");
   const questions = bertweet ? bertweet.follow_ups.map((name) => FOLLOW_UPS[name]) : [];
+  $("filled").textContent = "";
+  if (bertweet) $("filled").append(filledCard(bertweet, data.jev));
   $("assistant").textContent = "Assistant would ask: " + (questions.join("; ") || "None, ready to search");
   $("notes").textContent = data.notes.join(" · ");
   $("results").hidden = false;
@@ -234,6 +290,8 @@ async function compare() {
   $("error").textContent = "";
   $("results").hidden = false;
   $("rows").textContent = "Running every model...";
+  $("jev").textContent = "";
+  $("filled").textContent = "";
   $("assistant").textContent = "";
   $("notes").textContent = "";
   try {
@@ -648,7 +706,8 @@ function drawLine(section, points) {
 function resultsNote(data) {
   const seed = data.seed !== undefined ? "Single run, seed " + data.seed + ". " : "Single run. ";
   const messy = data.messy_test_rows !== undefined ? "Messy test = " + fmt(data.messy_test_rows) + " " : "Messy test ";
-  return seed + messy + "AI-drafted, hand-checked requests; small differences are within noise.";
+  return seed + messy + "AI-drafted, hand-checked requests; small differences are within noise. " +
+    "Set D = SGD + MASSIVE + typo copies; set E (BERTweet_E) = set D + AI-written requests.";
 }
 
 function cleanVsMessyCaption(rows) {

@@ -41,7 +41,7 @@ test, so a gain on the messy test alone could come from shared style. The Codex 
 
 ## Methods
 
-- **Dictionary baseline**: tags any span it saw in training (longest match).
+- **Parser** (dictionary baseline): tags any span it saw in training (longest match).
 - **Naive Bayes, Logistic Regression, Linear SVM**: one prediction per word from hand-made
   features (the word, its prefixes and suffixes, its shape, neighbouring words).
 - **BERT, RoBERTa, BERTweet**: fine-tuned pre-trained transformers (`bert-base-uncased`,
@@ -67,7 +67,7 @@ Span F1. Single run with seed 42.
 
 | Model | Training set | Chosen on dev | SGD test | MASSIVE test | Messy test | Codex test |
 |---|---|---|---|---|---|---|
-| Dictionary | D | longest match | 0.72 | 0.76 | 0.58 | 0.58 |
+| Parser | D | longest match | 0.72 | 0.76 | 0.58 | 0.58 |
 | Naive Bayes | D | alpha = 1.0 | 0.66 | 0.58 | 0.55 | 0.59 |
 | Logistic Regression | D | C = 10 | 0.88 | 0.84 | 0.62 | 0.61 |
 | Linear SVM | D | C = 0.1 | 0.87 | 0.84 | 0.67 | 0.66 |
@@ -192,7 +192,7 @@ Full numbers, per-slot scores and the learning curve are in `results/`.
 | `quantize.py` | Stores trained transformers as 16-bit floats and 8-bit integers and rescores them; writes `results/quantized_results.json` |
 | `jev_soft_labels.py` | Asks Jev for the tag probabilities of every word (paid; capped with `--max-calls`) and scores them against BERTweet |
 | `extract.py` | Loads the trained models, tags a request, and lists the follow-up questions an assistant would ask |
-| `app.py`, `demo.html` | Local demo: compares all models side by side on any request, and shows the results as charts |
+| `app.py`, `demo.html` | Local demo: runs the parser, the Linear SVM, BERTweet_E and its 6-layer version (all trained on set E) side by side on any request, marks the words no model saw in training, shows the filled slots, Jev's answer and the follow-up questions, and shows all results as charts |
 | `data/raw/` | Downloaded data with its licence files |
 | `data/clean/` | BIO-tagged training, dev and test data, plus statistics |
 | `data/messy/` | The 50-request messy test set |

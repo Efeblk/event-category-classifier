@@ -4,7 +4,7 @@ Five training sets, labelled A to E in the output: A SGD, B SGD+MASSIVE, C SGD+t
 E D plus the synthetic LLM-written rows (no typo copies of them).
 Each model is tuned on the combined SGD + MASSIVE dev set, then scored once on SGD test, MASSIVE test, the messy
 test set and the Codex test set. The messy and Codex sets are never used for training or tuning. The Linear SVM
-learning curve is trained on SGD only, tuned on SGD dev. Set D's models are saved to artifacts/classic/ for
+learning curve is trained on SGD only, tuned on SGD dev. Set E's models are saved to artifacts/classic/ for
 extract.py. Writes the summary to results/classic_results.json and the per-row messy predictions to
 reports/classic_messy_predictions.csv.
 """
@@ -163,7 +163,7 @@ def run_training_set(label, rows, dev, tests, test_feats):
 
 
 def save_models(save_dir, winners, dictionary):
-    """Write each set-D model as {model, setting, vectorizer, estimator} and the dictionary baseline as {tagger}."""
+    """Write each set-E model as {model, setting, vectorizer, estimator} and the dictionary baseline as {tagger}."""
     save_dir.mkdir(parents=True, exist_ok=True)
     for model_name, best in winners.items():
         joblib.dump({"model": model_name, "setting": best["setting"], "vectorizer": best["vec"],
@@ -221,7 +221,7 @@ def print_table(results):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--save-dir", type=Path, default=ROOT / "artifacts" / "classic",
-                        help="where the set-D models are saved")
+                        help="where the set-E models are saved")
     args = parser.parse_args()
     started = time.perf_counter()
 
@@ -229,15 +229,16 @@ def main():
     dev = (dev_rows, featurize(dev_rows))
     test_feats = {name: featurize(rows) for name, rows in tests.items()}
 
-    results, predictions, set_d = [], [], None
+    results, predictions, saved = [], [], None
     for label, rows in training_sets().items():
         set_results, set_predictions, winners, tagger = run_training_set(label, rows, dev, tests, test_feats)
         results += set_results
         predictions += set_predictions
-        if label == SET_D_LABEL:
-            set_d = (winners, tagger)
-    save_models(args.save_dir, *set_d)
-    print(f"saved set-D models to {args.save_dir}", flush=True)
+        # The demo compares these with BERTweet trained on set E, so all models learn from the same data.
+        if label == SET_E_LABEL:
+            saved = (winners, tagger)
+    save_models(args.save_dir, *saved)
+    print(f"saved set-E models to {args.save_dir}", flush=True)
 
     curve_setting, curve = run_learning_curve(load("train"), load("dev"), tests["SGD test"])
     seconds = time.perf_counter() - started
