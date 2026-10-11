@@ -1,0 +1,119 @@
+[
+  {
+    "model": "bertweet_E",
+    "precision": "float32",
+    "parameters": 134314759,
+    "megabytes": 537.340977,
+    "f1": {
+      "dev": 0.9662162162162162,
+      "SGD test": 0.9822834645669292,
+      "MASSIVE test": 0.9063616869192279,
+      "messy": 0.9502762430939227,
+      "codex": 0.9523809523809523
+    }
+  },
+  {
+    "model": "bertweet_E",
+    "precision": "float16",
+    "parameters": 134314759,
+    "megabytes": 268.711473,
+    "f1": {
+      "dev": 0.9662162162162162,
+      "SGD test": 0.9822834645669292,
+      "MASSIVE test": 0.9063616869192279,
+      "messy": 0.9502762430939227,
+      "codex": 0.9523809523809523
+    }
+  },
+  {
+    "model": "bertweet_E",
+    "precision": "int8",
+    "parameters": 134314759,
+    "megabytes": 136.696157,
+    "f1": {
+      "dev": 0.9435935748972731,
+      "SGD test": 0.9590931493346476,
+      "MASSIVE test": 0.8665730337078652,
+      "messy": 0.8826815642458101,
+      "codex": 0.9044117647058824
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7",
+    "precision": "float32",
+    "parameters": 91787527,
+    "megabytes": 367.192369,
+    "f1": {
+      "dev": 0.9640179910044978,
+      "SGD test": 0.9808353808353808,
+      "MASSIVE test": 0.9022127052105638,
+      "messy": 0.945054945054945,
+      "codex": 0.9527272727272728
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7",
+    "precision": "float16",
+    "parameters": 91787527,
+    "megabytes": 183.617329,
+    "f1": {
+      "dev": 0.9640179910044978,
+      "SGD test": 0.9808353808353808,
+      "MASSIVE test": 0.9022127052105638,
+      "messy": 0.945054945054945,
+      "codex": 0.9527272727272728
+    }
+  },
+  {
+    "model": "bertweet_6L_E_kd0.7",
+    "precision": "int8",
+    "parameters": 91787527,
+    "megabytes": 93.240189,
+    "f1": {
+      "dev": 0.9544256120527308,
+      "SGD test": 0.9621249385145106,
+      "MASSIVE test": 0.8922852983988355,
+      "messy": 0.9162011173184357,
+      "codex": 0.8921933085501859
+    }
+  },
+  {
+    "model": "bertweet_4L_bottom_E_kd0.3",
+    "precision": "float32",
+    "parameters": 77611783,
+    "megabytes": 310.476238,
+    "f1": {
+      "dev": 0.9651293588301463,
+      "SGD test": 0.9623839765510503,
+      "MASSIVE test": 0.8972895863052781,
+      "messy": 0.898876404494382,
+      "codex": 0.9411764705882353
+    }
+  },
+  {
+    "model": "bertweet_4L_bottom_E_kd0.3",
+    "precision": "float16",
+    "parameters": 77611783,
+    "megabytes": 155.252686,
+    "f1": {
+      "dev": 0.9651293588301463,
+      "SGD test": 0.9623839765510503,
+      "MASSIVE test": 0.8972895863052781,
+      "messy": 0.898876404494382,
+      "codex": 0.9411764705882353
+    }
+  },
+  {
+    "model": "bertweet_4L_bottom_E_kd0.3",
+    "precision": "int8",
+    "parameters": 77611783,
+    "megabytes": 78.754909,
+    "f1": {
+      "dev": 0.955871353777113,
+      "SGD test": 0.9544341009309161,
+      "MASSIVE test": 0.8850820842255532,
+      "messy": 0.8715083798882681,
+      "codex": 0.9191176470588235
+    }
+  }
+]

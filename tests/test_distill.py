@@ -1,4 +1,7 @@
-"""Tests for the distillation loss in train_bert.py. Skipped when torch is not installed (CI uses the CPU lock file)."""
+"""Tests for the distillation loss and layer shrinking in train_bert.py.
+
+Skipped when torch is not installed (CI uses the CPU lock file).
+"""
 
 import importlib.util
 import sys
@@ -41,6 +44,20 @@ class DistillLossTest(unittest.TestCase):
         soft[..., 0] = 1.0
         got = self.loss(self.logits, self.labels, soft, self.has_soft, alpha=0.0)
         self.assertGreater(got.item(), 0.0)
+
+
+@unittest.skipUnless(HAS_TORCH, "needs torch and transformers")
+class KeepLayersTest(unittest.TestCase):
+    def test_keeps_the_chosen_layers_in_order(self):
+        from transformers import BertConfig, BertForTokenClassification
+
+        from train_bert import keep_layers
+        model = BertForTokenClassification(BertConfig(vocab_size=50, hidden_size=16, num_hidden_layers=4,
+                                                      num_attention_heads=2, intermediate_size=32, num_labels=7))
+        layers = list(model.base_model.encoder.layer)
+        keep_layers(model, [0, 2])
+        self.assertEqual(list(model.base_model.encoder.layer), [layers[0], layers[2]])
+        self.assertEqual(model.config.num_hidden_layers, 2)
 
 
 if __name__ == "__main__":

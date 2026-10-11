@@ -550,6 +550,17 @@ function distillationCaption(groups) {
     ". α is chosen on dev; differences of about 0.02 are within noise.";
 }
 
+function shrinkingCaption(groups) {
+  const full = groups[0].rows[0];
+  const rows = groups.flatMap((group) => group.rows.map((row) => ({ ...row, heading: group.heading })));
+  // The smallest version that keeps messy F1 within 0.01 of the full model.
+  const close = rows.filter((r) => r.messy_f1 >= full.messy_f1 - 0.01);
+  const small = close.reduce((a, b) => (b.megabytes < a.megabytes ? b : a));
+  return small.heading + " stored as " + small.name + " keeps messy F1 at " + f2(small.messy_f1) + " (full model " +
+    f2(full.messy_f1) + ", " + Math.round(full.megabytes) + " MB): " + (full.megabytes / small.megabytes).toFixed(1) +
+    "× smaller. 8-bit makes files smaller still but costs accuracy.";
+}
+
 // Learning curve on a 0.80 to 1.00 test F1 axis; points are {fraction, value, sentences, label}.
 function drawLine(section, points) {
   const W = 1000, H = 340, L = 90, R = 40, T = 34, B = 64;
@@ -669,6 +680,16 @@ function renderResults(data) {
   if (groups.length) {
     const five = chartSection("Distillation: learning from a teacher's soft labels", distillationCaption(groups));
     drawDots(five, groups, [
+      { name: "Dev (clean)", color: SERIES_COLORS[0], key: "dev_f1" },
+      { name: "Messy test", color: SERIES_COLORS[1], key: "messy_f1" },
+      { name: "Codex test", color: SERIES_COLORS[2], key: "codex_f1" }
+    ], 0.8);
+  }
+
+  const shrink = data.shrinking || [];
+  if (shrink.length) {
+    const six = chartSection("Shrinking BERTweet: fewer layers, smaller numbers", shrinkingCaption(shrink));
+    drawDots(six, shrink, [
       { name: "Dev (clean)", color: SERIES_COLORS[0], key: "dev_f1" },
       { name: "Messy test", color: SERIES_COLORS[1], key: "messy_f1" },
       { name: "Codex test", color: SERIES_COLORS[2], key: "codex_f1" }

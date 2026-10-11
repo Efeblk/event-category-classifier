@@ -245,6 +245,20 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual((soft["soft"], soft["messy_f1"], soft["dev_f1"]), (True, 0.70, 0.96))
         self.assertTrue(soft["name"].endswith("α 0.3"))
 
+    def test_shrinking_groups_precisions_by_model(self):
+        def run(model, precision, mb, messy):
+            return {"model": model, "precision": precision, "parameters": 1, "megabytes": mb,
+                    "f1": {"dev": 0.9, "messy": messy, "codex": 0.8}}
+        with tempfile.TemporaryDirectory() as tmp:
+            write_json(Path(tmp) / "results" / "quantized_results.json",
+                       [run("bertweet_6L_E_kd0.7", "float32", 367.2, 0.95),
+                        run("bertweet_6L_E_kd0.7", "int8", 93.2, 0.9), run("other_model", "float16", 1.0, 0.5)])
+            groups = app.build_results(Path(tmp), logged=None)["shrinking"]
+
+        self.assertEqual([g["heading"] for g in groups], ["BERTweet, 6 layers"])
+        self.assertEqual([r["name"] for r in groups[0]["rows"]], ["32-bit, 367 MB", "8-bit, 93 MB"])
+        self.assertEqual(groups[0]["rows"][1]["messy_f1"], 0.9)
+
     def test_request_count_is_left_out_when_logging_is_off(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_json(Path(tmp) / "results" / "classic_results.json", CLASSIC_RESULTS)

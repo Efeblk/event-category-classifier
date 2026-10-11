@@ -31,8 +31,8 @@ MAX_TEXT_CHARACTERS = 1000
 MAX_BODY_BYTES = 16_384
 MODEL_NAMES = {"dictionary baseline": "Dictionary", "MultinomialNB": "Naive Bayes",
                "LogisticRegression": "Logistic Regression", "LinearSVC": "Linear SVM"}
-# Distillation chart: (heading, short name, [(results key, row name)]). A key ending in _kd stands for all <key><alpha> runs; the
-# one with the best dev F1 is shown, so alpha is chosen on dev like every other setting.
+# Distillation chart: (heading, short name, [(results key, row name)]). A key ending in _kd stands for all
+# <key><alpha> runs; the one with the best dev F1 is shown, so alpha is chosen on dev like every other setting.
 DISTILLATION = (
     ("Same size: BERTweet learns from RoBERTa-large", "BERTweet", (
         ("roberta_large_E", "RoBERTa-large (teacher, 355M)"),
@@ -123,6 +123,12 @@ def count_lines(path):
     return sum(1 for line in path.read_text(encoding="utf-8").split("\n") if line.strip())
 
 
+# Shrinking chart: names for the models in results/quantized_results.json, in the order they are shown.
+SHRINK_NAMES = {"bertweet_E": "BERTweet, all 12 layers", "bertweet_6L_E_kd0.7": "BERTweet, 6 layers",
+                "bertweet_4L_bottom_E_kd0.3": "BERTweet, bottom 4 layers"}
+PRECISION_NAMES = {"float32": "32-bit", "float16": "16-bit", "int8": "8-bit"}
+
+
 def f1_summary(scores):
     """SGD, MASSIVE, messy and Codex F1 plus the messy per-slot F1 from one set of span scores."""
     return {"sgd_f1": scores["SGD test"]["f1"], "massive_f1": scores["MASSIVE test"]["f1"],
@@ -151,6 +157,19 @@ def build_distillation(results_dir):
                               "dev_f1": run["dev_f1_chosen"], **f1_summary(run["test"])})
         if found:
             groups.append({"heading": heading, "short": short, "rows": found})
+    return groups
+
+
+def build_shrinking(results_dir):
+    """Groups of rows (one per stored precision) for the shrinking chart, from quantized_results.json."""
+    runs = read_json(results_dir / "quantized_results.json") or []
+    groups = []
+    for key, heading in SHRINK_NAMES.items():
+        rows = [{"name": f"{PRECISION_NAMES[r['precision']]}, {r['megabytes']:.0f} MB", "megabytes": r["megabytes"],
+                 "dev_f1": r["f1"]["dev"], "messy_f1": r["f1"]["messy"], "codex_f1": r["f1"]["codex"]}
+                for r in runs if r["model"] == key]
+        if rows:
+            groups.append({"heading": heading, "rows": rows})
     return groups
 
 
@@ -193,6 +212,9 @@ def build_results(root=ROOT, logged=None):
     distillation = build_distillation(results_dir)
     if distillation:
         out["distillation"] = distillation
+    shrinking = build_shrinking(results_dir)
+    if shrinking:
+        out["shrinking"] = shrinking
     return out
 
 

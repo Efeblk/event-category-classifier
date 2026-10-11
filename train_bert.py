@@ -17,6 +17,9 @@ Distillation: --teacher artifacts/<dir> runs that trained model over the trainin
 probabilities for each word (temperature T = 2). The student then learns from both the gold tags and those soft labels:
 loss = alpha * cross-entropy(gold) + (1 - alpha) * T^2 * KL(teacher || student). Soft labels are per word, so the
 teacher may use a different tokenizer. The output names get a _kd<alpha> suffix.
+
+Shrinking: --init-from artifacts/<dir> --keep-layers 0,3,6,9 starts from a trained model (its tokenizer comes from
+--model) and keeps only the listed transformer layers before training.
 """
 
 import argparse
@@ -126,6 +129,13 @@ def distill_loss(logits, labels, soft, has_soft, alpha, temperature=TEMPERATURE)
     return alpha * hard + (1 - alpha) * kl
 
 
+def keep_layers(model, keep):
+    """Shrink the encoder in place to the transformer layers with the given 0-based indexes, in order."""
+    layers = model.base_model.encoder.layer
+    model.base_model.encoder.layer = torch.nn.ModuleList([layers[i] for i in keep])
+    model.config.num_hidden_layers = len(keep)
+
+
 @torch.no_grad()
 def soft_labels(teacher_dir, rows):
     """The teacher's per-word probabilities at temperature T for every row (None for words it cut off)."""
@@ -219,6 +229,8 @@ def main():
     parser.add_argument("--alpha", type=float, default=0.5, help="weight of the gold-label loss when distilling")
     parser.add_argument("--tag", help="output name instead of the one derived from --model")
     parser.add_argument("--epochs", type=int, default=EPOCHS, help=f"training epochs (default {EPOCHS})")
+    parser.add_argument("--init-from", type=Path, help="start from this trained model directory instead of --model")
+    parser.add_argument("--keep-layers", help="comma-separated 0-based layer indexes to keep, e.g. 0,3,6,9")
     args = parser.parse_args()
     model_id = args.model
     name = model_id.split("/")[-1].lower()
@@ -240,7 +252,10 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     pad_id = tokenizer.pad_token_id
     model = AutoModelForTokenClassification.from_pretrained(
-        model_id, num_labels=len(LABELS), id2label=dict(enumerate(LABELS)), label2id=LABEL_ID).cuda()
+        args.init_from or model_id, num_labels=len(LABELS), id2label=dict(enumerate(LABELS)), label2id=LABEL_ID)
+    if args.keep_layers:
+        keep_layers(model, [int(i) for i in args.keep_layers.split(",")])
+    model.cuda()
     train_ex, dev_ex = encode(tokenizer, train_rows), encode(tokenizer, dev_rows)
     if args.teacher:
         for e, soft in zip(train_ex, soft_labels(args.teacher, train_rows)):
@@ -269,6 +284,8 @@ def main():
                             "warmup": WARMUP, "max_len": MAX_LEN, "grad_clip": 1.0, "precision": "bf16 autocast"},
         "distillation": ({"teacher": args.teacher.name, "alpha": args.alpha, "temperature": TEMPERATURE}
                          if args.teacher else None),
+        "init_from": args.init_from.name if args.init_from else None, "kept_layers": args.keep_layers,
+        "parameters": sum(p.numel() for p in model.parameters()),
         "train_sentences": len(train_rows), "dev_sentences": len(dev_rows),
         "epochs": history, "chosen_epoch": chosen, "dev_f1_chosen": history[chosen - 1]["dev_f1"],
         "test": scores, "train_seconds": train_seconds,
