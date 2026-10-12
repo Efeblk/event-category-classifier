@@ -212,6 +212,31 @@ def span_scores(gold_list, pred_list):
     }
 
 
+def span_counts(gold_list, pred_list):
+    """Exact-span true positives, false positives and false negatives of each sentence, as an (n, 3) array."""
+    rows = []
+    for gold_tags, pred_tags in zip(gold_list, pred_list):
+        gold, pred = spans(gold_tags), spans(pred_tags)
+        rows.append((len(gold & pred), len(pred - gold), len(gold - pred)))
+    return np.array(rows, dtype=float).reshape(-1, 3)
+
+
+def bootstrap_f1(gold_list, pred_list, base_list=None, rounds=1000, seed=0):
+    """95% bootstrap interval of micro span F1: draw the test sentences again with replacement, `rounds` times, and
+    keep the middle 95% of the F1 scores. With base_list, the interval is of F1(pred) - F1(base) on the same draws
+    (paired). Returns (low, high)."""
+    def f1(counts):
+        tp, fp, fn = counts.sum(axis=1).T
+        return np.divide(2 * tp, 2 * tp + fp + fn, out=np.zeros_like(tp), where=2 * tp + fp + fn > 0)
+
+    picks = np.random.default_rng(seed).integers(0, len(gold_list), size=(rounds, len(gold_list)))
+    scores = f1(span_counts(gold_list, pred_list)[picks])
+    if base_list is not None:
+        scores = scores - f1(span_counts(gold_list, base_list)[picks])
+    low, high = np.percentile(scores, [2.5, 97.5])
+    return float(low), float(high)
+
+
 def to_int32(X):
     """LinearSVC rejects int64 sparse indices, which DictVectorizer produces."""
     X = X.tocsr()

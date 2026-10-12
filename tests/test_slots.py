@@ -9,8 +9,9 @@ import unittest
 
 from sklearn.svm import LinearSVC
 
-from slots import (DictionaryTagger, add_typos, bio_tags, clean_split, dedupe, drop_leaks, featurize,
-                   fit_vectorizer, messy_copy, predict, repair_bio, slot_counts, span_scores, spans, token_features)
+from slots import (DictionaryTagger, add_typos, bio_tags, bootstrap_f1, clean_split, dedupe, drop_leaks, featurize,
+                   fit_vectorizer, messy_copy, predict, repair_bio, slot_counts, span_counts, span_scores, spans,
+                   token_features)
 
 
 class BioTagsTest(unittest.TestCase):
@@ -68,6 +69,28 @@ class SpanScoresTest(unittest.TestCase):
         self.assertEqual(scores["f1"], 0.0)
         self.assertEqual(scores["slots"]["city"]["recall"], 0.0)
         self.assertEqual(scores["slots"]["date"]["precision"], 0.0)
+
+
+class BootstrapTest(unittest.TestCase):
+    gold = [["B-city"], ["B-date"], ["O"], ["B-event_name", "I-event_name"]]
+
+    def test_perfect_predictions_give_a_point_interval(self):
+        self.assertEqual(bootstrap_f1(self.gold, self.gold, rounds=200), (1.0, 1.0))
+
+    def test_interval_contains_the_full_score(self):
+        pred = [["B-city"], ["O"], ["O"], ["B-event_name", "I-event_name"]]
+        low, high = bootstrap_f1(self.gold, pred, rounds=500)
+        self.assertLessEqual(low, span_scores(self.gold, pred)["f1"])
+        self.assertGreaterEqual(high, span_scores(self.gold, pred)["f1"])
+        self.assertLess(low, high)
+
+    def test_paired_difference_with_itself_is_zero(self):
+        pred = [["B-city"], ["O"], ["O"], ["O", "O"]]
+        self.assertEqual(bootstrap_f1(self.gold, pred, base_list=pred, rounds=200), (0.0, 0.0))
+
+    def test_span_counts_are_per_sentence(self):
+        pred = [["B-date"], ["B-date"], ["O"], ["O", "O"]]
+        self.assertEqual(span_counts(self.gold, pred).tolist(), [[0, 1, 1], [1, 0, 0], [0, 0, 0], [0, 0, 1]])
 
 
 class AddTyposTest(unittest.TestCase):
