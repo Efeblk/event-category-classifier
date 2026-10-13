@@ -11,7 +11,7 @@ from sklearn.svm import LinearSVC
 
 from slots import (DictionaryTagger, add_typos, bio_tags, bootstrap_f1, clean_split, dedupe, drop_leaks, featurize,
                    fit_vectorizer, messy_copy, predict, repair_bio, slot_counts, span_counts, span_scores, spans,
-                   token_features)
+                   token_features, word_confusion)
 
 
 class BioTagsTest(unittest.TestCase):
@@ -87,6 +87,15 @@ class BootstrapTest(unittest.TestCase):
     def test_paired_difference_with_itself_is_zero(self):
         pred = [["B-city"], ["O"], ["O"], ["O", "O"]]
         self.assertEqual(bootstrap_f1(self.gold, pred, base_list=pred, rounds=200), (0.0, 0.0))
+
+    def test_word_confusion_drops_begin_inside_and_counts_words(self):
+        pred = [["B-date"], ["B-date"], ["O"], ["B-event_name", "O"]]
+        matrix = word_confusion(self.gold, pred)
+        self.assertEqual(matrix["city"]["date"], 1)
+        self.assertEqual(matrix["date"]["date"], 1)
+        self.assertEqual(matrix["O"]["O"], 1)
+        self.assertEqual(matrix["event_name"], {"city": 0, "date": 0, "event_name": 1, "O": 1})
+        self.assertEqual(sum(sum(row.values()) for row in matrix.values()), 5)
 
     def test_span_counts_are_per_sentence(self):
         pred = [["B-date"], ["B-date"], ["O"], ["O", "O"]]

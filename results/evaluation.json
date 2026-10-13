@@ -229,5 +229,247 @@
         "high": 0.006390655072331985
       }
     }
+  },
+  "confusion": {
+    "Linear SVM (set E)": {
+      "SGD test": {
+        "city": {
+          "city": 865,
+          "date": 0,
+          "event_name": 0,
+          "O": 6
+        },
+        "date": {
+          "city": 0,
+          "date": 1046,
+          "event_name": 0,
+          "O": 5
+        },
+        "event_name": {
+          "city": 15,
+          "date": 7,
+          "event_name": 112,
+          "O": 117
+        },
+        "O": {
+          "city": 30,
+          "date": 10,
+          "event_name": 57,
+          "O": 9988
+        }
+      },
+      "messy": {
+        "city": {
+          "city": 39,
+          "date": 0,
+          "event_name": 1,
+          "O": 0
+        },
+        "date": {
+          "city": 0,
+          "date": 58,
+          "event_name": 0,
+          "O": 6
+        },
+        "event_name": {
+          "city": 0,
+          "date": 0,
+          "event_name": 14,
+          "O": 14
+        },
+        "O": {
+          "city": 1,
+          "date": 0,
+          "event_name": 2,
+          "O": 279
+        }
+      },
+      "codex_all": {
+        "city": {
+          "city": 258,
+          "date": 0,
+          "event_name": 1,
+          "O": 12
+        },
+        "date": {
+          "city": 6,
+          "date": 343,
+          "event_name": 5,
+          "O": 57
+        },
+        "event_name": {
+          "city": 13,
+          "date": 0,
+          "event_name": 173,
+          "O": 63
+        },
+        "O": {
+          "city": 28,
+          "date": 11,
+          "event_name": 20,
+          "O": 1479
+        }
+      }
+    },
+    "BERTweet (set D)": {
+      "SGD test": {
+        "city": {
+          "city": 867,
+          "date": 0,
+          "event_name": 0,
+          "O": 4
+        },
+        "date": {
+          "city": 0,
+          "date": 1048,
+          "event_name": 0,
+          "O": 3
+        },
+        "event_name": {
+          "city": 1,
+          "date": 0,
+          "event_name": 236,
+          "O": 14
+        },
+        "O": {
+          "city": 10,
+          "date": 3,
+          "event_name": 1,
+          "O": 10071
+        }
+      },
+      "messy": {
+        "city": {
+          "city": 39,
+          "date": 0,
+          "event_name": 0,
+          "O": 1
+        },
+        "date": {
+          "city": 0,
+          "date": 52,
+          "event_name": 0,
+          "O": 12
+        },
+        "event_name": {
+          "city": 2,
+          "date": 0,
+          "event_name": 22,
+          "O": 4
+        },
+        "O": {
+          "city": 0,
+          "date": 0,
+          "event_name": 5,
+          "O": 277
+        }
+      },
+      "codex_all": {
+        "city": {
+          "city": 271,
+          "date": 0,
+          "event_name": 0,
+          "O": 0
+        },
+        "date": {
+          "city": 0,
+          "date": 337,
+          "event_name": 0,
+          "O": 74
+        },
+        "event_name": {
+          "city": 4,
+          "date": 0,
+          "event_name": 213,
+          "O": 32
+        },
+        "O": {
+          "city": 41,
+          "date": 1,
+          "event_name": 14,
+          "O": 1482
+        }
+      }
+    },
+    "BERTweet_E": {
+      "SGD test": {
+        "city": {
+          "city": 867,
+          "date": 0,
+          "event_name": 0,
+          "O": 4
+        },
+        "date": {
+          "city": 0,
+          "date": 1050,
+          "event_name": 0,
+          "O": 1
+        },
+        "event_name": {
+          "city": 2,
+          "date": 1,
+          "event_name": 226,
+          "O": 22
+        },
+        "O": {
+          "city": 9,
+          "date": 3,
+          "event_name": 0,
+          "O": 10073
+        }
+      },
+      "messy": {
+        "city": {
+          "city": 39,
+          "date": 0,
+          "event_name": 0,
+          "O": 1
+        },
+        "date": {
+          "city": 0,
+          "date": 60,
+          "event_name": 0,
+          "O": 4
+        },
+        "event_name": {
+          "city": 0,
+          "date": 0,
+          "event_name": 28,
+          "O": 0
+        },
+        "O": {
+          "city": 0,
+          "date": 0,
+          "event_name": 1,
+          "O": 281
+        }
+      },
+      "codex_all": {
+        "city": {
+          "city": 271,
+          "date": 0,
+          "event_name": 0,
+          "O": 0
+        },
+        "date": {
+          "city": 0,
+          "date": 384,
+          "event_name": 0,
+          "O": 27
+        },
+        "event_name": {
+          "city": 0,
+          "date": 0,
+          "event_name": 241,
+          "O": 8
+        },
+        "O": {
+          "city": 35,
+          "date": 2,
+          "event_name": 14,
+          "O": 1487
+        }
+      }
+    }
   }
 }

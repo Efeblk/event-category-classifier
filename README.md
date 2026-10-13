@@ -212,7 +212,7 @@ decontaminated against every test set, so the 260 Codex requests share no event 
 | 1,500 | 0.92 ± 0.00 | 0.95 ± 0.03 |
 | 1,957 | 0.92 ± 0.00 | 0.98 ± 0.01 |
 
-Confidence intervals (`confidence.py`, `results/confidence_intervals.json`; seed-42 models, 95% bootstrap: the test
+Confidence intervals (`evaluate.py`, `results/evaluation.json`; seed-42 models, 95% bootstrap: the test
 requests are drawn again with replacement 1,000 times and each draw is scored; the interval is the middle 95% of
 those scores). Differences are paired: both models are scored on the same draws, so an interval above 0 means the
 gain does not come from which requests happen to be in the test set.
@@ -235,6 +235,22 @@ The gains from the AI-written data and from BERTweet over the classic models sta
 and the AI-written data costs nothing on clean text. The loss from cutting BERTweet to 6 layers is too small to tell
 apart from noise. On 50 messy requests one F1 is only known to about ±0.05.
 
+Confusion matrix (`evaluate.py`, `results/evaluation.json`): words of all 260 Codex requests, gold slot against the
+slot BERTweet_E predicted (B-/I- dropped; O = no slot). The same file has the matrices of Linear SVM and of BERTweet
+on set D, and of the messy test.
+
+| Gold ↓ / predicted → | city | date | event_name | O |
+|---|---|---|---|---|
+| city | **271** | 0 | 0 | 0 |
+| date | 0 | **384** | 0 | 27 |
+| event_name | 0 | 0 | **241** | 8 |
+| O | 35 | 2 | 14 | **1,487** |
+
+Slots are almost never mixed up with each other; the errors are missed slots and false alarms. The AI-written data
+mostly fixed missed slots: against BERTweet on set D, missed date words fall from 74 to 27 and missed event-name
+words from 32 to 8. The largest remaining error is 35 words tagged as a city that are not cities (venues such as
+"msg"), then time-of-day words not tagged as dates ("this evening").
+
 Limitations: one seed except for the three-seed table and the data curve; the messy and Codex test sets have only
 50 and 60 requests (260 Codex requests for the data curve and the intervals), so differences of a few points are
 within noise (see the intervals above); both were written by AI models, not by real
@@ -254,11 +270,17 @@ Full numbers, per-slot scores and the learning curve are in `results/`.
 | `train_classic.py` | Trains and compares the dictionary, Naive Bayes, Logistic Regression and Linear SVM on sets A–E; learning curve |
 | `train_bert.py` | Fine-tunes one transformer (`--model`) on set D, E or F (`--train-set`), optionally distilled from a trained teacher (`--teacher`, `--alpha`); needs a CUDA GPU |
 | `jev.py` | Jev client with a hard call limit and a receipt for every call |
-| `confidence.py` | 95% bootstrap confidence intervals for the main models and their differences on the SGD, messy and all 260 Codex test requests; writes `results/confidence_intervals.json` |
+| `evaluate.py` | Reloads the saved models and adds 95% bootstrap confidence intervals (each model and the main differences) and word-level confusion matrices on the SGD, messy and all 260 Codex test requests; writes `results/evaluation.json` |
 | `quantize.py` | Stores trained transformers as 16-bit floats and 8-bit integers, rescores them and times one request at a time; writes `results/quantized_results.json` |
 | `jev_soft_labels.py` | Asks Jev for the tag probabilities of every word (paid; capped with `--max-calls`) and scores them against BERTweet |
 | `extract.py` | Loads the trained models, tags a request, and lists the follow-up questions an assistant would ask |
 | `app.py`, `demo.html` | Local demo: runs the parser, the Linear SVM, BERTweet_E and its 6-layer version (all trained on set E) side by side on any request, marks the words no model saw in training, shows the filled slots, Jev's answer and the follow-up questions, and shows all results as charts |
+| `requirements.txt`, `requirements-lock.txt` | CPU dependencies (scikit-learn, joblib, numpy): direct pins, and every package pinned (used by CI) |
+| `requirements-gpu.txt` | torch and transformers for the transformer scripts |
+| `.env.example` | Template for `.env` (Jev key and call limit); `.env` itself is git-ignored |
+| `.github/workflows/tests.yml` | GitHub Actions: runs the unit tests on every push and pull request |
+| `.gitattributes`, `.gitignore` | LF line endings; keeps models, reports, `.env` and logged requests out of git |
+| `LICENSE`, `data/LICENSE.md` | MIT licence for the code and the project's own data; source licences of SGD and MASSIVE |
 | `data/raw/` | Downloaded data with its licence files |
 | `data/clean/` | BIO-tagged training, dev and test data, plus statistics |
 | `data/messy/` | The 50-request messy test set |
@@ -310,10 +332,10 @@ python quantize.py artifacts/bertweet_E artifacts/bertweet_6L_E_kd0.7 artifacts/
     artifacts/bertweet_E_seed1 artifacts/bertweet_E_seed2 artifacts/bertweet_6L_E_kd0.7_seed1 artifacts/bertweet_6L_E_kd0.7_seed2
 ```
 
-Confidence intervals (after the models above are trained):
+Confidence intervals and confusion matrices (after the models above are trained):
 
 ```bash
-python confidence.py
+python evaluate.py
 ```
 
 Demo (http://127.0.0.1:8000). Jev is only called when `.env` has a `TYPESAFE_API_KEY` and a
@@ -334,7 +356,7 @@ Each claim above can be checked without a GPU:
 | No test data used for choosing settings | `train_classic.py` and `train_bert.py` pick settings and epochs by dev F1 only |
 | No overlap between splits | `clean_split` in `slots.py` drops dev/test sentences seen in an earlier split; counts in `data/clean/*stats.json`. Synthetic rows that mention messy-test event names are dropped (`data/clean/synthetic_stats.json`) |
 | Table numbers | `results/classic_results.json` (rows for sets D and E) and `results/{bert,roberta,bertweet,bertweet_E,roberta_large_E}_results.json`; distillation: `results/*_kd<alpha>_results.json` next to the gold-label run of the same student (the README shows the α with the best dev F1); Jev as teacher: `results/jev_teacher_check.json` (310 calls, about $0.04); shrinking: `results/bertweet_{6L,4L,4L_bottom}_E_kd*_results.json` (layers, parameters) and `results/quantized_results.json` (sizes, scores and ms per request per precision, including the seed 1 and 2 runs of the 12- and 6-layer models); seeds: `results/*_seed{1,2}_results.json` next to the seed-42 file of the same run; data curve: `results/bertweet_syn<N>[_seed<n>]_results.json` (`codex_all` = all 260 Codex requests), pool sizes in `data/clean/synthetic_pool_stats.json` |
-| Confidence intervals | `results/confidence_intervals.json` (F1 with its 95% interval per model and test set, and paired differences), written by `confidence.py` with `slots.bootstrap_f1` |
+| Confidence intervals and confusion matrices | `results/evaluation.json` (F1 with its 95% interval per model and test set, paired differences, and confusion matrices), written by `evaluate.py` with `slots.bootstrap_f1` and `slots.word_confusion` |
 | Classic numbers are reproducible | `python train_classic.py` rebuilds `results/classic_results.json` on a CPU |
 | Code works | `python -m unittest discover -s tests` (also run by GitHub Actions) |
 
