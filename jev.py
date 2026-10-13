@@ -109,15 +109,7 @@ class JevClient:
         return None, None
 
     def _send(self, body):
-        request = Request(ENDPOINT, data=body, method="POST", headers={
-            "Authorization": "Bearer " + self._api_key,
-            "Content-Type": "application/json",
-        })
-        with build_opener(NoRedirect()).open(request, timeout=15) as response:
-            raw = response.read(100_001)
-        if len(raw) > 100_000:
-            raise ValueError("Jev response is too large.")
-        return json.loads(raw)
+        return post(self._api_key, body, timeout=15, max_bytes=100_000)
 
     def classify(self, text):
         """Ask the two questions about text. Returns a status dict; never raises for API or budget problems."""
@@ -153,13 +145,26 @@ class JevClient:
         return result
 
 
+def post(api_key, body, timeout, max_bytes):
+    """POST body to the Jev endpoint and return the parsed JSON answer. Redirects are refused."""
+    request = Request(ENDPOINT, data=body, method="POST", headers={
+        "Authorization": "Bearer " + api_key,
+        "Content-Type": "application/json",
+    })
+    with build_opener(NoRedirect()).open(request, timeout=timeout) as response:
+        raw = response.read(max_bytes + 1)
+    if len(raw) > max_bytes:
+        raise ValueError("Jev response is too large.")
+    return json.loads(raw)
+
+
 def is_number(value):
     return type(value) in (int, float) and math.isfinite(value)
 
 
-def validate_answer(answer, labels):
-    """Check one choice answer: an allowed label, probabilities over the same labels summing to ~1, and a
-    confidence in [0, 1]."""
+def check_choice(answer, labels):
+    """Check one choice answer: an allowed label, and probabilities over the same labels that sum to ~1 and are
+    highest for the chosen label. Raises ValueError."""
     if not isinstance(answer, dict) or answer.get("type") != "choice" or answer.get("choice") not in labels:
         raise ValueError("Invalid Jev choice.")
     probabilities = answer.get("probabilities")
@@ -172,10 +177,15 @@ def validate_answer(answer, labels):
         raise ValueError("Jev probabilities do not sum to one.")
     if probabilities[answer["choice"]] < max(values) - 1e-6:
         raise ValueError("Jev choice conflicts with its probabilities.")
+
+
+def validate_answer(answer, labels):
+    """check_choice plus a confidence in [0, 1]."""
+    check_choice(answer, labels)
     confidence = answer.get("confidence")
     if not is_number(confidence) or not 0 <= confidence <= 1:
         raise ValueError("Invalid Jev confidence.")
-    return {"choice": answer["choice"], "probabilities": probabilities, "confidence": confidence}
+    return {"choice": answer["choice"], "probabilities": answer["probabilities"], "confidence": confidence}
 
 
 def validate_jev_response(response, model):

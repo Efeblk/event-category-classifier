@@ -109,12 +109,13 @@ def jev_summary(jev_result):
 
 
 def build_log_record(result, now):
-    """One request-log entry: the BERTweet slots, every model's slots and the Jev summary. now is timezone-aware."""
-    bertweet = next((row for row in result["models"] if row["key"] == "bertweet"), {})
+    """One request-log entry: the main model's slots, every model's slots and the Jev summary. now is
+    timezone-aware."""
+    main = next((row for row in result["models"] if row["key"] == extract.MAIN_MODEL), {})
     return {"time_utc": now.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "text": result["text"], "endpoint": "compare",
-            "slots": bertweet.get("slots"), "spans": bertweet.get("spans"),
-            "follow_ups": bertweet.get("follow_ups", []),
+            "slots": main.get("slots"), "spans": main.get("spans"),
+            "follow_ups": main.get("follow_ups", []),
             "models": {row["key"]: row["slots"] for row in result["models"]},
             "jev": jev_summary(result["jev"])}
 
@@ -161,6 +162,16 @@ def f1_summary(scores):
     return {"sgd_f1": scores["SGD test"]["f1"], "massive_f1": scores["MASSIVE test"]["f1"],
             "messy_f1": scores["messy"]["f1"], "codex_f1": scores.get("codex", {}).get("f1"),
             "messy_slots": {slot: info["f1"] for slot, info in scores["messy"]["slots"].items()}}
+
+
+def build_transformers(results_dir):
+    """F1 summary of every transformer in extract.TRANSFORMER_MODELS whose results exist."""
+    rows = []
+    for key, name in extract.TRANSFORMER_MODELS:
+        found = read_json(results_dir / f"{key}_results.json")
+        if found is not None:
+            rows.append({"key": key, "name": name, "model": found["model"], **f1_summary(found["test"])})
+    return rows
 
 
 def distillation_run(results_dir, key):
@@ -278,9 +289,6 @@ def build_results(root=ROOT, logged=None):
     """
     results_dir, data = Path(root) / "results", Path(root) / "data"
     out = {}
-    sources = build_data(data)
-    if sources:
-        out["data"] = sources
     synthetic = read_json(data / "clean" / "synthetic_stats.json")
     if synthetic is not None:
         out["synthetic_stats"] = {key: synthetic[key] for key in ("rows_in", "dropped_test_event_names", "rows_out")}
@@ -294,31 +302,16 @@ def build_results(root=ROOT, logged=None):
                            "name": MODEL_NAMES.get(r["model"], r["model"]), "setting": r["setting"],
                            "dev_f1": r["dev_f1"], **f1_summary(r["scores"])} for r in classic["results"]]
 
-    transformers = []
-    for key, name in extract.TRANSFORMER_MODELS:
-        found = read_json(results_dir / f"{key}_results.json")
-        if found is not None:
-            transformers.append({"key": key, "name": name, "model": found["model"], **f1_summary(found["test"])})
-    if transformers:
-        out["transformers"] = transformers
-    distillation = build_distillation(results_dir)
-    if distillation:
-        out["distillation"] = distillation
-    shrinking = build_shrinking(results_dir)
-    if shrinking:
-        out["shrinking"] = shrinking
     jev = read_json(results_dir / "jev_teacher_check.json")
     if jev is not None:
         scores = jev["by_group"]["all"]
         out["jev_teacher"] = {"sentences": scores["sentences"], "jev_f1": scores["jev"]["f1"],
                               "bertweet_f1": scores["bertweet"]["f1"], "calls": jev["ledger_usage"]["attempts"],
                               "cost_usd": jev["ledger_usage"]["estimated_input_cost_usd"]}
-    pick = build_pick(results_dir)
-    if pick:
-        out["pick"] = pick
-    curve = build_data_curve(results_dir)
-    if curve:
-        out["data_curve"] = curve
+    lists = {"data": build_data(data), "transformers": build_transformers(results_dir),
+             "distillation": build_distillation(results_dir), "shrinking": build_shrinking(results_dir),
+             "pick": build_pick(results_dir), "data_curve": build_data_curve(results_dir)}
+    out.update({key: value for key, value in lists.items() if value})
     return out
 
 
