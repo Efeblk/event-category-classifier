@@ -237,6 +237,18 @@ def bootstrap_f1(gold_list, pred_list, base_list=None, rounds=1000, seed=0):
     return float(low), float(high)
 
 
+CONFUSION_LABELS = ("city", "date", "event_name", "O")
+
+
+def word_confusion(gold_list, pred_list):
+    """Word-level confusion matrix with B-/I- dropped: {gold slot: {predicted slot: words}}, "O" for no slot."""
+    matrix = {gold: dict.fromkeys(CONFUSION_LABELS, 0) for gold in CONFUSION_LABELS}
+    for gold_tags, pred_tags in zip(gold_list, pred_list):
+        for gold, pred in zip(gold_tags, repair_bio(pred_tags)):
+            matrix[gold[2:] or "O"][pred[2:] or "O"] += 1
+    return matrix
+
+
 def to_int32(X):
     """LinearSVC rejects int64 sparse indices, which DictVectorizer produces."""
     X = X.tocsr()

@@ -1,4 +1,4 @@
-"""95% bootstrap confidence intervals for the main test scores, and for the main differences between models.
+"""Extra checks of the saved models: 95% bootstrap confidence intervals and word-level confusion matrices.
 
 The test sets are small (50 messy requests, 260 Codex requests), so one F1 number hides how much it could move with
 other requests. For each model and test set this draws the test sentences again with replacement 1,000 times, scores
@@ -6,10 +6,13 @@ each draw with micro exact-span F1 and keeps the middle 95% (slots.bootstrap_f1)
 are scored on the same draws, and a difference whose interval stays above 0 is not explained by the choice of test
 requests alone. No retraining and no new data.
 
-Models: the four classic models trained on set E (artifacts/classic) and the saved transformers (artifacts/). Writes
-results/confidence_intervals.json. Needs torch with a CUDA GPU for the transformers.
+The confusion matrices count, for each word, its gold slot against the predicted slot (B-/I- dropped, O = no slot),
+for the models in CONFUSION, so the errors behind each F1 can be seen: missed slots, false alarms and mixed-up slots.
 
-Usage: python confidence.py
+Models: the four classic models trained on set E (artifacts/classic) and the saved transformers (artifacts/). Writes
+results/evaluation.json. Needs torch with a CUDA GPU for the transformers.
+
+Usage: python evaluate.py
 """
 
 import json
@@ -18,7 +21,7 @@ from pathlib import Path
 import joblib
 
 from extract import classic_tagger
-from slots import bootstrap_f1, read_jsonl, span_scores
+from slots import bootstrap_f1, read_jsonl, span_scores, word_confusion
 
 ROOT = Path(__file__).resolve().parent
 ROUNDS = 1000
@@ -29,6 +32,7 @@ TRANSFORMERS = (("bert", "BERT (set D)"), ("roberta", "RoBERTa (set D)"), ("bert
 # (model, baseline): the claims the README makes about these pairs.
 PAIRS = (("BERTweet_E", "BERTweet (set D)"), ("BERTweet_E", "Linear SVM (set E)"),
          ("BERTweet_E", "RoBERTa (set D)"), ("BERTweet_E 6 layers", "BERTweet_E"))
+CONFUSION = ("Linear SVM (set E)", "BERTweet (set D)", "BERTweet_E")
 
 
 def test_sets():
@@ -60,7 +64,7 @@ def main():
     for key, name in TRANSFORMERS:
         preds[name] = transformer_predictions(ROOT / "artifacts" / key, tests)
     out = {"rounds": ROUNDS, "sentences": {test: len(rows) for test, rows in tests.items()},
-           "models": {}, "differences": {}}
+           "models": {}, "differences": {}, "confusion": {}}
     for name, by_test in preds.items():
         out["models"][name] = {}
         for test, rows in tests.items():
@@ -75,8 +79,11 @@ def main():
             low, high = bootstrap_f1(gold, preds[model][test], base_list=preds[base][test], rounds=ROUNDS)
             diff = span_scores(gold, preds[model][test])["f1"] - span_scores(gold, preds[base][test])["f1"]
             out["differences"][key][test] = {"diff": diff, "low": low, "high": high}
+    for name in CONFUSION:
+        out["confusion"][name] = {test: word_confusion([r["tags"] for r in rows], preds[name][test])
+                                  for test, rows in tests.items()}
 
-    path = ROOT / "results" / "confidence_intervals.json"
+    path = ROOT / "results" / "evaluation.json"
     path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
     print(f"\n{'model':<30}" + "".join(f"{test:>24}" for test in tests))
     for name, by_test in out["models"].items():
