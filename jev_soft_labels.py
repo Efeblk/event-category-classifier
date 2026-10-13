@@ -19,16 +19,14 @@ Usage:
 import argparse
 import hashlib
 import json
-import math
 import os
 import random
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.request import Request, build_opener
 
-from jev import DEFAULT_JEV_MODEL, ENDPOINT, MAX_CHARACTERS, NoRedirect, load_settings
+from jev import DEFAULT_JEV_MODEL, MAX_CHARACTERS, check_choice, load_settings, post
 from slots import read_jsonl, repair_bio, span_scores
 
 ROOT = Path(__file__).resolve().parent
@@ -77,21 +75,9 @@ def build_body(text, tokens, model=MODEL):
 
 
 def validate_word_answer(answer):
-    """Check one word's answer: a choice among the seven tags, probabilities over exactly those tags summing to ~1,
-    and a choice that has the highest probability. Return the probabilities as floats in TAGS order."""
-    if not isinstance(answer, dict) or answer.get("type") != "choice" or answer.get("choice") not in TAGS:
-        raise ValueError("Invalid Jev choice.")
-    probabilities = answer.get("probabilities")
-    if not isinstance(probabilities, dict) or set(probabilities) != set(TAGS):
-        raise ValueError("Invalid Jev probability labels.")
-    values = [probabilities[tag] for tag in TAGS]
-    if any(type(v) not in (int, float) or not math.isfinite(v) or not 0 <= v <= 1 for v in values):
-        raise ValueError("Invalid Jev probabilities.")
-    if not math.isclose(sum(values), 1, abs_tol=0.01):
-        raise ValueError("Jev probabilities do not sum to one.")
-    if probabilities[answer["choice"]] < max(values) - 1e-6:
-        raise ValueError("Jev choice conflicts with its probabilities.")
-    return {tag: float(probabilities[tag]) for tag in TAGS}
+    """Check one word's answer with jev.check_choice and return its probabilities as floats in TAGS order."""
+    check_choice(answer, set(TAGS))
+    return {tag: float(answer["probabilities"][tag]) for tag in TAGS}
 
 
 def validate_response(response, model, count):
@@ -140,19 +126,6 @@ def load_rows(path):
     """All JSONL rows in path, or [] when the file does not exist yet."""
     path = Path(path)
     return read_jsonl(path) if path.is_file() else []
-
-
-def send(api_key, body):
-    """POST body to the Jev endpoint. Redirects are refused, as in jev.py."""
-    request = Request(ENDPOINT, data=body, method="POST", headers={
-        "Authorization": "Bearer " + api_key,
-        "Content-Type": "application/json",
-    })
-    with build_opener(NoRedirect()).open(request, timeout=TIMEOUT_SECONDS) as response:
-        raw = response.read(MAX_RESPONSE_BYTES + 1)
-    if len(raw) > MAX_RESPONSE_BYTES:
-        raise ValueError("Jev response is too large.")
-    return json.loads(raw)
 
 
 class SoftLabeler:
@@ -351,7 +324,7 @@ def main(argv=None):
         selected = select_rows(rows, excluded, args.limit, args.sample, args.seed)
     except ValueError as error:
         parser.error(str(error))
-    labeler = SoftLabeler(transport=lambda body: send(api_key, body), out_path=args.out, ledger_path=LEDGER_PATH,
+    labeler = SoftLabeler(transport=lambda body: post(api_key, body, TIMEOUT_SECONDS, MAX_RESPONSE_BYTES), out_path=args.out, ledger_path=LEDGER_PATH,
                           max_calls=args.max_calls, source=Path(args.input).stem)
     summary = labeler.run(selected)
     print(json.dumps(summary, ensure_ascii=False, indent=2))

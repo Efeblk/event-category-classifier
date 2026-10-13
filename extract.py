@@ -32,6 +32,7 @@ SLOT_NAMES = ("city", "date", "event_name")
 # Classic models as (file stem, display name, family); transformers as (artifact dir, display name).
 CLASSIC_MODELS = (("dictionary", "Parser", "baseline"), ("linear_svm", "Linear SVM", "classic"))
 LIVE_TRANSFORMERS = (("bertweet_E", "BERTweet_E"), ("bertweet_6L_E_kd0.7", "BERTweet_E small (6 of 12 layers)"))
+MAIN_MODEL = "bertweet_E"  # its slots drive the follow-up questions and the request log
 # Every transformer whose results the Results tab shows.
 TRANSFORMER_MODELS = (("bert", "BERT"), ("roberta", "RoBERTa"), ("bertweet", "BERTweet"),
                       ("bertweet_E", "BERTweet_E"))

@@ -40,7 +40,7 @@ def fake_tagger(wanted):
 
 MODELS = [
     extract.LoadedModel("dictionary", "Dictionary", "baseline", fake_tagger({"lakers": "event_name", "tmrw": "date"})),
-    extract.LoadedModel("bertweet", "BERTweet", "transformer",
+    extract.LoadedModel("bertweet_E", "BERTweet_E", "transformer",
                      fake_tagger({"lakers": "event_name", "tmrw": "date", "boston": "city"})),
 ]
 NOTES = ["BERT skipped: artifacts/bert not found"]
@@ -144,7 +144,7 @@ class CompareTest(unittest.TestCase):
 
     def test_result_has_every_model_and_the_notes(self):
         result = self.run_compare(False)
-        self.assertEqual([row["name"] for row in result["models"]], ["Dictionary", "BERTweet"])
+        self.assertEqual([row["name"] for row in result["models"]], ["Dictionary", "BERTweet_E"])
         self.assertEqual(result["notes"], NOTES)
         self.assertEqual(result["models"][1]["slots"], {"city": ["boston"], "date": ["tmrw"], "event_name": ["lakers"]})
 

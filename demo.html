@@ -283,9 +283,8 @@ function showCompare(data) {
   for (const model of data.models) rows.append(modelRow(model, data.text));
   $("jev").textContent = "";
   $("jev").append(jevCard(data.jev));
-  // The last transformer row is the strongest model; its slots drive the follow-up questions.
-  const bertweet = data.models.find((model) => model.key === "bertweet_E")
-    || data.models.find((model) => model.key === "bertweet");
+  // BERTweet_E is the strongest model; its slots drive the follow-up questions.
+  const bertweet = data.models.find((model) => model.key === "bertweet_E");
   const questions = bertweet ? bertweet.follow_ups.map((name) => FOLLOW_UPS[name]) : [];
   $("filled").textContent = "";
   if (bertweet) $("filled").append(filledCard(bertweet, data.jev));
