@@ -2,7 +2,7 @@
 
 import argparse
 import json
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import joblib
@@ -100,7 +100,8 @@ def main():
             parser.error(str(error))
         if slot_artifact["dataset_sha256"] != artifact["dataset_sha256"]:
             parser.error("Intent and slot artifacts use different data.")
-    server = HTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev, slot_artifact))
+    # Browsers may open idle connections before sending a request.
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(artifact, metrics, jev, slot_artifact))
     print(f"Open http://127.0.0.1:{args.port}", flush=True)
     try:
         server.serve_forever()

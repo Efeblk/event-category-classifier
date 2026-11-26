@@ -1,4 +1,5 @@
 import json
+import socket
 import tempfile
 import threading
 import unittest
@@ -8,7 +9,7 @@ from unittest.mock import Mock, patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from app import make_handler
+from app import ThreadingHTTPServer, make_handler
 from classifier import ARTIFACT_TASK, DATASET_DOMAIN, LABELS, OUTPUT_LABELS, make_models
 from compare_methods import evaluate
 from jev import JevClient, load_settings, validate_jev_response
@@ -65,6 +66,35 @@ class MethodComparisonTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             compare_request(self.artifact, "play_music", jev, "true")
         jev.classify.assert_not_called()
+
+    def test_idle_browser_connection_does_not_block_comparison(self):
+        accepted = threading.Event()
+        handler = make_handler(self.artifact, {})
+
+        class ObservedHandler(handler):
+            def handle(self):
+                accepted.set()
+                super().handle()
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), ObservedHandler)
+        worker = threading.Thread(target=server.serve_forever,
+                                  kwargs={"poll_interval": 0.01}, daemon=True)
+        worker.start()
+        idle = socket.create_connection(server.server_address, timeout=2)
+        try:
+            self.assertTrue(accepted.wait(2))
+            body = json.dumps({"text": "alarm set fixture"}).encode()
+            request = Request(f"http://127.0.0.1:{server.server_port}/api/compare",
+                              data=body, headers={"Content-Type": "application/json"})
+            with urlopen(request, timeout=2) as response:
+                result = json.load(response)
+            self.assertEqual(len(result["results"]), 3)
+            self.assertEqual(result["results"][1]["status"], "ok")
+        finally:
+            idle.close()
+            server.shutdown()
+            server.server_close()
+            worker.join(timeout=2)
 
     def test_http_compare_returns_three_results_and_keeps_configuration_private(self):
         with tempfile.TemporaryDirectory() as directory:

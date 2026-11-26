@@ -31,7 +31,9 @@ about 39.5 MB, verifies the pinned SHA256, and extracts only tr-TR and LICENSE w
 Data, model artifacts, reports and secrets remain ignored. Checked-in `evidence/`
 is a deliberate snapshot for grading, not an input to training.
 
-Open [localhost:8011](http://127.0.0.1:8011). Example buttons use official **dev**
+Open [localhost:8011](http://127.0.0.1:8011). The local server handles browser
+connections independently so idle connections do not block comparisons.
+Example buttons use official **dev**
 requests. Parser, dev-selected Logistic Regression, and optional Jev receive the
 same text. `unclear` is an abstention, never a training class. Slots are shown
 separately with their actual method name and highlighted source words.
