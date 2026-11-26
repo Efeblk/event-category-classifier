@@ -1,0 +1,1870 @@
+{
+  "schema_version": 1,
+  "task": "persuasion_technique_classification",
+  "dataset_domain": "ptc_semeval2020",
+  "evaluation_scope": "old_test_optimistic_one_time",
+  "partition": "test",
+  "rows": 1285,
+  "articles": 72,
+  "context_margin": 1000,
+  "seed": 42,
+  "dataset_sha256": "845d68ca41d7c705e85d0f28e7e30794e38cc86c5c9cb7577230fd7b7d7f8029",
+  "code_sha256": "c66e2d3ddee077d6723525e536945f419414f6e39dcdd90580d40367be6c07e5",
+  "artifacts": {
+    "overall": {
+      "path": "artifacts/model.joblib",
+      "sha256": "eb2996503dc0c163fcda015ad471d3fe396e8c1d7b78cb1378419452fe1018f3",
+      "model_name": "logistic_regression_hybrid_structure"
+    },
+    "method_models": {
+      "path": "artifacts/method_models.joblib",
+      "sha256": "f545000f89fcd944ac806fb3f475767b3957d7b34a8bf60e36b26a994b4e3dd6",
+      "models": {
+        "naive_bayes": "multinomial_nb_char",
+        "logistic_regression": "logistic_regression_hybrid_structure",
+        "linear_svm": "linear_svm_word_context"
+      }
+    }
+  },
+  "development_metrics_check": {
+    "selected_model": "logistic_regression_hybrid_structure",
+    "method_models": {
+      "naive_bayes": "multinomial_nb_char",
+      "logistic_regression": "logistic_regression_hybrid_structure",
+      "linear_svm": "linear_svm_word_context"
+    }
+  },
+  "models": {
+    "selected_overall": {
+      "role": "overall development winner",
+      "model_name": "logistic_regression_hybrid_structure",
+      "accuracy": 0.5766536964980544,
+      "micro_f1": 0.5766536964980544,
+      "macro_f1": 0.42914215022271607,
+      "per_class": {
+        "Appeal_to_Authority": {
+          "precision": 0.2857142857142857,
+          "recall": 0.26666666666666666,
+          "f1-score": 0.27586206896551724,
+          "support": 30.0
+        },
+        "Appeal_to_fear-prejudice": {
+          "precision": 0.3333333333333333,
+          "recall": 0.3448275862068966,
+          "f1-score": 0.3389830508474576,
+          "support": 58.0
+        },
+        "Bandwagon,Reductio_ad_hitlerum": {
+          "precision": 0.75,
+          "recall": 0.2,
+          "f1-score": 0.3157894736842105,
+          "support": 15.0
+        },
+        "Black-and-White_Fallacy": {
+          "precision": 0.15384615384615385,
+          "recall": 0.15384615384615385,
+          "f1-score": 0.15384615384615385,
+          "support": 13.0
+        },
+        "Causal_Oversimplification": {
+          "precision": 0.3333333333333333,
+          "recall": 0.46808510638297873,
+          "f1-score": 0.3893805309734513,
+          "support": 47.0
+        },
+        "Doubt": {
+          "precision": 0.5374149659863946,
+          "recall": 0.6810344827586207,
+          "f1-score": 0.6007604562737643,
+          "support": 116.0
+        },
+        "Exaggeration,Minimisation": {
+          "precision": 0.31125827814569534,
+          "recall": 0.47,
+          "f1-score": 0.3745019920318725,
+          "support": 100.0
+        },
+        "Flag-Waving": {
+          "precision": 0.5384615384615384,
+          "recall": 0.5675675675675675,
+          "f1-score": 0.5526315789473685,
+          "support": 37.0
+        },
+        "Loaded_Language": {
+          "precision": 0.7279411764705882,
+          "recall": 0.6704288939051919,
+          "f1-score": 0.6980023501762632,
+          "support": 443.0
+        },
+        "Name_Calling,Labeling": {
+          "precision": 0.6019417475728155,
+          "recall": 0.5688073394495413,
+          "f1-score": 0.5849056603773585,
+          "support": 218.0
+        },
+        "Repetition": {
+          "precision": 0.8188976377952756,
+          "recall": 0.6419753086419753,
+          "f1-score": 0.7197231833910035,
+          "support": 162.0
+        },
+        "Slogans": {
+          "precision": 0.6363636363636364,
+          "recall": 0.3684210526315789,
+          "f1-score": 0.4666666666666667,
+          "support": 19.0
+        },
+        "Thought-terminating_Cliches": {
+          "precision": 0.3125,
+          "recall": 0.23809523809523808,
+          "f1-score": 0.2702702702702703,
+          "support": 21.0
+        },
+        "Whataboutism,Straw_Men,Red_Herring": {
+          "precision": 0.2222222222222222,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.26666666666666666,
+          "support": 6.0
+        },
+        "accuracy": 0.5766536964980544,
+        "macro avg": {
+          "precision": 0.4688020220889481,
+          "recall": 0.42664919496326725,
+          "f1-score": 0.42914215022271607,
+          "support": 1285.0
+        },
+        "weighted avg": {
+          "precision": 0.6043267480606367,
+          "recall": 0.5766536964980544,
+          "f1-score": 0.5836749881503218,
+          "support": 1285.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          8,
+          4,
+          0,
+          2,
+          5,
+          8,
+          2,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          20,
+          0,
+          2,
+          6,
+          6,
+          5,
+          1,
+          5,
+          3,
+          2,
+          0,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          5,
+          3,
+          1,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          4,
+          0,
+          2,
+          3,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          5,
+          0,
+          1,
+          22,
+          9,
+          2,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        [
+          4,
+          4,
+          0,
+          2,
+          7,
+          79,
+          12,
+          2,
+          3,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          4,
+          1,
+          1,
+          3,
+          8,
+          47,
+          0,
+          23,
+          8,
+          3,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          2,
+          0,
+          1,
+          2,
+          6,
+          2,
+          21,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          12,
+          0,
+          0,
+          8,
+          13,
+          45,
+          2,
+          297,
+          50,
+          7,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          2,
+          0,
+          1,
+          2,
+          5,
+          20,
+          5,
+          45,
+          124,
+          10,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          0,
+          1,
+          2,
+          4,
+          6,
+          3,
+          28,
+          9,
+          104,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          1,
+          1,
+          4,
+          0,
+          3,
+          1,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          8,
+          0,
+          5,
+          0,
+          0,
+          0,
+          5,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      "confusion_labels": [
+        "Appeal_to_Authority",
+        "Appeal_to_fear-prejudice",
+        "Bandwagon,Reductio_ad_hitlerum",
+        "Black-and-White_Fallacy",
+        "Causal_Oversimplification",
+        "Doubt",
+        "Exaggeration,Minimisation",
+        "Flag-Waving",
+        "Loaded_Language",
+        "Name_Calling,Labeling",
+        "Repetition",
+        "Slogans",
+        "Thought-terminating_Cliches",
+        "Whataboutism,Straw_Men,Red_Herring"
+      ]
+    },
+    "naive_bayes": {
+      "role": "dev-selected naive_bayes model",
+      "model_name": "multinomial_nb_char",
+      "accuracy": 0.4093385214007782,
+      "micro_f1": 0.4093385214007782,
+      "macro_f1": 0.11634508820843993,
+      "per_class": {
+        "Appeal_to_Authority": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 30.0
+        },
+        "Appeal_to_fear-prejudice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 58.0
+        },
+        "Bandwagon,Reductio_ad_hitlerum": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 15.0
+        },
+        "Black-and-White_Fallacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 13.0
+        },
+        "Causal_Oversimplification": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 47.0
+        },
+        "Doubt": {
+          "precision": 0.4666666666666667,
+          "recall": 0.0603448275862069,
+          "f1-score": 0.10687022900763359,
+          "support": 116.0
+        },
+        "Exaggeration,Minimisation": {
+          "precision": 0.2857142857142857,
+          "recall": 0.02,
+          "f1-score": 0.037383177570093455,
+          "support": 100.0
+        },
+        "Flag-Waving": {
+          "precision": 0.7777777777777778,
+          "recall": 0.1891891891891892,
+          "f1-score": 0.30434782608695654,
+          "support": 37.0
+        },
+        "Loaded_Language": {
+          "precision": 0.37280701754385964,
+          "recall": 0.9593679458239278,
+          "f1-score": 0.5369551484523057,
+          "support": 443.0
+        },
+        "Name_Calling,Labeling": {
+          "precision": 0.7441860465116279,
+          "recall": 0.29357798165137616,
+          "f1-score": 0.42105263157894735,
+          "support": 218.0
+        },
+        "Repetition": {
+          "precision": 0.7777777777777778,
+          "recall": 0.12962962962962962,
+          "f1-score": 0.2222222222222222,
+          "support": 162.0
+        },
+        "Slogans": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 19.0
+        },
+        "Thought-terminating_Cliches": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 21.0
+        },
+        "Whataboutism,Straw_Men,Red_Herring": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 6.0
+        },
+        "accuracy": 0.4093385214007782,
+        "macro avg": {
+          "precision": 0.2446378265708568,
+          "recall": 0.11800782670573783,
+          "f1-score": 0.11634508820843993,
+          "support": 1285.0
+        },
+        "weighted avg": {
+          "precision": 0.4395864642754898,
+          "recall": 0.4093385214007782,
+          "f1-score": 0.30588073022233014,
+          "support": 1285.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          30,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          58,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          13,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          46,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          0,
+          109,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          94,
+          2,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          30,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          0,
+          425,
+          11,
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          152,
+          64,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          3,
+          0,
+          127,
+          5,
+          21,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          19,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          19,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "confusion_labels": [
+        "Appeal_to_Authority",
+        "Appeal_to_fear-prejudice",
+        "Bandwagon,Reductio_ad_hitlerum",
+        "Black-and-White_Fallacy",
+        "Causal_Oversimplification",
+        "Doubt",
+        "Exaggeration,Minimisation",
+        "Flag-Waving",
+        "Loaded_Language",
+        "Name_Calling,Labeling",
+        "Repetition",
+        "Slogans",
+        "Thought-terminating_Cliches",
+        "Whataboutism,Straw_Men,Red_Herring"
+      ]
+    },
+    "logistic_regression": {
+      "role": "dev-selected logistic_regression model",
+      "model_name": "logistic_regression_hybrid_structure",
+      "accuracy": 0.5766536964980544,
+      "micro_f1": 0.5766536964980544,
+      "macro_f1": 0.42914215022271607,
+      "per_class": {
+        "Appeal_to_Authority": {
+          "precision": 0.2857142857142857,
+          "recall": 0.26666666666666666,
+          "f1-score": 0.27586206896551724,
+          "support": 30.0
+        },
+        "Appeal_to_fear-prejudice": {
+          "precision": 0.3333333333333333,
+          "recall": 0.3448275862068966,
+          "f1-score": 0.3389830508474576,
+          "support": 58.0
+        },
+        "Bandwagon,Reductio_ad_hitlerum": {
+          "precision": 0.75,
+          "recall": 0.2,
+          "f1-score": 0.3157894736842105,
+          "support": 15.0
+        },
+        "Black-and-White_Fallacy": {
+          "precision": 0.15384615384615385,
+          "recall": 0.15384615384615385,
+          "f1-score": 0.15384615384615385,
+          "support": 13.0
+        },
+        "Causal_Oversimplification": {
+          "precision": 0.3333333333333333,
+          "recall": 0.46808510638297873,
+          "f1-score": 0.3893805309734513,
+          "support": 47.0
+        },
+        "Doubt": {
+          "precision": 0.5374149659863946,
+          "recall": 0.6810344827586207,
+          "f1-score": 0.6007604562737643,
+          "support": 116.0
+        },
+        "Exaggeration,Minimisation": {
+          "precision": 0.31125827814569534,
+          "recall": 0.47,
+          "f1-score": 0.3745019920318725,
+          "support": 100.0
+        },
+        "Flag-Waving": {
+          "precision": 0.5384615384615384,
+          "recall": 0.5675675675675675,
+          "f1-score": 0.5526315789473685,
+          "support": 37.0
+        },
+        "Loaded_Language": {
+          "precision": 0.7279411764705882,
+          "recall": 0.6704288939051919,
+          "f1-score": 0.6980023501762632,
+          "support": 443.0
+        },
+        "Name_Calling,Labeling": {
+          "precision": 0.6019417475728155,
+          "recall": 0.5688073394495413,
+          "f1-score": 0.5849056603773585,
+          "support": 218.0
+        },
+        "Repetition": {
+          "precision": 0.8188976377952756,
+          "recall": 0.6419753086419753,
+          "f1-score": 0.7197231833910035,
+          "support": 162.0
+        },
+        "Slogans": {
+          "precision": 0.6363636363636364,
+          "recall": 0.3684210526315789,
+          "f1-score": 0.4666666666666667,
+          "support": 19.0
+        },
+        "Thought-terminating_Cliches": {
+          "precision": 0.3125,
+          "recall": 0.23809523809523808,
+          "f1-score": 0.2702702702702703,
+          "support": 21.0
+        },
+        "Whataboutism,Straw_Men,Red_Herring": {
+          "precision": 0.2222222222222222,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.26666666666666666,
+          "support": 6.0
+        },
+        "accuracy": 0.5766536964980544,
+        "macro avg": {
+          "precision": 0.4688020220889481,
+          "recall": 0.42664919496326725,
+          "f1-score": 0.42914215022271607,
+          "support": 1285.0
+        },
+        "weighted avg": {
+          "precision": 0.6043267480606367,
+          "recall": 0.5766536964980544,
+          "f1-score": 0.5836749881503218,
+          "support": 1285.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          8,
+          4,
+          0,
+          2,
+          5,
+          8,
+          2,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          20,
+          0,
+          2,
+          6,
+          6,
+          5,
+          1,
+          5,
+          3,
+          2,
+          0,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          5,
+          3,
+          1,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          4,
+          0,
+          2,
+          3,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          5,
+          0,
+          1,
+          22,
+          9,
+          2,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        [
+          4,
+          4,
+          0,
+          2,
+          7,
+          79,
+          12,
+          2,
+          3,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          1,
+          4,
+          1,
+          1,
+          3,
+          8,
+          47,
+          0,
+          23,
+          8,
+          3,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          2,
+          0,
+          1,
+          2,
+          6,
+          2,
+          21,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          12,
+          0,
+          0,
+          8,
+          13,
+          45,
+          2,
+          297,
+          50,
+          7,
+          2,
+          3,
+          1
+        ],
+        [
+          1,
+          2,
+          0,
+          1,
+          2,
+          5,
+          20,
+          5,
+          45,
+          124,
+          10,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          0,
+          1,
+          2,
+          4,
+          6,
+          3,
+          28,
+          9,
+          104,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          1,
+          1,
+          4,
+          0,
+          3,
+          1,
+          7,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          8,
+          0,
+          5,
+          0,
+          0,
+          0,
+          5,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      "confusion_labels": [
+        "Appeal_to_Authority",
+        "Appeal_to_fear-prejudice",
+        "Bandwagon,Reductio_ad_hitlerum",
+        "Black-and-White_Fallacy",
+        "Causal_Oversimplification",
+        "Doubt",
+        "Exaggeration,Minimisation",
+        "Flag-Waving",
+        "Loaded_Language",
+        "Name_Calling,Labeling",
+        "Repetition",
+        "Slogans",
+        "Thought-terminating_Cliches",
+        "Whataboutism,Straw_Men,Red_Herring"
+      ]
+    },
+    "linear_svm": {
+      "role": "dev-selected linear_svm model",
+      "model_name": "linear_svm_word_context",
+      "accuracy": 0.48171206225680935,
+      "micro_f1": 0.48171206225680935,
+      "macro_f1": 0.3593220329617539,
+      "per_class": {
+        "Appeal_to_Authority": {
+          "precision": 0.3,
+          "recall": 0.4,
+          "f1-score": 0.34285714285714286,
+          "support": 30.0
+        },
+        "Appeal_to_fear-prejudice": {
+          "precision": 0.3157894736842105,
+          "recall": 0.3103448275862069,
+          "f1-score": 0.3130434782608696,
+          "support": 58.0
+        },
+        "Bandwagon,Reductio_ad_hitlerum": {
+          "precision": 0.6666666666666666,
+          "recall": 0.26666666666666666,
+          "f1-score": 0.38095238095238093,
+          "support": 15.0
+        },
+        "Black-and-White_Fallacy": {
+          "precision": 0.26666666666666666,
+          "recall": 0.3076923076923077,
+          "f1-score": 0.2857142857142857,
+          "support": 13.0
+        },
+        "Causal_Oversimplification": {
+          "precision": 0.34782608695652173,
+          "recall": 0.3404255319148936,
+          "f1-score": 0.34408602150537637,
+          "support": 47.0
+        },
+        "Doubt": {
+          "precision": 0.45774647887323944,
+          "recall": 0.5603448275862069,
+          "f1-score": 0.5038759689922481,
+          "support": 116.0
+        },
+        "Exaggeration,Minimisation": {
+          "precision": 0.336283185840708,
+          "recall": 0.38,
+          "f1-score": 0.3568075117370892,
+          "support": 100.0
+        },
+        "Flag-Waving": {
+          "precision": 0.3333333333333333,
+          "recall": 0.4864864864864865,
+          "f1-score": 0.3956043956043956,
+          "support": 37.0
+        },
+        "Loaded_Language": {
+          "precision": 0.552772808586762,
+          "recall": 0.6975169300225733,
+          "f1-score": 0.6167664670658682,
+          "support": 443.0
+        },
+        "Name_Calling,Labeling": {
+          "precision": 0.6283783783783784,
+          "recall": 0.42660550458715596,
+          "f1-score": 0.5081967213114754,
+          "support": 218.0
+        },
+        "Repetition": {
+          "precision": 0.5166666666666667,
+          "recall": 0.19135802469135801,
+          "f1-score": 0.27927927927927926,
+          "support": 162.0
+        },
+        "Slogans": {
+          "precision": 0.4,
+          "recall": 0.3157894736842105,
+          "f1-score": 0.35294117647058826,
+          "support": 19.0
+        },
+        "Thought-terminating_Cliches": {
+          "precision": 0.23076923076923078,
+          "recall": 0.14285714285714285,
+          "f1-score": 0.17647058823529413,
+          "support": 21.0
+        },
+        "Whataboutism,Straw_Men,Red_Herring": {
+          "precision": 0.11764705882352941,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.17391304347826086,
+          "support": 6.0
+        },
+        "accuracy": 0.48171206225680935,
+        "macro avg": {
+          "precision": 0.39075328823185096,
+          "recall": 0.3685300755077531,
+          "f1-score": 0.3593220329617539,
+          "support": 1285.0
+        },
+        "weighted avg": {
+          "precision": 0.49409136387822916,
+          "recall": 0.48171206225680935,
+          "f1-score": 0.4696680879723095,
+          "support": 1285.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          12,
+          0,
+          0,
+          1,
+          3,
+          7,
+          1,
+          1,
+          4,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          18,
+          0,
+          3,
+          2,
+          8,
+          4,
+          3,
+          11,
+          3,
+          2,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          4,
+          0,
+          2,
+          5,
+          0,
+          1,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          2,
+          0,
+          4,
+          2,
+          2,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          5,
+          0,
+          1,
+          16,
+          10,
+          1,
+          2,
+          3,
+          2,
+          0,
+          0,
+          0,
+          2
+        ],
+        [
+          7,
+          6,
+          0,
+          2,
+          5,
+          65,
+          10,
+          4,
+          9,
+          2,
+          3,
+          0,
+          0,
+          3
+        ],
+        [
+          2,
+          4,
+          1,
+          0,
+          2,
+          5,
+          38,
+          0,
+          39,
+          4,
+          1,
+          0,
+          2,
+          2
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          2,
+          7,
+          1,
+          18,
+          6,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          4,
+          14,
+          0,
+          2,
+          9,
+          17,
+          24,
+          5,
+          309,
+          34,
+          15,
+          4,
+          4,
+          2
+        ],
+        [
+          1,
+          0,
+          1,
+          1,
+          2,
+          7,
+          17,
+          7,
+          81,
+          93,
+          6,
+          0,
+          2,
+          0
+        ],
+        [
+          2,
+          3,
+          0,
+          1,
+          1,
+          4,
+          10,
+          8,
+          84,
+          7,
+          31,
+          4,
+          2,
+          5
+        ],
+        [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0,
+          1,
+          5,
+          3,
+          0,
+          0,
+          6,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          6,
+          0,
+          6,
+          0,
+          2,
+          0,
+          3,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ],
+      "confusion_labels": [
+        "Appeal_to_Authority",
+        "Appeal_to_fear-prejudice",
+        "Bandwagon,Reductio_ad_hitlerum",
+        "Black-and-White_Fallacy",
+        "Causal_Oversimplification",
+        "Doubt",
+        "Exaggeration,Minimisation",
+        "Flag-Waving",
+        "Loaded_Language",
+        "Name_Calling,Labeling",
+        "Repetition",
+        "Slogans",
+        "Thought-terminating_Cliches",
+        "Whataboutism,Straw_Men,Red_Herring"
+      ]
+    }
+  },
+  "majority_baseline": {
+    "label": "Loaded_Language",
+    "accuracy": 0.34474708171206225,
+    "micro_f1": 0.34474708171206225,
+    "macro_f1": 0.03662367724867725,
+    "per_class": {
+      "Appeal_to_Authority": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 30.0
+      },
+      "Appeal_to_fear-prejudice": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 58.0
+      },
+      "Bandwagon,Reductio_ad_hitlerum": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 15.0
+      },
+      "Black-and-White_Fallacy": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 13.0
+      },
+      "Causal_Oversimplification": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 47.0
+      },
+      "Doubt": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 116.0
+      },
+      "Exaggeration,Minimisation": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 100.0
+      },
+      "Flag-Waving": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 37.0
+      },
+      "Loaded_Language": {
+        "precision": 0.34474708171206225,
+        "recall": 1.0,
+        "f1-score": 0.5127314814814815,
+        "support": 443.0
+      },
+      "Name_Calling,Labeling": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 218.0
+      },
+      "Repetition": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 162.0
+      },
+      "Slogans": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 19.0
+      },
+      "Thought-terminating_Cliches": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 21.0
+      },
+      "Whataboutism,Straw_Men,Red_Herring": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 6.0
+      },
+      "accuracy": 0.34474708171206225,
+      "macro avg": {
+        "precision": 0.02462479155086159,
+        "recall": 0.07142857142857142,
+        "f1-score": 0.03662367724867725,
+        "support": 1285.0
+      },
+      "weighted avg": {
+        "precision": 0.11885055034898331,
+        "recall": 0.34474708171206225,
+        "f1-score": 0.17676268194264305,
+        "support": 1285.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        58,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        15,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        13,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        47,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        116,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        100,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        37,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        443,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        218,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        162,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        21,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "confusion_labels": [
+      "Appeal_to_Authority",
+      "Appeal_to_fear-prejudice",
+      "Bandwagon,Reductio_ad_hitlerum",
+      "Black-and-White_Fallacy",
+      "Causal_Oversimplification",
+      "Doubt",
+      "Exaggeration,Minimisation",
+      "Flag-Waving",
+      "Loaded_Language",
+      "Name_Calling,Labeling",
+      "Repetition",
+      "Slogans",
+      "Thought-terminating_Cliches",
+      "Whataboutism,Straw_Men,Red_Herring"
+    ]
+  },
+  "top_confusions_selected": [
+    {
+      "gold": "Loaded_Language",
+      "predicted": "Name_Calling,Labeling",
+      "count": 50
+    },
+    {
+      "gold": "Loaded_Language",
+      "predicted": "Exaggeration,Minimisation",
+      "count": 45
+    },
+    {
+      "gold": "Name_Calling,Labeling",
+      "predicted": "Loaded_Language",
+      "count": 45
+    },
+    {
+      "gold": "Repetition",
+      "predicted": "Loaded_Language",
+      "count": 28
+    },
+    {
+      "gold": "Exaggeration,Minimisation",
+      "predicted": "Loaded_Language",
+      "count": 23
+    },
+    {
+      "gold": "Name_Calling,Labeling",
+      "predicted": "Exaggeration,Minimisation",
+      "count": 20
+    },
+    {
+      "gold": "Loaded_Language",
+      "predicted": "Doubt",
+      "count": 13
+    },
+    {
+      "gold": "Loaded_Language",
+      "predicted": "Appeal_to_fear-prejudice",
+      "count": 12
+    },
+    {
+      "gold": "Doubt",
+      "predicted": "Exaggeration,Minimisation",
+      "count": 12
+    },
+    {
+      "gold": "Name_Calling,Labeling",
+      "predicted": "Repetition",
+      "count": 10
+    },
+    {
+      "gold": "Causal_Oversimplification",
+      "predicted": "Doubt",
+      "count": 9
+    },
+    {
+      "gold": "Repetition",
+      "predicted": "Name_Calling,Labeling",
+      "count": 9
+    },
+    {
+      "gold": "Exaggeration,Minimisation",
+      "predicted": "Doubt",
+      "count": 8
+    },
+    {
+      "gold": "Loaded_Language",
+      "predicted": "Causal_Oversimplification",
+      "count": 8
+    },
+    {
+      "gold": "Thought-terminating_Cliches",
+      "predicted": "Exaggeration,Minimisation",
+      "count": 8
+    }
+  ],
+  "dev_test_overlap": {
+    "test_articles_in_train_or_dev": 0,
+    "normalized_pairs_also_in_development": 0,
+    "test_rows_with_development_pair": 0
+  },
+  "historical_baseline_test": {
+    "source": "evidence/baseline/metrics.json",
+    "selected_model": "logistic_regression_word_context",
+    "test_accuracy": 0.47315175097276263,
+    "test_macro_f1": 0.35416699695753623,
+    "note": "Original pipeline (350-character context, nine candidates) on the same old custom test: 47.32% accuracy, 0.3542 macro F1."
+  },
+  "figure": "reports/test_confusion_matrix.png",
+  "generated_at_utc": "2026-10-10T12:10:55+00:00",
+  "caveat": "Optimistically biased, one-time evaluation of the old custom test partition. The old test errors informed the upgrade's design (features, context and model choice), so these scores are not a fresh independent final evaluation. Authorized by the user on 2026-10-10. The dev reports/metrics.json still keeps every test score null."
+}

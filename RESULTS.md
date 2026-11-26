@@ -28,11 +28,27 @@ Against the original selected model's **dev** accuracy of 49.24%, the gain is
 **8.11 percentage points**; dev macro F1 rises from 0.3324 to 0.3957.
 Against the same wider-context word LR candidate above, the gain is 7.25 points.
 
-**Final test evaluation is pending.** Original test errors informed the upgrade,
-and exploratory train/dev comparisons of regularization, context and features
-informed the final configuration. Current reports contain no test predictions
-and every candidate's test metric is null. These dev gains do not establish an
-increase in test accuracy. A fresh independently labeled evaluation is needed.
+**Old-test evaluation (one time, optimistically biased).** Original test errors
+informed the upgrade, and exploratory train/dev comparisons of regularization,
+context and features informed the final configuration. The user authorized one
+old-test scoring of the saved dev-only models on 2026-10-10 with
+`python final_test.py`. Its scores live only in
+[evidence/test_evaluation.json](evidence/test_evaluation.json); `reports/metrics.json`
+keeps every test metric null.
+
+| Model (old 1,285-row test, 1,000-character context) | Accuracy | Macro F1 |
+|---|---:|---:|
+| Selected `logistic_regression_hybrid_structure` | 57.67% | 0.4291 |
+| Naive Bayes, `multinomial_nb_char` | 40.93% | 0.1163 |
+| Linear SVM, `linear_svm_word_context` | 48.17% | 0.3593 |
+| Majority baseline (`Loaded_Language`) | 34.47% | 0.0366 |
+| Historical nine-candidate pipeline (for reference) | 47.32% | 0.3542 |
+
+These numbers are **optimistically biased**: the old test errors informed the
+upgrade's design, so they are not a fresh independent final evaluation. Zero
+normalized excerpt/context pairs from the test set occur in train/dev. Use these
+figures only as a single, caveated check; they do not replace an independently
+labeled evaluation.
 
 ## Explainable feature upgrade
 

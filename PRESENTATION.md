@@ -10,12 +10,12 @@ The latest rubric rewards finishing under two minutes.
 | 1. Spot the Manipulation | 0:00-0:15 | "Either support us or destroy the country." / Black-and-white fallacy / Invented illustration |
 | 2. Data and preparation | 0:15-0:35 | 14 techniques; 6,128 examples; CC BY 4.0; validate offsets, normalize, audit duplicates |
 | 3. Models and upgrade | 0:35-1:05 | NB / LR / SVM; TF-IDF; words + characters + wider context + 22 structure counts; train 3,795 / dev 1,048 |
-| 4. Measured dev results | 1:05-1:35 | Dev accuracy 49.24% -> 57.35%; macro F1 0.3324 -> 0.3957; final test pending |
+| 4. Measured results | 1:05-1:35 | Dev accuracy 49.24% -> 57.35%; macro F1 0.3324 -> 0.3957; old test 47.32% -> 57.67% (optimistic, one-time) |
 | 5. Reproducible comparison | 1:35-1:50 | Fresh rebuild matches ten candidates; guess-before-reveal demo; supplied excerpt classification; Jev not evaluated |
 
-Keep **development results; fresh final test pending** visible on the results
-slide. The historical 47.32% test result belongs to the old pipeline, not the
-upgrade. Paper references belong in Q&A notes. Preload a dev excerpt if using
+Keep the bias visible on the results slide: the **old test** was scored once
+after its errors informed the upgrade, so 57.67% is optimistic. The historical
+47.32% was the old pipeline's test result. Paper references belong in Q&A notes. Preload a dev excerpt if using
 the demo; a wrong prediction can illustrate limitations.
 
 ## Spoken rehearsal draft
@@ -41,8 +41,8 @@ Whole articles stay together. Every vocabulary and scaler fits train only.
 Development macro F1 selects the winner and gives rare techniques equal weight.
 
 Dev accuracy rises from 49.24 to 57.35 percent; macro F1 rises from 0.3324 to
-0.3957. These are selection results. The original test errors informed the
-upgrade, so a fresh final evaluation is still needed.
+0.3957. The old test, scored once, rises from 47.32 to 57.67 percent accuracy.
+That number is optimistic because its errors informed the upgrade.
 
 A fresh rebuild matches all ten candidates. The demo lets you guess before
 revealing independent predictions. This classifies provided fragments; it does
@@ -52,9 +52,9 @@ not verify their truth.
 
 - **Why macro F1?** Loaded language has 380/1,048 dev annotations. Macro F1
   averages precision/recall-based F1 for all 14 techniques equally.
-- **Is 57.35% test accuracy?** No, it is dev accuracy. The original model scored
-  49.24% on dev and 47.32% on its custom test. Old test error analysis helped
-  design the upgrade; a fresh final evaluation is pending.
+- **Is 57.35% test accuracy?** No, it is dev accuracy. The old test scored 57.67%
+  for the upgrade, which is optimistic because old test error analysis helped
+  design it. The original model scored 49.24% on dev and 47.32% on the old test.
 - **Why not evaluate again on the same test?** Once test findings influence
   development, that set cannot independently validate the resulting choices.
 - **How is TF-IDF computed?** Sublinear TF is 1 + log(count). Smoothed IDF is

@@ -12,11 +12,15 @@ Root snapshots describe the current **development-only upgrade**.
 | `reproduction_check.json` | Fresh preparation/training, exact bytes and dev predictions | `python reproduce.py` |
 | `robustness.json` | 25 licensed human news sources, 200 original/variant cases and six controls; no technique gold or accuracy | `python stress_test.py` |
 | `baseline/` | Frozen original nine-candidate test benchmark and reproduction | See baseline/README.md |
+| `test_evaluation.json` | One-time, user-authorized old-test scores for the dev-only upgrade (optimistically biased; caveat inside) | `python final_test.py` |
+| `test_confusion_matrix.png` | Old-test confusion of the dev-selected hybrid LR | `python final_test.py` |
 
 Original data files and partitions are unchanged. Separate wider-context
 development data contains no test rows. The old test's errors informed the
-upgrade, so final test evaluation is pending. Dev results are selection results,
-not independent generalization evidence. See [RESULTS.md](../RESULTS.md).
+upgrade, so its single 2026-10-10 evaluation (`test_evaluation.json`) is
+optimistically biased and not a fresh final test. `metrics.json` keeps every
+test metric null. Dev results are selection results, not independent
+generalization evidence. See [RESULTS.md](../RESULTS.md).
 
 The robustness sources are separate official dev articles without technique
 gold labels. Generated variants are not additional human examples. No-op

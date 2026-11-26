@@ -37,6 +37,7 @@ Run commands from the repository root, Python 3.13:
 python -m pip install -r requirements-lock.txt
 python prepare_data.py
 python train.py
+python final_test.py
 python compare_methods.py
 python stress_test.py
 python reproduce.py
@@ -68,9 +69,14 @@ under data/. Copy only final report snapshots into evidence/.
   flag remain. The original nine-candidate test benchmark is frozen under
   evidence/baseline/. The current upgrade is development-only: read
   data/cleaned/development.jsonl, which contains train/dev and wider context
-  (1,000 source characters on either side). Never score the upgrade on the old
-  test after using its error analysis; a fresh final evaluation is pending.
-  Select models by dev macro F1 and leave every current test metric null.
+  (1,000 source characters on either side). Select models by dev macro F1 and
+  leave every test metric in reports/metrics.json null.
+  Authorization (2026-10-10): the user explicitly allowed ONE old-test evaluation
+  of this upgrade via `python final_test.py`, which writes
+  reports/test_evaluation.json (copied to evidence/). That score is optimistically
+  biased because old test errors informed the upgrade design. Report it only in
+  that separate file, with its caveat. The dev metrics file keeps test null. Do not
+  rescore the old test or update its result without new explicit user authorization.
 - Report accuracy, micro F1, fixed-14-label macro F1, per-class precision/recall,
   confusion and failures. Examples shown by the demo come from dev, not test.
 - Artifacts declare task=persuasion_technique_classification and

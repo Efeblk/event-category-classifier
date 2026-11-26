@@ -86,8 +86,28 @@ F1 selects the overall model and the best variant for each method.
 
 The upgrade reaches **57.35% dev accuracy / 0.3957 macro F1**, compared with
 **49.24% / 0.3324** for the original selected model on dev. These are development
-results, not an increase in test accuracy. Because the old test errors informed
-the upgrade, a fresh final evaluation is pending. Current test metrics stay null.
+results; the dev report `reports/metrics.json` keeps every test metric null.
+
+**One-time old-test evaluation (2026-10-10, user-authorized).** `python final_test.py`
+scores the already trained development-only models once on the old custom test
+(1,285 rows, 72 articles, 1,000-character context). This is **optimistically
+biased**: old test errors informed the upgrade's design, so it is not a fresh
+independent final evaluation. Results are in
+[evidence/test_evaluation.json](evidence/test_evaluation.json) and
+[evidence/test_confusion_matrix.png](evidence/test_confusion_matrix.png):
+
+| Model | Test accuracy | Test macro F1 (14 labels) |
+|---|---:|---:|
+| Selected `logistic_regression_hybrid_structure` (dev winner) | 57.67% | 0.4291 |
+| Naive Bayes, `multinomial_nb_char` | 40.93% | 0.1163 |
+| Logistic Regression, same selected model | 57.67% | 0.4291 |
+| Linear SVM, `linear_svm_word_context` | 48.17% | 0.3593 |
+| Majority baseline (`Loaded_Language`) | 34.47% | 0.0366 |
+
+For comparison, the historical nine-candidate pipeline scored 47.32% accuracy and
+0.3542 macro F1 on the same old test. The gain is therefore about 10 points,
+but it must be read with the bias caveat above. The script refuses to replace an
+existing report unless `--force` is given.
 To reproduce the historical nine-candidate protocol separately, run
 `python train.py --profile baseline`; its outputs go to `reports/baseline/` and
 `artifacts/baseline/` by default.
@@ -139,6 +159,7 @@ Typos, capitalization and context changes can also change model predictions.
 | `prepare_data.py` | Verified download, safe extraction, span reconstruction, cleaning audit and grouped split |
 | `classifier.py` | Fixed label definitions, English normalization, feature/model candidates, artifact validation and predictions |
 | `train.py` | Train-only fitting and dev-only selection/reports; explicit historical baseline profile |
+| `final_test.py` | One-time, optimistically biased old-test evaluation of saved dev-only artifacts; predict only, no refit |
 | `reproduce.py` | Fresh temporary preparation/training; exact cleaned/report/prediction and saved-artifact checks |
 | `method_comparison.py` | Same excerpt/context passed independently to NB, LR, SVM and optional Jev |
 | `json_validation.py` | Shared strict UTF-8 JSON decoding for HTTP, training JSONL and comparison samples |
@@ -188,7 +209,7 @@ The demo inserts user text through textContent/createTextNode and does not log
 request bodies. Displayed feature weights describe model contributions rather
 than a human explanation or a calibrated guarantee of correctness.
 
-The current local verification passes **89 tests**. A fresh temporary rebuild
+The current local verification passes **94 tests**. A fresh temporary rebuild
 matches all five cleaned files, four reports, ten candidate dev prediction arrays
 and saved-model metadata/dev predictions. These checks make no provider calls.
 
@@ -208,7 +229,7 @@ and evidence described above.
 
 | Teacher requirement | Current status |
 |---|---|
-| Working implementation and training scripts | Complete locally; 89 tests and fresh reproduction pass |
+| Working implementation and training scripts | Complete locally; 94 tests and fresh reproduction pass |
 | Detailed README with folder/script purpose | Complete |
 | Preprocessing script and documentation | Complete in prepare_data.py and data/README.md |
 | Raw and cleaned datasets | Included with source attribution and preparation audits |
